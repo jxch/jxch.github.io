@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2022-11-05T09:45:12.082Z</updated>
+  <updated>2022-11-05T10:07:58.115Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -17,11 +17,35 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>2022-11-04 晴</title>
-    <link href="https://jxch.github.io/2022/11/05/2022-11-04/"/>
-    <id>https://jxch.github.io/2022/11/05/2022-11-04/</id>
+    <title>dnsmasq部署</title>
+    <link href="https://jxch.github.io/2022/11/05/dnsmasq%E9%83%A8%E7%BD%B2/"/>
+    <id>https://jxch.github.io/2022/11/05/dnsmasq%E9%83%A8%E7%BD%B2/</id>
+    <published>2022-11-05T10:06:50.000Z</published>
+    <updated>2022-11-05T10:07:58.115Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="docker-部署"><a href="#docker-部署" class="headerlink" title="docker 部署"></a>docker 部署</h1><h2 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h2><pre class="line-numbers language-yml"><code class="language-yml">version: '3'services:  dns-server:    image: jpillora/dnsmasq    container_name: dns-server    restart: unless-stopped    environment:      - TZ=Asia/Shanghai      - HTTP_USER=username      - HTTP_PASS=password    ports:      - "53:53/udp"      - "5380:8080"    volumes:      - "./dns/dnsmasq.conf:/etc/dnsmasq.conf"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="dnsmasq-conf"><a href="#dnsmasq-conf" class="headerlink" title="dnsmasq.conf"></a>dnsmasq.conf</h2><pre class="line-numbers language-conf"><code class="language-conf"># 服务器上游DNS服务器地址resolv-file=/etc/resolv.conf# 默认缓存条数150，这里增加到1000cache-size=1000# 重启后清空缓存clear-on-reload# DNS 服务器server=8.8.4.4server=8.8.8.8server=4.2.2.1server=4.2.2.2server=114.114.114.114# 自定义域名address=/example.com/192.168.1.10<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;docker-部署&quot;&gt;&lt;a href=&quot;#docker-部署&quot; class=&quot;headerlink&quot; title=&quot;docker 部署&quot;&gt;&lt;/a&gt;docker 部署&lt;/h1&gt;&lt;h2 id=&quot;docker-compose-yml&quot;&gt;&lt;a href=&quot;#docker-</summary>
+      
+    
+    
+    
+    <category term="使用手册" scheme="https://jxch.github.io/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="DNS" scheme="https://jxch.github.io/tags/DNS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2022-11-05 晴</title>
+    <link href="https://jxch.github.io/2022/11/05/2022-11-05/"/>
+    <id>https://jxch.github.io/2022/11/05/2022-11-05/</id>
     <published>2022-11-05T09:34:59.000Z</published>
-    <updated>2022-11-05T09:45:12.082Z</updated>
+    <updated>2022-11-05T09:57:14.619Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>清河何年生明月，明月何处入清河<br>清河明月两不知，明月清河两不厌<br>清风不识人，风却吹的心儿乱<br>你我两不知，我却随风飘走<br>月在天外，我在河边</p></blockquote>]]></content>
     
@@ -50,7 +74,7 @@
     <published>2022-11-05T04:35:07.335Z</published>
     <updated>2022-11-05T04:35:07.335Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash"><code class="language-bash">$ hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash"><code class="language-bash">$ hexo generate<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash"><code class="language-bash">$ hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
     
     
       

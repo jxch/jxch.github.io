@@ -4,11 +4,12 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="2022-11-04 晴, 火贪">
-    <meta name="description" content="
-清河何年生明月，明月何处入清河清河明月两不知，明月清河两不厌清风不识人，风却吹的心儿乱你我两不知，我却随风飘走月在天外，我在河边
-
-">
+    <meta name="keywords" content="dnsmasq部署, 火贪">
+    <meta name="description" content="docker 部署docker-compose.ymlversion: &#39;3&#39;
+services:
+  dns-server:
+    image: jpillora/dnsmasq
+    container_name: dns-serv">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +21,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>2022-11-04 晴 | 火贪</title>
+    <title>dnsmasq部署 | 火贪</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/guixinchn/image/blog/favicon.png">
     
 
@@ -58,7 +59,8 @@
 <meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="火贪" type="application/atom+xml">
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -340,12 +342,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">2022-11-04 晴</h1>
+                    <h1 class="description center-align post-title">dnsmasq部署</h1>
                 </div>
             </div>
         </div>
@@ -369,8 +371,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%97%A5%E8%AE%B0-2022/">
-                                <span class="chip bg-color">日记-2022</span>
+                            <a href="/tags/DNS/">
+                                <span class="chip bg-color">DNS</span>
                             </a>
                         
                     </div>
@@ -381,8 +383,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%97%A5%E8%AE%B0/" class="post-category">
-                                日记
+                            <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                使用手册
                             </a>
                         
                     </div>
@@ -403,7 +405,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    59
+                    125
                 </div>
                 
 
@@ -430,9 +432,39 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>清河何年生明月，明月何处入清河<br>清河明月两不知，明月清河两不厌<br>清风不识人，风却吹的心儿乱<br>你我两不知，我却随风飘走<br>月在天外，我在河边</p>
-</blockquote>
+                <h1 id="docker-部署"><a href="#docker-部署" class="headerlink" title="docker 部署"></a>docker 部署</h1><h2 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h2><pre class="line-numbers language-yml"><code class="language-yml">version: '3'
+services:
+  dns-server:
+    image: jpillora/dnsmasq
+    container_name: dns-server
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+      - HTTP_USER=username
+      - HTTP_PASS=password
+    ports:
+      - "53:53/udp"
+      - "5380:8080"
+    volumes:
+      - "./dns/dnsmasq.conf:/etc/dnsmasq.conf"
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="dnsmasq-conf"><a href="#dnsmasq-conf" class="headerlink" title="dnsmasq.conf"></a>dnsmasq.conf</h2><pre class="line-numbers language-conf"><code class="language-conf"># 服务器上游DNS服务器地址
+resolv-file=/etc/resolv.conf
+# 默认缓存条数150，这里增加到1000
+cache-size=1000
+# 重启后清空缓存
+clear-on-reload
+
+# DNS 服务器
+server=8.8.4.4
+server=8.8.8.8
+server=4.2.2.1
+server=4.2.2.2
+server=114.114.114.114
+
+# 自定义域名
+address=/example.com/192.168.1.10
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -459,7 +491,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://jxch.github.io/2022/11/05/2022-11-04/">https://jxch.github.io/2022/11/05/2022-11-04/</a>
+                    <a href="https://jxch.github.io/2022/11/05/dnsmasq%E9%83%A8%E7%BD%B2/">https://jxch.github.io/2022/11/05/dnsmasq%E9%83%A8%E7%BD%B2/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -497,8 +529,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%97%A5%E8%AE%B0-2022/">
-                                    <span class="chip bg-color">日记-2022</span>
+                                <a href="/tags/DNS/">
+                                    <span class="chip bg-color">DNS</span>
                                 </a>
                             
                         </div>
@@ -582,13 +614,63 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2022/11/05/2022-11-04/">
+                <a href="/2022/11/05/dnsmasq%E9%83%A8%E7%BD%B2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="2022-11-04 晴">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="dnsmasq部署">
                         
-                        <span class="card-title">2022-11-04 晴</span>
+                        <span class="card-title">dnsmasq部署</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/DNS/">
+                        <span class="chip bg-color">DNS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/11/05/2022-11-05/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="2022-11-05 晴">
+                        
+                        <span class="card-title">2022-11-05 晴</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -613,7 +695,6 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -621,43 +702,6 @@
                         <span class="chip bg-color">日记-2022</span>
                     </a>
                     
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/11/05/hello-world/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
-                        
-                        <span class="card-title">Hello World</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-05
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            钱不寒
-                            
-                        </span>
-                    </div>
                 </div>
                 
             </div>
@@ -886,7 +930,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">132</span>
+                        class="white-color">257</span>
             
             
             
