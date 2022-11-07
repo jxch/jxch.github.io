@@ -4,12 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="dnsmasq部署, 放下我执">
-    <meta name="description" content="docker 部署docker-compose.ymlversion: &#39;3&#39;
-services:
-  dns-server:
-    image: jpillora/dnsmasq
-    container_name: dns-serv">
+    <meta name="keywords" content="鹊桥仙·新婚, 放下我执">
+    <meta name="description" content="
+鹊桥仙·新婚预祝哥嫂新婚快乐，写首小词助助兴！纤纤素手，盈盈一水，一片惊鸿一入。相逢一醉了相思，却卧在红尘深处。银花争流，飞红如雨，十月春风一路。鹊桥一步一回头，又岂是一年一度。
+
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +20,7 @@ services:
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>dnsmasq部署 | 放下我执</title>
+    <title>鹊桥仙·新婚 | 放下我执</title>
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/guixinchn/image/blog/favicon.png">
     
 
@@ -341,12 +340,12 @@ services:
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">dnsmasq部署</h1>
+                    <h1 class="description center-align post-title">鹊桥仙·新婚</h1>
                 </div>
             </div>
         </div>
@@ -370,8 +369,8 @@ services:
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/DNS/">
-                                <span class="chip bg-color">DNS</span>
+                            <a href="/tags/%E8%AF%97%E8%AF%8D/">
+                                <span class="chip bg-color">诗词</span>
                             </a>
                         
                     </div>
@@ -382,8 +381,8 @@ services:
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                使用手册
+                            <a href="/categories/%E4%BD%9C%E5%93%81/" class="post-category">
+                                作品
                             </a>
                         
                     </div>
@@ -395,7 +394,7 @@ services:
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-11-05
+                    2022-11-07
                 </div>
                 
 
@@ -404,7 +403,7 @@ services:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    125
+                    76
                 </div>
                 
 
@@ -434,38 +433,9 @@ services:
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="docker-部署"><a href="#docker-部署" class="headerlink" title="docker 部署"></a>docker 部署</h1><h2 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3'</span>
-<span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">dns-server</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> jpillora/dnsmasq
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> dns<span class="token punctuation">-</span>server
-    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> TZ=Asia/Shanghai
-      <span class="token punctuation">-</span> HTTP_USER=username
-      <span class="token punctuation">-</span> HTTP_PASS=password
-    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> <span class="token string">"53:53/udp"</span>
-      <span class="token punctuation">-</span> <span class="token string">"5380:8080"</span>
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> <span class="token string">"./dns/dnsmasq.conf:/etc/dnsmasq.conf"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="dnsmasq-conf"><a href="#dnsmasq-conf" class="headerlink" title="dnsmasq.conf"></a>dnsmasq.conf</h2><pre class="line-numbers language-conf" data-language="conf"><code class="language-conf"># 服务器上游DNS服务器地址
-resolv-file=/etc/resolv.conf
-# 默认缓存条数150，这里增加到1000
-cache-size=1000
-# 重启后清空缓存
-clear-on-reload
-
-# DNS 服务器
-server=8.8.4.4
-server=8.8.8.8
-server=4.2.2.1
-server=4.2.2.2
-server=114.114.114.114
-
-# 自定义域名
-address=/example.com/192.168.1.10<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <blockquote>
+<p>鹊桥仙·新婚<br>预祝哥嫂新婚快乐，写首小词助助兴！<br>纤纤素手，盈盈一水，一片惊鸿一入。相逢一醉了相思，却卧在红尘深处。<br>银花争流，飞红如雨，十月春风一路。鹊桥一步一回头，又岂是一年一度。</p>
+</blockquote>
 
                 
             </div>
@@ -492,7 +462,7 @@ address=/example.com/192.168.1.10<span aria-hidden="true" class="line-numbers-ro
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://jxch.github.io/2022/11/05/dnsmasq%E9%83%A8%E7%BD%B2/">https://jxch.github.io/2022/11/05/dnsmasq%E9%83%A8%E7%BD%B2/</a>
+                    <a href="https://jxch.github.io/2022/11/07/que-qiao-xian-xin-hun/">https://jxch.github.io/2022/11/07/que-qiao-xian-xin-hun/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -530,8 +500,8 @@ address=/example.com/192.168.1.10<span aria-hidden="true" class="line-numbers-ro
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/DNS/">
-                                    <span class="chip bg-color">DNS</span>
+                                <a href="/tags/%E8%AF%97%E8%AF%8D/">
+                                    <span class="chip bg-color">诗词</span>
                                 </a>
                             
                         </div>
@@ -610,11 +580,62 @@ address=/example.com/192.168.1.10<span aria-hidden="true" class="line-numbers-ro
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/11/06/v2fly%E9%83%A8%E7%BD%B2/">
+                <a href="/2022/11/07/que-qiao-xian-xin-hun/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="鹊桥仙·新婚">
+                        
+                        <span class="card-title">鹊桥仙·新婚</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E4%BD%9C%E5%93%81/" class="post-category">
+                                    作品
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E8%AF%97%E8%AF%8D/">
+                        <span class="chip bg-color">诗词</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/11/06/v2fly-bu-shu/">
                     <div class="card-image">
                         
                         
@@ -630,9 +651,9 @@ address=/example.com/192.168.1.10<span aria-hidden="true" class="line-numbers-ro
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-06
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -650,55 +671,6 @@ address=/example.com/192.168.1.10<span aria-hidden="true" class="line-numbers-ro
                     
                     <a href="/tags/%E6%B5%81%E9%87%8F%E8%BD%AC%E5%8F%91/">
                         <span class="chip bg-color">流量转发</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/11/05/%E6%98%8E%E6%9C%88%E7%85%A7%E6%B8%85%E6%B2%B3/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="明月照清河">
-                        
-                        <span class="card-title">明月照清河</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-05
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E4%BD%9C%E5%93%81/" class="post-category">
-                                    作品
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E8%AF%97%E8%AF%8D/">
-                        <span class="chip bg-color">诗词</span>
                     </a>
                     
                 </div>
