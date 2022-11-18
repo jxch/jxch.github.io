@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>shadowsocks部署</title>
+      <link href="/2022/11/18/shadowsocks-bu-shu/"/>
+      <url>/2022/11/18/shadowsocks-bu-shu/</url>
+      
+        <content type="html"><![CDATA[<h1 id="shadowsocks-服务端"><a href="#shadowsocks-服务端" class="headerlink" title="shadowsocks 服务端"></a>shadowsocks 服务端</h1><h2 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">shadowsocks</span><span class="token punctuation">:</span>   <span class="token key atrule">image</span><span class="token punctuation">:</span> appso/shadowsocks<span class="token punctuation">-</span>libev   <span class="token key atrule">ports</span><span class="token punctuation">:</span>     <span class="token punctuation">-</span> 12346<span class="token punctuation">:</span><span class="token number">12346</span>    <span class="token punctuation">-</span> 12346<span class="token punctuation">:</span>12346/udp   <span class="token key atrule">volumes</span><span class="token punctuation">:</span>     <span class="token punctuation">-</span> ./shadowsocks<span class="token punctuation">:</span>/etc/shadowsocks<span class="token punctuation">-</span>libev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="config-json"><a href="#config-json" class="headerlink" title="config.json"></a>config.json</h2><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>    <span class="token property">"server"</span><span class="token operator">:</span><span class="token string">"0.0.0.0"</span><span class="token punctuation">,</span>    <span class="token property">"server_port"</span><span class="token operator">:</span><span class="token number">12346</span><span class="token punctuation">,</span>    <span class="token property">"password"</span><span class="token operator">:</span><span class="token string">"UUID"</span><span class="token punctuation">,</span>    <span class="token property">"timeout"</span><span class="token operator">:</span><span class="token number">300</span><span class="token punctuation">,</span>    <span class="token property">"method"</span><span class="token operator">:</span><span class="token string">"aes-256-gcm"</span><span class="token punctuation">,</span>    <span class="token property">"fast_open"</span><span class="token operator">:</span><span class="token boolean">false</span><span class="token punctuation">,</span>    <span class="token property">"mode"</span><span class="token operator">:</span><span class="token string">"tcp_and_udp"</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 使用手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 流量转发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>无题二</title>
       <link href="/2022/11/18/wu-ti-er/"/>
       <url>/2022/11/18/wu-ti-er/</url>
