@@ -407,7 +407,7 @@ win+R 输入 ncpa.cpl，按回车
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    171
+                    391
                 </div>
                 
 
@@ -448,6 +448,36 @@ win+R 输入 ncpa.cpl，按回车
 <li>添加永久静态路由：<code>route add 172.16.0.0 mask 255.255.0.0  192.168.33.19 -p</code></li>
 </ol>
 <p>这条命令的意思是：将 <code>172.16.0.0</code> 网段，子网掩码为 <code>255.255.0.0</code> 的所有流量通过 <code>192.168.33.19</code> 接口访问，而 <code>192.168.33.19</code> 正是该VPN的接口</p>
+<hr>
+<p>可以使用以下 powershell 脚本，在连接VPN的时候自动更新路由表</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># auto-vpn-route.ps1</span>
+
+<span class="token keyword">param</span><span class="token punctuation">(</span><span class="token namespace">[String]</span><span class="token variable">$vpn</span><span class="token punctuation">,</span> <span class="token namespace">[String]</span><span class="token variable">$ip</span><span class="token punctuation">,</span> <span class="token namespace">[String]</span><span class="token variable">$mask</span><span class="token punctuation">)</span>
+
+<span class="token variable">$vpn_ipv4</span> = <span class="token punctuation">(</span><span class="token function">Get-NetIPAddress</span> <span class="token punctuation">|</span> <span class="token function">Where-Object</span> <span class="token punctuation">{</span><span class="token variable">$_</span><span class="token punctuation">.</span>InterfaceAlias <span class="token operator">-eq</span> <span class="token variable">$vpn</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span>IPAddress
+
+<span class="token function">Write-Host</span> <span class="token string">"vpn: <span class="token variable">$vpn</span>; vpn-ipv4: <span class="token variable">$vpn_ipv4</span>"</span>
+<span class="token keyword">If</span><span class="token punctuation">(</span><span class="token namespace">[String]</span>::IsNullOrEmpty<span class="token punctuation">(</span><span class="token variable">$vpn_ipv4</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">Write-Warning</span> <span class="token string">"请连接 VPN：<span class="token variable">$vpn</span>"</span>
+<span class="token punctuation">}</span> <span class="token keyword">Else</span> <span class="token punctuation">{</span>
+    <span class="token function">Write-Host</span> <span class="token string">"route delete <span class="token variable">$ip</span>"</span> <span class="token operator">-</span>ForegroundColor DarkGray
+    route delete <span class="token variable">$ip</span>
+    <span class="token function">Write-Host</span> <span class="token string">"route add <span class="token variable">$ip</span> mask <span class="token variable">$mask</span> <span class="token variable">$vpn_ipv4</span>"</span> <span class="token operator">-</span>ForegroundColor DarkGray
+    route add <span class="token variable">$ip</span> mask <span class="token variable">$mask</span> <span class="token variable">$vpn_ipv4</span>
+
+    <span class="token keyword">If</span><span class="token punctuation">(</span><span class="token namespace">[String]</span>::IsNullOrEmpty<span class="token punctuation">(</span><span class="token punctuation">(</span>route print <span class="token punctuation">|</span> <span class="token function">Select-String</span> <span class="token operator">-</span>Pattern <span class="token string">"\s0.0.0.0"</span> <span class="token punctuation">|</span> <span class="token function">Select-String</span> <span class="token variable">$vpn_ipv4</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">Write-Host</span> <span class="token string">"操作完成！可使用 route print | select-string <span class="token variable">$ip</span> 查询路由表是否修改。"</span>
+    <span class="token punctuation">}</span> <span class="token keyword">Else</span> <span class="token punctuation">{</span>
+        <span class="token function">Write-Host</span> <span class="token string">"route delete <span class="token variable">$ip</span>"</span> <span class="token operator">-</span>ForegroundColor DarkGray
+        route delete <span class="token variable">$ip</span>
+        <span class="token function">Write-Warning</span> <span class="token string">"请去控制面板关闭 <span class="token variable">$vpn</span> 网卡的默认网关功能"</span> 
+        <span class="token function">Write-Warning</span> <span class="token string">"参见：ncpa.cpl -&gt; <span class="token variable">$vpn</span> -&gt; 属性 -&gt; 网络 -&gt; (TCP/IPv4) -&gt; 高级 -&gt; 在远程网络上使用默认网关"</span> 
+        <span class="token function">Write-Warning</span> <span class="token string">"重新连接 <span class="token variable">$vpn</span>"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>使用方法：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token punctuation">.</span>\auto-vpn-route<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>vpn 云开发 <span class="token operator">-</span>ip 172<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0 <span class="token operator">-</span>mask 255<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>
@@ -914,7 +944,7 @@ win+R 输入 ncpa.cpl，按回车
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">1k</span>
+                        class="white-color">1.3k</span>
             
             
             
