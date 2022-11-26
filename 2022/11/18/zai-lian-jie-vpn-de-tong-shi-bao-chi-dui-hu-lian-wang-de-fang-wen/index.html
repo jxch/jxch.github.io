@@ -407,7 +407,7 @@ win+R 输入 ncpa.cpl，按回车
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    391
+                    407
                 </div>
                 
 
@@ -449,7 +449,7 @@ win+R 输入 ncpa.cpl，按回车
 </ol>
 <p>这条命令的意思是：将 <code>172.16.0.0</code> 网段，子网掩码为 <code>255.255.0.0</code> 的所有流量通过 <code>192.168.33.19</code> 接口访问，而 <code>192.168.33.19</code> 正是该VPN的接口</p>
 <hr>
-<p>可以使用以下 powershell 脚本，在连接VPN的时候自动更新路由表</p>
+<p>可以使用以下 powershell 脚本，在连接VPN的时候自动更新路由表<br>下载脚本：<code>https://github.com/jxch/Shell-Tools/blob/main/auto-vpn-route.ps1</code></p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># auto-vpn-route.ps1</span>
 
 <span class="token keyword">param</span><span class="token punctuation">(</span><span class="token namespace">[String]</span><span class="token variable">$vpn</span><span class="token punctuation">,</span> <span class="token namespace">[String]</span><span class="token variable">$ip</span><span class="token punctuation">,</span> <span class="token namespace">[String]</span><span class="token variable">$mask</span><span class="token punctuation">)</span>
