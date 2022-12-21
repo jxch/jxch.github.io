@@ -405,7 +405,7 @@ services:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    348
+                    387
                 </div>
                 
 
@@ -444,7 +444,23 @@ services:
       <span class="token punctuation">-</span> 12345<span class="token punctuation">:</span><span class="token number">12345</span>
     <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
       <span class="token punctuation">-</span> ./v2fly<span class="token punctuation">:</span>/etc/v2ray
-    <span class="token key atrule">command</span><span class="token punctuation">:</span>  v2ray run <span class="token punctuation">-</span>c /etc/v2ray/config.json<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token key atrule">entrypoint</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"v2ray"</span><span class="token punctuation">,</span> <span class="token string">"run"</span><span class="token punctuation">,</span>  <span class="token string">"-c"</span><span class="token punctuation">,</span> <span class="token string">"/etc/v2ray/config.json"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="docker-swarm"><a href="#docker-swarm" class="headerlink" title="docker swarm"></a>docker swarm</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.8'</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">v2fly</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> v2fly/v2fly<span class="token punctuation">-</span>core
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 12345<span class="token punctuation">:</span><span class="token number">12345</span>
+    <span class="token key atrule">configs</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">source</span><span class="token punctuation">:</span> v2fly.conf
+        <span class="token key atrule">target</span><span class="token punctuation">:</span> /etc/v2ray/config.json
+    <span class="token key atrule">entrypoint</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"v2ray"</span><span class="token punctuation">,</span> <span class="token string">"run"</span><span class="token punctuation">,</span>  <span class="token string">"-c"</span><span class="token punctuation">,</span> <span class="token string">"/etc/v2ray/config.json"</span><span class="token punctuation">]</span>
+
+
+<span class="token key atrule">configs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">v2fly.conf</span><span class="token punctuation">:</span>
+    <span class="token key atrule">file</span><span class="token punctuation">:</span> /root/config/v2fly/config.json<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="config-json"><a href="#config-json" class="headerlink" title="config.json"></a>config.json</h2><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
     <span class="token property">"log"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
@@ -515,7 +531,7 @@ services:
     <span class="token key atrule">network_mode</span><span class="token punctuation">:</span> host
     <span class="token key atrule">volumes</span><span class="token punctuation">:</span> 
       <span class="token punctuation">-</span> ./v2fly<span class="token punctuation">:</span>/etc/v2ray
-    <span class="token key atrule">command</span><span class="token punctuation">:</span> v2ray run <span class="token punctuation">-</span>c /etc/v2ray/config.json<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token key atrule">entrypoint</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"v2ray"</span><span class="token punctuation">,</span> <span class="token string">"run"</span><span class="token punctuation">,</span>  <span class="token string">"-c"</span><span class="token punctuation">,</span> <span class="token string">"/etc/v2ray/config.json"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="config-json-1"><a href="#config-json-1" class="headerlink" title="config.json"></a>config.json</h2><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
   <span class="token property">"log"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
@@ -1124,7 +1140,7 @@ services:
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">1.4k</span>
+                        class="white-color">1.5k</span>
             
             
             
