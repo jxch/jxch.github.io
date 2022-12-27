@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2022-12-04T18:12:12.135Z</updated>
+  <updated>2022-12-27T22:44:15.108Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>机器学习-单变量线性回归-代价函数</title>
+    <link href="https://jxch.github.io/2022/12/28/ji-qi-xue-xi-dan-bian-liang-xian-xing-hui-gui-dai-jie-han-shu/"/>
+    <id>https://jxch.github.io/2022/12/28/ji-qi-xue-xi-dan-bian-liang-xian-xing-hui-gui-dai-jie-han-shu/</id>
+    <published>2022-12-27T22:28:42.000Z</published>
+    <updated>2022-12-27T22:44:15.108Z</updated>
+    
+    <content type="html"><![CDATA[<p>Hypothesis:<br>$h_\theta(x)=\theta_0+\theta_1x$</p><p>Parameters:<br>$\theta_0, \theta_1$</p><p>Cost Function:<br>$J(\theta_0,\theta_1)=\frac{1}{2m} \sum_{i=0}^m (h_\theta(x^{(i)})-y^{(i)})^2$</p><p>Goal:<br>$minimize_{\theta_0,\theta_1}J(\theta_0,\theta_1)$</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Hypothesis:&lt;br&gt;$h_\theta(x)=\theta_0+\theta_1x$&lt;/p&gt;
+&lt;p&gt;Parameters:&lt;br&gt;$\theta_0, \theta_1$&lt;/p&gt;
+&lt;p&gt;Cost Function:&lt;br&gt;$J(\theta_0,\theta_1)</summary>
+      
+    
+    
+    
+    <category term="AI" scheme="https://jxch.github.io/categories/AI/"/>
+    
+    
+    <category term="机器学习" scheme="https://jxch.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>反思自己，愿赌服输</title>
