@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>windows linux 子系统迁移路径</title>
+      <link href="/2022/12/30/windows-linux-zi-xi-tong-qian-yi-lu-jing/"/>
+      <url>/2022/12/30/windows-linux-zi-xi-tong-qian-yi-lu-jing/</url>
+      
+        <content type="html"><![CDATA[<ol><li><code>wsl -l -v</code> 查看需要迁移的子系统</li><li><code>wsl --export  docker-desktop-data D:\virtual\docker-desktop-data.tar</code> 导出子系统</li><li><code>wsl --unregister docker-desktop-data</code> 注销子系统</li><li><code>wsl --import docker-desktop-data D:\virtual\docker-desktop-data D:\virtual\docker-desktop-data.tar --version 2</code> 导入子系统</li><li>删除<code>tar</code>文件: <code>D:\virtual\docker-desktop-data.tar</code></li><li><code>wsl -l -v</code> 查看是否导入成功</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 使用手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 虚拟化 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>年底被开除有感</title>
       <link href="/2022/12/30/nian-di-bei-kai-chu-you-gan/"/>
       <url>/2022/12/30/nian-di-bei-kai-chu-you-gan/</url>
