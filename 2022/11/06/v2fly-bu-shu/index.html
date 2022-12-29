@@ -5,14 +5,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="v2fly部署, 贪狼星君">
-    <meta name="description" content="v2fly 服务端
-docker-compose.yml
-version: &#39;3.1&#39;
+    <meta name="description" content="v2fly 服务端docker-compose.ymlversion: &#39;3.1&#39;
 services:
   v2fly:
     image: v2fly/v2fly-core
     restart: unless-stopped
- ">
+   ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -407,7 +405,7 @@ services:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    390
+                    387
                 </div>
                 
 
@@ -437,9 +435,7 @@ services:
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="v2fly-服务端">v2fly 服务端</h1>
-<h2 id="docker-compose.yml">docker-compose.yml</h2>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.1'</span>
+                <h1 id="v2fly-服务端"><a href="#v2fly-服务端" class="headerlink" title="v2fly 服务端"></a>v2fly 服务端</h1><h2 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.1'</span>
 <span class="token key atrule">services</span><span class="token punctuation">:</span>
   <span class="token key atrule">v2fly</span><span class="token punctuation">:</span>
     <span class="token key atrule">image</span><span class="token punctuation">:</span> v2fly/v2fly<span class="token punctuation">-</span>core
@@ -449,8 +445,8 @@ services:
     <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
       <span class="token punctuation">-</span> ./v2fly<span class="token punctuation">:</span>/etc/v2ray
     <span class="token key atrule">entrypoint</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"v2ray"</span><span class="token punctuation">,</span> <span class="token string">"run"</span><span class="token punctuation">,</span>  <span class="token string">"-c"</span><span class="token punctuation">,</span> <span class="token string">"/etc/v2ray/config.json"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="docker-swarm">docker swarm</h2>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.8'</span>
+
+<h2 id="docker-swarm"><a href="#docker-swarm" class="headerlink" title="docker swarm"></a>docker swarm</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.8'</span>
 <span class="token key atrule">services</span><span class="token punctuation">:</span>
   <span class="token key atrule">v2fly</span><span class="token punctuation">:</span>
     <span class="token key atrule">image</span><span class="token punctuation">:</span> v2fly/v2fly<span class="token punctuation">-</span>core
@@ -465,8 +461,8 @@ services:
 <span class="token key atrule">configs</span><span class="token punctuation">:</span>
   <span class="token key atrule">v2fly.conf</span><span class="token punctuation">:</span>
     <span class="token key atrule">file</span><span class="token punctuation">:</span> /root/config/v2fly/config.json<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="config.json">config.json</h2>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+
+<h2 id="config-json"><a href="#config-json" class="headerlink" title="config.json"></a>config.json</h2><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
     <span class="token property">"log"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"access"</span><span class="token operator">:</span> <span class="token string">"/var/log/v2ray/access.log"</span><span class="token punctuation">,</span>
         <span class="token property">"error"</span><span class="token operator">:</span> <span class="token string">"/var/log/v2ray/error.log"</span><span class="token punctuation">,</span>
@@ -526,9 +522,8 @@ services:
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="v2fly-客户端">v2fly 客户端</h1>
-<h2 id="docker-compose.yml-1">docker-compose.yml</h2>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.1'</span>
+
+<h1 id="v2fly-客户端"><a href="#v2fly-客户端" class="headerlink" title="v2fly 客户端"></a>v2fly 客户端</h1><h2 id="docker-compose-yml-1"><a href="#docker-compose-yml-1" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.1'</span>
 <span class="token key atrule">services</span><span class="token punctuation">:</span>
   <span class="token key atrule">v2fly</span><span class="token punctuation">:</span> 
     <span class="token key atrule">image</span><span class="token punctuation">:</span> v2fly/v2fly<span class="token punctuation">-</span>core
@@ -537,8 +532,8 @@ services:
     <span class="token key atrule">volumes</span><span class="token punctuation">:</span> 
       <span class="token punctuation">-</span> ./v2fly<span class="token punctuation">:</span>/etc/v2ray
     <span class="token key atrule">entrypoint</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"v2ray"</span><span class="token punctuation">,</span> <span class="token string">"run"</span><span class="token punctuation">,</span>  <span class="token string">"-c"</span><span class="token punctuation">,</span> <span class="token string">"/etc/v2ray/config.json"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="config.json-1">config.json</h2>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+
+<h2 id="config-json-1"><a href="#config-json-1" class="headerlink" title="config.json"></a>config.json</h2><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
   <span class="token property">"log"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
     <span class="token property">"access"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
     <span class="token property">"error"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
@@ -1145,7 +1140,7 @@ services:
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">1.8k</span>
+                        class="white-color">1.7k</span>
             
             
             

@@ -8,8 +8,7 @@
     <meta name="description" content="
 win+R 输入 ncpa.cpl，按回车
 右键需要操作的 VPN 设备，点击属性
-点击网络选项卡，双击
-TCP/IPv4，点击高级
+点击网络选项卡，双击 TCP/IPv4，点击高级
 取消勾选：在远程网络上使用默认网关
 连接VPN
 管理员模式打开 powershell 或 cmd
@@ -438,24 +437,19 @@ TCP/IPv4，点击高级
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ol type="1">
+                <ol>
 <li><code>win+R</code> 输入 <code>ncpa.cpl</code>，按回车</li>
 <li>右键需要操作的 VPN 设备，点击<code>属性</code></li>
-<li>点击<code>网络</code>选项卡，双击
-<code>TCP/IPv4</code>，点击<code>高级</code></li>
+<li>点击<code>网络</code>选项卡，双击 <code>TCP/IPv4</code>，点击<code>高级</code></li>
 <li>取消勾选：<code>在远程网络上使用默认网关</code></li>
 <li>连接VPN</li>
 <li>管理员模式打开 <code>powershell</code> 或 <code>cmd</code></li>
-<li>输入命令 <code>ipconfig /all</code>
-回车，查看需要操作的VPN（如PPP连接）的IP地址，如<code>192.168.33.19</code></li>
+<li>输入命令 <code>ipconfig /all</code> 回车，查看需要操作的VPN（如PPP连接）的IP地址，如<code>192.168.33.19</code></li>
 <li>添加永久静态路由：<code>route add 172.16.0.0 mask 255.255.0.0  192.168.33.19 -p</code></li>
 </ol>
-<p>这条命令的意思是：将 <code>172.16.0.0</code> 网段，子网掩码为
-<code>255.255.0.0</code> 的所有流量通过 <code>192.168.33.19</code>
-接口访问，而 <code>192.168.33.19</code> 正是该VPN的接口</p>
+<p>这条命令的意思是：将 <code>172.16.0.0</code> 网段，子网掩码为 <code>255.255.0.0</code> 的所有流量通过 <code>192.168.33.19</code> 接口访问，而 <code>192.168.33.19</code> 正是该VPN的接口</p>
 <hr>
-<p>可以使用以下 powershell 脚本，在连接VPN的时候自动更新路由表
-下载脚本：<code>https://github.com/jxch/Shell-Tools/blob/main/auto-vpn-route.ps1</code></p>
+<p>可以使用以下 powershell 脚本，在连接VPN的时候自动更新路由表<br>下载脚本：<code>https://github.com/jxch/Shell-Tools/blob/main/auto-vpn-route.ps1</code></p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># auto-vpn-route.ps1</span>
 
 <span class="token keyword">param</span><span class="token punctuation">(</span><span class="token namespace">[String]</span><span class="token variable">$vpn</span><span class="token punctuation">,</span> <span class="token namespace">[String]</span><span class="token variable">$ip</span><span class="token punctuation">,</span> <span class="token namespace">[String]</span><span class="token variable">$mask</span><span class="token punctuation">)</span>
@@ -481,7 +475,9 @@ TCP/IPv4，点击高级
         <span class="token function">Write-Warning</span> <span class="token string">"重新连接 <span class="token variable">$vpn</span>"</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用方法： </p><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token punctuation">.</span>\auto-vpn-route<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>vpn 云开发 <span class="token operator">-</span>ip 172<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0 <span class="token operator">-</span>mask 255<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p></p>
+
+<p>使用方法：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token punctuation">.</span>\auto-vpn-route<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>vpn 云开发 <span class="token operator">-</span>ip 172<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0 <span class="token operator">-</span>mask 255<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>
@@ -948,7 +944,7 @@ TCP/IPv4，点击高级
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">1.8k</span>
+                        class="white-color">1.7k</span>
             
             
             
