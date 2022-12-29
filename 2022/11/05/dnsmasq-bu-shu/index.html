@@ -5,11 +5,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="dnsmasq部署, 放下我执">
-    <meta name="description" content="docker 部署docker-compose.ymlversion: &#39;3&#39;
+    <meta name="description" content="docker 部署
+docker-compose.yml
+version: &#39;3&#39;
 services:
   dns-server:
     image: jpillora/dnsmasq
-    container_name: dns-serv">
+    container_name: dns-se">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -404,7 +406,7 @@ services:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    125
+                    126
                 </div>
                 
 
@@ -434,7 +436,9 @@ services:
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="docker-部署"><a href="#docker-部署" class="headerlink" title="docker 部署"></a>docker 部署</h1><h2 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3'</span>
+                <h1 id="docker-部署">docker 部署</h1>
+<h2 id="docker-compose.yml">docker-compose.yml</h2>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3'</span>
 <span class="token key atrule">services</span><span class="token punctuation">:</span>
   <span class="token key atrule">dns-server</span><span class="token punctuation">:</span>
     <span class="token key atrule">image</span><span class="token punctuation">:</span> jpillora/dnsmasq
@@ -449,8 +453,8 @@ services:
       <span class="token punctuation">-</span> <span class="token string">"5380:8080"</span>
     <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
       <span class="token punctuation">-</span> <span class="token string">"./dns/dnsmasq.conf:/etc/dnsmasq.conf"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="dnsmasq-conf"><a href="#dnsmasq-conf" class="headerlink" title="dnsmasq.conf"></a>dnsmasq.conf</h2><pre class="line-numbers language-conf" data-language="conf"><code class="language-conf"># 服务器上游DNS服务器地址
+<h2 id="dnsmasq.conf">dnsmasq.conf</h2>
+<pre class="line-numbers language-conf" data-language="conf"><code class="language-conf"># 服务器上游DNS服务器地址
 resolv-file=/etc/resolv.conf
 # 默认缓存条数150，这里增加到1000
 cache-size=1000
@@ -932,7 +936,7 @@ address=/example.com/192.168.1.10<span aria-hidden="true" class="line-numbers-ro
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">1.5k</span>
+                        class="white-color">1.7k</span>
             
             
             

@@ -395,19 +395,10 @@
                 
                 
                 
-                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" title="使用手册: 4">
+                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" title="使用手册: 5">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #F9EBEA;">使用手册
-                        <span class="tag-length">4</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E4%BD%9C%E5%93%81/" title="作品: 5">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #F5EEF8;">作品
                         <span class="tag-length">5</span>
                     </span>
                 </a>
@@ -416,8 +407,17 @@
                 <a href="/categories/%E5%8F%8D%E6%80%9D/" title="反思: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #D5F5E3;">反思
+                            style="background-color: #F5EEF8;">反思
                         <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/%E4%BD%9C%E5%93%81/" title="作品: 6">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #D5F5E3;">作品
+                        <span class="tag-length">6</span>
                     </span>
                 </a>
                 
@@ -444,6 +444,56 @@
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2022/12/30/windows-an-zhuang-an-zhuo-zi-xi-tong/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="windows 安装安卓子系统">
+                            
+                            <span class="card-title">windows 安装安卓子系统</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+打开链接 https://store.rg-adguard.net/
+输入 https://www.microsoft.com/store/productid/9p3395vx91nr
+选择 slow，点击 √
+MicrosoftCorp
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-30
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/">
+                            <span class="chip bg-color">虚拟化</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2022/11/18/zai-lian-jie-vpn-de-tong-shi-bao-chi-dui-hu-lian-wang-de-fang-wen/">
                         <div class="card-image tag-image">
                             
@@ -459,7 +509,8 @@
                                 
 win+R 输入 ncpa.cpl，按回车
 右键需要操作的 VPN 设备，点击属性
-点击网络选项卡，双击 TCP/IPv4，点击高级
+点击网络选项卡，双击
+TCP/IPv4，点击高级
 取消勾选：在远程网络上使用默认网关
 连接VPN
 管理员模式打开 powershell 或 cmd
@@ -509,11 +560,13 @@ win+R 输入 ncpa.cpl，按回车
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                shadowsocks 服务端docker-compose.ymlshadowsocks: 
+                                shadowsocks 服务端
+docker-compose.yml
+shadowsocks: 
   image: appso/shadowsocks-libev 
   ports: 
     - 12346:12346
-    - 12346
+    - 123
                             
                         </div>
                         <div class="publish-info">
@@ -559,12 +612,14 @@ win+R 输入 ncpa.cpl，按回车
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                v2fly 服务端docker-compose.ymlversion: '3.1'
+                                v2fly 服务端
+docker-compose.yml
+version: '3.1'
 services:
   v2fly:
     image: v2fly/v2fly-core
     restart: unless-stopped
-   
+ 
                             
                         </div>
                         <div class="publish-info">
@@ -610,11 +665,13 @@ services:
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                docker 部署docker-compose.ymlversion: '3'
+                                docker 部署
+docker-compose.yml
+version: '3'
 services:
   dns-server:
     image: jpillora/dnsmasq
-    container_name: dns-serv
+    container_name: dns-se
                             
                         </div>
                         <div class="publish-info">
@@ -723,7 +780,7 @@ services:
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">1.5k</span>
+                        class="white-color">1.7k</span>
             
             
             
