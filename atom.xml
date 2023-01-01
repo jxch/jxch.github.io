@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-01-01T19:28:18.495Z</updated>
+  <updated>2023-01-01T19:32:14.055Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://jxch.github.io/2023/01/02/2022-da-shi-ji/"/>
     <id>https://jxch.github.io/2023/01/02/2022-da-shi-ji/</id>
     <published>2023-01-01T19:19:59.000Z</published>
-    <updated>2023-01-01T19:28:18.495Z</updated>
+    <updated>2023-01-01T19:32:14.055Z</updated>
     
     <content type="html"><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉，您输入的密码错误，请检查后重新输入。" data-whm="抱歉, 当前文章不能被校验, 不过您还是可以看看解密后的内容。">  <script id="hbeData" type="hbeData" data-hmacdigest="fdf533d701c3f5c23078bb25451b3e706d9676ddba91e469801709c2e4306552">975149c30c74668bea8cf8f94d13d7c5faba5b061f151d44b93d787b85894ed79cc4b544dbdb729357ce91569789c406ed6df2d694463bccebfa988ac3c8ce05645ba519463548229910a9b5e0f4048f62fc2392d727d90bdc65f585411ddbd1fe5f9086fb778d367c30a055aac50ee7</script>  <div class="hbe hbe-content">    <div class="hbe hbe-input hbe-input-default">      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">        <span class="hbe hbe-input-label-content hbe-input-label-content-default">当前文章暂不对外可见，请输入密码后查看！</span>      </label>    </div>  </div></div><script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
     
@@ -33,9 +33,9 @@
     <category term="反思" scheme="https://jxch.github.io/categories/%E5%8F%8D%E6%80%9D/"/>
     
     
-    <category term="大事记" scheme="https://jxch.github.io/tags/%E5%A4%A7%E4%BA%8B%E8%AE%B0/"/>
-    
     <category term="private" scheme="https://jxch.github.io/tags/private/"/>
+    
+    <category term="时间轴" scheme="https://jxch.github.io/tags/%E6%97%B6%E9%97%B4%E8%BD%B4/"/>
     
   </entry>
   
