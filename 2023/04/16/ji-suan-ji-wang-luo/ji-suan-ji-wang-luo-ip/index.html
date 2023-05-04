@@ -1,0 +1,1679 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="计算机网络-IP, PA &amp; CODING">
+    <meta name="description" content="网际层的 IP 协议及配套协议
+
+网络互连
+互连在一起的网络要进行通信，会遇到许多问题需要解决，如：
+
+不同的寻址方案
+不同的最大分组长度
+不同的网络接入机制
+不同的超时控制
+不同的差错恢复方法
+不同的状态报告方法
+不同的路由选择技术
+不同">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>计算机网络-IP | PA &amp; CODING</title>
+    <link rel="icon" type="image/png" href="/favicon-kali.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
+</head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon-kali.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">PA &amp; CODING</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon-kali.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">PA &amp; CODING</div>
+        <div class="logo-desc">
+            
+            一念疏忽试错起头，一念决裂是错到底
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">计算机网络-IP</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                                <span class="chip bg-color">计算机网络</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                IT学习笔记
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-04-16
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    7.5k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    28 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="网际层的-IP-协议及配套协议">网际层的 IP 协议及配套协议</h2>
+<p><img src="/static/IT/network/IP%20%E5%8D%8F%E8%AE%AE%E5%8F%8A%E9%85%8D%E5%A5%97%E5%8D%8F%E8%AE%AE.png" alt="IP 协议及配套协议"></p>
+<h2 id="网络互连">网络互连</h2>
+<p>互连在一起的网络要进行通信，会遇到许多问题需要解决，如：</p>
+<ul>
+<li>不同的寻址方案</li>
+<li>不同的最大分组长度</li>
+<li>不同的网络接入机制</li>
+<li>不同的超时控制</li>
+<li>不同的差错恢复方法</li>
+<li>不同的状态报告方法</li>
+<li>不同的路由选择技术</li>
+<li>不同的用户接入控制</li>
+<li>不同的服务（面向连接服务和无连接服务）</li>
+<li>不同的管理与控制方式</li>
+</ul>
+<p>网络互相连接起来要使用一些中间设备 ：中间设备又称为中间系统或中继(relay)系统。</p>
+<ul>
+<li>物理层中继系统：转发器(repeater)。</li>
+<li>数据链路层中继系统：网桥或桥接器(bridge)。</li>
+<li>网络层中继系统：路由器(router)。</li>
+<li>网桥和路由器的混合物：桥路器(brouter)。</li>
+<li>网络层以上的中继系统：网关(gateway)。</li>
+</ul>
+<p>网络互连使用路由器 ：当中继系统是转发器或网桥时，一般并不称之为网络互连，因为这仅仅是把一个网络扩大了，而这仍然是一个网络。 网关由于比较复杂，目前使用的较少。互联网都是指用路由器进行互连的网络。由于历史的原因，许多有关 TCP/IP 的文献将网络层使用的路由器称为网关。</p>
+<h3 id="虚拟互连网络">虚拟互连网络</h3>
+<p>所谓虚拟互连网络也就是逻辑互连网络。互连起来的各种物理网络的异构性本来是客观存在的，但利用IP协议可以使这些性能各异的网络从用户角度看起来好像是一个统一的网络。 使用 IP 协议的虚拟互连网络可简称为 IP 网。 使用虚拟互连网络的好处是：<strong>当互联网上的主机进行通信时，就好像在一个网络上通信一样，而看不见互连的各具体的网络异构细节。</strong></p>
+<p><img src="/static/IT/network/%E4%BC%A0%E9%80%81.png" alt="分组在互联网中的传送"></p>
+<p>如果我们只从网络层考虑问题，那么 IP 数据报就可以想象是在网络层中传送。</p>
+<p><img src="/static/IT/network/IP%E4%BC%A0%E9%80%81.png" alt="想象是在网络层中传送"></p>
+<hr>
+<p>把整个因特网看成为一个单一的、抽象的网络。IP地址就是给每个连接在因特网上的主机（或路由器）分配的一个<strong>全世界范围唯一的32位标识符</strong>。IP地址现在由因特网名字与号码指派公司<strong>ICANN (Internet Corporation for Assigned Names and Numbers)</strong> 进行分配  。</p>
+<h2 id="IP-地址的编址方法">IP 地址的编址方法</h2>
+<ul>
+<li><strong>分类的IP地址</strong>。这是最基本的编址方法，在 1981 年就通过了相应的标准协议。</li>
+<li><strong>子网的划分</strong>。这是对最基本的编址方法的改进，其标准[RFC 950]在 1985 年通过。</li>
+<li><strong>构成超网</strong>。这是比较新的无分类编址方法。1993 年提出后很快就得到推广应用。</li>
+</ul>
+<hr>
+<h2 id="分类-IP-地址">分类 IP 地址</h2>
+<p>每一类地址都由两个固定长度的字段组成，其中一个字段是<strong>网络号</strong> net-id，它标志主机（或路由器）所连接到的网络，而另一个字段则是<strong>主机号</strong> host-id，它标志该主机（或路由器）。 两级的 IP 地址可以记为：<br>
+IP 地址 ::= { &lt;网络号&gt;, &lt;主机号&gt;}  <em>:= 代表“定义为”</em></p>
+<h3 id="IP-地址中的网络号字段和主机号字段">IP 地址中的网络号字段和主机号字段</h3>
+<p><img src="/static/IT/network/IP%E5%8F%B7%E6%AE%B5.png" alt="IP 地址中的网络号字段和主机号字段"></p>
+<h3 id="IP-地址的使用范围">IP 地址的使用范围</h3>
+<p><img src="/static/IT/network/IP%E4%BD%BF%E7%94%A8%E8%8C%83%E5%9B%B4.png" alt="IP 地址的使用范围"></p>
+<p>**点分十进制记法 ：**机器中存放的 IP 地址是 32 位 二进制代码，每隔 8 位插入一个空格能够提高可读性，将每8位的二进制数转换为十进制数，采用点分十进制记法，则进一步提高可读性。000000000010110000001100011111 -&gt; 28.11.3.31</p>
+<h3 id="IP-地址的一些重要特点">IP 地址的一些重要特点</h3>
+<ul>
+<li>IP 地址是一种<strong>分等级的地址结构</strong>。分两个等级的好处是：</li>
+<li>地址管理机构在分配 IP 地址时只分配网络号，而剩下的主机号则由得到该网络号的单位自行分配。这样就方便了 IP 地址的管理。</li>
+<li>器仅根据目的主机所连接的网络号来转发分组（而不考虑目的主机号），这样就可以使路由表中的项目数大幅度减少，从而减小了路由表所占的存储空间。</li>
+<li>实际上IP地址是标志一个主机（或路由器）和一条链路的<strong>接口</strong>。</li>
+<li>个主机同时连接到两个网络上时，该主机就必须同时具有两个相应的IP地址，其网络号net-id 必须是不同的。这种主机称为多归属主机(multihomed host)。</li>
+<li>由器至少应当连接到两个网络（这样它才能将IP数据报从一个网络转发到另一个网络），因此<strong>一个路由器至少应当有两个不同的 IP 地址</strong>。</li>
+<li>用<strong>转发器或网桥连接起来的若干个局域网仍为一个网络</strong>，因此这些局域网都具有同样的网络号net-id。</li>
+<li>**所有分配到网络号net-id的网络都是平等的，**不管是范围很小的局域网，还是可能覆盖很大地理范围的广域网。</li>
+</ul>
+<p><strong>在同一个局域网上的主机或路由器的 IP 地址中的网络号必须是一样的</strong>。<br>
+<strong>路由器总是具有两个或两个以上的 IP 地址。路由器的每一个接口都有一个不同网络号的 IP 地址。</strong><br>
+<strong>两个路由器直接相连的接口处，可指明也可不指明 IP 地址</strong>。如指明 IP 地址，则这一段连线就构成了一种只包含一段线路的特殊“网络” 。<em>现在常不指明 IP 地址。</em></p>
+<h2 id="IP-层转发分组的流程">IP 层转发分组的流程</h2>
+<p>IP 层转发分组的流程 ：有四个 A 类网络通过三个路由器连接在一起。每一个网络上都可能有成千上万个主机。可以想像,若按目的主机号来制作路由表,则所得出的路由表就会过于庞大。但若按主机所在的网络地址来制作路由表,那么每一个路由器中的路由表就只包含 4 个项目。这样就可使路由表大大简化。<br>
+在路由表中,对每一条路由,最主要的是(<strong>目的网络地址,下一跳地址</strong>)</p>
+<p><img src="/static/IT/network/IP-%E8%B7%AF%E7%94%B1.png" alt="路由表"></p>
+<p>IP 数据报的首部中没有地方可以用来指明“下一跳路由器的 IP 地址”。<strong>当路由器收到待转发的数据报</strong>,不是将下一跳路由器的 IP 地址填入 IP 数据报,而是<strong>送交下层的网络接口软件</strong>。<strong>网络接口软件使用 ARP 负责将下一跳路由器的IP 地址转换成硬件地址,并将此硬件地址放在链路层的 MAC 帧的首部,然后根据这个硬件地址找到下一跳路由器。</strong></p>
+<h3 id="分组转发算法">分组转发算法</h3>
+<ol>
+<li>从数据报的首部提取目的主机的 IP 地址 D, <strong>得出目的网络地址为 N</strong>。</li>
+<li>若网络 N 与此路由器<strong>直接相连</strong>,则把数据报直接交付目的主机 D;否则是间接交付,执行(3)。</li>
+<li>若路由表中有目的地址为 D 的<strong>特定主机路由</strong>,则把数据报传送给路由表中所指明的下一跳路由器;否 则,执行(4)。</li>
+<li>若路由表中有<strong>到达网络 N 的路由</strong>,则把数据报传送给路由表指明的下一跳路由器;否则,执行(5)。</li>
+<li>若路由表中有一个<strong>默认路由</strong>,则把数据报传送给路由表中所指明的默认路由器;否则,执行(6)。</li>
+<li>报告转发分组<strong>出错</strong>。</li>
+</ol>
+<hr>
+<h2 id="划分子网-：从两级-IP-地址到三级-IP-地址">划分子网 ：从两级 IP 地址到三级 IP 地址</h2>
+<p>在 ARPANET 的早期,IP 地址的设计确实不够合理。IP 地址空间的利用率有时很低。给每一个物理网络分配一个网络号会使路由表变得太大因而使网络性能变坏。两级的 IP 地址不够灵活。<br>
+从 1985 年起在 IP 地址中又<strong>增加了一个“子网号字段”</strong>,使两级的 IP 地址变成为三级的 IP 地址。这种做法叫作划分子网(subnetting) 。划分子网已成为因特网的正式标准协议。</p>
+<p><strong>划分子网纯属一个单位内部的事情。单位对外仍然表现为没有划分子网的网络。</strong><br>
+<strong>从主机号借用若干个位作为子网号 subnet-id,而主机号 host-id 也就相应减少了若干个位。</strong><br>
+<strong>IP地址 ::= {&lt;网络号&gt;, &lt;子网号&gt;, &lt;主机号&gt;}</strong></p>
+<p>凡是从其他网络发送给本单位某个主机的 IP 数据报,仍然是根据 IP 数据报的目的网络号 net-id,先找到连接在本单位网络上的路由器。然后此路由器在收到 IP 数据报后,再按目的网络号net-id 和子网号 subnet-id 找到目的子网。最后就将 IP 数据报直接交付目的主机。</p>
+<p>一个未划分子网的 B 类网络145.13.0.0<br>
+<img src="/static/IT/network/%E7%BD%91%E7%BB%9C.png" alt="未划分子网"></p>
+<p>划分为三个子网后对外仍是一个网络<br>
+<img src="/static/IT/network/%E5%AD%90%E7%BD%91.png" alt="划分为三个子网"></p>
+<h3 id="子网掩码">子网掩码</h3>
+<p>从一个 IP 数据报的首部并无法判断源主机或目的主机所连接的网络是否进行了子网划分。<strong>使用子网掩码(subnet mask)可以找出IP 地址中的子网部分。</strong></p>
+<p>IP 地址的各字段和子网掩码 ：<br>
+<img src="/static/IT/network/%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81.png" alt="各字段和子网掩码"></p>
+<p>子网掩码是一个网络或一个子网的重要属性。<strong>路由器在和相邻路由器交换路由信息时,必须把自己所在网络(或子网)的子网掩码告诉相邻路由器。路由器的路由表中的每一个项目,除了要给出目的网络地址外,还必须同时给出该网络的子网掩码。若一个路由器连接在两个子网上就拥有两个网络地址和两个子网掩码。</strong></p>
+<p>已知 IP 地址是 141.14.72.24,子网掩码是255.255.192.0。试求网络地址。<br>
+<img src="/static/IT/network/IP%E9%A2%981.png" alt="试求网络地址"></p>
+<p>若子网掩码改为255.255.224.0<br>
+<img src="/static/IT/network/IP%E9%A2%982.png" alt="试求网络地址"></p>
+<p><strong>不同的子网掩码得出相同的网络地址。但不同的掩码的效果是不同的。</strong></p>
+<h3 id="使用子网掩码的分组转发过程">使用子网掩码的分组转发过程</h3>
+<p>在不划分子网的两级 IP 地址下,从 IP 地址得出网络地址是个很简单的事。但<strong>在划分子网的情况下,从 IP 地址却不能唯一地得出网络地址来,这是因为网络地址取决于那个网络所采用的子网掩码,但数据报的首部并没有提供子网掩码的信息</strong>。 因此分组转发的算法也必须做相应的改动。</p>
+<ol>
+<li>从收到的分组的首部<strong>提取目的 IP 地址 D</strong>。</li>
+<li>先用各<strong>直接相连网络的子网掩码和D逐位相“与”,看是否和相应的网络地址匹配</strong>。若匹配,则将分组直接交付。否则就是间接交付,执行(3)。</li>
+<li>若路由表中有目的地址为 D 的<strong>特定主机路由</strong>,则将分组传送给指明的下一跳路由器;否则,执行(4)。</li>
+<li>对<strong>路由表中的每一行的子网掩码和 D 逐位相“与”</strong>,若其结果与该行的目的网络地址匹配,则将分组传送给该行指明的下一跳路由器;否则,执行(5)。</li>
+<li>若路由表中有一个<strong>默认路由</strong>,则将分组传送给路由表中所指明的默认路由器;否则,执行(6)。</li>
+<li>报告转发分组<strong>出错</strong>。</li>
+</ol>
+<p>已知互联网和路由器 R1 中的路由表。主机 H1 向 H2发送分组。试讨论 R1 收到 H1 向 H2 发送的分组后查找路由表的过程。<br>
+<img src="/static/IT/network/IP%E9%A2%983.png" alt="查找路由表的过程"></p>
+<ol>
+<li>H1 <strong>首先检测目的IP地址和自己是否在同一个子网</strong> 。将目的地址与自己的子网掩码做与运算。</li>
+<li>255.255.255.128 &amp; 128.30.33.138 = 128.30.33.128 ≠ 128.30.33.0</li>
+<li>结果与本网络的网络地址不一致，所以不在一个网段。</li>
+<li>H1 必须<strong>把分组传送到路由器</strong> R1然后逐项查找路由表。</li>
+<li>与第一个路由项的子网掩码做与运算。<br>
+6. 255.255.255.128 &amp; 128.30.33.138 = 128.30.33.128 ≠ 128.30.33.0<br>
+7. 不一致，与第二个路由项的子网掩码做与运算。</li>
+<li>255.255.255.128 &amp; 128.30.33.138 = 128.30.33.128 = 128.30.33.128</li>
+<li>一致，转发接口1。</li>
+</ol>
+<hr>
+<h2 id="无分类编址">无分类编址</h2>
+<p>划分子网在一定程度上缓解了因特网在发展中遇到的困难。然而在 1992 年因特网仍然面临三个必须尽早解决的问题,这就是:B 类地址在 1992 年已分配了近一半,眼看就要在 1994 年 3 月全部分配完毕!因特网主干网上的路由表中的项目数急剧增长(从几千个增长到几万个)。<strong>整个 IPv4 的地址空间最终将全部耗尽。</strong></p>
+<h3 id="CIDR">CIDR</h3>
+<p>CIDR 消除了传统的 A 类、B 类和 C 类地址以及划分子网的概念,因而可以更加有效地分配 IPv4 的地址空间。CIDR 使用各种长度的 “ <strong>网络前缀</strong>”(network-prefix)来代替分类地址中的网络号和子网号。<strong>IP 地址从三级编址(使用子网掩码)又回到了两级编址。</strong></p>
+<p>无分类的两级编址的记法是:<br>
+<strong>IP地址 ::= {&lt;网络前缀&gt;, &lt;主机号&gt;}</strong></p>
+<p>CIDR 还使用“斜线记法”(slash notation),它又称为CIDR记法,即在 IP 地址后面加上一个斜线“/”,然后写上网络前缀所占的位数(这个数值对应于三级编址中子网掩码中 1 的个数)。<strong>CIDR 把网络前缀都相同的连续的 IP 地址组成“CIDR 地址块”。</strong><br>
+128.14.32.0/20 表示的地址块共有 212 个地址(因为斜线后面的 20 是网络前缀的位数,所以这个地址的主机号是 12 位)。这个地址块的起始地址是 128.14.32.0。在不需要指出地址块的起始地址时,也可将这样的地址块简称为“/20 地址块”。128.14.32.0/20 地址块的最小地址:128.14.32.0，最大地址:128.14.47.255。<strong>全 0 和全 1 的主机号地址一般不使用。</strong></p>
+<p><em>128.14.32.0/20所有地址的 20 位前缀都是一样的</em><br>
+<img src="/static/IT/network/IP-%E6%97%A0%E5%88%86%E7%B1%BB.png" alt="所有地址的 20 位前缀都是一样的"></p>
+<h3 id="路由聚合-route-aggregation">路由聚合(route aggregation)</h3>
+<p>一个 CIDR 地址块可以表示很多地址,这种地址的聚合常称为路由聚合,它使得路由表中的一个项目可以表示很多个(例如上千个)原来传统分类地址的路由。<strong>路由聚合也称为构成超网</strong>(supernetting)。CIDR 虽然不使用子网了,但仍然使用“掩码”这一名词(但不叫子网掩码)。对于 /20 地址块,它的掩码是 20 个连续的 1。<strong>斜线记法中的数字就是掩码中1的个数。</strong></p>
+<ul>
+<li>10.0.0.0/10 隐含地指出 IP 地址 10.0.0.0 的掩码是 255.192.0.0。</li>
+<li>10.0.0.0/10 可简写为 10/10,也就是<strong>把点分十进制中低位连续的 0 省略</strong>。</li>
+<li>*CIDR的其他表示方法：<em>网络前缀的后面加一个星号 * 的表示方法如 00001010 00</em>,在星号 * 之前是网络前缀,而星号 * 表示 IP 地址中的主机号,可以是任意值。</li>
+</ul>
+<h3 id="构成超网">构成超网</h3>
+<p>前缀长度不超过 23 位的 CIDR 地址块都包含了多个 C 类地址。这些 C 类地址合起来就构成了超网。<strong>CIDR 地址块中的地址数一定是 2 的整数次幂</strong>。网络前缀越短,其地址块所包含的地址数就越多。</p>
+<p><img src="/static/IT/network/CIDR.png" alt="CIDR 地址块"></p>
+<p>这个 ISP 共有 64 个 C 类网络。如果不采用 CIDR 技术,则在与该 ISP 的路由器交换路由信息的每一个路由器的路由表中,就需要有 64 个项目。但采用地址聚合后,只需用路由聚合后的 1 个项目 206.0.64.0/18 就能找到该 ISP。</p>
+<h3 id="最长前缀匹配">最长前缀匹配</h3>
+<p>使用 CIDR 时,路由表中的每个项目由“网络前缀”和“下一跳地址”组成。<strong>在查找路由表时可能会得到不止一个匹配结果。应当从匹配结果中选择具有最长网络前缀的路由</strong>:最长前缀匹配(longest-prefix matching)。<strong>网络前缀越长,其地址块就越小,因而路由就越具体</strong>(more specific) 。最长前缀匹配又称为<strong>最长匹配或最佳匹配</strong>。</p>
+<p>例如：<br>
+收到的分组的目的地址 D = 206.0.71.128<br>
+路由表中的项目:206.0.68.0/22(大学)、206.0.71.128/25 (四系)<br>
+D AND (11111111 11111111 11111100 00000000) = 206.0.68.0/22 匹配<br>
+D AND (11111111 11111111 11111111 10000000) = 206.0.71.128/25 匹配<br>
+选择两个匹配的地址中更具体的一个,即选择最长前缀的地址。</p>
+<h3 id="使用二叉线索查找路由表">使用二叉线索查找路由表</h3>
+<p>使用二叉线索查找路由表 :当路由表的项目数很大时,怎样设法减小路由表的查找时间就成为一个非常重要的问题。为了进行更加有效的查找**,通常是将无分类编址的路由表存放在一种层次的数据结构中,然后自上而下地按层次进行查找。这里最常用的就是二叉线索**(binarytrie)。 IP 地址中从左到右的比特值决定了从根结点逐层向下层延伸的路径,而二叉线索中的各个路径就代表路由表中存放的各个地址。为了提高二叉线索的查找速度,广泛使用了各种<strong>压缩技术</strong>。</p>
+<p><em>用 5 个前缀构成的二叉线索</em><br>
+<img src="/static/IT/network/CIDR%E9%A2%981.png" alt="二叉线索"></p>
+<hr>
+<h2 id="IP-地址与硬件地址">IP 地址与硬件地址</h2>
+<p><img src="/static/IT/network/IP%E6%8A%A5%E6%96%87.png" alt="IP 地址与硬件地址"></p>
+<p><img src="/static/IT/network/IP-%E8%B7%AF%E7%94%B1%E8%B7%AF%E5%BE%84.png" alt="通信路径"></p>
+<p><img src="/static/IT/network/IP-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%8A%A8.png" alt="数据流动"></p>
+<ul>
+<li><strong>在 IP 层抽象的互联网上只能看到 IP 数据报</strong>。图中的  IP1→IP2  表示从源地址 IP1 到目的地址 IP2 。<strong>两个路由器的 IP 地址并不出现在 IP 数据报的首部中</strong>。</li>
+<li><strong>路由器只根据目的站的 IP 地址的网络号进行路由选择</strong></li>
+<li><strong>在具体的物理网络的链路层只能看见 MAC 帧而看不见 IP 数据报</strong></li>
+<li><strong>IP层抽象的互联网屏蔽了下层很复杂的细节</strong>。在抽象的网络层上讨论问题，就能够使用统一的、抽象的 IP 地址研究主机和主机或主机和路由器之间的通信</li>
+</ul>
+<hr>
+<h2 id="IP-数据报的格式">IP 数据报的格式</h2>
+<p>一个 IP 数据报由<strong>首部和数据</strong>两部分组成。首部的前一部分是<strong>固定长度,共 20 字节</strong>,是所有 IP 数据报必须具有的。首部固定部分后面是一些<strong>可选字段</strong>,它们的长度可变。</p>
+<p><img src="/static/IT/network/IP-%E6%95%B0%E6%8D%AE%E6%8A%A5.png" alt="IP 格式"></p>
+<ul>
+<li>版本——<strong>占 4 位</strong>,指 IP 协议的版本目前的 IP 协议版本号为 4 (即 IPv4)</li>
+<li>首部长度——<strong>占 4 位</strong>,可表示的最大数值是 15 个单位(一个单位为 4 字节)因此 <strong>IP 的首部长度的最大值是 60 字节。</strong></li>
+<li>区分服务——<strong>占 8 位</strong>,用来获得更好的服务在旧标准中叫做服务类型,但实际上<strong>一直未被使用过</strong>。1998 年这个字段改名为区分服务。只有在使用区分服务(DiffServ)时,这个字段才起作用。在一般的情况下都不使用这个字段。</li>
+<li>总长度——<strong>占 16 位</strong>,指<strong>首部和数据之和的长度</strong>,单位为字节,因此<strong>数据报的最大长度为 65535 字节</strong>。总长度必须不超过最大传送单元 <strong>MTU</strong>。</li>
+<li>标识(identification)—— <strong>占 16 位</strong>,它是一个<strong>计数器</strong>,用来产生数据报的标识。<strong>每产生一个数据报，标识就加一</strong>，因为是无链接服务，数据报不存在按序接受的问题。当必须对<strong>IP数据报分片</strong>时，可将标识复制到其他数据报片中，用于回复数据报。</li>
+<li>标志(flag) ——<strong>占 3 位</strong>,<strong>目前只有前两位有意义</strong>。标志字段的最低位是 MF (More Fragment)。<strong>MF = 1 表示后面“还有分片”。MF = 0 表示最后一个分片</strong>。标志字段中间的一位是 DF (Don’t Fragment) 。只有当 <strong>DF = 0 时才允许分片。</strong></li>
+<li>片偏移——<strong>占 13 位</strong>，指出<strong>较长的分组在分片后某片在原分组中的相对位置</strong>。<strong>片偏移以 8 个字节为偏移单位</strong>，也就是说每个分片的长度一定是8字节(64位)的整数倍。</li>
+<li>生存时间——<strong>占 8 位</strong>，记为 TTL (Time To Live)<strong>数据报在网络中可通过的路由器数的最大值</strong>。</li>
+<li>协议——<strong>占 8 位</strong>，字段指出此数据报携带的数据使用何种协议，以便目的主机的 <strong>IP 层将数据部分上交给哪个处理过程</strong>（如TCP/UDP/ICMP/IGMP/OSPF等）。</li>
+<li>首部检验和——<strong>占 16 位</strong>，<strong>字段只检验数据报的首部不检验数据部分</strong>。这里不采用 CRC 检验码而采用简单的计算方法。</li>
+<li>源地址和目的地址—— <strong>各占 4 字节</strong></li>
+<li><strong>可选字段必须为 4 字节的倍数，否则就要进行填充</strong>。该选项很少被使用。<strong>IP 首部最大长度为 60 字节，而固定长度为 20 字节，所以该字段最大长度为 40 字节。</strong></li>
+</ul>
+<hr>
+<h2 id="IP-数据报分片">IP 数据报分片</h2>
+<p><img src="/static/IT/network/IP-%E5%88%86%E7%89%87.png" alt="IP 数据报分片"></p>
+<p><strong>首部检验和</strong> ：不采用 CRC 检验码而采用简单的计算方法，<strong>只检验数据报的首部。</strong></p>
+<p><img src="/static/IT/network/IP-%E6%A3%80%E9%AA%8C%E5%92%8C.png" alt="检验和"></p>
+<p><strong>IP 数据报首部的可变部分</strong><br>
+IP 首部的可变部分就是一个选项字段,用来支持<strong>排错、测量以及安全等措施,内容很丰富</strong>。选项字段的长度可变,从 1 个字节到 40 个字节不等,取决于所选择的项目。增加首部的可变部分是为了增加 IP 数据报的功能,但这同时也使得 IP 数据报的首部长度成为可变的。这就<strong>增加了每一个路由器处理数据报的开销</strong>。<strong>实际上这些选项很少被使用。</strong></p>
+<hr>
+<h2 id="IP的编址问题">IP的编址问题</h2>
+<h3 id="子网掩码和基本分类的一些基本问题">子网掩码和基本分类的一些基本问题</h3>
+<p>例 1.1：子网掩码和基本分类的一些基本问题。</p>
+<ul>
+<li>子网掩码为255.255.255.0代表什么意思？（<strong>有三种含义</strong>）
+<ul>
+<li>其一是一个<strong>A类网</strong>的子网掩码，对于A类网络的IP地址，前8位表示网络号，后24位示主机号，使用子网掩码255.255.255.0表示前8位为网络号，中间16位用于子网段的划分，最后8位为主机号。</li>
+<li>第二种情况为一个<strong>B类网</strong>，对于B类网络的IP地址，前16位表示网络号，后16位表示主机号，使用子网掩码255.255.255.0表示前16位为网络号，中间8位用于子网段的划分，最后8位为主机号。</li>
+<li>第三种情况为一个<strong>C类网</strong>，这个子网掩码为C类网的默认子网掩码。</li>
+</ul>
+</li>
+<li>一网络的现在掩码为255.255.255.248，问该网络能够连接多少个主机？
+<ul>
+<li>255.255.255.248即11111111.11111111.11111111.11111000.</li>
+<li>每一个子网上的主机为(2^3)=6 台</li>
+<li>掩码位数29，该网络能够连接8个主机，扣除全1和全0后为6台。</li>
+</ul>
+</li>
+<li>一A类网络和一B网络的子网号subnet-id分别为16个1和8个1，问这两个子网掩码有何不同？
+<ul>
+<li>A类网络：11111111   11111111   11111111   00000000</li>
+<li>给定子网号（16位“1”）则子网掩码为255.255.255.0</li>
+<li>B类网络：11111111   11111111   11111111   00000000</li>
+<li>给定子网号（8位“1”）则子网掩码为255.255.255.0，但子网数目不同</li>
+</ul>
+</li>
+<li>一个B类地址的子网掩码是255.255.240.0。试问在其中每一个子网上的主机数最多是多少？
+<ul>
+<li>（240）<sub>10</sub>=（128+64+32+16）<sub>10</sub>=（11110000）<sub>2</sub></li>
+<li>Host-id的位数为4+8=12，因此，最大主机数为：2^12-2=4096-2=4094</li>
+<li>11111111.11111111.11110000.00000000    主机数2^12-2</li>
+</ul>
+</li>
+<li>一A类网络的子网掩码为<strong>255.255.0.255；它是否为一个有效的子网掩码？</strong>
+<ul>
+<li><strong>是</strong></li>
+<li>10111111   11111111 00000000 11111111</li>
+</ul>
+</li>
+<li>某个IP地址的十六进制表示C2.2F.14.81，试将其转化为点分十进制的形式。这个地址是哪一类IP地址？
+<ul>
+<li>C2  2F 14  81 – 194.47.20.129</li>
+<li>C2  2F 14  81 – 11000010.00101111.00010100.10000001</li>
+<li>C类地址</li>
+</ul>
+</li>
+<li>C类网络使用子网掩码有无实际意义？为什么？
+<ul>
+<li>有实际意义.</li>
+<li>C类子网IP地址的32位中,前24位用于确定网络号,后8位用于确定主机号.</li>
+<li>如果划分子网,可以选择后8位中的高位,这样做可以进一步划分网络,并且不增加路由表的内容,但是代价是主机数相信减少.</li>
+</ul>
+</li>
+</ul>
+<h3 id="子网划分的实际问题">子网划分的实际问题</h3>
+<p>例1.2 : 子网划分的实际问题。<br>
+单位分配到一个B类IP地址，其net-id为129.250.0.0.该单位有4000台机器，分布在16个不同的地点。如选用子网掩码为255.255.255.0，试给每一个地点分配一个子网掩码号，并算出每个地点主机号码的最小值和最大值?</p>
+<p>4000/16=250，平均每个地点250台机器。如选255.255.255.0为掩码，则每个网络所连主机数=2<sup>8</sup>-2=254&gt;250，共有子网数=2<sup>8</sup>-2=254&gt;16，能满足实际需求。<br>
+可给每个地点分配如下子网号码 :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">地点</th>
+<th style="text-align:left">子网号（subnet-id）</th>
+<th style="text-align:left">子网网络号</th>
+<th style="text-align:center">主机IP的最小值和最大值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">00000001</td>
+<td style="text-align:left">129.250.1.0</td>
+<td style="text-align:center">129.250.1.1—129.250.1.254</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">00000010</td>
+<td style="text-align:left">129.250.2.0</td>
+<td style="text-align:center">129.250.2.1—129.250.2.254</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">00000011</td>
+<td style="text-align:left">129.250.3.0</td>
+<td style="text-align:center">129.250.3.1—129.250.3.254</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">00000100</td>
+<td style="text-align:left">129.250.4.0</td>
+<td style="text-align:center">129.250.4.1—129.250.4.254</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">00000101</td>
+<td style="text-align:left">129.250.5.0</td>
+<td style="text-align:center">129.250.5.1—129.250.5.254</td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left">00000110</td>
+<td style="text-align:left">129.250.6.0</td>
+<td style="text-align:center">129.250.6.1—129.250.6.254</td>
+</tr>
+<tr>
+<td style="text-align:left">7</td>
+<td style="text-align:left">00000111</td>
+<td style="text-align:left">129.250.7.0</td>
+<td style="text-align:center">129.250.7.1—129.250.7.254</td>
+</tr>
+<tr>
+<td style="text-align:left">8</td>
+<td style="text-align:left">00001000</td>
+<td style="text-align:left">129.250.8.0</td>
+<td style="text-align:center">129.250.8.1—129.250.8.254</td>
+</tr>
+<tr>
+<td style="text-align:left">9</td>
+<td style="text-align:left">00001001</td>
+<td style="text-align:left">129.250.9.0</td>
+<td style="text-align:center">129.250.9.1—129.250.9.254</td>
+</tr>
+<tr>
+<td style="text-align:left">10</td>
+<td style="text-align:left">00001010</td>
+<td style="text-align:left">129.250.10.0</td>
+<td style="text-align:center">129.250.10.1—129.250.10.254</td>
+</tr>
+<tr>
+<td style="text-align:left">11</td>
+<td style="text-align:left">00001011</td>
+<td style="text-align:left">129.250.11.0</td>
+<td style="text-align:center">129.250.11.1—129.250.11.254</td>
+</tr>
+<tr>
+<td style="text-align:left">12</td>
+<td style="text-align:left">00001100</td>
+<td style="text-align:left">129.250.12.0</td>
+<td style="text-align:center">129.250.12.1—129.250.12.254</td>
+</tr>
+<tr>
+<td style="text-align:left">13</td>
+<td style="text-align:left">00001101</td>
+<td style="text-align:left">129.250.13.0</td>
+<td style="text-align:center">129.250.13.1—129.250.13.254</td>
+</tr>
+<tr>
+<td style="text-align:left">14</td>
+<td style="text-align:left">00001110</td>
+<td style="text-align:left">129.250.14.0</td>
+<td style="text-align:center">129.250.14.1—129.250.14.254</td>
+</tr>
+<tr>
+<td style="text-align:left">15</td>
+<td style="text-align:left">00001111</td>
+<td style="text-align:left">129.250.15.0</td>
+<td style="text-align:center">129.250.15.1—129.250.15.254</td>
+</tr>
+<tr>
+<td style="text-align:left">16</td>
+<td style="text-align:left">00010000</td>
+<td style="text-align:left">129.250.16.0</td>
+<td style="text-align:center">129.250.16.1—129.250.16.254</td>
+</tr>
+</tbody>
+</table>
+<h3 id="哪些子网掩码是不推荐使用的">哪些子网掩码是不推荐使用的</h3>
+<p>例 1.3 :<br>
+以下有4个子网掩码。哪些是不推荐使用的？为什么？<br>
+（1）176.0.0.0，（2）96.0.0.0，（3）127.192.0.0，（4）255.128.0.0。<br>
+只有（4）是连续的1和连续的0的掩码，是推荐使用的。</p>
+<h3 id="无分类编址-2">无分类编址</h3>
+<p>例 ：无分类编址<br>
+有如下的4个/24地址块，试进行最大可能性的聚会。</p>
+<ul>
+<li>212.56.132.0/24</li>
+<li>212.56.133.0/24</li>
+<li>212.56.134.0/24</li>
+<li>212.56.135.0/24</li>
+</ul>
+<p>212=（11010100）<sub>2</sub>，56=（00111000）<sub>2</sub><br>
+132=（10000100）<sub>2</sub><br>
+133=（10000101）<sub>2</sub><br>
+134=（10000110）<sub>2</sub><br>
+135=（10000111）<sub>2</sub></p>
+<p>所以共同的前缀有22位，即11010100,00111000,100001，聚合的CIDR地址块是: 212.56.132.0/22</p>
+<h3 id="哪一个地址块包含了另一个地址">哪一个地址块包含了另一个地址</h3>
+<p>例 1.4 :<br>
+有两个CIDR地址块208.128/11和208.130.28/22。是否有哪一个地址块包含了另一个地址？如果有，请指出，并说明理由。</p>
+<ul>
+<li>208.128/11的前缀为：11010000 100</li>
+<li>208.130.28/22的前缀为：11010000 10000010 000101</li>
+</ul>
+<p>208.130.28/22的前11位与208.128/11的前缀是一致的，所以208.128/11地址块包含了208.130.28/22这一地址块。</p>
+<hr>
+<h2 id="分组转发的问题">分组转发的问题</h2>
+<h3 id="子网掩码的分组转发">子网掩码的分组转发</h3>
+<p>例 2.1：子网掩码的分组转发<br>
+设某路由器建立了如下路由表：</p>
+<table>
+<thead>
+<tr>
+<th>目的网络</th>
+<th style="text-align:left">子网掩码</th>
+<th style="text-align:center">下一跳</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>128.96.39.0</td>
+<td style="text-align:left">255.255.255.128</td>
+<td style="text-align:center">接口m0</td>
+</tr>
+<tr>
+<td>128.96.39.128</td>
+<td style="text-align:left">255.255.255.128</td>
+<td style="text-align:center">接口m1</td>
+</tr>
+<tr>
+<td>128.96.40.0</td>
+<td style="text-align:left">255.255.255.128</td>
+<td style="text-align:center">R2</td>
+</tr>
+<tr>
+<td>192.4.153.0</td>
+<td style="text-align:left">255.255.255.192</td>
+<td style="text-align:center">R3</td>
+</tr>
+<tr>
+<td>*（默认）</td>
+<td style="text-align:left">——</td>
+<td style="text-align:center">R4</td>
+</tr>
+<tr>
+<td>现共收到5个分组，其目的地址分别为：</td>
+<td style="text-align:left"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>128.96.39.10</li>
+<li>128.96.40.12</li>
+<li>128.96.40.151</li>
+<li>192.153.17</li>
+<li>192.4.153.90</li>
+</ol>
+<p>试分别计算下一跳。</p>
+<ol>
+<li>分组的目的站IP地址为：128.96.39.10。</li>
+<li>先与子网掩码255.255.255.128相与，得128.96.39.0，</li>
+<li>可见该分组经接口0转发。</li>
+<li>分组的目的IP地址为：128.96.40.12。</li>
+<li>与子网掩码255.255.255.128相与得128.96.40.0，不等于128.96.39.0。</li>
+<li>与子网掩码255.255.255.128相与得128.96.40.0，</li>
+<li>经查路由表可知，该项分组经R2转发。</li>
+<li>分组的目的IP地址为：128.96.40.151</li>
+<li>与子网掩码255.255.255.128相与后得128.96.40.128，</li>
+<li>与子网掩码255.255.255.192相与后得128.96.40.128，</li>
+<li>经查路由表知，该分组转发选择默认路由，经R4转发。</li>
+<li>分组的目的IP地址为：192.4.153.17。</li>
+<li>与子网掩码255.255.255.128相与后得192.4.153.0。</li>
+<li>与子网掩码255.255.255.192相与后得192.4.153.0，</li>
+<li>经查路由表知，该分组经R3转发。</li>
+<li>分组的目的IP地址为：192.4.153.90，</li>
+<li>与子网掩码255.255.255.128相与后得192.4.153.0。</li>
+<li>与子网掩码255.255.255.192相与后得192.4.153.64，</li>
+<li>经查路由表知，该分组转发选择默认路由，经R4转发。</li>
+</ol>
+<h3 id="无分类编址的分组转发">无分类编址的分组转发</h3>
+<p>例 2.2 ：无分类编址的分组转发<br>
+已知路由器R1的路由表如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">地址掩码</th>
+<th style="text-align:left">目的网络地址</th>
+<th style="text-align:left">下一跳地址</th>
+<th style="text-align:center">路由器接口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">/26</td>
+<td style="text-align:left">140.5.12.64</td>
+<td style="text-align:left">180.15.2.5</td>
+<td style="text-align:center">m2</td>
+</tr>
+<tr>
+<td style="text-align:left">/24</td>
+<td style="text-align:left">130.5.8.0</td>
+<td style="text-align:left">190.16.6.2</td>
+<td style="text-align:center">m1</td>
+</tr>
+<tr>
+<td style="text-align:left">/16</td>
+<td style="text-align:left">110.71.0.0</td>
+<td style="text-align:left">……</td>
+<td style="text-align:center">m0</td>
+</tr>
+<tr>
+<td style="text-align:left">/16</td>
+<td style="text-align:left">180.15.0.0</td>
+<td style="text-align:left">……</td>
+<td style="text-align:center">m2</td>
+</tr>
+<tr>
+<td style="text-align:left">/16</td>
+<td style="text-align:left">196.16.0.0</td>
+<td style="text-align:left">……</td>
+<td style="text-align:center">m1</td>
+</tr>
+<tr>
+<td style="text-align:left">默认</td>
+<td style="text-align:left">默认</td>
+<td style="text-align:left">110.71.4.5</td>
+<td style="text-align:center">m0</td>
+</tr>
+</tbody>
+</table>
+<p>试画出个网络和必要的路由器的连接拓扑，标注出必要的IP地址和接口。对不能确定的情应该指明。<br>
+<img src="/static/IT/network/IP-%E9%A2%98.jpg" alt="答案"></p>
+<hr>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">钱不寒</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://jxch.github.io/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ip/">https://jxch.github.io/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ip/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">钱不寒</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                                    <span class="chip bg-color">计算机网络</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-arp-rarp/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="计算机网络-ARP/RARP">
+                        
+                        <span class="card-title">计算机网络-ARP/RARP</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">计算机网络</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-rip/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="计算机网络-RIP">
+                        
+                        <span class="card-title">计算机网络-RIP</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">计算机网络</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
+            <a href="/about" target="_blank">钱不寒</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">180.2k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/jxch" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:qianbuhan@proton.me" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://www.facebook.com/profile.php?id=100073531534496" class="tooltipped" target="_blank" data-tooltip="关注我的Facebook: https://www.facebook.com/profile.php?id=100073531534496" data-position="top" data-delay="50">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+
+
+
+    <a href="https://twitter.com/chengbushang" class="tooltipped" target="_blank" data-tooltip="关注我的Twitter: https://twitter.com/chengbushang" data-position="top" data-delay="50">
+        <i class="fab fa-twitter"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2455930800" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2455930800" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+    <a href="https://weibo.com/u/7558713016" class="tooltipped" target="_blank" data-tooltip="关注我的微博: https://weibo.com/u/7558713016" data-position="top" data-delay="50">
+        <i class="fab fa-weibo"></i>
+    </a>
+
+
+
+    <a href="https://www.zhihu.com/people/qianbuhan" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/qianbuhan" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          if (window.mermaid) {
+            mermaid.initialize({theme: 'forest'});
+          }
+        </script>
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
