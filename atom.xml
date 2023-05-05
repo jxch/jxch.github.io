@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-05-05T05:36:04.917Z</updated>
+  <updated>2023-05-05T06:17:47.382Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,41 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HTML-特殊字符编码对照表</title>
+    <link href="https://jxch.github.io/2023/05/05/coding/html-te-shu-zi-fu-bian-ma-dui-zhao-biao/"/>
+    <id>https://jxch.github.io/2023/05/05/coding/html-te-shu-zi-fu-bian-ma-dui-zhao-biao/</id>
+    <published>2023-05-05T05:57:12.000Z</published>
+    <updated>2023-05-05T06:17:47.382Z</updated>
+    
+    <content type="html"><![CDATA[<table><thead><tr><th>特殊符号</th><th>命名实体</th><th>十进制编码</th><th>特殊符号</th><th>命名实体</th><th>十进制编码</th><th>特殊符号</th><th>命名实体</th><th>十进制编码</th></tr></thead><tbody><tr><td>&amp;#913</td><td>&amp;Alpha;</td><td>&amp;#913;</td><td>Β</td><td>&amp;Beta;</td><td>&amp;#914;</td><td>Γ</td><td>&amp;Gamma;</td><td>&amp;#915;</td></tr><tr><td>Δ</td><td>&amp;Delta;</td><td>&amp;#916;</td><td>Ε</td><td>&amp;Epsilon;</td><td>&amp;#917;</td><td>Ζ</td><td>&amp;Zeta;</td><td>&amp;#918;</td></tr><tr><td>Η</td><td>&amp;Eta;</td><td>&amp;#919;</td><td>Θ</td><td>&amp;Theta;</td><td>&amp;#920;</td><td>Ι</td><td>&amp;Iota;</td><td>&amp;#921;</td></tr><tr><td>Κ</td><td>&amp;Kappa;</td><td>&amp;#922;</td><td>Λ</td><td>&amp;Lambda;</td><td>&amp;#923;</td><td>Μ</td><td>&amp;Mu;</td><td>&amp;#924;</td></tr><tr><td>Ν</td><td>&amp;Nu;</td><td>&amp;#925;</td><td>Ξ</td><td>&amp;Xi;</td><td>&amp;#926;</td><td>Ο</td><td>&amp;Omicron;</td><td>&amp;#927;</td></tr><tr><td>Π</td><td>&amp;Pi;</td><td>&amp;#928;</td><td>Ρ</td><td>&amp;Rho;</td><td>&amp;#929;</td><td>Σ</td><td>&amp;Sigma;</td><td>&amp;#931;</td></tr><tr><td>Τ</td><td>&amp;Tau;</td><td>&amp;#932;</td><td>Υ</td><td>&amp;Upsilon;</td><td>&amp;#933;</td><td>Φ</td><td>&amp;Phi;</td><td>&amp;#934;</td></tr><tr><td>Χ</td><td>&amp;Chi;</td><td>&amp;#935;</td><td>Ψ</td><td>&amp;Psi;</td><td>&amp;#936;</td><td>Ω</td><td>&amp;Omega;</td><td>&amp;#937;</td></tr><tr><td>α</td><td>&amp;alpha;</td><td>&amp;#945;</td><td>β</td><td>&amp;beta;</td><td>&amp;#946;</td><td>γ</td><td>&amp;gamma;</td><td>&amp;#947;</td></tr><tr><td>δ</td><td>&amp;delta;</td><td>&amp;#948;</td><td>ε</td><td>&amp;epsilon;</td><td>&amp;#949;</td><td>ζ</td><td>&amp;zeta;</td><td>&amp;#950;</td></tr><tr><td>η</td><td>&amp;eta;</td><td>&amp;#951;</td><td>θ</td><td>&amp;theta;</td><td>&amp;#952;</td><td>ι</td><td>&amp;iota;</td><td>&amp;#953;</td></tr><tr><td>κ</td><td>&amp;kappa;</td><td>&amp;#954;</td><td>λ</td><td>&amp;lambda;</td><td>&amp;#955;</td><td>μ</td><td>&amp;mu;</td><td>&amp;#956;</td></tr><tr><td>ν</td><td>&amp;nu;</td><td>&amp;#957;</td><td>ξ</td><td>&amp;xi;</td><td>&amp;#958;</td><td>ο</td><td>&amp;omicron;</td><td>&amp;#959;</td></tr><tr><td>π</td><td>&amp;pi;</td><td>&amp;#960;</td><td>ρ</td><td>&amp;rho;</td><td>&amp;#961;</td><td>ς</td><td>&amp;sigmaf;</td><td>&amp;#962;</td></tr><tr><td>σ</td><td>&amp;sigma;</td><td>&amp;#963;</td><td>τ</td><td>&amp;tau;</td><td>&amp;#964;</td><td>υ</td><td>&amp;upsilon;</td><td>&amp;#965;</td></tr><tr><td>φ</td><td>&amp;phi;</td><td>&amp;#966;</td><td>χ</td><td>&amp;chi;</td><td>&amp;#967;</td><td>ψ</td><td>&amp;psi;</td><td>&amp;#968;</td></tr><tr><td>ω</td><td>&amp;omega;</td><td>&amp;#969;</td><td>ϑ</td><td>&amp;thetasym;</td><td>&amp;#977;</td><td>ϒ</td><td>&amp;upsih;</td><td>&amp;#978;</td></tr><tr><td>ϖ</td><td>&amp;piv;</td><td>&amp;#982;</td><td>•</td><td>&amp;bull;</td><td>&amp;#8226;</td><td>…</td><td>&amp;hellip;</td><td>&amp;#8230;</td></tr><tr><td>′</td><td>&amp;prime;</td><td>&amp;#8242;</td><td>″</td><td>&amp;Prime;</td><td>&amp;#8243;</td><td>‾</td><td>&amp;oline;</td><td>&amp;#8254;</td></tr><tr><td>⁄</td><td>&amp;frasl;</td><td>&amp;#8260;</td><td>℘</td><td>&amp;weierp;</td><td>&amp;#8472;</td><td>ℑ</td><td>&amp;image;</td><td>&amp;#8465;</td></tr><tr><td>ℜ</td><td>&amp;real;</td><td>&amp;#8476;</td><td>™</td><td>&amp;trade;</td><td>&amp;#8482;</td><td>ℵ</td><td>&amp;alefsym;</td><td>&amp;#8501;</td></tr><tr><td>←</td><td>&amp;larr;</td><td>&amp;#8592;</td><td>↑</td><td>&amp;uarr;</td><td>&amp;#8593;</td><td>→</td><td>&amp;rarr;</td><td>&amp;#8594;</td></tr><tr><td>↓</td><td>&amp;darr;</td><td>&amp;#8595;</td><td>↔</td><td>&amp;harr;</td><td>&amp;#8596;</td><td>↵</td><td>&amp;crarr;</td><td>&amp;#8629;</td></tr><tr><td>⇐</td><td>&amp;lArr;</td><td>&amp;#8656;</td><td>⇑</td><td>&amp;uArr;</td><td>&amp;#8657;</td><td>⇒</td><td>&amp;rArr;</td><td>&amp;#8658;</td></tr><tr><td>⇓</td><td>&amp;dArr;</td><td>&amp;#8659;</td><td>⇔</td><td>&amp;hArr;</td><td>&amp;#8660;</td><td>∀</td><td>&amp;forall;</td><td>&amp;#8704;</td></tr><tr><td>∂</td><td>&amp;part;</td><td>&amp;#8706;</td><td>∃</td><td>&amp;exist;</td><td>&amp;#8707;</td><td>∅</td><td>&amp;empty;</td><td>&amp;#8709;</td></tr><tr><td>∇</td><td>&amp;nabla;</td><td>&amp;#8711;</td><td>∈</td><td>&amp;isin;</td><td>&amp;#8712;</td><td>∉</td><td>&amp;notin;</td><td>&amp;#8713;</td></tr><tr><td>∋</td><td>&amp;ni;</td><td>&amp;#8715;</td><td>∏</td><td>&amp;prod;</td><td>&amp;#8719;</td><td>∑</td><td>&amp;sum;</td><td>&amp;#8722;</td></tr><tr><td>−</td><td>&amp;minus;</td><td>&amp;#8722;</td><td>∗</td><td>&amp;lowast;</td><td>&amp;#8727;</td><td>√</td><td>&amp;radic;</td><td>&amp;#8730;</td></tr><tr><td>∝</td><td>&amp;prop;</td><td>&amp;#8733;</td><td>∞</td><td>&amp;infin;</td><td>&amp;#8734;</td><td>∠</td><td>&amp;ang;</td><td>&amp;#8736;</td></tr><tr><td>∧</td><td>&amp;and;</td><td>&amp;#8869;</td><td>∨</td><td>&amp;or;</td><td>&amp;#8870;</td><td>∩</td><td>&amp;cap;</td><td>&amp;#8745;</td></tr><tr><td>∪</td><td>&amp;cup;</td><td>&amp;#8746;</td><td>∫</td><td>&amp;int;</td><td>&amp;#8747;</td><td>∴</td><td>&amp;there4;</td><td>&amp;#8756;</td></tr><tr><td>∼</td><td>&amp;sim;</td><td>&amp;#8764;</td><td>≅</td><td>&amp;cong;</td><td>&amp;#8773;</td><td>≈</td><td>&amp;asymp;</td><td>&amp;#8773;</td></tr><tr><td>≠</td><td>&amp;ne;</td><td>&amp;#8800;</td><td>≡</td><td>&amp;equiv;</td><td>&amp;#8801;</td><td>≤</td><td>&amp;le;</td><td>&amp;#8804;</td></tr><tr><td>≥</td><td>&amp;ge;</td><td>&amp;#8805;</td><td>⊂</td><td>&amp;sub;</td><td>&amp;#8834;</td><td>⊃</td><td>&amp;sup;</td><td>&amp;#8835;</td></tr><tr><td>⊄</td><td>&amp;nsub;</td><td>&amp;#8836;</td><td>⊆</td><td>&amp;sube;</td><td>&amp;#8838;</td><td>⊇</td><td>&amp;supe;</td><td>&amp;#8839;</td></tr><tr><td>⊕</td><td>&amp;oplus;</td><td>&amp;#8853;</td><td>⊗</td><td>&amp;otimes;</td><td>&amp;#8855;</td><td>⊥</td><td>&amp;perp;</td><td>&amp;#8869;</td></tr><tr><td>⋅</td><td>&amp;sdot;</td><td>&amp;#8901;</td><td>⌈</td><td>&amp;lceil;</td><td>&amp;#8968;</td><td>⌉</td><td>&amp;rceil;</td><td>&amp;#8969;</td></tr><tr><td>⌊</td><td>&amp;lfloor;</td><td>&amp;#8970;</td><td>⌋</td><td>&amp;rfloor;</td><td>&amp;#8971;</td><td>◊</td><td>&amp;loz;</td><td>&amp;#9674;</td></tr><tr><td>♠</td><td>&amp;spades;</td><td>&amp;#9824;</td><td>♣</td><td>&amp;clubs;</td><td>&amp;#9827;</td><td>♥</td><td>&amp;hearts;</td><td>&amp;#9829;</td></tr><tr><td>♦</td><td>&amp;diams;</td><td>&amp;#9830;</td><td></td><td>&amp;nbsp;</td><td>&amp;#160;</td><td>¡</td><td>&amp;iexcl;</td><td>&amp;#161;</td></tr><tr><td>¢</td><td>&amp;cent;</td><td>&amp;#162;</td><td>£</td><td>&amp;pound;</td><td>&amp;#163;</td><td>¤</td><td>&amp;curren;</td><td>&amp;#164;</td></tr><tr><td>¥</td><td>&amp;yen;</td><td>&amp;#165;</td><td>¦</td><td>&amp;brvbar;</td><td>&amp;#166;</td><td>§</td><td>&amp;sect;</td><td>&amp;#167;</td></tr><tr><td>¨</td><td>&amp;uml;</td><td>&amp;#168;</td><td>©</td><td>&amp;copy;</td><td>&amp;#169;</td><td>ª</td><td>&amp;ordf;</td><td>&amp;#170;</td></tr><tr><td>«</td><td>&amp;laquo;</td><td>&amp;#171;</td><td>¬</td><td>&amp;not;</td><td>&amp;#172;</td><td></td><td>­&amp;shy;</td><td>&amp;#173;</td></tr><tr><td>®</td><td>&amp;reg;</td><td>&amp;#174;</td><td>¯</td><td>&amp;macr;</td><td>&amp;#175;</td><td>°</td><td>&amp;deg;</td><td>&amp;#176;</td></tr><tr><td>±</td><td>&amp;plusmn;</td><td>&amp;#177;</td><td>²</td><td>&amp;sup2;</td><td>&amp;#178;</td><td>³</td><td>&amp;sup3;</td><td>&amp;#179;</td></tr><tr><td>´</td><td>&amp;acute;</td><td>&amp;#180;</td><td>µ</td><td>&amp;micro;</td><td>&amp;#181;</td><td>"</td><td>&amp;quot;</td><td>&amp;#34;</td></tr><tr><td>&lt;</td><td>&amp;lt;</td><td>&amp;#60;</td><td>&gt;</td><td>&amp;gt;</td><td>&amp;#62;</td><td>’</td><td></td><td>&amp;#39;</td></tr></tbody></table>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特殊符号&lt;/th&gt;
+&lt;th&gt;命名实体&lt;/th&gt;
+&lt;th&gt;十进制编码&lt;/th&gt;
+&lt;th&gt;特殊符号&lt;/th&gt;
+&lt;th&gt;命名实体&lt;/th&gt;
+&lt;th&gt;十进制编码&lt;/th&gt;
+&lt;th&gt;特殊符号&lt;/th&gt;
+&lt;th&gt;命名实体&lt;/th&gt;
+&lt;th&gt;十</summary>
+      
+    
+    
+    
+    <category term="使用手册" scheme="https://jxch.github.io/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="HTML" scheme="https://jxch.github.io/tags/HTML/"/>
+    
+  </entry>
   
   <entry>
     <title>市场分析-20230504-Brooks-S&amp;P Emini</title>
@@ -527,32 +562,6 @@ openssl</summary>
     <category term="市场分析" scheme="https://jxch.github.io/tags/%E5%B8%82%E5%9C%BA%E5%88%86%E6%9E%90/"/>
     
     <category term="Brooks-转载" scheme="https://jxch.github.io/tags/Brooks-%E8%BD%AC%E8%BD%BD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Proxychains-windows安装</title>
-    <link href="https://jxch.github.io/2023/05/04/yun-wei/proxychains-windows-an-zhuang/"/>
-    <id>https://jxch.github.io/2023/05/04/yun-wei/proxychains-windows-an-zhuang/</id>
-    <published>2023-05-04T10:17:45.000Z</published>
-    <updated>2023-05-04T11:19:20.880Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li><a href="https://github.com/shunf4/proxychains-windows/releases">下载 proxychains-windows</a></li><li>配置环境变量 <code>PROXYCHAINS_CONF_FILE</code>: 值为 <code>proxychains.conf</code> 文件的路径</li><li>修改 <code>proxychains.conf</code> 配置文件代理路径: <code>socks5 localhost 10808</code></li><li>将二进制执行文件重命名为: <code>proxychains.exe</code></li><li>将 <code>proxychains.exe</code> 所在路径配置到环境变量</li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/shunf4/proxychains-windows/releases&quot;&gt;下载 proxychains-windows&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;配置环境变量 &lt;code&gt;PROXYCHAINS_CONF_</summary>
-      
-    
-    
-    
-    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
-    
-    
-    <category term="Proxychains" scheme="https://jxch.github.io/tags/Proxychains/"/>
     
   </entry>
   
