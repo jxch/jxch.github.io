@@ -412,11 +412,11 @@
                 
                 
                 
-                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 47">
+                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 61">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #F9EBEA;">IT学习笔记
-                        <span class="tag-length">47</span>
+                        <span class="tag-length">61</span>
                     </span>
                 </a>
                 
@@ -551,20 +551,20 @@
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-zhong-dian-fen-ge-zhi-xian-duan-cai-jian-suan-fa/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-cohen-sutherland-zhi-xian-cai-jian-suan-fa/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="计算机图形学-中点分割直线段裁剪算法">
+                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="计算机图形学-Cohen-Sutherland直线裁剪算法">
                             
-                            <span class="card-title">计算机图形学-中点分割直线段裁剪算法</span>
+                            <span class="card-title">计算机图形学-Cohen-Sutherland直线裁剪算法</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                中点分割算法原理
-中点分割直线段裁剪算法对Cohen-Sutherland直线裁剪算法的第3种情况做了改进，原理是简单地把起点为P0，终点为P1的直线段等分为两段直线P0P和PP1（P为直线段中点），对每一段直线重复“简取”和“简弃”的处理
+                                在二维观察中，需要在观察坐标系下根据窗口大小对二维图形进行裁剪（clipping），只将位于窗口内的图形变换到视区输出。直线段裁剪是二维图形裁剪的基础，裁剪的实质是判断直线段是否与窗口相交，如相交则进一步确定直线段上位于窗口内的部分。
+编码
                             
                         </div>
                         <div class="publish-info">
@@ -598,20 +598,24 @@
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ren-lian-shi-bie/ren-lian-shi-bie-lbph-matlab/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-liang-barsky-zhi-xian-duan-cai-jian-suan-fa/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="人脸识别-LBPH-MATLAB">
+                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="计算机图形学-Liang-Barsky直线段裁剪算法">
                             
-                            <span class="card-title">人脸识别-LBPH-MATLAB</span>
+                            <span class="card-title">计算机图形学-Liang-Barsky直线段裁剪算法</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                原理
-LBPH，Local Binary Patterns Histograms，即LBP特征的统计直方图，LBPH将LBP特征与图像的空间信息结合在一起。这种表示方法由Ahonen等人在论文中提出，他们将LBP特征图像分成m个局部块，并提
+                                参数化算法(Cyrus-Beck)
+考虑凸多边形区域R和直线段 $P1P2：P(t)=(P2-P1)*t+P1$
+设A是区域R的边界上一点，N是区域边界在A点的内法线向量
+
+则对于线段P1P2上任一点P(t)
+$N ·(P(t)-A)&lt
                             
                         </div>
                         <div class="publish-info">
@@ -634,12 +638,8 @@ LBPH，Local Binary Patterns Histograms，即LBP特征的统计直方图，LBPH�
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/MATLAB/">
-                            <span class="chip bg-color">MATLAB</span>
-                        </a>
-                        
-                        <a href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
-                            <span class="chip bg-color">人脸识别</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -649,20 +649,20 @@ LBPH，Local Binary Patterns Histograms，即LBP特征的统计直方图，LBPH�
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ren-lian-shi-bie/ren-lian-shi-bie-mb-lbp-te-zheng-matlab/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-san-wei-tu-xing-ji-he-bian-huan/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="人脸识别-MB-LBP特征-MATLAB">
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="计算机图形学-三维图形几何变换">
                             
-                            <span class="card-title">人脸识别-MB-LBP特征-MATLAB</span>
+                            <span class="card-title">计算机图形学-三维图形几何变换</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                原理
-将图像分成一个个小块（Block），每个小块再分为一个个的小区域（类似于HOG中的cell），小区域内的灰度平均值作为当前小区域的灰度值，与周围小区域灰度进行比较形成LBP特征，生成的特征称为MB-LBP，Block大小为3*3，则小
+                                三维几何变换
+同二维变换类似，三维变换同样引入了齐次坐标技术，在四维空间 $(x,y,z,w)$ 内进行讨论。定义了规范化齐次坐标以后，三维图形几何变换就可以表示为物体顶点集合的规范化齐次坐标矩阵与某一变换矩阵相乘的形式。用规范化齐次坐标表
                             
                         </div>
                         <div class="publish-info">
@@ -685,12 +685,8 @@ LBPH，Local Binary Patterns Histograms，即LBP特征的统计直方图，LBPH�
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/MATLAB/">
-                            <span class="chip bg-color">MATLAB</span>
-                        </a>
-                        
-                        <a href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
-                            <span class="chip bg-color">人脸识别</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -700,20 +696,22 @@ LBPH，Local Binary Patterns Histograms，即LBP特征的统计直方图，LBPH�
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ren-lian-shi-bie/ren-lian-shi-bie-uniform-pattern-lbp-te-zheng-matlab/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-san-wei-fu-he-bian-huan/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="人脸识别-Uniform Pattern LBP特征-MATLAB">
+                            <img src="/medias/featureimages/31.jpg" class="responsive-img" alt="计算机图形学-三维复合变换">
                             
-                            <span class="card-title">人脸识别-Uniform Pattern LBP特征-MATLAB</span>
+                            <span class="card-title">计算机图形学-三维复合变换</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                原理
-Uniform Pattern，也被称为等价模式或均匀模式，由于一个LBP特征有多种不同的二进制形式，对于半径为R的圆形区域内含有P个采样点的LBP算子将会产生2P种模式。很显然，随着邻域集内采样点数的增加，二进制模式的种类是以指数形
+                                $P’ = P\cdot T = P\cdot T_1\cdot T_2 \ldots T_n$
+其中，T为复合变换矩阵，$T_1, T_2 \ldots T_n$为单次基本几何变换矩阵。
+相对于任一参考点的三维几何变换
+在三维基本几何变换
                             
                         </div>
                         <div class="publish-info">
@@ -736,12 +734,8 @@ Uniform Pattern，也被称为等价模式或均匀模式，由于一个LBP特�
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/MATLAB/">
-                            <span class="chip bg-color">MATLAB</span>
-                        </a>
-                        
-                        <a href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
-                            <span class="chip bg-color">人脸识别</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -751,23 +745,24 @@ Uniform Pattern，也被称为等价模式或均匀模式，由于一个LBP特�
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ren-lian-shi-bie/ren-lian-shi-bie-xuan-zhuan-bu-bian-lbp-te-zheng-matlab/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-zhi-xian-de-sao-miao-zhuan-huan/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="人脸识别-旋转不变LBP特征-MATLAB">
+                            <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="计算机图形学-直线的扫描转换">
                             
-                            <span class="card-title">人脸识别-旋转不变LBP特征-MATLAB</span>
+                            <span class="card-title">计算机图形学-直线的扫描转换</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                原理
-不断的旋转圆形邻域内的LBP特征，根据选择得到一系列的LBP特征值，从这些LBP特征值选择LBP特征值最小的作为中心像素点的LBP特征。
+                                直接计算法
+假定直线的起点、终点分别为：$(x1,y1), (x2,y2)$, 且都为整数。
+计算出斜率 $k=(y2-y1)/(x2-x1)$ ,
+在Y轴的截距 $b=y1-k*x1$　
 
-MATLAB 源码
-function imglbp = getRotationInvarian
+这样一来，只要给定 x的值，根据解析式立即可以计
                             
                         </div>
                         <div class="publish-info">
@@ -790,12 +785,8 @@ function imglbp = getRotationInvarian
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/MATLAB/">
-                            <span class="chip bg-color">MATLAB</span>
-                        </a>
-                        
-                        <a href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
-                            <span class="chip bg-color">人脸识别</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -805,20 +796,21 @@ function imglbp = getRotationInvarian
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ren-lian-shi-bie/ren-lian-shi-bie-yuan-xing-lbp-te-zheng-matlab/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-yuan-de-sao-miao-zhuan-huan-zhong-dian-bresenham-suan-fa/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="人脸识别-圆形LBP特征-MATLAB">
+                            <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="计算机图形学-圆的扫描转换-中点Bresenham算法">
                             
-                            <span class="card-title">人脸识别-圆形LBP特征-MATLAB</span>
+                            <span class="card-title">计算机图形学-圆的扫描转换-中点Bresenham算法</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                原理
-由于原始LBP特征使用的是固定邻域内的灰度值，因此当图像的尺度发生变化时，LBP 特征的编码将会发生错误，LBP 特征将不能正确的反映像素点周围的纹理信息，因此研究人员对其进行了改进。基本的 LBP 算子的最大缺陷在于它只覆盖了一个固
+                                圆的扫描转换
+圆的扫描转换是在屏幕像素点阵中确定最佳逼近于理想圆的像素点集的过程。圆的绘制可以使用简单方程画圆算法或极坐标画圆算法，但这些算法涉及开方运算或三角运算，效率很低。
+仅包含加减运算的顺时针绘制1/8圆的中点Bresenham算法
                             
                         </div>
                         <div class="publish-info">
@@ -841,12 +833,8 @@ function imglbp = getRotationInvarian
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/MATLAB/">
-                            <span class="chip bg-color">MATLAB</span>
-                        </a>
-                        
-                        <a href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
-                            <span class="chip bg-color">人脸识别</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -856,20 +844,20 @@ function imglbp = getRotationInvarian
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ren-lian-shi-bie/ren-lian-shi-bie-yuan-shi-lbp-te-zheng-ji-suan-matlab/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-tuo-yuan-de-sao-miao-zhuan-huan-zhong-dian-bresenham-suan-fa/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="人脸识别-原始LBP特征计算-MATLAB">
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="计算机图形学-椭圆的扫描转换-中点Bresenham算法">
                             
-                            <span class="card-title">人脸识别-原始LBP特征计算-MATLAB</span>
+                            <span class="card-title">计算机图形学-椭圆的扫描转换-中点Bresenham算法</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                LBP 原理
-原始的 LBP 算子定义在像素 3*3 的邻域内，以邻域中心像素为阈值，相邻的8个像素的灰度值与邻域中心的像素值进行比较，若周围像素大于中心像素值，则该像素点的位置被标记为 1，否则为 0。这样，3*3 邻域内的 8 个点经过
+                                椭圆的扫描转换
+椭圆的扫描转换是在屏幕像素点阵中选取最佳逼近于理想椭圆像素点集的过程。椭圆是长半轴和短半轴不相等的圆，椭圆的扫描转换与圆的扫描转换有类似之处。本节主要讲解顺时针绘制1/4椭圆的中点Bresenham算法原理，根据对称性可以绘
                             
                         </div>
                         <div class="publish-info">
@@ -892,12 +880,8 @@ function imglbp = getRotationInvarian
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/MATLAB/">
-                            <span class="chip bg-color">MATLAB</span>
-                        </a>
-                        
-                        <a href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
-                            <span class="chip bg-color">人脸识别</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -907,27 +891,20 @@ function imglbp = getRotationInvarian
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-tcp/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-fan-zou-yang-ji-zhu/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="计算机网络-TCP">
+                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="计算机图形学-反走样技术">
                             
-                            <span class="card-title">计算机网络-TCP</span>
+                            <span class="card-title">计算机图形学-反走样技术</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                TCP 最主要的特点
-
-TCP 是面向连接的运输层协议。
-每一条 TCP 连接只能有两个端点(endpoint)，每一条 TCP 连接只能是点对点的（一对一）。
-TCP 提供可靠交付的服务。
-TCP 提供全双工通信。
-面向字节流。
-
-TCP
+                                反走样
+直线扫描转换算法在处理非水平、非垂直且非45°的直线段时会出现锯齿，这是因为直线段在光栅扫描显示器上显示的图像是由一系列亮度相同而面积不为零的离散像素点构成的。这种由离散量表示连续量而引起的失真称为走样（aliasing）。用于减轻
                             
                         </div>
                         <div class="publish-info">
@@ -950,8 +927,8 @@ TCP
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -961,29 +938,20 @@ TCP
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-xin-dao-fu-yong-ji-zhu/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-you-xiao-bian-biao-tian-chong-suan-fa/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="计算机网络-信道复用技术">
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="计算机图形学-有效边表填充算法">
                             
-                            <span class="card-title">计算机网络-信道复用技术</span>
+                            <span class="card-title">计算机图形学-有效边表填充算法</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
-复用的类型：
-
-频分复用、时分复用和统计时分复用
-波分复用 WDM
-码分复用 CDM
-
-
-频分复用
-频分复用 FDM (Frequency Division Multiplexing)
-用户在分配到一定的频带后，在通信过程中自始至终都占用
+                                填充原理
+有效边表填充算法通过维护边表和有效边表，避开了扫描线与多边形所有边求交的复杂运算。填充原理是按照扫描线从小到大的移动顺序，计算当前扫描线与有效边的交点，然后把这些交点按x值递增的顺序进行排序、配对，以确定填充区间，最后用指定颜色填
                             
                         </div>
                         <div class="publish-info">
@@ -1006,8 +974,8 @@ TCP
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -1017,26 +985,20 @@ TCP
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-xin-dao-de-bian-ma-yu-diao-zhi/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-bian-yuan-tian-chong-suan-fa/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="计算机网络-信道的编码与调制">
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="计算机图形学-边缘填充算法">
                             
-                            <span class="card-title">计算机网络-信道的编码与调制</span>
+                            <span class="card-title">计算机图形学-边缘填充算法</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                通信
-
-单向通信（单工通信）：只能有一个方向的通信而没有反方向的交互。
-双向交替通信（半双工通信）：通信的双方都可以发送信息，但不能双方同时发送(当然也就不能同时接收)。
-双向同时通信（全双工通信）：通信的双方可以同时发送和接收信息。
-
-
-
+                                填充原理
+边缘填充算法是先求出多边形的每条边与扫描线的交点，然后将交点右侧的所有像素颜色全部取为补色（或反色）。按任意顺序处理完多边形的所有边后，就完成了多边形的填充任务。边缘填充算法利用了图像处理中的求“补”或求“反”的概念，对于黑白图像
                             
                         </div>
                         <div class="publish-info">
@@ -1059,8 +1021,8 @@ TCP
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -1070,22 +1032,28 @@ TCP
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-xin-zao-bi-xiang-nong-gong-shi/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-qu-yu-tian-chong-suan-fa/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="计算机网络-信噪比/香农公式">
+                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="计算机图形学-区域填充算法">
                             
-                            <span class="card-title">计算机网络-信噪比/香农公式</span>
+                            <span class="card-title">计算机图形学-区域填充算法</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                信噪比
-信噪比就是信号的平均功率和噪声的平均功率之比，即：S/N。
-用分贝(dB)作为度量单位，即：信噪比 (dB)= 10 * log10(S/N) (dB)`
-例如：当S/N=10时，信噪比为10dB；当S/N=1000时，信噪比为30
+                                填充原理
+种子填充算法是从区域内任一个种子像素位置开始，由内向外将填充色扩散到整个多边形区域的填充过程。种子填充算法突出的优点是能对具有任意复杂闭合边界的区域进行填充。
+四邻接点与八邻接点
+
+四连通域与八连通域
+
+
+种子填充算法
+算法定义
+
                             
                         </div>
                         <div class="publish-info">
@@ -1108,8 +1076,8 @@ TCP
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -1119,31 +1087,21 @@ TCP
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/05/05/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-shu-ju-lian-lu-ceng-zheng-chuan-shu-de-san-ge-ji-ben-wen-ti/">
+                    <a href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-tu-xing-ji-he-bian-huan-ji-chu/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="计算机网络-数据链路层帧传输的三个基本问题">
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="计算机图形学-图形几何变换基础">
                             
-                            <span class="card-title">计算机网络-数据链路层帧传输的三个基本问题</span>
+                            <span class="card-title">计算机图形学-图形几何变换基础</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
-封装成帧
-透明传输
-差错控制
-
-
-封装成帧
-封装成帧(framing)就是在一段数据的前后分别添加首部和尾部，然后就构成了一个帧。确定帧的界限。
-用控制字符进行帧定界的方法举例 ：
-
-
-SOH(Start Of Head):0x01
-EO
+                                规范化齐次坐标
+齐次坐标就是用n＋1维矢量表示n维矢量。例如，在二维平面中，点P(x,y)的齐次坐标表示为(wx,wy,w)。类似地，在三维空间中，点P(x,y,z)的齐次坐标表示为（wx,wy,wz,w）。
+w＝1就是规范化的齐次坐标。二
                             
                         </div>
                         <div class="publish-info">
@@ -1166,8 +1124,8 @@ EO
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                            <span class="chip bg-color">计算机图形学</span>
                         </a>
                         
                     </div>
@@ -1190,7 +1148,7 @@ EO
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">1 / 4</div>
+            <div class="center-align b-text-gray">1 / 6</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1279,7 +1237,7 @@ EO
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">204.8k</span>
+                        class="white-color">215.3k</span>
             
             
             

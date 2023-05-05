@@ -4,6 +4,356 @@
   
     
     <entry>
+      <title>计算机图形学-Cohen-Sutherland直线裁剪算法</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-cohen-sutherland-zhi-xian-cai-jian-suan-fa/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-cohen-sutherland-zhi-xian-cai-jian-suan-fa/</url>
+      
+        <content type="html"><![CDATA[<p>在二维观察中，需要在观察坐标系下根据窗口大小对二维图形进行裁剪（clipping），只将位于窗口内的图形变换到视区输出。直线段裁剪是二维图形裁剪的基础，<strong>裁剪的实质是判断直线段是否与窗口相交，如相交则进一步确定直线段上位于窗口内的部分。</strong></p><h2 id="编码原理">编码原理</h2><p>Cohen-Sutherland直线段裁剪算法是最早流行的编码算法。<strong>每段直线的端点都被赋予一组四位二进制代码</strong>，称为区域编码(region code，RC)，用来<strong>标识直线段端点相对于窗口边界及其延长线的位置。</strong><br>假设窗口是标准矩形，由上、下、左、右4条边界组成，延长窗口的4条边界形成9个区域。这样根据直线段的任一端点P(x，y)所处的窗口区域位置，可以赋予一组4位二进制编码，称为区域码RC=C3C2C1C0。C0代表左边界， C1代表右边界， C2代表下边界， C3代表上边界。<br><img src="/static/IT/Graphics/Cohen-Sutherland-1.png" alt=""><br>为了保证窗口内及窗口边界上直线段端点的编码为零，定义规则如下：<br>C0：若端点的 x &lt; wxl，则C0=1，否则C0=0。<br>C1：若端点的x &gt; wxr，则C1=1，否则C1=0。<br>C2：若端点的y &lt; wyb，则C2=1，否则C2=0。<br>C3：若端点的y &gt; wyt，则C3=1，否则C3=0。</p><h2 id="裁剪步骤">裁剪步骤</h2><ol><li>若直线段的两个端点的区域编码都为0，有<strong>RC0|RC1=0</strong>（二者按位相或的结果为零，即<strong>RC0=0且RC1=0</strong>），说明直线段的两个端点都在窗口内，应“<strong>简取</strong>”之（trivally accepted）。</li><li>若直线段的两个端点的区域编码都不为0，且<strong>RC0&amp;RC1≠0</strong>（二者按位相与的结果不为零，即<strong>RC0≠0且RC1≠0</strong>），说明直线段位于窗外的同一侧，或左方、或右方、或上方、或下方，应“<strong>简弃</strong>”之（trivally rejected） 。</li><li>若直线段既不满足“简取”也不满足“简弃”的条件，则需要与窗口进行“<strong>求交</strong>”判断。这时，<strong>直线段必然与窗口边界或窗口边界的延长线相交</strong>，<strong>分两种情况处理</strong>。</li></ol><p><img src="/static/IT/Graphics/Cohen-Sutherland-2.png" alt=""><br>P0点的编码为0010。P1点编码为0000。交点P在窗口边界上，编码为0000。 根据编码判断PP1被简取。<br>Cohen-sutherland算法的关键技术：在于<strong>总是要让直线段的一个顶点处于窗口之外</strong>，例如P0点。这样P0点到交点P的直线段必然不可见，故可以直接抛弃。<br><img src="/static/IT/Graphics/Cohen-Sutherland-3.png" alt=""><br>直线段必然与窗口边界或窗口边界的延长线相交，分两种情况处理。<br><img src="/static/IT/Graphics/Cohen-Sutherland-4.png" alt=""><br>裁剪直线段时，一般按固定顺序**左（x=wxl），右（x=wxr）、下（y=wyb）、上（y=wyt）**求解窗口边界与直线段的交点。</p><h2 id="交点计算公式">交点计算公式</h2><p>对于端点坐标为 $P0(x0，y0)$ 和 $P1(x1，y1)$ 的直线段，<br>与窗口左边界（x＝wxl）或右边界（x＝wxr）交点的y坐标的计算公式为<br>$y = k(x-x_0)+y_0$<br>与窗口上边界（y＝wyt）或下边界（y＝wyb）交点的x坐标的计算公式为<br>$x = \frac{y-y_0}{k} + x_0$<br>其中，$k = \frac{y_1-y_0}{x_1-x_0}$</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-Liang-Barsky直线段裁剪算法</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-liang-barsky-zhi-xian-duan-cai-jian-suan-fa/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-liang-barsky-zhi-xian-duan-cai-jian-suan-fa/</url>
+      
+        <content type="html"><![CDATA[<h2 id="参数化算法-Cyrus-Beck">参数化算法(Cyrus-Beck)</h2><p>考虑凸多边形区域R和直线段 $P1P2：P(t)=(P2-P1)*t+P1$<br>设A是区域R的边界上一点，N是区域边界在A点的内法线向量<br><img src="/static/IT/Graphics/Liang-Barsky-1.png" alt=""><br>则对于线段P1P2上任一点P(t)<br>$N ·(P(t)-A)&lt; 0 \to 外侧$<br>$N ·(P(t)-A)&gt;0 \to 内侧$<br>$N ·(P(t)-A)=0 \to 边界或其延长线上$<br>凸多边形的性质：点P(t)在凸多边形内的<strong>充要条件</strong>是，对于凸多边形边界上任意一点A和该点处内法向N，都有N·(P(t)-A)&gt;0</p><p>k条边的多边形，可见线段参数区间的解:<br>$Ni· (p(t)-Ai)&gt;=0, i=0,…,k, 0≤t ≤1.$<br>即：$Ni· (P1-Ai)+ Ni· (P2-P1) t&gt;=0 $<br><img src="/static/IT/Graphics/Liang-Barsky-2.png" alt=""><br>令$ti= Ni· (P1-Ai)/[Ni· (P2-P1) ]$<br>$Ni· (P2-P1) =0-&gt;$ 平行于对应边。<br>此时判断$Ni· (P1-Ai)$<br><strong>若$Ni· (P1-Ai) &lt;0 \to P1 P2在多边形外侧-&gt;不可见$，</strong><br><strong>若$Ni· (P1-Ai) &gt;0 \to  P1 P2在多边形内侧-&gt;继续其它边的判断$</strong><br>对于t值的选择：首先，要符合0≤t≤1；其次，对于凸窗口来说，每一个线段与其至多有两个交点，即有两个相应的t值。所以我们可以把计算出的t值分成两组：一组为下限组，是分布在线段起点一侧的；一组为上限组，是分布在线段终点一侧的。这样，只要找出下限组中的最大值及上限组中的最小值，就可确定线段了。<br>分组的依据是：<br><strong>如果$Ni· (P2-P1) ＜0$，则计算出的值属于上限组</strong><br><strong>如果$Ni· (P2-P1) ＞0$，则计算出的值属于下限组</strong></p><h2 id="参数化算法的几何意义">参数化算法的几何意义</h2><p>上限组以$Ni· (P2-P1) &lt;0$为特征，表示在该处沿P1P2方向前进将越来越远地离开多边形区域。<br>下限组以$Ni· (P2-P1) &gt;0$为特征，表示在该处沿P1P2方向前进将接近或进入多边形内侧。<br><img src="/static/IT/Graphics/Liang-Barsky-3.png" alt=""></p><p>因此，线段可见的交点参数：<br><strong>tl=max{0,max{ti:  Ni· (P2-P1) &gt;0}}</strong><br><strong>tu=min{1,min{ti:  Ni· (P2-P1)&lt;0}}</strong><br>若 $tl &lt;= tu$, <strong>[tl ， tu]是可见线段的交点参数区间</strong>，否则，线段不可见。</p><p>当凸多边形是矩形窗口且矩形的边与坐标轴平行时，该算法退化为Liang-Barsky算法。<br><img src="/static/IT/Graphics/Liang-Barsky-4.png" alt=""></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-三维图形几何变换</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-san-wei-tu-xing-ji-he-bian-huan/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-san-wei-tu-xing-ji-he-bian-huan/</url>
+      
+        <content type="html"><![CDATA[<h2 id="三维几何变换">三维几何变换</h2><p>同二维变换类似，三维变换同样引入了齐次坐标技术，在四维空间 $(x,y,z,w)$ 内进行讨论。定义了规范化齐次坐标以后，三维图形几何变换就可以表示为物体顶点集合的规范化齐次坐标矩阵与某一变换矩阵相乘的形式。用规范化齐次坐标表示的三维图形几何变换矩阵是一个4×4方阵，简称为三维几何变换矩阵。<br>$$<br>T=\left[<br>\begin{matrix}<br>a &amp; b &amp; c &amp; p\\<br>d &amp; e &amp; f  &amp; q\\<br>g &amp; h &amp; i  &amp; r\\<br>l  &amp; m &amp; n &amp; s<br>\end{matrix}<br>\right]<br>$$</p><p>$P’ = P \cdot T$</p><h3 id="平移变换">平移变换</h3><p>$$<br>T=\left[<br>\begin{matrix}<br>1 &amp; 0 &amp; 0 &amp; 0\\<br>0 &amp; 1 &amp; 0  &amp; 0\\<br>0 &amp; 0 &amp; 1 &amp; 0\\<br>T_x  &amp; T_y &amp; T_z &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h3 id="比例变换">比例变换</h3><p>$$<br>T=\left[<br>\begin{matrix}<br>S_x &amp; 0 &amp; 0 &amp; 0\\<br>0 &amp; S_y &amp; 0  &amp; 0\\<br>0 &amp; 0 &amp; S_z &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h3 id="旋转变换">旋转变换</h3><h4 id="绕x轴旋转">绕x轴旋转</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>1 &amp; 0 &amp; 0 &amp; 0\\<br>0 &amp; \cos \beta &amp; \sin \beta &amp; 0\\<br>0 &amp; -\sin \beta &amp; \cos \beta &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="绕y轴旋转">绕y轴旋转</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>\cos \beta &amp; 0 &amp; -\sin \beta  &amp; 0\\<br>0 &amp; 1 &amp; 0 &amp; 0\\<br>\sin \beta &amp; 0 &amp; \cos \beta &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="绕z轴旋转">绕z轴旋转</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>\cos \beta &amp; \sin \beta &amp; 0 &amp; 0\\<br>-\sin \beta &amp; \cos \beta &amp; 0 &amp; 0\\<br>0 &amp; 0 &amp; 1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$<br><strong>β为正向旋转角</strong></p><h3 id="反射变换">反射变换</h3><h4 id="关于x轴的反射">关于x轴的反射</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>1 &amp; 0 &amp; 0 &amp; 0\\<br>0 &amp; -1 &amp; 0  &amp; 0\\<br>0 &amp; 0 &amp; -1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="关于y轴的反射">关于y轴的反射</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>-1 &amp; 0 &amp; 0 &amp; 0\\<br>0 &amp; 1 &amp; 0  &amp; 0\\<br>0 &amp; 0 &amp; -1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="关于z轴的反射">关于z轴的反射</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>-1 &amp; 0 &amp; 0 &amp; 0\\<br>0 &amp; -1 &amp; 0  &amp; 0\\<br>0 &amp; 0 &amp; 1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="关于xoy面的反射">关于xoy面的反射</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>1 &amp; 0 &amp; 0 &amp; 0\\<br>0 &amp; 1 &amp; 0  &amp; 0\\<br>0 &amp; 0 &amp; -1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="关于yoz面的反射">关于yoz面的反射</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>-1 &amp; 0 &amp; 0 &amp; 0\\<br>0 &amp; 1 &amp; 0  &amp; 0\\<br>0 &amp; 0 &amp; 1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="关于xoz面的反射">关于xoz面的反射</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>1 &amp; 0 &amp; 0 &amp; 0\\<br>0 &amp; -1 &amp; 0  &amp; 0\\<br>0 &amp; 0 &amp; 1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h3 id="错切变换">错切变换</h3><p>$$<br>T=\left[<br>\begin{matrix}<br>1 &amp; b &amp; c &amp; 0\\<br>d &amp; 1 &amp; f  &amp; 0\\<br>g &amp; h &amp; 1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="沿x方向错切">沿x方向错切</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>1 &amp; 0&amp; 0 &amp; 0\\<br>d &amp; 1 &amp; 0  &amp; 0\\<br>g &amp; 0 &amp; 1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="沿y方向错切">沿y方向错切</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>1 &amp; b &amp; 0 &amp; 0\\<br>0 &amp; 1 &amp; 0  &amp; 0\\<br>0 &amp; h &amp; 1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p><h4 id="沿z方向错切">沿z方向错切</h4><p>$$<br>T=\left[<br>\begin{matrix}<br>1 &amp; 0 &amp; c &amp; 0\\<br>0 &amp; 1 &amp; f  &amp; 0\\<br>0 &amp; 0 &amp; 1 &amp; 0\\<br>0  &amp; 0 &amp; 0 &amp; 1<br>\end{matrix}<br>\right]<br>$$</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-三维复合变换</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-san-wei-fu-he-bian-huan/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-san-wei-fu-he-bian-huan/</url>
+      
+        <content type="html"><![CDATA[<p>$P’ = P\cdot T = P\cdot T_1\cdot T_2 \ldots T_n$<br>其中，T为复合变换矩阵，$T_1, T_2 \ldots T_n$为<strong>单次基本几何变换矩阵</strong>。</p><h2 id="相对于任一参考点的三维几何变换">相对于任一参考点的三维几何变换</h2><p>在三维基本几何变换中，比例变换和旋转变换是与参考点相关的。相对于任一参考点Q（x,y,z）的比例变换和旋转变换应表达为复合变换形式。变换方法是<strong>首先将参考点平移到坐标原点，相对于坐标原点作比例变换或旋转变换，然后再进行反平移将参考点平移回原位置。</strong></p><h2 id="相对于任意方向的三维几何变换">相对于任意方向的三维几何变换</h2><p>相对于任意方向的变换方法是首先对任意方向做旋转变换，使变换方向与某个坐标轴重合，然后对该坐标轴进行三维基本几何变换，最后做反向旋转变换，将任意方向还原到原来的方向。三维几何变换中需要进行<strong>两次旋转变换</strong>，才能使任意方向与某个坐标轴重合。一般做法是<strong>先将任意方向旋转到某个坐标平面内，然后再旋转到与该坐标平面内的某个坐标轴重合。</strong></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-直线的扫描转换</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-zhi-xian-de-sao-miao-zhuan-huan/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-zhi-xian-de-sao-miao-zhuan-huan/</url>
+      
+        <content type="html"><![CDATA[<h2 id="直接计算法">直接计算法</h2><p>假定直线的起点、终点分别为：$(x1,y1), (x2,y2)$, 且都为整数。<br>计算出斜率 $k=(y2-y1)/(x2-x1)$ ,<br>在Y轴的截距 $b=y1-k*x1$　<br><img src="/static/IT/Graphics/StraightLine-1.png" alt="直接计算法"></p><p>这样一来，只要给定 x的值，根据解析式立即可以计算出对应的y值，然后输出 $(x,round(y))$。这种方法直观，但<strong>效率太低</strong>，因为每一步需要一次浮点乘法、一次浮点加法和一次舍入运算。</p><h2 id="数值微分法-DDA">数值微分法 (DDA)</h2><p>假定直线的起点、终点分别为：$(x1,y1), (x2,y2)$, 且都为整数。　<br><img src="/static/IT/Graphics/StraightLine-2.png" alt="数值微分法"></p><p>已知过端点 $P0(x1, y1), P1(x2, y2)$ 的直线段L：$y=kx+b$<br>直线斜率为：$k=(y2-y1)/(x2-x1)$<br>考虑当 x 从 $xi \to xi+1$ 时 y 的变化规律：<br>设：<br>$\Delta x = x_{i+1}- x_i$<br>$x_{i+1} = x_i+ \Delta x$</p><p>计算：<br>$y_{i + 1} = kx_{i+1} + b = k(x_i + \Delta x) +b $<br>$= kx_i+b+k\Delta x$<br>$= y_i+k\Delta x$<br>当 $\Delta x =1;y_{i+1} = y_i+k $<br>即：当 x 每递增 1 y 递增 k(即直线斜率)；<br>注意上述分析的算法仅适用于 $|k|≤1$ 的情形。在这种情况下，x每增加1,y最多增加1。<br>当 $|k|&gt;1$ 时，必须把x，y地位互换。</p><p>DDA算法就是一个<strong>增量算法</strong>。</p><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">DDALine</span><span class="token punctuation">(</span><span class="token keyword">int</span> x0<span class="token punctuation">,</span><span class="token keyword">int</span> y0<span class="token punctuation">,</span><span class="token keyword">int</span> x1<span class="token punctuation">,</span><span class="token keyword">int</span> y1<span class="token punctuation">,</span><span class="token keyword">int</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token keyword">int</span> x；<span class="token keyword">float</span> dx<span class="token punctuation">,</span> dy<span class="token punctuation">,</span> y<span class="token punctuation">,</span> k<span class="token punctuation">;</span>dx<span class="token operator">=</span> x1<span class="token operator">-</span>x0<span class="token punctuation">,</span> dy<span class="token operator">=</span>y1<span class="token operator">-</span>y0<span class="token punctuation">;</span>   k<span class="token operator">=</span>dy<span class="token operator">/</span>dx<span class="token punctuation">,</span> y<span class="token operator">=</span>y0<span class="token punctuation">;</span>    <span class="token keyword">for</span> <span class="token punctuation">(</span>x<span class="token operator">=</span>x0<span class="token punctuation">;</span> x<span class="token operator">&lt;=</span>x1<span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token function">drawpixel</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">(</span>y<span class="token operator">+</span><span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span>    y<span class="token operator">=</span>y<span class="token operator">+</span>k<span class="token punctuation">;</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="中点Bresenham算法">中点Bresenham算法</h2><p>原理：每次在主位移方向上走一步，另一个方向上走不走步取决于中点误差项的值。给定理想直线的起点坐标为P0(x0,y0)，终点坐标为P1(x1,y1),则直线的隐函数方程为：<br>$F(x,y) = y - kx - b = 0$<br>其中，直线的斜率：$k = \frac{\Delta y}{\Delta x} = \frac{y_1 - y_0}{x_1 - x_0}$<br>直线水平方向位移：$\Delta x = x_1 - x_0$<br>直线垂直方向位移：$\Delta y = y_1 - y_0$</p><p>理想直线将平面划分成三个区域：对于直线上的点，F(x，y)＝0；对于直线上方的点，F（x，y）＞0；对于直线下方的点，F（x，y）＜0。<br>假设直线的斜率为<strong>0≤k≤1</strong>，则Δx≥Δy，所以确定x方向为主位移方向。按照Bresenham原理，<strong>x方向上每次加1，y方向上加不加1取决于中点误差项的值。</strong><br><img src="/static/IT/Graphics/StraightLine-3.png" alt="中点Bresenham算法"></p><p>假定直线的当前点是P，沿主位移x方向走一步，下一点只能在Pu和Pd两点中选取，Pu和Pd的中点为M。显然，若中点M在理想直线的下方，则Pu点距离直线近，否则选取Pd。（u代表up，上面的像素；d代表down，下面的像素）</p><h3 id="构造中点误差项：">构造中点误差项：</h3><p>$从P_i(x_i,y_i)点出发选取下一像素时，需将P_u和P_d的中点M(x_i＋1,y_i＋0.5)代入隐函数方程，构造中点误差项d_i 。$<br>$d_i = F(x_i+1, y_i+0.5) = y_i+0.5 - k(x_i + 1) - b$</p><ul><li>$y_{i+1} =  y_i + 1 ,   d_i &lt; 0 $</li><li>$y_{i+1} =  y_i ,  d_i \ge 0$</li></ul><h3 id="中点误差项的递推公式">中点误差项的递推公式</h3><ol><li>$当d_i&lt;0时，下一步的中点坐标为M(x_i+2，y_i+1.5)，下一步中点误差项为$<br>$d_{i+1} = F(x_i+2, y_i + 1.5) = y_i+1.5 - k(x_i+2) - b$<br>$ = y_i + 0.5 - k(x_i+1) - b + 1 - k$<br>$ = d_i + 1 - k$</li><li>$当d_i≥0，时下一步的中点坐标为M(x_i+2，y_i+0.5)，下一步中点误差项为$<br>$d_{i+1} = F(x_i+2, y_i + 0.5) = y_i+0.5 - k(x_i+2) - b$<br>$ = y_i + 0.5 - k(x_i+1) - b - k$<br>$ = d_i - k$</li></ol><h3 id="中点误差项的初始值">中点误差项的初始值</h3><p>$直线的起点坐标为P_0(x_0,y_0)，x为主位移方向。因此，第一个中点是M (x_0+1,y_0+0.5)，相应的d_i的初始值为：  $<br>$d_0 = F(x_0+1, y_0 + 0.5) = y_0+0.5 - k(x_0+1) - b$<br>$ = y_0 -kx_0 - b - k + 0.5$<br>$其中，因为（x_0，y_0）在直线上，所以  y_0 -kx_0 - b = 0$<br>$所以 d_0 = 0.5 - k$</p><p>由于使用的是di的符号，可以用$2d_i\Delta x$代替$d_i$来摆脱小数，使得算法只涉及整数运算。现有的研究已经证明：<strong>端点采用整数坐标没有什么益处</strong>，因为现在的CPU可以按照与处理整数同样的速度处理浮点数。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-圆的扫描转换-中点Bresenham算法</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-yuan-de-sao-miao-zhuan-huan-zhong-dian-bresenham-suan-fa/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-yuan-de-sao-miao-zhuan-huan-zhong-dian-bresenham-suan-fa/</url>
+      
+        <content type="html"><![CDATA[<h2 id="圆的扫描转换">圆的扫描转换</h2><p>圆的扫描转换是在屏幕像素点阵中确定最佳逼近于理想圆的像素点集的过程。圆的绘制可以使用简单方程画圆算法或极坐标画圆算法，但这些算法涉及开方运算或三角运算，效率很低。<br><strong>仅包含加减运算的顺时针绘制1/8圆的中点Bresenham算法，根据对称性可以绘制整圆 。</strong><br><img src="/static/IT/Graphics/Circle-1.png" alt="圆的扫描转换"></p><p>默认的圆是圆心位于坐标系原点，半径为R的圆。<br>屏幕设备坐标系的原点位于左上角，绘制结果为1/4圆，需要进行圆心平移或使用自定义坐系可以绘制整圆。圆是椭圆的特例，使用椭圆中点Bresenham算法也可绘制。<br><img src="/static/IT/Graphics/Circle-2.png" alt=""></p><h2 id="算法原理">算法原理</h2><p>圆心在原点、半径为R的圆方程的隐函数表达式为：$F(x, y) = x^2 + y^2 - R^2 = 0$<br>圆将平面划分成三个区域：对于圆上的点，F(x，y)＝0；对于圆外的点，F（x，y）＞0；对于圆内的点，F（x，y）＜0。<br>根据圆的对称性，可以用四条对称轴<strong>x＝0，y＝0，x＝y，x＝－y</strong>将圆分成8等份。只要绘制出第一象限内的1/8圆弧，根据对称性就可绘制出整圆，这称为<strong>八分法画圆算法</strong>。<br>假定第一象限内的任意点为P(x,y)，可以顺时针确定另外7个点：P(y,x)，P(y,-x)，P(x,-y)，P(-x,-y)，P(-y,-x)，P(-y, x)，P(-x,y)。<br><img src="/static/IT/Graphics/Circle-3.png" alt="圆的对称性"></p><p>中点Bresenham算法要<strong>从(0,R) 顺时针确定最佳逼近于该段圆弧的像素点集。<strong>此段圆弧的斜率k处处满足</strong>|k|＜1，即|Δx|＞|Δy|</strong>，所以x方向为主位移方向，因此中点Bresenham算法的原理简化如下：<strong>x方向上每次加1，y方向上减不减1取决于中点误差项的值。</strong><br>假定圆上当前点是$P_i(x_i,y_i)$，下一像素只能在$P_u(x_i+1,y_i)$和$P_d(x_i+1,y_i-1)$中选取。$P_u$和$P_d$的中点为$M(x_i+1,y_i-0.5)$显然，若M点在理想圆弧的下方，则$P_u$点离圆弧近，选取$P_u$；否则应选取$P_d$。<br><img src="/static/IT/Graphics/Circle-4.png" alt=""></p><h2 id="构造中点误差项">构造中点误差项</h2><p>从$P(x_i，y_i$）开始，为了进行下一像素点的选取，需将$P_u$和$P_d$的中点$M(x_i+1,y_i-0.5)$代入隐函数，构造中点误差项：<br>$d = F(x_i+1, y_i-0.5) = (x_i+1)^2 + (y_i-0.5)^2 - R^2$<br>当$d_i&lt;0$时，中点M在圆弧内，下一像素点应选取$P_u$，即y方向上不退步；当$d_i&gt;0$时，中点M在圆弧外，下一像素点应选取$P_d$，即y方向上退一步；当$d_i＝0$时，中点M在圆弧上，$P_u、P_d$和圆弧的距离相等，选取$P_u$或$P_d$均可，约定取$P_d$。因此，</p><ul><li>$y_{i+1} =  y_i , d &lt; 0  $</li><li>$y_{i+1} =  y_i - 1 , d \ge 0 $</li></ul><h2 id="中点误差项的递推公式">中点误差项的递推公式</h2><p>现在如果考虑主位移方向再走一步，应该选择哪个中点代入中点误差项以决定下一步应该选取的像素，分两种情况讨论。</p><ol><li>$当d_i&lt;0时，下一步的中点坐标为M(x_i+2，y_i-0.5)，下一步中点误差项为$<br>$d_{i+1} = F(x_i+2, y_i-0.5) = (x_i+2)^2 + (y_i-0.5)^2 - R^2$<br>$ = (x_i+1)^2 + (y_i-0.5)^2 - R^2 + 2x_i + 3$<br>$ = d_i + 2x_i + 3$</li><li>$当d_i≥0时，下一步的中点坐标为M(x_i+2，y_i-1.5)，下一步中点误差项为$<br>$d_{i+1} = F(x_i+2, y_i-1.5) = (x_i+2)^2 + (y_i-1.5)^2 - R^2$<br>$ = (x_i+1)^2 + (y_i-0.5)^2 - R^2 + 2x_i + 3 + (-2y_i + 2)$<br>$ = d_i + 2(x_i - y_i) + 5$</li></ol><h2 id="中点误差项的初始值">中点误差项的初始值</h2><p>圆的起点为$P_0（0，R）$，x为主位移方向。因此，第一个中点是（1，R-0.5），对应的$d_i$的初始值为：<br>$d_0 = F(1, R-0.5) = 1 + (R-0.5)^2 - R^2 = 1.25 - R$</p><h2 id="算法源码">算法源码</h2><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">double</span> x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>d<span class="token punctuation">;</span> d<span class="token operator">=</span><span class="token number">1.25</span><span class="token operator">-</span>R<span class="token punctuation">;</span>x<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>y<span class="token operator">=</span>R<span class="token punctuation">;</span><span class="token keyword">for</span><span class="token punctuation">(</span>x<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>x<span class="token operator">&lt;=</span>y<span class="token punctuation">;</span>x<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token function">CirclePoint</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>pDC<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//调用八分法画圆子函数</span>       <span class="token keyword">if</span> <span class="token punctuation">(</span>d<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span>d<span class="token operator">+=</span><span class="token number">2</span><span class="token operator">*</span>x<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">;</span>       <span class="token keyword">else</span> <span class="token punctuation">{</span>d<span class="token operator">+=</span><span class="token number">2</span><span class="token operator">*</span><span class="token punctuation">(</span>x<span class="token operator">-</span>y<span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">5</span><span class="token punctuation">;</span>y<span class="token operator">--</span><span class="token punctuation">;</span>       <span class="token punctuation">}</span>    <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-椭圆的扫描转换-中点Bresenham算法</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-tuo-yuan-de-sao-miao-zhuan-huan-zhong-dian-bresenham-suan-fa/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-tuo-yuan-de-sao-miao-zhuan-huan-zhong-dian-bresenham-suan-fa/</url>
+      
+        <content type="html"><![CDATA[<h2 id="椭圆的扫描转换">椭圆的扫描转换</h2><p>椭圆的扫描转换是在屏幕像素点阵中选取最佳逼近于理想椭圆像素点集的过程。椭圆是长半轴和短半轴不相等的圆，椭圆的扫描转换与圆的扫描转换有类似之处。本节主要讲解顺时针绘制1/4椭圆的中点Bresenham算法原理，根据对称性可以绘制完整椭圆。<br><img src="/static/IT/Graphics/Oval-1.png" alt="椭圆的扫描转换"><br>默认的椭圆是圆心位于坐标系原点，长半轴为a、短半轴为b的椭圆 。需要进行圆心平移或使用自定义坐标系可以绘制椭圆。<br>如果“x方向上每次加1，y方向上减不减1取决于中点误差项的值”。绘制结果是圆，如何能绘制为椭圆？</p><h2 id="算法原理">算法原理</h2><p>圆心在原点、长半轴为a、短半轴为b的椭圆方程的隐函数表达式为 ：<br>$F(x, y) = b^2x^2+a^2y^2-a^2b^2 = 0$<br>椭圆将平面划分成三个区域：对于椭圆上的点，F(x，y)＝0；对于椭圆外的点，F（x，y）＞0；对于椭圆内的点，F（x，y）＜0。</p><p>考虑到椭圆的对称性，可以用对称轴x＝0，y＝0，把椭圆分成4等份。只要绘制出第一象限内的1/4椭圆弧，根据对称性就可绘制出整个椭圆，这称为<strong>四分法绘制椭圆算法</strong>。已知第一象限内的点P(x,y)，可以顺时针得到另外3个对称点：P(x,-y)，P(-x,-y)和P(-x,y)。<br><img src="/static/IT/Graphics/Oval-2.png" alt="椭圆的对称性"></p><p><img src="/static/IT/Graphics/Oval-3.png" alt="椭圆的法矢量"><br>$N(x, y) = \frac{\partial{F}}{\partial{x}}i + \frac{\partial{F}}{\partial{y}}j = 2b^2xi + 2a^2yj$<br>部分Ⅰ的AC椭圆弧段，法矢量的x向分量小于y向分量，斜率k处处满足|k|＜1，|Δx|＞|Δy|，所以x方向为主位移方向；在C点，法矢量的x向分量等于y向分量，斜率k满足k＝－1，|Δx|＝|Δy|；在部分Ⅱ的CB椭圆弧段，法矢量的x向分量大于y向分量，斜率k处处满足|k|＞1，|Δy|＞|Δx|，所以y方向为主位移方向。<br><strong>在部分Ⅰ</strong>椭圆的中点Bresenham的原理:<strong>每次在主位移x方向上走一步，y方向上退不退步取决于中点误差项的值。在部分Ⅱ：每次在主位移方向y上退一步，x方向上走不走步取决于中点误差项的值。</strong><br><img src="/static/IT/Graphics/Oval-4.png" alt="算法原理"></p><h2 id="构造上半部分Ⅰ的中点误差项">构造上半部分Ⅰ的中点误差项</h2><p>在上半部分Ⅰ，x方向每次加1，y方向上减不减1取决于中点误差项的值。从$P_i(x_i,y_i)$点出发选取下一像素时，需将$P_u(x_i+1，y_i)$和$P_d(x_i+1,y_i-1)$的中点$M(x_i+1,y_i-0.5)$代入隐函数，构造中点误差项：<br>$d_{1i} = F(x_i+1, y_i-0.5) = b^2(x_i+1)^2 + a^2(y_i-0.5)^2 - a^2b^2$<br><img src="/static/IT/Graphics/Oval-5.png" alt="上半部分"><br>当$d_{1i}&lt;0$时，中点M在椭圆内，下一像素点应选取$P_u$，即y方向上不退步；当$d_{1i} &gt;0$时，中点M在椭圆外，下一像素点应选取$P_d$，即y方向上退一步；当$d_{1i}＝0$时，中点M在椭圆上，$P_u、P_d$和椭圆的距离相等，选取$P_u$或$P_d$均可，约定取$P_d$。<br>因此，<br>$$y_{i+1} = \begin{cases} y_i  ,&amp; d_{1i}&lt;0 \ y_i - 1 , &amp; d_{1i} \ge 0<br>\end{cases}<br>$$</p><h3 id="上半部分Ⅰ的递推公式">上半部分Ⅰ的递推公式</h3><p>如果考虑主位移方向再走一步，应该选择哪个中点代入中点误差项以决定下一步应该选取的像素，分两种情况讨论。</p><ol><li>$当d_{1i}&lt;0时，下一步的中点坐标为M(x_i+2，y_i-0.5)，下一步中点误差项为 $<br>$d_{1(i+1)} = F(x_i+2, y_i-0.5) = b^2(x_i+2)^2 + a^2(y_i-0.5)^2 - a^2b^2$<br>$ = b^2(x_i+1)^2 + a^2(y_i-0.5)^2 - a^2b^2 + b^2(2x_i+3)$<br>$ = d_{1i} + b^2(2x_i+3)$</li><li>$当d_{1i}≥0时，下一步的中点坐标为M(x_i+2，y_i-1.5)，下一步中点误差项为 $<br>$d_{1(i+1)} = F(x_i+2, y_i-1.5) = b^2(x_i+2)^2 + a^2(y_i-1.5)^2 - a^2b^2$<br>$ = b^2(x_i+1)^2 + a^2(y_i-0.5)^2 - a^2b^2 + b^2(2x_i+3) + a^2(-2y_i + 2)$</li></ol><h3 id="中点误差项的初始值">中点误差项的初始值</h3><p>上半部分椭圆的起点为A（0，b），因此，第一个中点是（1，b－0.5），对应的$d_{1i}$的初值为<br>$d_{10} = F(1, b-0.5) = b^2 + a^2(b-0.5) - a^2b^2 = b^2 + a^2(-b+0.25)$</p><h2 id="构造下半部分Ⅱ的中点误差项">构造下半部分Ⅱ的中点误差项</h2><p>在下半部分Ⅱ，主位移方向发生变化，中点Bresenham算法原理为：y方向上每次减1，x方向上加1不加1取决于中点误差项的值。从上半部分Ⅰ的终止点$P_i(x_i,y_i)$出发选取下一像素时，需将$P_l(x_i,y_i-1)$和$P_r(x_i+1,y_i-1)$的中点$M(x_i+0.5,y_i-1)$代入隐函数，构造中点误差项<br>$d_{2i} = F(x_i+0.5, y_i-1) = b^2(x_i+0.5)^2 + a^2(y_i-1)^2 - a^2b^2$<br><img src="/static/IT/Graphics/Oval-6.png" alt=""><br>当$d_{2i}&lt;0$时，中点M在椭圆内，下一像素点应选取$P_r$，即x方向上走一步；当$d_{2i}&gt;0$时，中点M在椭圆外，下一像素点应选取$P_l$，即x方向上不走步；当$d_{2i}＝0$时，中点M在椭圆上，$P_l、P_r$和椭圆的距离相等，选取$P_l$或$P_r$均可，约定取$P_l$。 （l代表left，左面的像素；r代表right，右面的像素）</p><h3 id="下半部分Ⅱ的递推公式">下半部分Ⅱ的递推公式</h3><p>现在如果考虑主位移方向再走一步，应该选择哪个中点代入中点误差项以决定应该选取的像素。分两种情况讨论。</p><ol><li>$当d_{2i}&lt;0时，下一步的中点坐标为M(x_i+1.5，y_i-2)，下一步中点误差项为$<br>$d_{2(i+1)} = F(x_i+1.5，y_i-2) = b^2(x_i+1.5)^2 + a^2(y_i-2)^2 - a^2b^2$<br>$ = b^2(x_i+0.5)^2 + a^2(y_i-1)^2 - a^2b^2 + b^2(2x_i+2) + a^2(-2y_i + 3)$<br>$ = d_{2i} + b^2(2x_i+2) + a^2(-2y_i + 3)$</li><li>$当d_{2i}≥0时，下一步的中点坐标为M(x_i+0.5，y_i-2)，下一步中点误差项为$<br>$d_{2(i+1)} = F(x_i+0.5，y_i-2) = b^2(x_i+0.5)^2 + a^2(y_i-2)^2 - a^2b^2$<br>$ = b^2(x_i+0.5)^2 + a^2(y_i-1)^2 - a^2b^2 + a^2(-2y_i + 3)$<br>$ = d_{2i} + a^2(-2y_i + 3)$</li></ol><h3 id="中点误差项的初始值-2">中点误差项的初始值</h3><p>在上半部分Ⅰ，法矢量的x向分量小于y向分量；在C点，法矢量的x向分量等于y向分量；在下半部分Ⅱ，法矢量的x向分量大于y向分量。则对于上半部分椭圆上一点$P(x_i，y_i)$，如果其当前中点$M(x_i+1,y_i-0.5)$，满足x向分量小于y向分量<br>$b^2(x_i+1)^2 &lt; a^2(y_i-0.5)^2$<br>而在下一个中点，不等号改变方向，则说明椭圆从上半部分Ⅰ转入了下半部分Ⅱ。<br><img src="/static/IT/Graphics/Oval-7.png" alt=""></p><p>假定$P_i(x_i,y_i)$点是椭圆上半部分Ⅰ的最后一个像素，$MⅠ(x_i+1,y_i-0.5)$是用于判断选取$P_u$和$P_d$像素的中点。由于下一像素转入了下半部分Ⅱ，其中点改为判断$P_l$和$P_r$的中点$MⅡ(x_i+0.5,y_i-1)$，所以下半部分的初值d<sub>20</sub>为: $d_{20} = b^2(x+0.5)^2 + a^2(y-1)^2 - a^2b^2$</p><hr><h2 id="算法源码">算法源码</h2><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">double</span> x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>d1<span class="token punctuation">,</span>d2<span class="token punctuation">,</span>a<span class="token punctuation">,</span>b<span class="token punctuation">;</span>a<span class="token operator">=</span><span class="token function">fabs</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span>x<span class="token operator">-</span>p0<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">;</span>b<span class="token operator">=</span><span class="token function">fabs</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span>y<span class="token operator">-</span>p0<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">;</span>x<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>y<span class="token operator">=</span>b<span class="token punctuation">;</span>d1<span class="token operator">=</span>b<span class="token operator">*</span>b<span class="token operator">+</span>a<span class="token operator">*</span>a<span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">-</span>b<span class="token operator">+</span><span class="token number">0.25</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">EllipsePoint</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>pDC<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//椭圆AC弧段</span><span class="token keyword">while</span><span class="token punctuation">(</span>b<span class="token operator">*</span>b<span class="token operator">*</span><span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;</span>a<span class="token operator">*</span>a<span class="token operator">*</span><span class="token punctuation">(</span>y<span class="token operator">-</span><span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token keyword">if</span> <span class="token punctuation">(</span>d1<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>d1<span class="token operator">+=</span>b<span class="token operator">*</span>b<span class="token operator">*</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token operator">*</span>x<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>d1<span class="token operator">+=</span>b<span class="token operator">*</span>b<span class="token operator">*</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token operator">*</span>x<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token operator">+</span>a<span class="token operator">*</span>a<span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">*</span>y<span class="token operator">+</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>y<span class="token operator">--</span><span class="token punctuation">;</span><span class="token punctuation">}</span>x<span class="token operator">++</span><span class="token punctuation">;</span><span class="token function">EllipsePoint</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>pDC<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token comment">//椭圆CB弧段</span>d2<span class="token operator">=</span>b<span class="token operator">*</span>b<span class="token operator">*</span><span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token number">0.5</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token number">0.5</span><span class="token punctuation">)</span><span class="token operator">+</span>a<span class="token operator">*</span>a<span class="token operator">*</span><span class="token punctuation">(</span>y<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token punctuation">(</span>y<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">-</span>a<span class="token operator">*</span>a<span class="token operator">*</span>b<span class="token operator">*</span>b<span class="token punctuation">;</span><span class="token keyword">while</span><span class="token punctuation">(</span>y<span class="token operator">&gt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token keyword">if</span> <span class="token punctuation">(</span>d2<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>d2<span class="token operator">+=</span>b<span class="token operator">*</span>b<span class="token operator">*</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token operator">*</span>x<span class="token operator">+</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">+</span>a<span class="token operator">*</span>a<span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">*</span>y<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>x<span class="token operator">++</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>d2<span class="token operator">+=</span>a<span class="token operator">*</span>a<span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">*</span>y<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span>y<span class="token operator">--</span><span class="token punctuation">;</span><span class="token function">EllipsePoint</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>pDC<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-反走样技术</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-fan-zou-yang-ji-zhu/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-fan-zou-yang-ji-zhu/</url>
+      
+        <content type="html"><![CDATA[<h2 id="反走样">反走样</h2><p>直线扫描转换算法在处理非水平、非垂直且非45°的直线段时会出现锯齿，这是因为直线段在光栅扫描显示器上显示的图像是由一系列亮度相同而面积不为零的离散像素点构成的。这种由离散量表示连续量而引起的失真称为走样（aliasing）。用于减轻走样现象的技术称为反走样（anti-aliasing,AA）或者抗锯齿。走样是理想直线（理想直线宽度为零）扫描转换后（真实像素点面积不为零）的必然结果。走样是光栅扫描显示器的一种固有现象，<strong>不可避免，只能减轻。</strong><br>反走样技术主要分为两类：<strong>一类是硬件技术，通过提高显示器的分辨率来实现；另一类是软件技术，通过改进软件算法来实现</strong>。<br>从硬件角度把显示器的分辩率提高了一倍。由于每个锯齿在x方向和y方向都只有原先分辨率的一半，所以看上去走样现象有所改善。虽然如此，硬件反走样技术由于受到硬件条件和成本的限制，实现起来较为困难，很难达到理想的反走样效果。<br>软件反走样技术主要是加权区域采样。算法的实质是利用人眼视觉特性，通过加权平均的方法，调节像素的亮度和灰度，以产生模糊的边界，从而达到较好的视觉效果以消除 “锯齿”。加权参数可以选择距离、面积和体积等。下面主要讲解<strong>直线的距离加权反走样算法</strong>，关于面积加权和体积加权反走样算法请读者参考相关文献。</p><h2 id="Wu反走样算法">Wu反走样算法</h2><p><img src="/static/IT/Graphics/AntiAliasing-1.png" alt="Wu反走样算法"><br>Wu反走样算法是采用空间混色原理来对走样进行修正。<strong>空间混色原理指出，人眼对某一区域颜色的识别是取这个区域颜色的平均值</strong>。Wu反走样算法原理是对于理想直线上的任一点，同时以两个不同亮度级别的相邻像素来表示。理想直线段上的点Q1，扫描转换后可用像素点P1和像素点P4以不同的亮度级别共同显示，<strong>像素点离理想直线段越近，其亮度值越小，像素越暗；像素点离理想直线段越远，其亮度值就越大，像素越亮，但二者的亮度级别之和等于像素Q1的灰度值。</strong></p><h2 id="构造距离误差项">构造距离误差项</h2><p><img src="/static/IT/Graphics/AntiAliasing-2.png" alt="构造距离误差项"><br>斜率为k的理想直线段与$P_u$和$P_d$像素中心连线的交点为$Q_i(x_{i+1},e_i）$。$e_i$为$Q_i$与$P_d$的距离。</p><ul><li>$P_d(x_i+1,y_i)$像素的亮度级别为：$c_d=RGB(e_i ×255,e_i ×255,e_i ×255)$</li><li>$P_u(x_i+1,y_i+1)$像素的亮度级别为：$c_u=RGB((1-e_i )×255,(1-e_i )×255,(1-e_i)×255)$</li></ul><p>每右移一个像素，$e_{i+1}=e_i+k$。当$e_i≥1.0$时，$y_{i+1}=y_i+1，e_{i+1}=e_i-1$</p><h3 id="算法源码">算法源码</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c">CPoint <span class="token function">p0</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">p1</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span>p<span class="token punctuation">;</span><span class="token keyword">int</span> dx<span class="token punctuation">,</span>dy<span class="token punctuation">;</span>dx<span class="token operator">=</span>p1<span class="token punctuation">.</span>x<span class="token operator">-</span>p0<span class="token punctuation">.</span>x<span class="token punctuation">;</span>dy<span class="token operator">=</span>p1<span class="token punctuation">.</span>y<span class="token operator">-</span>p0<span class="token punctuation">.</span>y<span class="token punctuation">;</span><span class="token keyword">double</span> k<span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span>dy<span class="token operator">/</span>dx<span class="token punctuation">,</span>e<span class="token punctuation">;</span>   <span class="token keyword">for</span><span class="token punctuation">(</span>p<span class="token operator">=</span>p0<span class="token punctuation">,</span>e<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>p<span class="token punctuation">.</span>x<span class="token operator">&lt;</span>p1<span class="token punctuation">.</span>x<span class="token punctuation">;</span>p<span class="token punctuation">.</span>x<span class="token operator">++</span><span class="token punctuation">)</span><span class="token comment">//不包括终点p1</span><span class="token punctuation">{</span>pDC<span class="token operator">-&gt;</span><span class="token function">SetPixelV</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>x<span class="token punctuation">,</span> p<span class="token punctuation">.</span>y<span class="token punctuation">,</span><span class="token function">RGB</span><span class="token punctuation">(</span>e<span class="token operator">*</span><span class="token number">255</span><span class="token punctuation">,</span>e<span class="token operator">*</span><span class="token number">255</span><span class="token punctuation">,</span>e<span class="token operator">*</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    pDC<span class="token operator">-&gt;</span><span class="token function">SetPixelV</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>x<span class="token punctuation">,</span> p<span class="token punctuation">.</span>y<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token function">RGB</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">-</span>e<span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">255</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">-</span>e<span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">255</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">-</span>e<span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    e<span class="token operator">+=</span>k<span class="token punctuation">;</span>       <span class="token keyword">if</span><span class="token punctuation">(</span>e<span class="token operator">&gt;=</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>    p<span class="token punctuation">.</span>y<span class="token operator">++</span><span class="token punctuation">;</span>        e<span class="token operator">--</span><span class="token punctuation">;</span><span class="token punctuation">}</span>        <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="彩色直线段的反走样">彩色直线段的反走样</h2><p>因为Wu反走样算法是从前景色过渡到背景色，彩色直线段的反走样需要考虑背景色的影响。设直线段的前景色（foreground color）为cf，背景色（background color）为cb。彩色直线段的反走样是从前景色变化到背景色，出现模糊边界。绘制光滑过渡的彩色直线段时，需要使用以下公式进行前景色线性插值<br>$c=(1-t)c_0+tc_1  $<br>式中，$c$为颜色渐变直线段上任一点的颜色；$c_0$为直线段起点的颜色；$c_1$为直线段终点的颜色。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-有效边表填充算法</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-you-xiao-bian-biao-tian-chong-suan-fa/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-you-xiao-bian-biao-tian-chong-suan-fa/</url>
+      
+        <content type="html"><![CDATA[<h2 id="填充原理">填充原理</h2><p>有效边表填充算法通过维护边表和有效边表，避开了扫描线与多边形所有边求交的复杂运算。填充原理是按照扫描线从小到大的移动顺序，计算当前扫描线与有效边的交点，然后把这些交点按x值递增的顺序进行排序、配对，以确定填充区间，最后用指定颜色填充区间内的所有像素，即完成填充工作。有效边表填充算法已成为目前最为有效的多边形填充算法之一。</p><h2 id="边界像素处理原则">边界像素处理原则</h2><p>填充左下角为（1，1），右上角为（3，3）的正方形时，若将边界上的所有像素全部填充，就得到图示的结果。<br><img src="/static/IT/Graphics/EffectiveEdgeList-1.png" alt="填充"><br>在多边形填充过程中，常采用“左闭右开”和“下闭上开”的原则对边界像素进行处理。</p><p><img src="/static/IT/Graphics/EffectiveEdgeList-2.png" alt=""><br>局部最高点P1、P6和P4，共享顶点的两条边落在扫描线的下方；普通连接点P2，共享顶点的两条边分别落在扫描线两侧；局部最低点P0、P3和P5，共享顶点的两条边落在扫描线的上方。常根据共享顶点的两条边的另一端的y值大于扫描线y值的个数来将交点个数取为0、1和2。事实上，有效边表算法能自动处理这三类顶点。</p><h2 id="有效边与有效边表">有效边与有效边表</h2><h3 id="有效边">有效边</h3><p>多边形与当前扫描线相交的边称为有效边（active edge）。在处理一条扫描线时仅对有效边进行求交运算，可以避免与多边形的所有边求交，提高了算法效率。有效边上的扫描线由起点到终点每次加1，即像素点的y坐标为y＝y+1，x坐标的变化可以按如下方法推导。<br><img src="/static/IT/Graphics/EffectiveEdgeList-3.png" alt="有效边"></p><h3 id="有效边表">有效边表</h3><p><img src="/static/IT/Graphics/EffectiveEdgeList-4.png" alt="有效边表"></p><h2 id="桶表与边表">桶表与边表</h2><p>从有效边表的建立过程可以看出，有效边表给出了扫描线与有效边交点坐标的计算方法，但是并没有给出新边出现的位置坐标。为了确定在哪条扫描线上插入了新边，就需要构造一个边表（edge table，<strong>ET</strong>），用以存放扫描线上多边形各条边出现的信息。因为水平边的1/k为∞，并且水平边本身就是扫描线，在建立边表时可以不予考虑。</p><h3 id="桶表和边表的表示法">桶表和边表的表示法</h3><p>桶表是<strong>按照扫描线顺序管理边出现情况的一个数据结构</strong>。首先，构造一个纵向扫描线链表，<strong>链表的长度为多边形所占有的最大扫描线数</strong>，链表的每个结点称为桶（bucket），对应多边形覆盖的每一条扫描线。<br>将每条边的信息链入与<strong>该边最小y坐标（ymin）<strong>相对应的桶处。也就是说，若某边的较低端点为ymin，则该边就存放在相应的扫描线桶中。<br>对于每一条扫描线，如果新增多条边，则</strong>按x|ymin坐标递增的顺序存放在一个链表中，若x|ymin 相等，则按照1/k由小到大排序</strong>，这样就形成边表。<br><img src="/static/IT/Graphics/EffectiveEdgeList-5.png" alt="边"></p><h3 id="桶表与边表示例">桶表与边表示例</h3><p><img src="/static/IT/Graphics/EffectiveEdgeList-6.png" alt="边表结点"><br><img src="/static/IT/Graphics/EffectiveEdgeList-7.png" alt="边表"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-边缘填充算法</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-bian-yuan-tian-chong-suan-fa/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-bian-yuan-tian-chong-suan-fa/</url>
+      
+        <content type="html"><![CDATA[<h2 id="填充原理">填充原理</h2><p>边缘填充算法是先求出多边形的每条边与扫描线的交点，然后<strong>将交点右侧的所有像素颜色全部取为补色（或反色</strong>）。按任意顺序处理完多边形的所有边后，就完成了多边形的填充任务。边缘填充算法利用了图像处理中的求“补”或求“反”的概念，对于黑白图像，求补就是把RGB(1,1,1)（白色）的像素置为RGB(0,0,0)（黑色），反之亦然；对于彩色图像，求补就是将背景色置为填充色，反之亦然。求补的一条基本性质是<strong>一个像素求补两次就恢复为原色</strong>。<strong>如果多边形内部的像素被求补偶数次，保持原色，如果被求补奇数次，显示填充色。</strong></p><h2 id="填充过程">填充过程</h2><p>假定边的顺序为E0、E1、E2、E3、E4、E5和E6。这里，边的顺序并不影响填充结果，只是方便编写循环结构而已。<br><img src="/static/IT/Graphics/EdgeFilling.png" alt="填充过程"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-区域填充算法</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-qu-yu-tian-chong-suan-fa/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-qu-yu-tian-chong-suan-fa/</url>
+      
+        <content type="html"><![CDATA[<h2 id="填充原理">填充原理</h2><p><strong>种子填充算法</strong>是从区域内任一个种子像素位置开始，由内向外将填充色扩散到整个多边形区域的填充过程。种子填充算法突出的优点是<strong>能对具有任意复杂闭合边界的区域进行填充。</strong></p><h2 id="四邻接点与八邻接点">四邻接点与八邻接点</h2><p><img src="/static/IT/Graphics/AreaFill-1.png" alt="四邻接点与八邻接点"></p><h2 id="四连通域与八连通域">四连通域与八连通域</h2><p><img src="/static/IT/Graphics/AreaFill-2.png" alt="四连通域与八连通域"><br><img src="/static/IT/Graphics/AreaFill-3.png" alt="四连通域与八连通域"></p><h2 id="种子填充算法">种子填充算法</h2><h3 id="算法定义">算法定义</h3><p>从种子像素点开始，使用四邻接点方式搜索下一像素点的填充算法称为四邻接点填充算法。从种子像素点开始，使用八邻接点方式搜索下一像素点的填充算法称为八邻接点填充算法。八邻接点填充算法的设计和四邻接点填充算法基本相似，只要把搜索方式由四邻接点修改为八邻接点即可。</p><h3 id="算法原理">算法原理</h3><p>种子填充算法一般要求区域边界色和填充色不同，输入参数只有种子坐标位置和填充颜色。种子填充算法一般需要使用<strong>堆栈数据结构</strong>来实现。<br>先将种子像素入栈，种子像素为栈底像素，如果栈不为空，执行如下3步操作：</p><ol><li>栈顶像素出栈；</li><li>按填充颜色<strong>绘制出栈像素</strong>。</li><li>按左、右、下、上（或左、左上、上、右上、右、右下、下、左下）顺序搜索与出栈像素相邻的四（八）个像素，若该像素的颜色不是边界色并且未置成填充色，则把该像素入栈；否则丢弃该像素。</li></ol><p>该算法也可以填充有孔区域。<br><strong>缺点</strong>：递归执行，算法简单，但效率不高，区域内每一象素都引起一次递归，进/出栈，费时费内存。<br>改进算法，减少递归次数，提高效率。<strong>解决方法是用扫描线填充算法</strong>。</p><h2 id="扫描线算法">扫描线算法</h2><p>目标：减少递归层次<br>算法思想：在任意不间断区间中只取一个种子像素（不间断区间指在一条扫描线上一组相邻元素），填充当前扫描线上的该段区间；然后确定与这一区段相邻的上下两条扫描线上位于区域内的区段，并依次把它们保存起来，反复进行这个过程，直到所保存的个区段都填充完毕。</p><h2 id="扫描线种子填充算法">扫描线种子填充算法</h2><p>算法原理为：先将种子像素入栈，种子像素为栈底像素，如果栈不为空，执行如下4步操作。</p><ol><li>栈顶像素出栈。</li><li>沿扫描线对出栈像素的左右像素进行填充，直至遇到边界像素为止。即每出栈一个像素，就对区域内包含该像素的整个连续区间进行填充。</li><li>同时记录该区间，将区间最左端像素记为xleft，最右端像素记为xright。</li><li>在区间〔xleft，xright〕中检查与当前扫描线相邻的上下两条扫描线的有关像素是否全为边界像素或已填充像素，若存在非边界且未填充的像素，则把未填充区间的最右端像素取作种子像素入栈。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-图形几何变换基础</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-tu-xing-ji-he-bian-huan-ji-chu/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-tu-xing-ji-he-bian-huan-ji-chu/</url>
+      
+        <content type="html"><![CDATA[<h2 id="规范化齐次坐标">规范化齐次坐标</h2><p>齐次坐标就是用n＋1维矢量表示n维矢量。例如，在二维平面中，点P(x,y)的齐次坐标表示为(wx,wy,w)。类似地，在三维空间中，点P(x,y,z)的齐次坐标表示为（wx,wy,wz,w）。<br>w＝1就是规范化的齐次坐标。二维点P(x，y)的规范化齐次坐标为〔x，y，1〕，三维点P(x，y，z)的规范化齐次坐标为(x，y，z，1)。<br>定义了规范化齐次坐标以后，图形几何变换可以表示为图形顶点集合的规范化齐次坐标矩阵与某一变换矩阵相乘的形式。</p><p>矩阵相乘: 由线性代数知道，矩阵乘法不满足交换律，只有左矩阵的列数等于右矩阵的行数时，两个矩阵才可以相乘。</p><h2 id="二维几何变换矩阵">二维几何变换矩阵</h2><p>用规范化齐次坐标表示的二维基本几何变换矩阵是一个3×3的方阵，简称为二维变换矩阵。<br><img src="/static/IT/Graphics/GraphicsTransBasics-1.png" alt="二维几何变换矩阵"><br>从功能上可以把二维变换矩阵T分为4个子矩阵。其中<br><img src="/static/IT/Graphics/GraphicsTransBasics-2.png" alt="二维几何变换矩阵"></p><h2 id="物体变换与坐标变换">物体变换与坐标变换</h2><p>同一种变换可以看作是物体变换，也可以看作是坐标变换。物体变换是使用同一变换矩阵作用于物体上的所有顶点，但坐标系位置不发生改变。坐标变换是坐标系发生变换，但物体位置不发生改变，然后在新坐标系下表示物体上的所有顶点。这两种变换紧密联系，各有各的优点，只是变换矩阵略有差异而已</p><h2 id="二维几何变换">二维几何变换</h2><p><img src="/static/IT/Graphics/GraphicsTransBasics-3.png" alt="二维几何变换"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-二维图形基本几何变换矩阵</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-er-wei-tu-xing-ji-ben-ji-he-bian-huan-ju-zhen/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-er-wei-tu-xing-ji-ben-ji-he-bian-huan-ju-zhen/</url>
+      
+        <content type="html"><![CDATA[<p>二维图形基本几何变换是指相对于坐标原点和坐标轴进行的几何变换，包括<strong>平移</strong>（Translate）、<strong>比例</strong>（Scale）、<strong>旋转</strong>（Rotate）、<strong>反射</strong>（Reflect）和<strong>错切</strong>（shear）5种变换。物体变换物体变换是通过变换物体上每一个顶点实现的，因此以点的二维基本几何变换为例讲解二维图形基本几何变换矩阵 。</p><h2 id="平移变换矩阵">平移变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-1.png" alt="平移变换矩阵"></p><h2 id="比例变换矩阵">比例变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-2.png" alt="比例变换矩阵"></p><h2 id="旋转变换矩阵">旋转变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-3.png" alt="旋转变换矩阵"></p><h2 id="反射变换矩阵">反射变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-4.png" alt="反射变换矩阵"><br><img src="/static/IT/Graphics/TransMatrix2-5.png" alt="反射变换矩阵"></p><h2 id="错切变换矩阵">错切变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-6.png" alt="错切变换矩阵"><br><img src="/static/IT/Graphics/TransMatrix2-7.png" alt="错切变换矩阵"><br><img src="/static/IT/Graphics/TransMatrix2-8.png" alt="错切变换矩阵"></p><p>上面讨论的五种变换给出的都是点变换的公式，对于线框模型，图形的变换实际上都可以通过点变换来完成。例如直线段的变换可以通过对两个顶点坐标进行变换，连接新顶点得到变换后的新直线段；多边形的变换可以通过对每个顶点进行变换，连接新顶点得到变换后的新多边形。曲线的变换可通过变换控制多边形的控制点后，重新绘制曲线来实现。</p><hr><h2 id="二维仿射变换">二维仿射变换</h2><p>符合下面形式的坐标变换称为<strong>二维仿射变换</strong>（Affine Transformation）。<br><img src="/static/IT/Graphics/TransMatrix2-9.png" alt="二维仿射变换"><br>仿射变换具有平行线变换成平行线，有限点映射到有限点的一般特性。平移、比例、旋转、反射和错切五种变换都是二维仿射变换的特例，任何一组二维仿射变换总可表示为这5种变换的组合。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机图形学-二维复合变换</title>
+      <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-er-wei-fu-he-bian-huan/"/>
+      <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-er-wei-fu-he-bian-huan/</url>
+      
+        <content type="html"><![CDATA[<h2 id="复合变换原理">复合变换原理</h2><p>$P’ = P\cdot T = P\cdot T_1\cdot T_2 \ldots T_n$<br>其中，T为复合变换矩阵，$T_1, T_2 \ldots T_n$为<strong>单次基本几何变换矩阵</strong>。</p><h2 id="相对于任一参考点的二维几何变换">相对于任一参考点的二维几何变换</h2><p>相对于任一参考点的比例变换和旋转变换应表达为复合变换形式，变换方法为<strong>首先将参考点平移到坐标原点，对坐标原点进行比例变换和旋转变换，然后再进行反平移将参考点平移回原位置。</strong></p><h2 id="相对于任意方向的二维几何变换">相对于任意方向的二维几何变换</h2><p>相对于任意方向的变换方法是<strong>首先对任意方向做旋转变换，使变换方向与坐标轴重合，然后对坐标轴进行二维基本几何变换，最后做反向旋转变换，将任意方向还原到原来的方向。</strong></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> IT学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机图形学 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>计算机图形学-中点分割直线段裁剪算法</title>
       <link href="/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-zhong-dian-fen-ge-zhi-xian-duan-cai-jian-suan-fa/"/>
       <url>/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-zhong-dian-fen-ge-zhi-xian-duan-cai-jian-suan-fa/</url>
