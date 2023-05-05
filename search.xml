@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>SublimeText4-安装插件平台</title>
+      <link href="/2023/05/05/yun-wei/sublimetext4-an-zhuang-cha-jian-ping-tai/"/>
+      <url>/2023/05/05/yun-wei/sublimetext4-an-zhuang-cha-jian-ping-tai/</url>
+      
+        <content type="html"><![CDATA[<ol><li><code>Ctrl + Shift + P</code></li><li><code>Install Package Control</code></li><li><code>Package Control: Install Package</code></li></ol><hr><p>中文插件: <code>ChineseLocalizations</code></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 运维手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SublimeText4 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>市场分析-20230503-Brooks-S&amp;P Emini</title>
       <link href="/2023/05/04/shi-chang-fen-xi/shi-chang-fen-xi-20230503-brooks-s-p-emini/"/>
       <url>/2023/05/04/shi-chang-fen-xi/shi-chang-fen-xi-20230503-brooks-s-p-emini/</url>
@@ -5959,23 +5984,23 @@
     
     
     <entry>
-      <title>aria2c+AriaNG下载方式</title>
-      <link href="/2023/03/17/coding/aria2c-ariang-xia-zai-fang-shi/"/>
-      <url>/2023/03/17/coding/aria2c-ariang-xia-zai-fang-shi/</url>
+      <title>Aria2-Aria2c+AriaNG安装</title>
+      <link href="/2023/03/17/yun-wei/aria2-aria2c-ariang-an-zhuang/"/>
+      <url>/2023/03/17/yun-wei/aria2-aria2c-ariang-an-zhuang/</url>
       
         <content type="html"><![CDATA[<ol><li><a href="https://github.com/aria2/aria2/releases">下载 aria2c</a></li><li><a href="https://github.com/mayswind/AriaNg/releases/tag/1.3.3">下载 AriaNG-AllInOne</a></li><li>运行 <code>powersehll</code> 命令开启RPC服务</li></ol><pre class="line-numbers language-powersehll" data-language="powersehll"><code class="language-powersehll">aria2c --enable-rpc --rpc-allow-origin-all<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ol start="4"><li>浏览器打开 <code>AriaNG</code> 里的 <code>index.html</code> 文件</li></ol><hr><p>后台运行 <code>aria2c</code> 命令（<a href="/2023/03/17/coding/powershell-hou-tai-ming-ling/" title="powershell-后台命令">powershell-后台命令</a>）：</p><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">Start-Job</span> <span class="token operator">-</span>ScriptBlock <span class="token punctuation">{</span>aria2c <span class="token operator">--</span><span class="token function">enable-rpc</span> <span class="token operator">--</span>rpc-allow-origin-all<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
       
       
       <categories>
           
-          <category> 使用手册 </category>
+          <category> 运维手册 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 下载器 </tag>
+            <tag> Aria2 </tag>
             
         </tags>
       
@@ -6758,25 +6783,25 @@
     
     
     <entry>
-      <title>虚拟化-windows kali linux 子系统安装软件包</title>
-      <link href="/2023/02/12/coding/xu-ni-hua-windows-kali-linux-zi-xi-tong-an-zhuang-ruan-jian-bao/"/>
-      <url>/2023/02/12/coding/xu-ni-hua-windows-kali-linux-zi-xi-tong-an-zhuang-ruan-jian-bao/</url>
+      <title>WSL-kali linux 子系统安装软件包</title>
+      <link href="/2023/02/12/yun-wei/wsl-kali-linux-zi-xi-tong-an-zhuang-ruan-jian-bao/"/>
+      <url>/2023/02/12/yun-wei/wsl-kali-linux-zi-xi-tong-an-zhuang-ruan-jian-bao/</url>
       
         <content type="html"><![CDATA[<p>一次性安装软件包</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt</span> update<span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> <span class="token parameter variable">-y</span> kali-linux-default<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>1、系统</p><ul><li><code>kali-linux-core</code>：基本<code>Kali Linux</code>系统 - 始终包含的核心项目</li><li><code>kali-linux-headless</code>：不需要 <code>GUI</code> 的默认安装</li><li><code>kali-linux-default</code>：“默认”桌面 （<code>amd64/i386</code>） 映像包括这些工具</li><li><code>kali-linux-arm</code>：适用于 <code>ARM</code> 设备的所有工具</li><li><code>kali-linux-nethunter</code>：用作<code>Kali NetHunter</code>一部分的工具</li></ul><p>2、桌面环境<code>DM</code>/窗口管理器<code>WM</code></p><ul><li><code>kali-desktop-core</code>：<code>GUI</code> 映像所需的任何关键工具</li><li><code>kali-desktop-e17</code>： <code>Enlightenment (WM)</code></li><li><code>kali-desktop-gnome</code>：<code>GNOME（DM）</code></li><li><code>kali-desktop-i3</code>： <code>i3 （WM）</code></li><li><code>kali-desktop-kde</code>： <code>KDE（DM）</code></li><li><code>kali-desktop-lxde</code>： <code>LXDE（WM）</code></li><li><code>kali-desktop-mate</code>： <code>MATE（DM）</code></li><li><code>kali-desktop-xfce</code>： <code>Xfce（WM）</code></li></ul><p>3、工具</p><ul><li><code>kali-tools-gpu</code>：受益于访问<code>GPU</code>硬件的工具</li><li><code>kali-tools-hardware</code>： 硬件黑客工具</li><li><code>kali-tools-crypto-stego</code>：基于密码学和隐写术的工具</li><li><code>kali-tools-fuzzing</code>：用于模糊测试实验方案</li><li><code>kali-tools-802-11</code>： <code>802.11</code> （通常称为“<code>Wi-Fi</code>”）</li><li><code>kali-tools-bluetooth</code>：用于定位蓝牙设备</li><li><code>kali-tools-rfid</code>：射频识别工具</li><li><code>kali-tools-sdr</code>： 软件定义无线电工具</li><li><code>kali-tools-voip</code>：<code>IP</code> 语音工具</li><li><code>kali-tools-windows-resources</code>：可以在 <code>Windows</code> 主机上执行的任何资源</li></ul><p>4、菜单</p><ul><li><code>kali-tools-information-gathering</code>：用于开源智能（<code>OSINT</code>）和信息收集</li><li><code>kali-tools-vulnerability</code>：漏洞评估工具</li><li><code>kali-tools-web</code>：设计用于进行<code>Web</code>应用程序攻击</li><li><code>kali-tools-database</code>：基于任何数据库攻击</li><li><code>kali-tools-passwords</code>：有助于密码破解攻击 - 在线和离线</li><li><code>kali-tools-wireless</code>：所有工具都基于无线协议 - <code>802.11</code>，蓝牙，<code>RFID</code>和<code>SDR</code></li><li><code>kali-tools-reverse-engineering</code>：用于逆向工程二进制文件</li><li><code>kali-tools-exploitation</code>：通常用于进行开发</li><li><code>kali-tools-social-engineering</code>：旨在进行社会工程技术</li><li><code>kali-tools-sniffing-spoofing</code>：任何用于嗅探和欺骗的工具</li><li><code>kali-tools-post-exploitation</code>： 开发后阶段的技巧</li><li><code>kali-tools-forensics</code>： 取证工具 – 实时和离线</li><li><code>kali-tools-reporting</code>：报告工具</li></ul><p>5、其它</p><ul><li><code>kali-linux-large</code>：我们之前的默认工具适用于 <code>amd64/i386</code> 图像</li><li><code>kali-linux-everything</code>：此处列出的每个元包和工具</li><li><code>kali-tools-top10</code>：最常用的工具</li><li><code>kali-desktop-live</code>：从映像引导时在实时会话期间使用</li></ul>]]></content>
       
       
       <categories>
           
-          <category> 使用手册 </category>
+          <category> 运维手册 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 虚拟化 </tag>
-            
             <tag> Kali </tag>
+            
+            <tag> WSL </tag>
             
         </tags>
       
@@ -7603,23 +7628,23 @@
     
     
     <entry>
-      <title>虚拟化-windows linux 子系统迁移路径</title>
-      <link href="/2022/12/30/coding/xu-ni-hua-windows-linux-zi-xi-tong-qian-yi-lu-jing/"/>
-      <url>/2022/12/30/coding/xu-ni-hua-windows-linux-zi-xi-tong-qian-yi-lu-jing/</url>
+      <title>WSL-linux子系统迁移</title>
+      <link href="/2022/12/30/yun-wei/wsl-linux-zi-xi-tong-qian-yi/"/>
+      <url>/2022/12/30/yun-wei/wsl-linux-zi-xi-tong-qian-yi/</url>
       
         <content type="html"><![CDATA[<ol><li><code>wsl -l -v</code> 查看需要迁移的子系统</li><li><code>wsl --export  docker-desktop-data D:\virtual\docker-desktop-data.tar</code> 导出子系统</li><li><code>wsl --unregister docker-desktop-data</code> 注销子系统</li><li><code>wsl --import docker-desktop-data D:\virtual\docker-desktop-data D:\virtual\docker-desktop-data.tar --version 2</code> 导入子系统</li><li>删除<code>tar</code>文件: <code>D:\virtual\docker-desktop-data.tar</code></li><li><code>wsl -l -v</code> 查看是否导入成功</li></ol>]]></content>
       
       
       <categories>
           
-          <category> 使用手册 </category>
+          <category> 运维手册 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 虚拟化 </tag>
+            <tag> WSL </tag>
             
         </tags>
       
@@ -7653,23 +7678,25 @@
     
     
     <entry>
-      <title>虚拟化-windows 安装安卓子系统</title>
-      <link href="/2022/12/30/coding/xu-ni-hua-windows-an-zhuang-an-zhuo-zi-xi-tong/"/>
-      <url>/2022/12/30/coding/xu-ni-hua-windows-an-zhuang-an-zhuo-zi-xi-tong/</url>
+      <title>WIN-安装Android子系统</title>
+      <link href="/2022/12/30/yun-wei/win-an-zhuang-android-zi-xi-tong/"/>
+      <url>/2022/12/30/yun-wei/win-an-zhuang-android-zi-xi-tong/</url>
       
         <content type="html"><![CDATA[<ol><li>打开链接 <a href="https://store.rg-adguard.net/">https://store.rg-adguard.net/</a></li><li>输入 <a href="https://www.microsoft.com/store/productid/9p3395vx91nr">https://www.microsoft.com/store/productid/9p3395vx91nr</a></li><li>选择 slow，点击 √</li><li><code>MicrosoftCorporationII.WindowsSubsystemForAndroid_1.8.32837.0_neutral_~_8wekyb3d8bbwe.msixbundle</code>，右键这个链接，复制链接地址，新建标签页，打开这个链接，开始下载</li><li>进入管理员模式 PS</li><li><code>Add-AppxPackage "D:\xicheng_jiang\下载\浏览器\MicrosoftCorporationII.WindowsSubsystemForAndroid_1.8.32837.0_neutral___8wekyb3d8bbwe.Msixbundle"</code></li></ol><hr><p>若报错则以同样的方式安装 <code>Microsoft.UI.Xaml.2.6_2.62112.3002.0_x64__8wekyb3d8bbwe.appx</code><br>然后重试</p>]]></content>
       
       
       <categories>
           
-          <category> 使用手册 </category>
+          <category> 运维手册 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 虚拟化 </tag>
+            <tag> WIN </tag>
+            
+            <tag> Android </tag>
             
         </tags>
       

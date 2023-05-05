@@ -4,14 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="虚拟化-windows kali linux 子系统安装软件包, PA &amp; CODING">
-    <meta name="description" content="一次性安装软件包
-sudo apt update
-sudo apt install -y kali-linux-default
-1、系统
+    <meta name="keywords" content="Aria2-Aria2c+AriaNG安装, PA &amp; CODING">
+    <meta name="description" content="
+下载 aria2c
+下载 AriaNG-AllInOne
+运行 powersehll 命令开启RPC服务
 
-kali-linux-core：基本Kali Linux系统 - 始终包含的核心项目
-kali-li">
+aria2c --enable-rpc --rpc-allow-origin-all
+
+浏览器打开 AriaNG 里的 index">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -23,9 +24,18 @@ kali-li">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>虚拟化-windows kali linux 子系统安装软件包 | PA &amp; CODING</title>
+    <title>Aria2-Aria2c+AriaNG安装 | PA &amp; CODING</title>
     <link rel="icon" type="image/png" href="/favicon-kali.png">
     
+    <style>
+        body{
+            background-image: url(/background.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
 
 
     <!-- bg-cover style     -->
@@ -267,7 +277,7 @@ kali-li">
         
         <li><div class="divider"></div></li>
         <li>
-            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+            <a href="https://github.com/jxch" class="waves-effect waves-light" target="_blank">
                 <i class="fab fa-github-square fa-fw"></i>Fork Me
             </a>
         </li>
@@ -324,7 +334,7 @@ kali-li">
     }
 </style>
 
-<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+<a href="https://github.com/jxch" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
    data-tooltip="Fork Me" data-position="left" data-delay="50">
     <svg viewBox="0 0 250 250" aria-hidden="true">
         <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
@@ -343,12 +353,12 @@ kali-li">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">虚拟化-windows kali linux 子系统安装软件包</h1>
+                    <h1 class="description center-align post-title">Aria2-Aria2c+AriaNG安装</h1>
                 </div>
             </div>
         </div>
@@ -372,12 +382,8 @@ kali-li">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/">
-                                <span class="chip bg-color">虚拟化</span>
-                            </a>
-                        
-                            <a href="/tags/Kali/">
-                                <span class="chip bg-color">Kali</span>
+                            <a href="/tags/Aria2/">
+                                <span class="chip bg-color">Aria2</span>
                             </a>
                         
                     </div>
@@ -388,8 +394,8 @@ kali-li">
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                使用手册
+                            <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                运维手册
                             </a>
                         
                     </div>
@@ -401,7 +407,7 @@ kali-li">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-02-12
+                    2023-03-17
                 </div>
                 
 
@@ -410,14 +416,14 @@ kali-li">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    526
+                    58
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    1 分
                 </div>
                 
 
@@ -440,64 +446,18 @@ kali-li">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>一次性安装软件包</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt</span> update
-<span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> <span class="token parameter variable">-y</span> kali-linux-default<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>1、系统</p>
-<ul>
-<li><code>kali-linux-core</code>：基本<code>Kali Linux</code>系统 - 始终包含的核心项目</li>
-<li><code>kali-linux-headless</code>：不需要 <code>GUI</code> 的默认安装</li>
-<li><code>kali-linux-default</code>：“默认”桌面 （<code>amd64/i386</code>） 映像包括这些工具</li>
-<li><code>kali-linux-arm</code>：适用于 <code>ARM</code> 设备的所有工具</li>
-<li><code>kali-linux-nethunter</code>：用作<code>Kali NetHunter</code>一部分的工具</li>
-</ul>
-<p>2、桌面环境<code>DM</code>/窗口管理器<code>WM</code></p>
-<ul>
-<li><code>kali-desktop-core</code>：<code>GUI</code> 映像所需的任何关键工具</li>
-<li><code>kali-desktop-e17</code>： <code>Enlightenment (WM)</code></li>
-<li><code>kali-desktop-gnome</code>：<code>GNOME（DM）</code></li>
-<li><code>kali-desktop-i3</code>： <code>i3 （WM）</code></li>
-<li><code>kali-desktop-kde</code>： <code>KDE（DM）</code></li>
-<li><code>kali-desktop-lxde</code>： <code>LXDE（WM）</code></li>
-<li><code>kali-desktop-mate</code>： <code>MATE（DM）</code></li>
-<li><code>kali-desktop-xfce</code>： <code>Xfce（WM）</code></li>
-</ul>
-<p>3、工具</p>
-<ul>
-<li><code>kali-tools-gpu</code>：受益于访问<code>GPU</code>硬件的工具</li>
-<li><code>kali-tools-hardware</code>： 硬件黑客工具</li>
-<li><code>kali-tools-crypto-stego</code>：基于密码学和隐写术的工具</li>
-<li><code>kali-tools-fuzzing</code>：用于模糊测试实验方案</li>
-<li><code>kali-tools-802-11</code>： <code>802.11</code> （通常称为“<code>Wi-Fi</code>”）</li>
-<li><code>kali-tools-bluetooth</code>：用于定位蓝牙设备</li>
-<li><code>kali-tools-rfid</code>：射频识别工具</li>
-<li><code>kali-tools-sdr</code>： 软件定义无线电工具</li>
-<li><code>kali-tools-voip</code>：<code>IP</code> 语音工具</li>
-<li><code>kali-tools-windows-resources</code>：可以在 <code>Windows</code> 主机上执行的任何资源</li>
-</ul>
-<p>4、菜单</p>
-<ul>
-<li><code>kali-tools-information-gathering</code>：用于开源智能（<code>OSINT</code>）和信息收集</li>
-<li><code>kali-tools-vulnerability</code>：漏洞评估工具</li>
-<li><code>kali-tools-web</code>：设计用于进行<code>Web</code>应用程序攻击</li>
-<li><code>kali-tools-database</code>：基于任何数据库攻击</li>
-<li><code>kali-tools-passwords</code>：有助于密码破解攻击 - 在线和离线</li>
-<li><code>kali-tools-wireless</code>：所有工具都基于无线协议 - <code>802.11</code>，蓝牙，<code>RFID</code>和<code>SDR</code></li>
-<li><code>kali-tools-reverse-engineering</code>：用于逆向工程二进制文件</li>
-<li><code>kali-tools-exploitation</code>：通常用于进行开发</li>
-<li><code>kali-tools-social-engineering</code>：旨在进行社会工程技术</li>
-<li><code>kali-tools-sniffing-spoofing</code>：任何用于嗅探和欺骗的工具</li>
-<li><code>kali-tools-post-exploitation</code>： 开发后阶段的技巧</li>
-<li><code>kali-tools-forensics</code>： 取证工具 – 实时和离线</li>
-<li><code>kali-tools-reporting</code>：报告工具</li>
-</ul>
-<p>5、其它</p>
-<ul>
-<li><code>kali-linux-large</code>：我们之前的默认工具适用于 <code>amd64/i386</code> 图像</li>
-<li><code>kali-linux-everything</code>：此处列出的每个元包和工具</li>
-<li><code>kali-tools-top10</code>：最常用的工具</li>
-<li><code>kali-desktop-live</code>：从映像引导时在实时会话期间使用</li>
-</ul>
+                <ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/aria2/aria2/releases">下载 aria2c</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mayswind/AriaNg/releases/tag/1.3.3">下载 AriaNG-AllInOne</a></li>
+<li>运行 <code>powersehll</code> 命令开启RPC服务</li>
+</ol>
+<pre class="line-numbers language-powersehll" data-language="powersehll"><code class="language-powersehll">aria2c --enable-rpc --rpc-allow-origin-all<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol start="4">
+<li>浏览器打开 <code>AriaNG</code> 里的 <code>index.html</code> 文件</li>
+</ol>
+<hr>
+<p>后台运行 <code>aria2c</code> 命令（<a href="/2023/03/17/coding/powershell-hou-tai-ming-ling/" title="powershell-后台命令">powershell-后台命令</a>）：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">Start-Job</span> <span class="token operator">-</span>ScriptBlock <span class="token punctuation">{</span>aria2c <span class="token operator">--</span><span class="token function">enable-rpc</span> <span class="token operator">--</span>rpc-allow-origin-all<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>
@@ -524,7 +484,7 @@ kali-li">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://jxch.github.io/2023/02/12/coding/xu-ni-hua-windows-kali-linux-zi-xi-tong-an-zhuang-ruan-jian-bao/">https://jxch.github.io/2023/02/12/coding/xu-ni-hua-windows-kali-linux-zi-xi-tong-an-zhuang-ruan-jian-bao/</a>
+                    <a href="https://jxch.github.io/2023/03/17/yun-wei/aria2-aria2c-ariang-an-zhuang/">https://jxch.github.io/2023/03/17/yun-wei/aria2-aria2c-ariang-an-zhuang/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -562,12 +522,8 @@ kali-li">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/">
-                                    <span class="chip bg-color">虚拟化</span>
-                                </a>
-                            
-                                <a href="/tags/Kali/">
-                                    <span class="chip bg-color">Kali</span>
+                                <a href="/tags/Aria2/">
+                                    <span class="chip bg-color">Aria2</span>
                                 </a>
                             
                         </div>
@@ -650,13 +606,13 @@ kali-li">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/02/15/coding/spring-4-bean-sheng-ming-zhou-qi-yuan-ma-jie-xi/">
+                <a href="/2023/03/17/coding/powershell-hou-tai-ming-ling/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="Spring-4.Bean生命周期源码解析">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="powershell-后台命令">
                         
-                        <span class="card-title">Spring-4.Bean生命周期源码解析</span>
+                        <span class="card-title">powershell-后台命令</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -667,14 +623,14 @@ kali-li">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-17
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                            <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
                                 </a>
                             
                             
@@ -684,8 +640,8 @@ kali-li">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Spring/">
-                        <span class="chip bg-color">Spring</span>
+                    <a href="/tags/powershell/">
+                        <span class="chip bg-color">powershell</span>
                     </a>
                     
                 </div>
@@ -699,31 +655,31 @@ kali-li">
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/02/12/bi-ji/zhe-xue-hai-de-ge-er-cun-zai-yu-shi-jian/">
+                <a href="/2023/03/12/ri-ji/ri-ji-20230312-ai-qing-he-hun-yin/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="哲学-海德格尔-存在与时间">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="日记-20230312-爱情和婚姻">
                         
-                        <span class="card-title">哲学-海德格尔-存在与时间</span>
+                        <span class="card-title">日记-20230312-爱情和婚姻</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            这是一篇加密文章，需要密码才能继续阅读。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-12
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-12
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    学习笔记
+                            <a href="/categories/%E6%80%9D%E8%80%83/" class="post-category">
+                                    思考
                                 </a>
                             
                             
@@ -733,8 +689,12 @@ kali-li">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%93%B2%E5%AD%A6/">
-                        <span class="chip bg-color">哲学</span>
+                    <a href="/tags/%E6%97%A5%E8%AE%B0/">
+                        <span class="chip bg-color">日记</span>
+                    </a>
+                    
+                    <a href="/tags/private/">
+                        <span class="chip bg-color">private</span>
                     </a>
                     
                 </div>
@@ -919,15 +879,17 @@ kali-li">
     
 
     <div class="container row center-align"
-         style="margin-bottom: 0px !important;">
+         style="margin-bottom: 15px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2023</span>
+                <span id="year">2022-2023</span>
             
             <a href="/about" target="_blank">钱不寒</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+                <span id="translate">|&nbsp;繁/简：</span><a id="translateLink" href="javascript:translatePage();">繁</a>
             
             <br>
             
@@ -953,6 +915,60 @@ kali-li">
             <br>
 
             <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "11";
+                        var startDate = "1";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
             
             <br>
             
@@ -1165,6 +1181,17 @@ $(function () {
     
 
     
+        <script type="text/javascript" src="/js/tw_cn.js"></script>
+        <script type="text/javascript">
+          var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+          var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+          var cookieDomain = "https://jxch.github.io"; //Cookie地址, 一定要设定, 通常为你的网址
+          var msgToTraditionalChinese = "繁"; //此处可以更改为你想要显示的文字
+          var msgToSimplifiedChinese = "简"; //同上，但两处均不建议更改
+          var translateButtonId = "translateLink"; //默认互换id
+          translateInitilization();
+        </script>
+    
     
     
 
@@ -1174,10 +1201,6 @@ $(function () {
     <!-- 鼠标星星特效 -->
     
 
-     
-        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
-        <script src="/libs/others/TencentCaptcha.js"></script>
-        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
     
 
     <!-- Baidu Analytics -->
