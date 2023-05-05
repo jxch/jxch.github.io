@@ -4,13 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="LeetCode-4.寻找两个正序数组的中位数, PA &amp; CODING">
+    <meta name="keywords" content="LeetCode-7.整数反转, PA &amp; CODING">
     <meta name="description" content="题干
-给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
-算法的时间复杂度应该为 O(log (m+n)) 。
+给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。
+如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。
+假设环境不允许存储 64 位整数（有符号或无符号）。
 
-示例 1：
-输入：nums1 = [1,3], n">
+示">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +22,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>LeetCode-4.寻找两个正序数组的中位数 | PA &amp; CODING</title>
+    <title>LeetCode-7.整数反转 | PA &amp; CODING</title>
     <link rel="icon" type="image/png" href="/favicon-kali.png">
     
     <style>
@@ -351,12 +351,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">LeetCode-4.寻找两个正序数组的中位数</h1>
+                    <h1 class="description center-align post-title">LeetCode-7.整数反转</h1>
                 </div>
             </div>
         </div>
@@ -414,14 +414,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    539
+                    196
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    1 分
                 </div>
                 
 
@@ -445,72 +445,47 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="题干">题干</h2>
-<p>给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。<br>
-算法的时间复杂度应该为 O(log (m+n)) 。</p>
+<p>给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。<br>
+如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。<br>
+假设环境不允许存储 64 位整数（有符号或无符号）。</p>
 <blockquote>
 <p>示例 1：<br>
-输入：nums1 = [1,3], nums2 = [2]<br>
-输出：2.00000<br>
-解释：合并数组 = [1,2,3] ，中位数 2</p>
+输入：x = 123<br>
+输出：321</p>
 </blockquote>
 <blockquote>
 <p>示例 2：<br>
-输入：nums1 = [1,2], nums2 = [3,4]<br>
-输出：2.50000<br>
-解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5</p>
+输入：x = -123<br>
+输出：-321</p>
+</blockquote>
+<blockquote>
+<p>示例 3：<br>
+输入：x = 120<br>
+输出：21</p>
+</blockquote>
+<blockquote>
+<p>示例 4：<br>
+输入：x = 0<br>
+输出：0</p>
 </blockquote>
 <blockquote>
 <p>提示：<br>
-nums1.length == m<br>
-nums2.length == n<br>
-0 &lt;= m &lt;= 1000<br>
-0 &lt;= n &lt;= 1000<br>
-1 &lt;= m + n &lt;= 2000<br>
--106 &lt;= nums1[i], nums2[i] &lt;= 106</p>
+-231 &lt;= x &lt;= 231 - 1</p>
 </blockquote>
 <h2 id="python">python</h2>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">findMedianSortedArrays</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> nums1<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">,</span> nums2<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">float</span><span class="token punctuation">:</span>
-        <span class="token keyword">def</span> <span class="token function">getKthElement</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token triple-quoted-string string">"""
-            - 主要思路：要找到第 k (k&gt;1) 小的元素，那么就取 pivot1 = nums1[k/2-1] 和 pivot2 = nums2[k/2-1] 进行比较
-            - 这里的 "/" 表示整除
-            - nums1 中小于等于 pivot1 的元素有 nums1[0 .. k/2-2] 共计 k/2-1 个
-            - nums2 中小于等于 pivot2 的元素有 nums2[0 .. k/2-2] 共计 k/2-1 个
-            - 取 pivot = min(pivot1, pivot2)，两个数组中小于等于 pivot 的元素共计不会超过 (k/2-1) + (k/2-1) &lt;= k-2 个
-            - 这样 pivot 本身最大也只能是第 k-1 小的元素
-            - 如果 pivot = pivot1，那么 nums1[0 .. k/2-1] 都不可能是第 k 小的元素。把这些元素全部 "删除"，剩下的作为新的 nums1 数组
-            - 如果 pivot = pivot2，那么 nums2[0 .. k/2-1] 都不可能是第 k 小的元素。把这些元素全部 "删除"，剩下的作为新的 nums2 数组
-            - 由于我们 "删除" 了一些元素（这些元素都比第 k 小的元素要小），因此需要修改 k 的值，减去删除的数的个数
-            """</span>
-            
-            index1<span class="token punctuation">,</span> index2 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
-            <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
-                <span class="token comment"># 特殊情况</span>
-                <span class="token keyword">if</span> index1 <span class="token operator">==</span> m<span class="token punctuation">:</span>
-                    <span class="token keyword">return</span> nums2<span class="token punctuation">[</span>index2 <span class="token operator">+</span> k <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span>
-                <span class="token keyword">if</span> index2 <span class="token operator">==</span> n<span class="token punctuation">:</span>
-                    <span class="token keyword">return</span> nums1<span class="token punctuation">[</span>index1 <span class="token operator">+</span> k <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span>
-                <span class="token keyword">if</span> k <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
-                    <span class="token keyword">return</span> <span class="token builtin">min</span><span class="token punctuation">(</span>nums1<span class="token punctuation">[</span>index1<span class="token punctuation">]</span><span class="token punctuation">,</span> nums2<span class="token punctuation">[</span>index2<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">reverse</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+        y<span class="token punctuation">,</span> res <span class="token operator">=</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span>
+        <span class="token comment"># 则其数值范围为 [−2^31,  2^31 − 1]</span>
+        boundry <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">31</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span> <span class="token keyword">if</span> x <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token keyword">else</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">31</span><span class="token punctuation">)</span>
+        <span class="token keyword">while</span> y <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token comment"># 倒序累加</span>
+            res <span class="token operator">=</span> res<span class="token operator">*</span><span class="token number">10</span> <span class="token operator">+</span>y<span class="token operator">%</span><span class="token number">10</span>
+            <span class="token keyword">if</span> res <span class="token operator">&gt;</span> boundry<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token number">0</span>
+            y <span class="token operator">//=</span><span class="token number">10</span>
 
-                <span class="token comment"># 正常情况</span>
-                newIndex1 <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>index1 <span class="token operator">+</span> k <span class="token operator">//</span> <span class="token number">2</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> m <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-                newIndex2 <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>index2 <span class="token operator">+</span> k <span class="token operator">//</span> <span class="token number">2</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
-                pivot1<span class="token punctuation">,</span> pivot2 <span class="token operator">=</span> nums1<span class="token punctuation">[</span>newIndex1<span class="token punctuation">]</span><span class="token punctuation">,</span> nums2<span class="token punctuation">[</span>newIndex2<span class="token punctuation">]</span>
-                <span class="token keyword">if</span> pivot1 <span class="token operator">&lt;=</span> pivot2<span class="token punctuation">:</span>
-                    k <span class="token operator">-=</span> newIndex1 <span class="token operator">-</span> index1 <span class="token operator">+</span> <span class="token number">1</span>
-                    index1 <span class="token operator">=</span> newIndex1 <span class="token operator">+</span> <span class="token number">1</span>
-                <span class="token keyword">else</span><span class="token punctuation">:</span>
-                    k <span class="token operator">-=</span> newIndex2 <span class="token operator">-</span> index2 <span class="token operator">+</span> <span class="token number">1</span>
-                    index2 <span class="token operator">=</span> newIndex2 <span class="token operator">+</span> <span class="token number">1</span>
-        
-        m<span class="token punctuation">,</span> n <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nums1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nums2<span class="token punctuation">)</span>
-        totalLength <span class="token operator">=</span> m <span class="token operator">+</span> n
-        <span class="token keyword">if</span> totalLength <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> getKthElement<span class="token punctuation">(</span><span class="token punctuation">(</span>totalLength <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">//</span> <span class="token number">2</span><span class="token punctuation">)</span>
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            <span class="token keyword">return</span> <span class="token punctuation">(</span>getKthElement<span class="token punctuation">(</span>totalLength <span class="token operator">//</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> getKthElement<span class="token punctuation">(</span>totalLength <span class="token operator">//</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <span class="token keyword">return</span> res <span class="token keyword">if</span> x <span class="token operator">&gt;</span><span class="token number">0</span> <span class="token keyword">else</span> <span class="token operator">-</span>res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -537,7 +512,7 @@ nums2.length == n<br>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://jxch.github.io/2023/05/05/suan-fa/leetcode-4-xun-zhao-liang-ge-zheng-xu-shu-zu-de-zhong-wei-shu/">https://jxch.github.io/2023/05/05/suan-fa/leetcode-4-xun-zhao-liang-ge-zheng-xu-shu-zu-de-zhong-wei-shu/</a>
+                    <a href="https://jxch.github.io/2023/05/05/leetcode/leetcode-7-zheng-shu-fan-zhuan/">https://jxch.github.io/2023/05/05/leetcode/leetcode-7-zheng-shu-fan-zhuan/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -659,13 +634,13 @@ nums2.length == n<br>
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/05/05/suan-fa/leetcode-5-zui-chang-hui-wen-zi-chuan/">
+                <a href="/2023/05/05/leetcode/leetcode-8-zi-fu-chuan-zhuan-huan-zheng-shu-atoi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="LeetCode-5.最长回文子串">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="LeetCode-8.字符串转换整数(atoi)">
                         
-                        <span class="card-title">LeetCode-5.最长回文子串</span>
+                        <span class="card-title">LeetCode-8.字符串转换整数(atoi)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -708,13 +683,13 @@ nums2.length == n<br>
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/05/05/suan-fa/leetcode-3-wu-chong-fu-zi-fu-de-zui-chang-zi-chuan/">
+                <a href="/2023/05/05/leetcode/leetcode-6-n-zi-xing-bian-huan/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="LeetCode-3.无重复字符的最长子串">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="LeetCode-6.N字形变换">
                         
-                        <span class="card-title">LeetCode-3.无重复字符的最长子串</span>
+                        <span class="card-title">LeetCode-6.N字形变换</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -943,7 +918,7 @@ nums2.length == n<br>
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">215.3k</span>
+                        class="white-color">215.7k</span>
             
             
             

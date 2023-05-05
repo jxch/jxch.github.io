@@ -4,13 +4,19 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="LeetCode-8.字符串转换整数(atoi), PA &amp; CODING">
+    <meta name="keywords" content="LeetCode-5.最长回文子串, PA &amp; CODING">
     <meta name="description" content="题干
-请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。
-函数 myAtoi(string s) 的算法如下：
+给你一个字符串 s，找到 s 中最长的回文子串。
+如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。
 
-读入字符串并丢弃无用的前导空格
-">
+示例 1：
+输入：s = “babad”
+输出：“bab”
+解释：“aba” 同样是符合题意的答案。
+
+
+示例 2：
+输">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +28,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>LeetCode-8.字符串转换整数(atoi) | PA &amp; CODING</title>
+    <title>LeetCode-5.最长回文子串 | PA &amp; CODING</title>
     <link rel="icon" type="image/png" href="/favicon-kali.png">
     
     <style>
@@ -351,12 +357,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">LeetCode-8.字符串转换整数(atoi)</h1>
+                    <h1 class="description center-align post-title">LeetCode-5.最长回文子串</h1>
                 </div>
             </div>
         </div>
@@ -414,14 +420,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    722
+                    195
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    1 分
                 </div>
                 
 
@@ -445,89 +451,43 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="题干">题干</h2>
-<p>请你来实现一个 <code>myAtoi(string s)</code> 函数，使其能将字符串转换成一个 <code>32</code> 位有符号整数（类似 <code>C/C++</code> 中的 <code>atoi</code> 函数）。</p>
-<p>函数 <code>myAtoi(string s)</code> 的算法如下：</p>
-<ol>
-<li>读入字符串并丢弃无用的前导空格</li>
-<li>检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。</li>
-<li>读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。</li>
-<li>将前面步骤读入的这些数字转换为整数（即，“123” -&gt; 123， “0032” -&gt; 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。</li>
-<li>如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。</li>
-<li>返回整数作为最终结果。</li>
-</ol>
-<p>注意：</p>
-<ul>
-<li>本题中的空白字符只包括空格字符 ’ ’ 。</li>
-<li>除前导空格或数字后的其余字符串外，请勿忽略任何其他字符。</li>
-</ul>
+<p>给你一个字符串 s，找到 s 中最长的回文子串。<br>
+如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。</p>
 <blockquote>
 <p>示例 1：<br>
-输入：s = “42”<br>
-输出：42<br>
-解释：加粗的字符串为已经读入的字符，插入符号是当前读取的字符。<br>
-</p><pre class="line-numbers language-none"><code class="language-none">第 1 步："42"（当前没有读入字符，因为没有前导空格）
-         ^
-第 2 步："42"（当前没有读入字符，因为这里不存在 '-' 或者 '+'）
-         ^
-第 3 步："42"（读入 "42"）
-           ^<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>
-解析得到整数 42 。<br>
-由于 “42” 在范围 [-231, 231 - 1] 内，最终结果为 42 。<p></p>
+输入：s = “babad”<br>
+输出：“bab”<br>
+解释：“aba” 同样是符合题意的答案。</p>
 </blockquote>
 <blockquote>
 <p>示例 2：<br>
-输入：s = "   -42"<br>
-输出：-42<br>
-解释：<br>
-</p><pre class="line-numbers language-none"><code class="language-none">第 1 步："   -42"（读入前导空格，但忽视掉）
-            ^
-第 2 步："   -42"（读入 '-' 字符，所以结果应该是负数）
-             ^
-第 3 步："   -42"（读入 "42"）
-               ^<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>
-解析得到整数 -42 。<br>
-由于 “-42” 在范围 [-231, 231 - 1] 内，最终结果为 -42 。<p></p>
-</blockquote>
-<blockquote>
-<p>示例 3：<br>
-输入：s = “4193 with words”<br>
-输出：4193<br>
-解释：<br>
-</p><pre class="line-numbers language-none"><code class="language-none">第 1 步："4193 with words"（当前没有读入字符，因为没有前导空格）
-         ^
-第 2 步："4193 with words"（当前没有读入字符，因为这里不存在 '-' 或者 '+'）
-         ^
-第 3 步："4193 with words"（读入 "4193"；由于下一个字符不是一个数字，所以读入停止）
-             ^<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>
-解析得到整数 4193 。<br>
-由于 “4193” 在范围 [-231, 231 - 1] 内，最终结果为 4193 。<p></p>
+输入：s = “cbbd”<br>
+输出：“bb”</p>
 </blockquote>
 <blockquote>
 <p>提示：<br>
-0 &lt;= s.length &lt;= 200<br>
-s 由英文字母（大写和小写）、数字（0-9）、’ ‘、’+‘、’-’ 和 ‘.’ 组成</p>
+1 &lt;= s.length &lt;= 1000<br>
+s 仅由数字和英文字母组成</p>
 </blockquote>
 <h2 id="python">python</h2>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">myAtoi</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>
-        s<span class="token punctuation">,</span> ans<span class="token punctuation">,</span> flag <span class="token operator">=</span> s<span class="token punctuation">.</span>lstrip<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span>
-        <span class="token keyword">if</span> s <span class="token operator">==</span> <span class="token string">""</span><span class="token punctuation">:</span> 
-            <span class="token keyword">return</span> <span class="token number">0</span>
-            
-        <span class="token keyword">if</span> s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'+'</span><span class="token punctuation">:</span> 
-            s <span class="token operator">=</span> s<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span>            
-        <span class="token keyword">elif</span> s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'-'</span><span class="token punctuation">:</span> 
-            flag<span class="token punctuation">,</span> s <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> s<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">expandAroundCenter</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 中心扩展</span>
+        <span class="token keyword">while</span> left <span class="token operator">&gt;=</span> <span class="token number">0</span> <span class="token keyword">and</span> right <span class="token operator">&lt;</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token keyword">and</span> s<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">==</span> s<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">:</span>
+            left <span class="token operator">-=</span> <span class="token number">1</span>
+            right <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> left <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right <span class="token operator">-</span> <span class="token number">1</span>
 
-        <span class="token keyword">for</span> c <span class="token keyword">in</span> s<span class="token punctuation">:</span>
-            <span class="token comment"># 数字累加</span>
-            <span class="token keyword">if</span> c<span class="token punctuation">.</span>isdigit<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> 
-                ans <span class="token operator">=</span> ans <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">+</span> <span class="token builtin">int</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
-            <span class="token keyword">else</span><span class="token punctuation">:</span> 
-                <span class="token keyword">break</span>
-
-        ans <span class="token operator">*=</span> flag
-        <span class="token keyword">return</span> <span class="token builtin">min</span><span class="token punctuation">(</span><span class="token builtin">max</span><span class="token punctuation">(</span>ans<span class="token punctuation">,</span> <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">31</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">31</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token keyword">def</span> <span class="token function">longestPalindrome</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">str</span><span class="token punctuation">:</span>
+        start<span class="token punctuation">,</span> end <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            left1<span class="token punctuation">,</span> right1 <span class="token operator">=</span> self<span class="token punctuation">.</span>expandAroundCenter<span class="token punctuation">(</span>s<span class="token punctuation">,</span> i<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+            left2<span class="token punctuation">,</span> right2 <span class="token operator">=</span> self<span class="token punctuation">.</span>expandAroundCenter<span class="token punctuation">(</span>s<span class="token punctuation">,</span> i<span class="token punctuation">,</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> right1 <span class="token operator">-</span> left1 <span class="token operator">&gt;</span> end <span class="token operator">-</span> start<span class="token punctuation">:</span>
+                start<span class="token punctuation">,</span> end <span class="token operator">=</span> left1<span class="token punctuation">,</span> right1
+            <span class="token keyword">if</span> right2 <span class="token operator">-</span> left2 <span class="token operator">&gt;</span> end <span class="token operator">-</span> start<span class="token punctuation">:</span>
+                start<span class="token punctuation">,</span> end <span class="token operator">=</span> left2<span class="token punctuation">,</span> right2
+        <span class="token keyword">return</span> s<span class="token punctuation">[</span>start<span class="token punctuation">:</span> end <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -554,7 +514,7 @@ s 由英文字母（大写和小写）、数字（0-9）、’ ‘、’+‘、�
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://jxch.github.io/2023/05/05/suan-fa/leetcode-8-zi-fu-chuan-zhuan-huan-zheng-shu-atoi/">https://jxch.github.io/2023/05/05/suan-fa/leetcode-8-zi-fu-chuan-zhuan-huan-zheng-shu-atoi/</a>
+                    <a href="https://jxch.github.io/2023/05/05/leetcode/leetcode-5-zui-chang-hui-wen-zi-chuan/">https://jxch.github.io/2023/05/05/leetcode/leetcode-5-zui-chang-hui-wen-zi-chuan/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -676,13 +636,13 @@ s 由英文字母（大写和小写）、数字（0-9）、’ ‘、’+‘、�
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/05/05/suan-fa/leetcode-9-hui-wen-shu/">
+                <a href="/2023/05/05/leetcode/leetcode-6-n-zi-xing-bian-huan/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="LeetCode-9.回文数">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="LeetCode-6.N字形变换">
                         
-                        <span class="card-title">LeetCode-9.回文数</span>
+                        <span class="card-title">LeetCode-6.N字形变换</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -725,13 +685,13 @@ s 由英文字母（大写和小写）、数字（0-9）、’ ‘、’+‘、�
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/05/05/suan-fa/leetcode-7-zheng-shu-fan-zhuan/">
+                <a href="/2023/05/05/leetcode/leetcode-4-xun-zhao-liang-ge-zheng-xu-shu-zu-de-zhong-wei-shu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="LeetCode-7.整数反转">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="LeetCode-4.寻找两个正序数组的中位数">
                         
-                        <span class="card-title">LeetCode-7.整数反转</span>
+                        <span class="card-title">LeetCode-4.寻找两个正序数组的中位数</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -960,7 +920,7 @@ s 由英文字母（大写和小写）、数字（0-9）、’ ‘、’+‘、�
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">215.3k</span>
+                        class="white-color">215.7k</span>
             
             
             
