@@ -439,11 +439,11 @@
                 </a>
                 
                 
-                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" title="使用手册: 82">
+                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" title="使用手册: 84">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #E8F8F5;">使用手册
-                        <span class="tag-length">82</span>
+                        <span class="tag-length">84</span>
                     </span>
                 </a>
                 
@@ -548,6 +548,121 @@
 
     <article id="articles" class="container articles">
         <div class="row tags-posts">
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/23/coding/hadoop-sqoop-dao-ru-shu-ju-dao-hbase/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Hadoop-Sqoop-导入数据到HBase">
+                            
+                            <span class="card-title">Hadoop-Sqoop-导入数据到HBase</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+创建 HBase 表: create 'hbase_person','info'
+导入数据到 HBase sqoop import \
+    --connect jdbc:mysql://192.168.244.100:3306/sqo
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
+                        </a>
+                        
+                        <a href="/tags/Sqoop/">
+                            <span class="chip bg-color">Sqoop</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/23/coding/hadoop-sqoop-hive-yu-mysql-hu-dao/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Hadoop-Sqoop-Hive与Mysql互导">
+                            
+                            <span class="card-title">Hadoop-Sqoop-Hive与Mysql互导</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+导入数据到 HIVE  sqoop import \
+    --connect jdbc:mysql://192.168.244.100:3306/sqooptest \
+    --username root \
+    --pass
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
+                        </a>
+                        
+                        <a href="/tags/Sqoop/">
+                            <span class="chip bg-color">Sqoop</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
@@ -1050,134 +1165,6 @@ CREATE [EXTERNAL] TABLE [IF NOT EXISTS] table_name
                 </div>
             </div>
             
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/22/coding/hadoop-gong-tong-hao-you-demo/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Hadoop-共同好友Demo">
-                            
-                            <span class="card-title">Hadoop-共同好友Demo</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                思路
-原数据:
-A:B,C,D,F,E,O
-B:A,C,E,K
-C:F,A,D,I
-D:A,E,F,L
-E:B,C,D,M,L
-F:A,s,C,D,E,O,M
-G:A,C,D,E,F
-H:A,C,D,E,O
-I:A,O
-J:B,O
-K:A,
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/22/coding/hadoop-dao-pai-suo-yin-wen-zhang-dan-ci-tong-ji-demo/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Hadoop-倒排索引-文章单词统计Demo">
-                            
-                            <span class="card-title">Hadoop-倒排索引-文章单词统计Demo</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                思路 (倒推法)
-第二步:
-
-Reduce
-
-key:单词
-values[] 文章–次数
-
-
-Map
-
-key: 单词
-value: 文章–次数
-
-
-
-第一步:
-
-Reduce
-
-key: 单词–文档位置
-value: 单词次数
-
-
-Map
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
         </div>
     </article>
 </main>
@@ -1283,7 +1270,7 @@ Map
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">215.7k</span>
+                        class="white-color">216k</span>
             
             
             
