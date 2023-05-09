@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-05-06T01:38:31.254Z</updated>
+  <updated>2023-05-08T01:22:55.641Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>vue3-打包静态页面后显示空白页且页面没有挂载任何元素</title>
+    <link href="https://jxch.github.io/2023/05/08/coding/vue3-da-bao-jing-tai-ye-mian-hou-xian-shi-kong-bai-ye-qie-ye-mian-mei-you-gua-zai-ren-he-yuan-su/"/>
+    <id>https://jxch.github.io/2023/05/08/coding/vue3-da-bao-jing-tai-ye-mian-hou-xian-shi-kong-bai-ye-qie-ye-mian-mei-you-gua-zai-ren-he-yuan-su/</id>
+    <published>2023-05-08T01:20:50.000Z</published>
+    <updated>2023-05-08T01:22:55.641Z</updated>
+    
+    <content type="html"><![CDATA[<p>将 <code>vue</code> 文件中 <code>&lt;script setup&gt;</code> 里的 <code>setup</code> 删除，只保留 <code>&lt;script&gt;</code></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;将 &lt;code&gt;vue&lt;/code&gt; 文件中 &lt;code&gt;&amp;lt;script setup&amp;gt;&lt;/code&gt; 里的 &lt;code&gt;setup&lt;/code&gt; 删除，只保留 &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="排错笔记" scheme="https://jxch.github.io/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="vue" scheme="https://jxch.github.io/tags/vue/"/>
+    
+  </entry>
   
   <entry>
     <title>python-日期迭代器</title>
@@ -494,31 +519,6 @@ w＝1就是规</summary>
 回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。&lt;/p&gt;
 &lt;p&gt;例如，121 是回文，而 123 不是。&lt;/p&gt;
 &lt;bl</summary>
-      
-    
-    
-    
-    <category term="算法笔记" scheme="https://jxch.github.io/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LeetCode-8.字符串转换整数(atoi)</title>
-    <link href="https://jxch.github.io/2023/05/05/leetcode/leetcode-8-zi-fu-chuan-zhuan-huan-zheng-shu-atoi/"/>
-    <id>https://jxch.github.io/2023/05/05/leetcode/leetcode-8-zi-fu-chuan-zhuan-huan-zheng-shu-atoi/</id>
-    <published>2023-05-05T08:20:34.000Z</published>
-    <updated>2023-05-05T08:29:19.779Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>请你来实现一个 <code>myAtoi(string s)</code> 函数，使其能将字符串转换成一个 <code>32</code> 位有符号整数（类似 <code>C/C++</code> 中的 <code>atoi</code> 函数）。</p><p>函数 <code>myAtoi(string s)</code> 的算法如下：</p><ol><li>读入字符串并丢弃无用的前导空格</li><li>检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。</li><li>读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。</li><li>将前面步骤读入的这些数字转换为整数（即，“123” -&gt; 123， “0032” -&gt; 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。</li><li>如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。</li><li>返回整数作为最终结果。</li></ol><p>注意：</p><ul><li>本题中的空白字符只包括空格字符 ’ ’ 。</li><li>除前导空格或数字后的其余字符串外，请勿忽略任何其他字符。</li></ul><blockquote><p>示例 1：<br>输入：s = “42”<br>输出：42<br>解释：加粗的字符串为已经读入的字符，插入符号是当前读取的字符。<br></p><pre class="line-numbers language-none"><code class="language-none">第 1 步："42"（当前没有读入字符，因为没有前导空格）         ^第 2 步："42"（当前没有读入字符，因为这里不存在 '-' 或者 '+'）         ^第 3 步："42"（读入 "42"）           ^<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>解析得到整数 42 。<br>由于 “42” 在范围 [-231, 231 - 1] 内，最终结果为 42 。<p></p></blockquote><blockquote><p>示例 2：<br>输入：s = "   -42"<br>输出：-42<br>解释：<br></p><pre class="line-numbers language-none"><code class="language-none">第 1 步："   -42"（读入前导空格，但忽视掉）            ^第 2 步："   -42"（读入 '-' 字符，所以结果应该是负数）             ^第 3 步："   -42"（读入 "42"）               ^<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>解析得到整数 -42 。<br>由于 “-42” 在范围 [-231, 231 - 1] 内，最终结果为 -42 。<p></p></blockquote><blockquote><p>示例 3：<br>输入：s = “4193 with words”<br>输出：4193<br>解释：<br></p><pre class="line-numbers language-none"><code class="language-none">第 1 步："4193 with words"（当前没有读入字符，因为没有前导空格）         ^第 2 步："4193 with words"（当前没有读入字符，因为这里不存在 '-' 或者 '+'）         ^第 3 步："4193 with words"（读入 "4193"；由于下一个字符不是一个数字，所以读入停止）             ^<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>解析得到整数 4193 。<br>由于 “4193” 在范围 [-231, 231 - 1] 内，最终结果为 4193 。<p></p></blockquote><blockquote><p>提示：<br>0 &lt;= s.length &lt;= 200<br>s 由英文字母（大写和小写）、数字（0-9）、’ ‘、’+‘、’-’ 和 ‘.’ 组成</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">myAtoi</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>        s<span class="token punctuation">,</span> ans<span class="token punctuation">,</span> flag <span class="token operator">=</span> s<span class="token punctuation">.</span>lstrip<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span>        <span class="token keyword">if</span> s <span class="token operator">==</span> <span class="token string">""</span><span class="token punctuation">:</span>             <span class="token keyword">return</span> <span class="token number">0</span>                    <span class="token keyword">if</span> s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'+'</span><span class="token punctuation">:</span>             s <span class="token operator">=</span> s<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span>                    <span class="token keyword">elif</span> s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'-'</span><span class="token punctuation">:</span>             flag<span class="token punctuation">,</span> s <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> s<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span>        <span class="token keyword">for</span> c <span class="token keyword">in</span> s<span class="token punctuation">:</span>            <span class="token comment"># 数字累加</span>            <span class="token keyword">if</span> c<span class="token punctuation">.</span>isdigit<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>                 ans <span class="token operator">=</span> ans <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">+</span> <span class="token builtin">int</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>            <span class="token keyword">else</span><span class="token punctuation">:</span>                 <span class="token keyword">break</span>        ans <span class="token operator">*=</span> flag        <span class="token keyword">return</span> <span class="token builtin">min</span><span class="token punctuation">(</span><span class="token builtin">max</span><span class="token punctuation">(</span>ans<span class="token punctuation">,</span> <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">31</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">31</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;题干&quot;&gt;题干&lt;/h2&gt;
-&lt;p&gt;请你来实现一个 &lt;code&gt;myAtoi(string s)&lt;/code&gt; 函数，使其能将字符串转换成一个 &lt;code&gt;32&lt;/code&gt; 位有符号整数（类似 &lt;code&gt;C/C++&lt;/code&gt; 中的 &lt;code&gt;atoi&lt;/cod</summary>
       
     
     

@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>vue3-打包静态页面后显示空白页且页面没有挂载任何元素</title>
+      <link href="/2023/05/08/coding/vue3-da-bao-jing-tai-ye-mian-hou-xian-shi-kong-bai-ye-qie-ye-mian-mei-you-gua-zai-ren-he-yuan-su/"/>
+      <url>/2023/05/08/coding/vue3-da-bao-jing-tai-ye-mian-hou-xian-shi-kong-bai-ye-qie-ye-mian-mei-you-gua-zai-ren-he-yuan-su/</url>
+      
+        <content type="html"><![CDATA[<p>将 <code>vue</code> 文件中 <code>&lt;script setup&gt;</code> 里的 <code>setup</code> 删除，只保留 <code>&lt;script&gt;</code></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 排错笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> vue </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>python-日期迭代器</title>
       <link href="/2023/05/06/coding/python-ri-qi-die-dai-qi/"/>
       <url>/2023/05/06/coding/python-ri-qi-die-dai-qi/</url>

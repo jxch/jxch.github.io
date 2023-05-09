@@ -406,6 +406,62 @@
     <article id="articles" class="container articles">
         <div class="row article-row">
             
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/17/coding/powershell-sha-si-zhan-yong-duan-kou-de-jin-cheng/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="powershell-杀死占用端口的进程">
+                            
+                            <span class="card-title">powershell-杀死占用端口的进程</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 查找端口占用的PID
+netstat -ano | findstr $port
+
+# 查看PID对应的进程信息
+tasklist | findstr $pid
+
+# 通过进程名称结束进程
+taskkill /f /t /im $name
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/powershell/">
+                            <span class="chip bg-color">powershell</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
               <!-- 隐藏某个文章 -->
             
               <!-- 隐藏某个文章 -->
@@ -744,8 +800,6 @@ $$g(z)=\frac{1}{1+e^{-z}}$$
                     
                 </div>
             </div>
-              <!-- 隐藏某个文章 -->
-            
               <!-- 隐藏某个文章 -->
             
         </div>
