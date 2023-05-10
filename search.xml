@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>WIN-命令行模式使用天翼云盘</title>
+      <link href="/2023/05/10/yun-wei/win-ming-ling-xing-mo-shi-shi-yong-tian-yi-yun-pan/"/>
+      <url>/2023/05/10/yun-wei/win-ming-ling-xing-mo-shi-shi-yong-tian-yi-yun-pan/</url>
+      
+        <content type="html"><![CDATA[<h2 id="安装">安装</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">winget <span class="token function">install</span> tickstep.cloudpan189-go <span class="token parameter variable">-l</span> D:<span class="token punctuation">\</span>Programs<span class="token punctuation">\</span>cloudpan189-go --accept-package-agreements<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h2 id="使用">使用</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">help</span><span class="token comment"># 登录</span>login<span class="token comment"># 修改下载目录</span>config <span class="token builtin class-name">set</span> <span class="token parameter variable">-savedir</span> D:<span class="token punctuation">\</span>xiche<span class="token punctuation">\</span>下载<span class="token function">ls</span><span class="token builtin class-name">cd</span><span class="token comment"># 下载文件</span>d xxx.xx<span class="token comment"># 上传文件</span>u xxx.xx<span class="token comment"># 秒传文件</span>ru xxx.xx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 运维手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> WIN </tag>
+            
+            <tag> cloudpan189-go </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>python-线程池</title>
       <link href="/2023/05/10/coding/python-xian-cheng-chi/"/>
       <url>/2023/05/10/coding/python-xian-cheng-chi/</url>

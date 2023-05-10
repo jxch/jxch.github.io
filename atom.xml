@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-05-10T07:31:51.117Z</updated>
+  <updated>2023-05-10T14:19:14.639Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>WIN-命令行模式使用天翼云盘</title>
+    <link href="https://jxch.github.io/2023/05/10/yun-wei/win-ming-ling-xing-mo-shi-shi-yong-tian-yi-yun-pan/"/>
+    <id>https://jxch.github.io/2023/05/10/yun-wei/win-ming-ling-xing-mo-shi-shi-yong-tian-yi-yun-pan/</id>
+    <published>2023-05-10T14:12:43.000Z</published>
+    <updated>2023-05-10T14:19:14.639Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="安装">安装</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">winget <span class="token function">install</span> tickstep.cloudpan189-go <span class="token parameter variable">-l</span> D:<span class="token punctuation">\</span>Programs<span class="token punctuation">\</span>cloudpan189-go --accept-package-agreements<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h2 id="使用">使用</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">help</span><span class="token comment"># 登录</span>login<span class="token comment"># 修改下载目录</span>config <span class="token builtin class-name">set</span> <span class="token parameter variable">-savedir</span> D:<span class="token punctuation">\</span>xiche<span class="token punctuation">\</span>下载<span class="token function">ls</span><span class="token builtin class-name">cd</span><span class="token comment"># 下载文件</span>d xxx.xx<span class="token comment"># 上传文件</span>u xxx.xx<span class="token comment"># 秒传文件</span>ru xxx.xx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
+&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;winget &lt;span class=&quot;token funct</summary>
+      
+    
+    
+    
+    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="WIN" scheme="https://jxch.github.io/tags/WIN/"/>
+    
+    <category term="cloudpan189-go" scheme="https://jxch.github.io/tags/cloudpan189-go/"/>
+    
+  </entry>
   
   <entry>
     <title>python-线程池</title>
@@ -488,32 +515,6 @@ w＝1就是规</summary>
       
       
     <summary type="html">&lt;p&gt;二维图形基本几何变换是指相对于坐标原点和坐标轴进行的几何变换，包括&lt;strong&gt;平移&lt;/strong&gt;（Translate）、&lt;strong&gt;比例&lt;/strong&gt;（Scale）、&lt;strong&gt;旋转&lt;/strong&gt;（Rotate）、&lt;strong&gt;反射&lt;/strong</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="计算机图形学" scheme="https://jxch.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计算机图形学-二维复合变换</title>
-    <link href="https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-er-wei-fu-he-bian-huan/"/>
-    <id>https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-er-wei-fu-he-bian-huan/</id>
-    <published>2023-05-05T08:58:42.000Z</published>
-    <updated>2023-05-05T08:59:58.005Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="复合变换原理">复合变换原理</h2><p>$P’ = P\cdot T = P\cdot T_1\cdot T_2 \ldots T_n$<br>其中，T为复合变换矩阵，$T_1, T_2 \ldots T_n$为<strong>单次基本几何变换矩阵</strong>。</p><h2 id="相对于任一参考点的二维几何变换">相对于任一参考点的二维几何变换</h2><p>相对于任一参考点的比例变换和旋转变换应表达为复合变换形式，变换方法为<strong>首先将参考点平移到坐标原点，对坐标原点进行比例变换和旋转变换，然后再进行反平移将参考点平移回原位置。</strong></p><h2 id="相对于任意方向的二维几何变换">相对于任意方向的二维几何变换</h2><p>相对于任意方向的变换方法是<strong>首先对任意方向做旋转变换，使变换方向与坐标轴重合，然后对坐标轴进行二维基本几何变换，最后做反向旋转变换，将任意方向还原到原来的方向。</strong></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;复合变换原理&quot;&gt;复合变换原理&lt;/h2&gt;
-&lt;p&gt;$P’ = P\cdot T = P\cdot T_1\cdot T_2 \ldots T_n$&lt;br&gt;
-其中，T为复合变换矩阵，$T_1, T_2 \ldots T_n$为&lt;strong&gt;单次基本几何变换矩阵&lt;/st</summary>
       
     
     
