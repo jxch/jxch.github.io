@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-05-08T01:22:55.641Z</updated>
+  <updated>2023-05-10T07:31:51.117Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,54 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>python-线程池</title>
+    <link href="https://jxch.github.io/2023/05/10/coding/python-xian-cheng-chi/"/>
+    <id>https://jxch.github.io/2023/05/10/coding/python-xian-cheng-chi/</id>
+    <published>2023-05-10T07:28:32.000Z</published>
+    <updated>2023-05-10T07:31:51.117Z</updated>
+    
+    <content type="html"><![CDATA[<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor<span class="token punctuation">,</span> wait<span class="token punctuation">,</span> ALL_COMPLETEDpool <span class="token operator">=</span> ThreadPoolExecutor<span class="token punctuation">(</span>max_workers<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">)</span>tasks <span class="token operator">=</span> <span class="token punctuation">[</span>pool<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>the_function<span class="token punctuation">,</span> params<span class="token punctuation">)</span> <span class="token keyword">for</span> the_task <span class="token keyword">in</span> all_tasks<span class="token punctuation">]</span><span class="token comment"># 阻塞等待所有任务执行完</span>wait<span class="token punctuation">(</span>tasks<span class="token punctuation">,</span> return_when<span class="token operator">=</span>ALL_COMPLETED<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;pre class=&quot;line-numbers language-python&quot; data-language=&quot;python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; concu</summary>
+      
+    
+    
+    
+    <category term="使用手册" scheme="https://jxch.github.io/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="python" scheme="https://jxch.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>tensorflow-partially initialized module &#39;charset_normalizer&#39; has no attribute &#39;md__mypyc&#39;</title>
+    <link href="https://jxch.github.io/2023/05/10/coding/tensorflow-partially-initialized-module-charset-normalizer-has-no-attribute-md-mypyc/"/>
+    <id>https://jxch.github.io/2023/05/10/coding/tensorflow-partially-initialized-module-charset-normalizer-has-no-attribute-md-mypyc/</id>
+    <published>2023-05-09T18:06:06.000Z</published>
+    <updated>2023-05-09T18:07:10.737Z</updated>
+    
+    <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> <span class="token parameter variable">-U</span> --force-reinstall charset-normalizer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;pip &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; &lt;sp</summary>
+      
+    
+    
+    
+    <category term="排错笔记" scheme="https://jxch.github.io/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="tensorflow" scheme="https://jxch.github.io/tags/tensorflow/"/>
+    
+  </entry>
   
   <entry>
     <title>vue3-打包静态页面后显示空白页且页面没有挂载任何元素</title>
@@ -474,59 +522,6 @@ w＝1就是规</summary>
     
     
     <category term="计算机图形学" scheme="https://jxch.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计算机图形学-中点分割直线段裁剪算法</title>
-    <link href="https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-zhong-dian-fen-ge-zhi-xian-duan-cai-jian-suan-fa/"/>
-    <id>https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-zhong-dian-fen-ge-zhi-xian-duan-cai-jian-suan-fa/</id>
-    <published>2023-05-05T08:51:21.000Z</published>
-    <updated>2023-05-05T08:56:37.373Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="中点分割算法原理">中点分割算法原理</h2><p>中点分割直线段裁剪算法<strong>对Cohen-Sutherland直线裁剪算法的第3种情况做了改进</strong>，原理是简单地把起点为P0，终点为P1的直线段等<strong>分为两段直线P0P和PP1（P为直线段中点）</strong>，<strong>对每一段直线重复“简取”和“简弃”的处理</strong>，对于不能处理的直线段再继续等分下去线，直至每一段直线完全能够被“简取”或“简弃”，也就是说直至每段直线完全位于窗口之内或完全位于窗口之外，就完成了直线段的裁剪工作。</p><p>中点计算公式: $P = \frac{P_0+P_1}{2}$</p><p>基本思想:<br>从P0点出发找出离P0最近的可见点，和从P1点出发找出离P1最近的可见点。这两个可见点的连线就是原线段的可见部分。<br>与Cohen-Sutherland算法一样首先对线段端点进行编码，并把线段与窗口的关系分为三种情况，对前两种情况，进行一样的处理；对于第三种情况，<strong>用中点分割的方法求出线段与窗口的交点。A、B分别为距P0 、 P1最近的可见点，Pm为P0P1中点。</strong></p><p><img src="/static/IT/Graphics/MidpointSplitLineSegmentClipping.png" alt=""></p><h2 id="求线段与窗口的交点">求线段与窗口的交点</h2><p>从P0出发找距离P0最近可见点采用中点分割方法</p><ol><li>先求出P0P1的中点Pm</li><li>若P0Pm不是显然不可见的，并且P0P1在窗口中有可见部分，则距P0最近的可见点一定落在P0Pm上，所以用P0Pm代替P0P1；</li><li>否则取PmP1代替P0P1。</li><li>再对新的P0P1求中点Pm。重复上述过程，直到PmP1长度小于给定的控制常数为止，此时Pm收敛于交点。</li></ol><p>从P1出发找距离P1最近可见点采用上面类似方法。<br>对分辩率为<code>2N*2N</code>的显示器，上述二分过程至多进行N次。主要过程只用到加法和除法运算，适合硬件实现，它可以用左右移位来代替乘除法，这样就大大加快了速度。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;中点分割算法原理&quot;&gt;中点分割算法原理&lt;/h2&gt;
-&lt;p&gt;中点分割直线段裁剪算法&lt;strong&gt;对Cohen-Sutherland直线裁剪算法的第3种情况做了改进&lt;/strong&gt;，原理是简单地把起点为P0，终点为P1的直线段等&lt;strong&gt;分为两段直线P0P和PP</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="计算机图形学" scheme="https://jxch.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LeetCode-9.回文数</title>
-    <link href="https://jxch.github.io/2023/05/05/leetcode/leetcode-9-hui-wen-shu/"/>
-    <id>https://jxch.github.io/2023/05/05/leetcode/leetcode-9-hui-wen-shu/</id>
-    <published>2023-05-05T08:30:17.000Z</published>
-    <updated>2023-05-05T08:38:54.226Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。<br>回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。</p><p>例如，121 是回文，而 123 不是。</p><blockquote><p>示例 1：<br>输入：x = 121<br>输出：true</p></blockquote><blockquote><p>示例 2：<br>输入：x = -121<br>输出：false<br>解释：从左向右读, 为 -121 。 从右向左读, 为 121- 。因此它不是一个回文数。</p></blockquote><blockquote><p>示例 3：<br>输入：x = 10<br>输出：false<br>解释：从右向左读, 为 01 。因此它不是一个回文数。</p></blockquote><blockquote><p>提示：<br>$ -2^{31} &lt;= x &lt;= 2^{31} - 1 $</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">isPalindrome</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">bool</span><span class="token punctuation">:</span>        <span class="token keyword">return</span> <span class="token builtin">str</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token builtin">str</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">isPalindrome</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">bool</span><span class="token punctuation">:</span>        <span class="token keyword">if</span> x <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">:</span>            <span class="token keyword">return</span> <span class="token boolean">False</span>        y <span class="token operator">=</span> <span class="token number">0</span>        t <span class="token operator">=</span> x        <span class="token comment"># 翻转数字</span>        <span class="token keyword">while</span> x<span class="token punctuation">:</span>            y <span class="token operator">=</span> y <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">+</span> x <span class="token operator">%</span> <span class="token number">10</span>            x <span class="token operator">//=</span> <span class="token number">10</span>        <span class="token keyword">return</span> y <span class="token operator">==</span> t<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">isPalindrome</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">bool</span><span class="token punctuation">:</span>        <span class="token keyword">if</span> x <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token keyword">or</span> <span class="token punctuation">(</span>x <span class="token operator">%</span> <span class="token number">10</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token keyword">and</span> x <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>            <span class="token keyword">return</span> <span class="token boolean">False</span>        y <span class="token operator">=</span> <span class="token number">0</span>        <span class="token comment"># 数字翻转一半就可以直接判断了</span>        <span class="token keyword">while</span> x <span class="token operator">&gt;</span> y<span class="token punctuation">:</span>            y <span class="token operator">=</span> y <span class="token operator">*</span> <span class="token number">10</span> <span class="token operator">+</span> x <span class="token operator">%</span> <span class="token number">10</span>            x <span class="token operator">//=</span> <span class="token number">10</span>        <span class="token keyword">return</span> x <span class="token operator">==</span> y <span class="token keyword">or</span> x <span class="token operator">==</span> y <span class="token operator">//</span> <span class="token number">10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;题干&quot;&gt;题干&lt;/h2&gt;
-&lt;p&gt;给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。&lt;br&gt;
-回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。&lt;/p&gt;
-&lt;p&gt;例如，121 是回文，而 123 不是。&lt;/p&gt;
-&lt;bl</summary>
-      
-    
-    
-    
-    <category term="算法笔记" scheme="https://jxch.github.io/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
     
   </entry>
   

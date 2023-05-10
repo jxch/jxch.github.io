@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>python-线程池</title>
+      <link href="/2023/05/10/coding/python-xian-cheng-chi/"/>
+      <url>/2023/05/10/coding/python-xian-cheng-chi/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor<span class="token punctuation">,</span> wait<span class="token punctuation">,</span> ALL_COMPLETEDpool <span class="token operator">=</span> ThreadPoolExecutor<span class="token punctuation">(</span>max_workers<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">)</span>tasks <span class="token operator">=</span> <span class="token punctuation">[</span>pool<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>the_function<span class="token punctuation">,</span> params<span class="token punctuation">)</span> <span class="token keyword">for</span> the_task <span class="token keyword">in</span> all_tasks<span class="token punctuation">]</span><span class="token comment"># 阻塞等待所有任务执行完</span>wait<span class="token punctuation">(</span>tasks<span class="token punctuation">,</span> return_when<span class="token operator">=</span>ALL_COMPLETED<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 使用手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>tensorflow-partially initialized module &#39;charset_normalizer&#39; has no attribute &#39;md__mypyc&#39;</title>
+      <link href="/2023/05/10/coding/tensorflow-partially-initialized-module-charset-normalizer-has-no-attribute-md-mypyc/"/>
+      <url>/2023/05/10/coding/tensorflow-partially-initialized-module-charset-normalizer-has-no-attribute-md-mypyc/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> <span class="token parameter variable">-U</span> --force-reinstall charset-normalizer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 排错笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> tensorflow </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>vue3-打包静态页面后显示空白页且页面没有挂载任何元素</title>
       <link href="/2023/05/08/coding/vue3-da-bao-jing-tai-ye-mian-hou-xian-shi-kong-bai-ye-qie-ye-mian-mei-you-gua-zai-ren-he-yuan-su/"/>
       <url>/2023/05/08/coding/vue3-da-bao-jing-tai-ye-mian-hou-xian-shi-kong-bai-ye-qie-ye-mian-mei-you-gua-zai-ren-he-yuan-su/</url>
