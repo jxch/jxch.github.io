@@ -4,6 +4,106 @@
   
     
     <entry>
+      <title>LeetCode-14.最长公共前缀</title>
+      <link href="/2023/05/11/leetcode/leetcode-14-zui-chang-gong-gong-qian-zhui/"/>
+      <url>/2023/05/11/leetcode/leetcode-14-zui-chang-gong-gong-qian-zhui/</url>
+      
+        <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>编写一个函数来查找字符串数组中的最长公共前缀。<br>如果不存在公共前缀，返回空字符串 “”。</p><blockquote><p>示例 1：<br>输入：strs = [“flower”,“flow”,“flight”]<br>输出：“fl”</p></blockquote><blockquote><p>示例 2：<br>输入：strs = [“dog”,“racecar”,“car”]<br>输出：“”<br>解释：输入不存在公共前缀。</p></blockquote><blockquote><p>提示：<br>1 &lt;= strs.length &lt;= 200<br>0 &lt;= strs[i].length &lt;= 200<br>strs[i] 仅由小写英文字母组成</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">longestCommonPrefix</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> strs<span class="token punctuation">)</span><span class="token punctuation">:</span>        ans <span class="token operator">=</span> <span class="token string">''</span>        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span><span class="token operator">*</span>strs<span class="token punctuation">)</span><span class="token punctuation">:</span>            <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span><span class="token builtin">set</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>                ans <span class="token operator">+=</span> i<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>            <span class="token keyword">else</span><span class="token punctuation">:</span>                <span class="token keyword">break</span>        <span class="token keyword">return</span> ans<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">longestCommonPrefix</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> strs<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">str</span><span class="token punctuation">:</span>        <span class="token keyword">return</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>commonprefix<span class="token punctuation">(</span>strs<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LeetCode-13.罗马数字转整数</title>
+      <link href="/2023/05/11/leetcode/leetcode-13-luo-ma-shu-zi-zhuan-zheng-shu/"/>
+      <url>/2023/05/11/leetcode/leetcode-13-luo-ma-shu-zi-zhuan-zheng-shu/</url>
+      
+        <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</p><pre class="line-numbers language-none"><code class="language-none">字符          数值I             1V             5X             10L             50C             100D             500M             1000<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>例如， 罗马数字 2 写做 II ，即为两个并列的 1 。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p><p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p><ul><li>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</li><li>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。</li><li>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</li></ul><p>给定一个罗马数字，将其转换成整数。</p><blockquote><p>示例 1:<br>输入: s = “III”<br>输出: 3</p></blockquote><blockquote><p>示例 2:<br>输入: s = “IV”<br>输出: 4</p></blockquote><blockquote><p>示例 3:<br>输入: s = “IX”<br>输出: 9</p></blockquote><blockquote><p>示例 4:<br>输入: s = “LVIII”<br>输出: 58<br>解释: L = 50, V= 5, III = 3.</p></blockquote><blockquote><p>示例 5:<br>输入: s = “MCMXCIV”<br>输出: 1994<br>解释: M = 1000, CM = 900, XC = 90, IV = 4.</p></blockquote><blockquote><p>提示：<br>1 &lt;= s.length &lt;= 15<br>s 仅含字符 (‘I’, ‘V’, ‘X’, ‘L’, ‘C’, ‘D’, ‘M’)<br>题目数据保证 s 是一个有效的罗马数字，且表示整数在范围 [1, 3999] 内<br>题目所给测试用例皆符合罗马数字书写规则，不会出现跨位等情况。<br>IL 和 IM 这样的例子并不符合题目要求，49 应该写作 XLIX，999 应该写作 CMXCIX 。<br>关于罗马数字的详尽书写规则，可以参考<a href="https://b2b.partcommunity.com/community/knowledge/zh_CN/detail/10753/%E7%BD%97%E9%A9%AC%E6%95%B0%E5%AD%97#knowledge_article">罗马数字 - Mathematics</a> 。</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">romanToInt</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>        d <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'I'</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'IV'</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'V'</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">'IX'</span><span class="token punctuation">:</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token string">'X'</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">'XL'</span><span class="token punctuation">:</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token string">'L'</span><span class="token punctuation">:</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token string">'XC'</span><span class="token punctuation">:</span><span class="token number">80</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">:</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token string">'CD'</span><span class="token punctuation">:</span><span class="token number">300</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">:</span><span class="token number">500</span><span class="token punctuation">,</span> <span class="token string">'CM'</span><span class="token punctuation">:</span><span class="token number">800</span><span class="token punctuation">,</span> <span class="token string">'M'</span><span class="token punctuation">:</span><span class="token number">1000</span><span class="token punctuation">}</span>        <span class="token keyword">return</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span>get<span class="token punctuation">(</span>s<span class="token punctuation">[</span><span class="token builtin">max</span><span class="token punctuation">(</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> d<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i<span class="token punctuation">,</span> n <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LeetCode-12.整数转罗马数字</title>
+      <link href="/2023/05/11/leetcode/leetcode-12-zheng-shu-zhuan-luo-ma-shu-zi/"/>
+      <url>/2023/05/11/leetcode/leetcode-12-zheng-shu-zhuan-luo-ma-shu-zi/</url>
+      
+        <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。</p><pre class="line-numbers language-none"><code class="language-none">字符          数值I             1V             5X             10L             50C             100D             500M             1000<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p><p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p><ul><li>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</li><li>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。</li><li>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</li></ul><p>给你一个整数，将其转为罗马数字。</p><blockquote><p>示例 1:<br>输入: num = 3<br>输出: “III”</p></blockquote><blockquote><p>示例 2:<br>输入: num = 4<br>输出: “IV”</p></blockquote><blockquote><p>示例 3:<br>输入: num = 9<br>输出: “IX”</p></blockquote><blockquote><p>示例 4:<br>输入: num = 58<br>输出: “LVIII”<br>解释: L = 50, V = 5, III = 3.</p></blockquote><blockquote><p>示例 5:<br>输入: num = 1994<br>输出: “MCMXCIV”<br>解释: M = 1000, CM = 900, XC = 90, IV = 4.</p></blockquote><blockquote><p>提示：<br>1 &lt;= num &lt;= 3999</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">intToRoman</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> num<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">str</span><span class="token punctuation">:</span>        <span class="token comment"># 使用哈希表，按照从大到小顺序排列</span>        hashmap <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1000</span><span class="token punctuation">:</span><span class="token string">'M'</span><span class="token punctuation">,</span> <span class="token number">900</span><span class="token punctuation">:</span><span class="token string">'CM'</span><span class="token punctuation">,</span> <span class="token number">500</span><span class="token punctuation">:</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token number">400</span><span class="token punctuation">:</span><span class="token string">'CD'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">:</span><span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">:</span><span class="token string">'XC'</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">:</span><span class="token string">'L'</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">:</span><span class="token string">'XL'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">:</span><span class="token string">'X'</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">:</span><span class="token string">'IX'</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">:</span><span class="token string">'V'</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">:</span><span class="token string">'IV'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token string">'I'</span><span class="token punctuation">}</span>        res <span class="token operator">=</span> <span class="token string">''</span>        <span class="token keyword">for</span> key <span class="token keyword">in</span> hashmap<span class="token punctuation">:</span>            <span class="token keyword">if</span> num <span class="token operator">//</span> key <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">:</span>                count <span class="token operator">=</span> num <span class="token operator">//</span> key  <span class="token comment"># 比如输入4000，count 为 4</span>                res <span class="token operator">+=</span> hashmap<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">*</span> count                 num <span class="token operator">%=</span> key        <span class="token keyword">return</span> res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LeetCode-11.盛最多水的容器</title>
+      <link href="/2023/05/11/leetcode/leetcode-11-sheng-zui-duo-shui-de-rong-qi/"/>
+      <url>/2023/05/11/leetcode/leetcode-11-sheng-zui-duo-shui-de-rong-qi/</url>
+      
+        <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。<br>找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。<br>返回容器可以储存的最大水量。<br>说明：你不能倾斜容器。</p><blockquote><p>示例 1：<br>输入：[1,8,6,2,5,4,8,3,7]<br>输出：49<br>解释：容器能够容纳水的最大值为 49 (8和7, 7*7=49)。</p></blockquote><blockquote><p>示例 2：<br>输入：height = [1,1]<br>输出：1</p></blockquote><blockquote><p>提示：<br>$n == height.length$<br>$2 &lt;= n &lt;= 10^5$<br>$0 &lt;= height[i] &lt;= 10^4$</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">maxArea</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> height<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>        left<span class="token punctuation">,</span> right <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>height<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>        res <span class="token operator">=</span> <span class="token number">0</span>        <span class="token keyword">while</span> left <span class="token operator">&lt;</span> right<span class="token punctuation">:</span>            area <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>height<span class="token punctuation">[</span>left<span class="token punctuation">]</span><span class="token punctuation">,</span> height<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>right <span class="token operator">-</span> left<span class="token punctuation">)</span>            res <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> area<span class="token punctuation">)</span>            <span class="token keyword">if</span> height<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">&lt;</span> height<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">:</span>                left <span class="token operator">+=</span> <span class="token number">1</span>            <span class="token keyword">else</span><span class="token punctuation">:</span>                right <span class="token operator">-=</span> <span class="token number">1</span>        <span class="token keyword">return</span> res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>powershell-导出壁纸缓存图片</title>
       <link href="/2023/05/11/coding/powershell-dao-chu-bi-zhi-huan-cun-tu-pian/"/>
       <url>/2023/05/11/coding/powershell-dao-chu-bi-zhi-huan-cun-tu-pian/</url>
@@ -2827,9 +2927,9 @@
             
             <tag> Hadoop </tag>
             
-            <tag> HBase </tag>
-            
             <tag> Sqoop </tag>
+            
+            <tag> HBase </tag>
             
         </tags>
       
@@ -2856,9 +2956,9 @@
             
             <tag> Hadoop </tag>
             
-            <tag> Hive </tag>
-            
             <tag> Sqoop </tag>
+            
+            <tag> Hive </tag>
             
         </tags>
       
@@ -8065,9 +8165,9 @@
       
         <tags>
             
-            <tag> Kali </tag>
-            
             <tag> WSL </tag>
+            
+            <tag> Kali </tag>
             
         </tags>
       

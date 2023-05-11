@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-05-11T01:56:51.954Z</updated>
+  <updated>2023-05-11T02:38:13.933Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,114 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LeetCode-14.最长公共前缀</title>
+    <link href="https://jxch.github.io/2023/05/11/leetcode/leetcode-14-zui-chang-gong-gong-qian-zhui/"/>
+    <id>https://jxch.github.io/2023/05/11/leetcode/leetcode-14-zui-chang-gong-gong-qian-zhui/</id>
+    <published>2023-05-11T02:30:07.000Z</published>
+    <updated>2023-05-11T02:38:13.933Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>编写一个函数来查找字符串数组中的最长公共前缀。<br>如果不存在公共前缀，返回空字符串 “”。</p><blockquote><p>示例 1：<br>输入：strs = [“flower”,“flow”,“flight”]<br>输出：“fl”</p></blockquote><blockquote><p>示例 2：<br>输入：strs = [“dog”,“racecar”,“car”]<br>输出：“”<br>解释：输入不存在公共前缀。</p></blockquote><blockquote><p>提示：<br>1 &lt;= strs.length &lt;= 200<br>0 &lt;= strs[i].length &lt;= 200<br>strs[i] 仅由小写英文字母组成</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">longestCommonPrefix</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> strs<span class="token punctuation">)</span><span class="token punctuation">:</span>        ans <span class="token operator">=</span> <span class="token string">''</span>        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span><span class="token operator">*</span>strs<span class="token punctuation">)</span><span class="token punctuation">:</span>            <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span><span class="token builtin">set</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>                ans <span class="token operator">+=</span> i<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>            <span class="token keyword">else</span><span class="token punctuation">:</span>                <span class="token keyword">break</span>        <span class="token keyword">return</span> ans<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">longestCommonPrefix</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> strs<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">str</span><span class="token punctuation">:</span>        <span class="token keyword">return</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>commonprefix<span class="token punctuation">(</span>strs<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题干&quot;&gt;题干&lt;/h2&gt;
+&lt;p&gt;编写一个函数来查找字符串数组中的最长公共前缀。&lt;br&gt;
+如果不存在公共前缀，返回空字符串 “”。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;示例 1：&lt;br&gt;
+输入：strs = [“flower”,“flow”,“flight”]&lt;b</summary>
+      
+    
+    
+    
+    <category term="算法笔记" scheme="https://jxch.github.io/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LeetCode-13.罗马数字转整数</title>
+    <link href="https://jxch.github.io/2023/05/11/leetcode/leetcode-13-luo-ma-shu-zi-zhuan-zheng-shu/"/>
+    <id>https://jxch.github.io/2023/05/11/leetcode/leetcode-13-luo-ma-shu-zi-zhuan-zheng-shu/</id>
+    <published>2023-05-11T02:23:31.000Z</published>
+    <updated>2023-05-11T02:30:32.533Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</p><pre class="line-numbers language-none"><code class="language-none">字符          数值I             1V             5X             10L             50C             100D             500M             1000<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>例如， 罗马数字 2 写做 II ，即为两个并列的 1 。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p><p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p><ul><li>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</li><li>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。</li><li>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</li></ul><p>给定一个罗马数字，将其转换成整数。</p><blockquote><p>示例 1:<br>输入: s = “III”<br>输出: 3</p></blockquote><blockquote><p>示例 2:<br>输入: s = “IV”<br>输出: 4</p></blockquote><blockquote><p>示例 3:<br>输入: s = “IX”<br>输出: 9</p></blockquote><blockquote><p>示例 4:<br>输入: s = “LVIII”<br>输出: 58<br>解释: L = 50, V= 5, III = 3.</p></blockquote><blockquote><p>示例 5:<br>输入: s = “MCMXCIV”<br>输出: 1994<br>解释: M = 1000, CM = 900, XC = 90, IV = 4.</p></blockquote><blockquote><p>提示：<br>1 &lt;= s.length &lt;= 15<br>s 仅含字符 (‘I’, ‘V’, ‘X’, ‘L’, ‘C’, ‘D’, ‘M’)<br>题目数据保证 s 是一个有效的罗马数字，且表示整数在范围 [1, 3999] 内<br>题目所给测试用例皆符合罗马数字书写规则，不会出现跨位等情况。<br>IL 和 IM 这样的例子并不符合题目要求，49 应该写作 XLIX，999 应该写作 CMXCIX 。<br>关于罗马数字的详尽书写规则，可以参考<a href="https://b2b.partcommunity.com/community/knowledge/zh_CN/detail/10753/%E7%BD%97%E9%A9%AC%E6%95%B0%E5%AD%97#knowledge_article">罗马数字 - Mathematics</a> 。</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">romanToInt</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>        d <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'I'</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'IV'</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'V'</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">'IX'</span><span class="token punctuation">:</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token string">'X'</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">'XL'</span><span class="token punctuation">:</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token string">'L'</span><span class="token punctuation">:</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token string">'XC'</span><span class="token punctuation">:</span><span class="token number">80</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">:</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token string">'CD'</span><span class="token punctuation">:</span><span class="token number">300</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">:</span><span class="token number">500</span><span class="token punctuation">,</span> <span class="token string">'CM'</span><span class="token punctuation">:</span><span class="token number">800</span><span class="token punctuation">,</span> <span class="token string">'M'</span><span class="token punctuation">:</span><span class="token number">1000</span><span class="token punctuation">}</span>        <span class="token keyword">return</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span>get<span class="token punctuation">(</span>s<span class="token punctuation">[</span><span class="token builtin">max</span><span class="token punctuation">(</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> d<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i<span class="token punctuation">,</span> n <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题干&quot;&gt;题干&lt;/h2&gt;
+&lt;p&gt;罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;字符         </summary>
+      
+    
+    
+    
+    <category term="算法笔记" scheme="https://jxch.github.io/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LeetCode-12.整数转罗马数字</title>
+    <link href="https://jxch.github.io/2023/05/11/leetcode/leetcode-12-zheng-shu-zhuan-luo-ma-shu-zi/"/>
+    <id>https://jxch.github.io/2023/05/11/leetcode/leetcode-12-zheng-shu-zhuan-luo-ma-shu-zi/</id>
+    <published>2023-05-11T02:17:09.000Z</published>
+    <updated>2023-05-11T02:30:35.806Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。</p><pre class="line-numbers language-none"><code class="language-none">字符          数值I             1V             5X             10L             50C             100D             500M             1000<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p><p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p><ul><li>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</li><li>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。</li><li>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</li></ul><p>给你一个整数，将其转为罗马数字。</p><blockquote><p>示例 1:<br>输入: num = 3<br>输出: “III”</p></blockquote><blockquote><p>示例 2:<br>输入: num = 4<br>输出: “IV”</p></blockquote><blockquote><p>示例 3:<br>输入: num = 9<br>输出: “IX”</p></blockquote><blockquote><p>示例 4:<br>输入: num = 58<br>输出: “LVIII”<br>解释: L = 50, V = 5, III = 3.</p></blockquote><blockquote><p>示例 5:<br>输入: num = 1994<br>输出: “MCMXCIV”<br>解释: M = 1000, CM = 900, XC = 90, IV = 4.</p></blockquote><blockquote><p>提示：<br>1 &lt;= num &lt;= 3999</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">intToRoman</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> num<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">str</span><span class="token punctuation">:</span>        <span class="token comment"># 使用哈希表，按照从大到小顺序排列</span>        hashmap <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1000</span><span class="token punctuation">:</span><span class="token string">'M'</span><span class="token punctuation">,</span> <span class="token number">900</span><span class="token punctuation">:</span><span class="token string">'CM'</span><span class="token punctuation">,</span> <span class="token number">500</span><span class="token punctuation">:</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token number">400</span><span class="token punctuation">:</span><span class="token string">'CD'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">:</span><span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">:</span><span class="token string">'XC'</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">:</span><span class="token string">'L'</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">:</span><span class="token string">'XL'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">:</span><span class="token string">'X'</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">:</span><span class="token string">'IX'</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">:</span><span class="token string">'V'</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">:</span><span class="token string">'IV'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token string">'I'</span><span class="token punctuation">}</span>        res <span class="token operator">=</span> <span class="token string">''</span>        <span class="token keyword">for</span> key <span class="token keyword">in</span> hashmap<span class="token punctuation">:</span>            <span class="token keyword">if</span> num <span class="token operator">//</span> key <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">:</span>                count <span class="token operator">=</span> num <span class="token operator">//</span> key  <span class="token comment"># 比如输入4000，count 为 4</span>                res <span class="token operator">+=</span> hashmap<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">*</span> count                 num <span class="token operator">%=</span> key        <span class="token keyword">return</span> res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题干&quot;&gt;题干&lt;/h2&gt;
+&lt;p&gt;罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;字符         </summary>
+      
+    
+    
+    
+    <category term="算法笔记" scheme="https://jxch.github.io/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LeetCode-11.盛最多水的容器</title>
+    <link href="https://jxch.github.io/2023/05/11/leetcode/leetcode-11-sheng-zui-duo-shui-de-rong-qi/"/>
+    <id>https://jxch.github.io/2023/05/11/leetcode/leetcode-11-sheng-zui-duo-shui-de-rong-qi/</id>
+    <published>2023-05-11T02:10:55.000Z</published>
+    <updated>2023-05-11T02:15:23.174Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。<br>找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。<br>返回容器可以储存的最大水量。<br>说明：你不能倾斜容器。</p><blockquote><p>示例 1：<br>输入：[1,8,6,2,5,4,8,3,7]<br>输出：49<br>解释：容器能够容纳水的最大值为 49 (8和7, 7*7=49)。</p></blockquote><blockquote><p>示例 2：<br>输入：height = [1,1]<br>输出：1</p></blockquote><blockquote><p>提示：<br>$n == height.length$<br>$2 &lt;= n &lt;= 10^5$<br>$0 &lt;= height[i] &lt;= 10^4$</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">maxArea</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> height<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>        left<span class="token punctuation">,</span> right <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>height<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>        res <span class="token operator">=</span> <span class="token number">0</span>        <span class="token keyword">while</span> left <span class="token operator">&lt;</span> right<span class="token punctuation">:</span>            area <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>height<span class="token punctuation">[</span>left<span class="token punctuation">]</span><span class="token punctuation">,</span> height<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>right <span class="token operator">-</span> left<span class="token punctuation">)</span>            res <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> area<span class="token punctuation">)</span>            <span class="token keyword">if</span> height<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">&lt;</span> height<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">:</span>                left <span class="token operator">+=</span> <span class="token number">1</span>            <span class="token keyword">else</span><span class="token punctuation">:</span>                right <span class="token operator">-=</span> <span class="token number">1</span>        <span class="token keyword">return</span> res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题干&quot;&gt;题干&lt;/h2&gt;
+&lt;p&gt;给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。&lt;br&gt;
+找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。&lt;br&gt;
+返回容</summary>
+      
+    
+    
+    
+    <category term="算法笔记" scheme="https://jxch.github.io/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
+    
+  </entry>
   
   <entry>
     <title>powershell-导出壁纸缓存图片</title>
@@ -415,107 +523,6 @@
       
     <summary type="html">&lt;h2 id=&quot;反走样&quot;&gt;反走样&lt;/h2&gt;
 &lt;p&gt;直线扫描转换算法在处理非水平、非垂直且非45°的直线段时会出现锯齿，这是因为直线段在光栅扫描显示器上显示的图像是由一系列亮度相同而面积不为零的离散像素点构成的。这种由离散量表示连续量而引起的失真称为走样（aliasing）。用于减</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="计算机图形学" scheme="https://jxch.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计算机图形学-有效边表填充算法</title>
-    <link href="https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-you-xiao-bian-biao-tian-chong-suan-fa/"/>
-    <id>https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-you-xiao-bian-biao-tian-chong-suan-fa/</id>
-    <published>2023-05-05T09:21:58.000Z</published>
-    <updated>2023-05-05T09:29:38.867Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="填充原理">填充原理</h2><p>有效边表填充算法通过维护边表和有效边表，避开了扫描线与多边形所有边求交的复杂运算。填充原理是按照扫描线从小到大的移动顺序，计算当前扫描线与有效边的交点，然后把这些交点按x值递增的顺序进行排序、配对，以确定填充区间，最后用指定颜色填充区间内的所有像素，即完成填充工作。有效边表填充算法已成为目前最为有效的多边形填充算法之一。</p><h2 id="边界像素处理原则">边界像素处理原则</h2><p>填充左下角为（1，1），右上角为（3，3）的正方形时，若将边界上的所有像素全部填充，就得到图示的结果。<br><img src="/static/IT/Graphics/EffectiveEdgeList-1.png" alt="填充"><br>在多边形填充过程中，常采用“左闭右开”和“下闭上开”的原则对边界像素进行处理。</p><p><img src="/static/IT/Graphics/EffectiveEdgeList-2.png" alt=""><br>局部最高点P1、P6和P4，共享顶点的两条边落在扫描线的下方；普通连接点P2，共享顶点的两条边分别落在扫描线两侧；局部最低点P0、P3和P5，共享顶点的两条边落在扫描线的上方。常根据共享顶点的两条边的另一端的y值大于扫描线y值的个数来将交点个数取为0、1和2。事实上，有效边表算法能自动处理这三类顶点。</p><h2 id="有效边与有效边表">有效边与有效边表</h2><h3 id="有效边">有效边</h3><p>多边形与当前扫描线相交的边称为有效边（active edge）。在处理一条扫描线时仅对有效边进行求交运算，可以避免与多边形的所有边求交，提高了算法效率。有效边上的扫描线由起点到终点每次加1，即像素点的y坐标为y＝y+1，x坐标的变化可以按如下方法推导。<br><img src="/static/IT/Graphics/EffectiveEdgeList-3.png" alt="有效边"></p><h3 id="有效边表">有效边表</h3><p><img src="/static/IT/Graphics/EffectiveEdgeList-4.png" alt="有效边表"></p><h2 id="桶表与边表">桶表与边表</h2><p>从有效边表的建立过程可以看出，有效边表给出了扫描线与有效边交点坐标的计算方法，但是并没有给出新边出现的位置坐标。为了确定在哪条扫描线上插入了新边，就需要构造一个边表（edge table，<strong>ET</strong>），用以存放扫描线上多边形各条边出现的信息。因为水平边的1/k为∞，并且水平边本身就是扫描线，在建立边表时可以不予考虑。</p><h3 id="桶表和边表的表示法">桶表和边表的表示法</h3><p>桶表是<strong>按照扫描线顺序管理边出现情况的一个数据结构</strong>。首先，构造一个纵向扫描线链表，<strong>链表的长度为多边形所占有的最大扫描线数</strong>，链表的每个结点称为桶（bucket），对应多边形覆盖的每一条扫描线。<br>将每条边的信息链入与<strong>该边最小y坐标（ymin）<strong>相对应的桶处。也就是说，若某边的较低端点为ymin，则该边就存放在相应的扫描线桶中。<br>对于每一条扫描线，如果新增多条边，则</strong>按x|ymin坐标递增的顺序存放在一个链表中，若x|ymin 相等，则按照1/k由小到大排序</strong>，这样就形成边表。<br><img src="/static/IT/Graphics/EffectiveEdgeList-5.png" alt="边"></p><h3 id="桶表与边表示例">桶表与边表示例</h3><p><img src="/static/IT/Graphics/EffectiveEdgeList-6.png" alt="边表结点"><br><img src="/static/IT/Graphics/EffectiveEdgeList-7.png" alt="边表"></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;填充原理&quot;&gt;填充原理&lt;/h2&gt;
-&lt;p&gt;有效边表填充算法通过维护边表和有效边表，避开了扫描线与多边形所有边求交的复杂运算。填充原理是按照扫描线从小到大的移动顺序，计算当前扫描线与有效边的交点，然后把这些交点按x值递增的顺序进行排序、配对，以确定填充区间，最后用指定颜</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="计算机图形学" scheme="https://jxch.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计算机图形学-边缘填充算法</title>
-    <link href="https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-bian-yuan-tian-chong-suan-fa/"/>
-    <id>https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-bian-yuan-tian-chong-suan-fa/</id>
-    <published>2023-05-05T09:19:37.000Z</published>
-    <updated>2023-05-05T09:20:59.589Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="填充原理">填充原理</h2><p>边缘填充算法是先求出多边形的每条边与扫描线的交点，然后<strong>将交点右侧的所有像素颜色全部取为补色（或反色</strong>）。按任意顺序处理完多边形的所有边后，就完成了多边形的填充任务。边缘填充算法利用了图像处理中的求“补”或求“反”的概念，对于黑白图像，求补就是把RGB(1,1,1)（白色）的像素置为RGB(0,0,0)（黑色），反之亦然；对于彩色图像，求补就是将背景色置为填充色，反之亦然。求补的一条基本性质是<strong>一个像素求补两次就恢复为原色</strong>。<strong>如果多边形内部的像素被求补偶数次，保持原色，如果被求补奇数次，显示填充色。</strong></p><h2 id="填充过程">填充过程</h2><p>假定边的顺序为E0、E1、E2、E3、E4、E5和E6。这里，边的顺序并不影响填充结果，只是方便编写循环结构而已。<br><img src="/static/IT/Graphics/EdgeFilling.png" alt="填充过程"></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;填充原理&quot;&gt;填充原理&lt;/h2&gt;
-&lt;p&gt;边缘填充算法是先求出多边形的每条边与扫描线的交点，然后&lt;strong&gt;将交点右侧的所有像素颜色全部取为补色（或反色&lt;/strong&gt;）。按任意顺序处理完多边形的所有边后，就完成了多边形的填充任务。边缘填充算法利用了图像处理中的</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="计算机图形学" scheme="https://jxch.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计算机图形学-区域填充算法</title>
-    <link href="https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-qu-yu-tian-chong-suan-fa/"/>
-    <id>https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-qu-yu-tian-chong-suan-fa/</id>
-    <published>2023-05-05T09:14:36.000Z</published>
-    <updated>2023-05-05T09:18:19.621Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="填充原理">填充原理</h2><p><strong>种子填充算法</strong>是从区域内任一个种子像素位置开始，由内向外将填充色扩散到整个多边形区域的填充过程。种子填充算法突出的优点是<strong>能对具有任意复杂闭合边界的区域进行填充。</strong></p><h2 id="四邻接点与八邻接点">四邻接点与八邻接点</h2><p><img src="/static/IT/Graphics/AreaFill-1.png" alt="四邻接点与八邻接点"></p><h2 id="四连通域与八连通域">四连通域与八连通域</h2><p><img src="/static/IT/Graphics/AreaFill-2.png" alt="四连通域与八连通域"><br><img src="/static/IT/Graphics/AreaFill-3.png" alt="四连通域与八连通域"></p><h2 id="种子填充算法">种子填充算法</h2><h3 id="算法定义">算法定义</h3><p>从种子像素点开始，使用四邻接点方式搜索下一像素点的填充算法称为四邻接点填充算法。从种子像素点开始，使用八邻接点方式搜索下一像素点的填充算法称为八邻接点填充算法。八邻接点填充算法的设计和四邻接点填充算法基本相似，只要把搜索方式由四邻接点修改为八邻接点即可。</p><h3 id="算法原理">算法原理</h3><p>种子填充算法一般要求区域边界色和填充色不同，输入参数只有种子坐标位置和填充颜色。种子填充算法一般需要使用<strong>堆栈数据结构</strong>来实现。<br>先将种子像素入栈，种子像素为栈底像素，如果栈不为空，执行如下3步操作：</p><ol><li>栈顶像素出栈；</li><li>按填充颜色<strong>绘制出栈像素</strong>。</li><li>按左、右、下、上（或左、左上、上、右上、右、右下、下、左下）顺序搜索与出栈像素相邻的四（八）个像素，若该像素的颜色不是边界色并且未置成填充色，则把该像素入栈；否则丢弃该像素。</li></ol><p>该算法也可以填充有孔区域。<br><strong>缺点</strong>：递归执行，算法简单，但效率不高，区域内每一象素都引起一次递归，进/出栈，费时费内存。<br>改进算法，减少递归次数，提高效率。<strong>解决方法是用扫描线填充算法</strong>。</p><h2 id="扫描线算法">扫描线算法</h2><p>目标：减少递归层次<br>算法思想：在任意不间断区间中只取一个种子像素（不间断区间指在一条扫描线上一组相邻元素），填充当前扫描线上的该段区间；然后确定与这一区段相邻的上下两条扫描线上位于区域内的区段，并依次把它们保存起来，反复进行这个过程，直到所保存的个区段都填充完毕。</p><h2 id="扫描线种子填充算法">扫描线种子填充算法</h2><p>算法原理为：先将种子像素入栈，种子像素为栈底像素，如果栈不为空，执行如下4步操作。</p><ol><li>栈顶像素出栈。</li><li>沿扫描线对出栈像素的左右像素进行填充，直至遇到边界像素为止。即每出栈一个像素，就对区域内包含该像素的整个连续区间进行填充。</li><li>同时记录该区间，将区间最左端像素记为xleft，最右端像素记为xright。</li><li>在区间〔xleft，xright〕中检查与当前扫描线相邻的上下两条扫描线的有关像素是否全为边界像素或已填充像素，若存在非边界且未填充的像素，则把未填充区间的最右端像素取作种子像素入栈。</li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;填充原理&quot;&gt;填充原理&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;种子填充算法&lt;/strong&gt;是从区域内任一个种子像素位置开始，由内向外将填充色扩散到整个多边形区域的填充过程。种子填充算法突出的优点是&lt;strong&gt;能对具有任意复杂闭合边界的区域进行填充。&lt;/strong&gt;</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="计算机图形学" scheme="https://jxch.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计算机图形学-图形几何变换基础</title>
-    <link href="https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-tu-xing-ji-he-bian-huan-ji-chu/"/>
-    <id>https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-tu-xing-ji-he-bian-huan-ji-chu/</id>
-    <published>2023-05-05T09:09:59.000Z</published>
-    <updated>2023-05-05T09:13:35.741Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="规范化齐次坐标">规范化齐次坐标</h2><p>齐次坐标就是用n＋1维矢量表示n维矢量。例如，在二维平面中，点P(x,y)的齐次坐标表示为(wx,wy,w)。类似地，在三维空间中，点P(x,y,z)的齐次坐标表示为（wx,wy,wz,w）。<br>w＝1就是规范化的齐次坐标。二维点P(x，y)的规范化齐次坐标为〔x，y，1〕，三维点P(x，y，z)的规范化齐次坐标为(x，y，z，1)。<br>定义了规范化齐次坐标以后，图形几何变换可以表示为图形顶点集合的规范化齐次坐标矩阵与某一变换矩阵相乘的形式。</p><p>矩阵相乘: 由线性代数知道，矩阵乘法不满足交换律，只有左矩阵的列数等于右矩阵的行数时，两个矩阵才可以相乘。</p><h2 id="二维几何变换矩阵">二维几何变换矩阵</h2><p>用规范化齐次坐标表示的二维基本几何变换矩阵是一个3×3的方阵，简称为二维变换矩阵。<br><img src="/static/IT/Graphics/GraphicsTransBasics-1.png" alt="二维几何变换矩阵"><br>从功能上可以把二维变换矩阵T分为4个子矩阵。其中<br><img src="/static/IT/Graphics/GraphicsTransBasics-2.png" alt="二维几何变换矩阵"></p><h2 id="物体变换与坐标变换">物体变换与坐标变换</h2><p>同一种变换可以看作是物体变换，也可以看作是坐标变换。物体变换是使用同一变换矩阵作用于物体上的所有顶点，但坐标系位置不发生改变。坐标变换是坐标系发生变换，但物体位置不发生改变，然后在新坐标系下表示物体上的所有顶点。这两种变换紧密联系，各有各的优点，只是变换矩阵略有差异而已</p><h2 id="二维几何变换">二维几何变换</h2><p><img src="/static/IT/Graphics/GraphicsTransBasics-3.png" alt="二维几何变换"></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;规范化齐次坐标&quot;&gt;规范化齐次坐标&lt;/h2&gt;
-&lt;p&gt;齐次坐标就是用n＋1维矢量表示n维矢量。例如，在二维平面中，点P(x,y)的齐次坐标表示为(wx,wy,w)。类似地，在三维空间中，点P(x,y,z)的齐次坐标表示为（wx,wy,wz,w）。&lt;br&gt;
-w＝1就是规</summary>
       
     
     
