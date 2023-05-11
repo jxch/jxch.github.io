@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-05-10T14:19:14.639Z</updated>
+  <updated>2023-05-11T01:45:50.401Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>WIN-导出桌面图片缓存</title>
+    <link href="https://jxch.github.io/2023/05/11/coding/win-dao-chu-zhuo-mian-tu-pian-huan-cun/"/>
+    <id>https://jxch.github.io/2023/05/11/coding/win-dao-chu-zhuo-mian-tu-pian-huan-cun/</id>
+    <published>2023-05-11T01:43:37.000Z</published>
+    <updated>2023-05-11T01:45:50.401Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="export-wallper-ps1">export_wallper.ps1</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token namespace">[CmdletBinding()]</span><span class="token keyword">Param</span><span class="token punctuation">(</span>    <span class="token namespace">[bool]</span> <span class="token variable">$init</span><span class="token punctuation">)</span><span class="token variable">$link_target</span> = <span class="token string">'C:\Users\xiche\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets'</span><span class="token variable">$link_dir</span> = <span class="token string">'D:\xiche\Pictures\wallper'</span><span class="token variable">$link_files</span> = <span class="token string">'D:\xiche\Pictures\wallper\*'</span><span class="token variable">$export_dir</span> = <span class="token string">'D:\xiche\Pictures\wallper_export'</span><span class="token variable">$export_files</span> = <span class="token string">'D:\xiche\Pictures\wallper_export\*'</span><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$init</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">Test-Path</span> <span class="token variable">$link_dir</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token function">Remove-Item</span> <span class="token variable">$link_dir</span> <span class="token operator">-</span>Recurse    <span class="token punctuation">}</span>    <span class="token function">New-Item</span> <span class="token operator">-</span>ItemType Junction <span class="token operator">-</span>Target <span class="token variable">$link_target</span> <span class="token operator">-</span>Path <span class="token variable">$link_dir</span>        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">Test-Path</span> <span class="token variable">$export_dir</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token function">Remove-Item</span> <span class="token variable">$export_dir</span> <span class="token operator">-</span>Recurse    <span class="token punctuation">}</span>    <span class="token function">New-Item</span> <span class="token variable">$export_dir</span> <span class="token operator">-</span><span class="token function">Type</span> Directory<span class="token punctuation">}</span><span class="token function">Copy-Item</span> <span class="token variable">$link_files</span> <span class="token operator">-</span>Destination <span class="token variable">$export_dir</span><span class="token function">Get-ChildItem</span> <span class="token variable">$export_files</span> <span class="token punctuation">|</span> <span class="token function">Rename-Item</span> <span class="token operator">-</span>NewName <span class="token punctuation">{</span> <span class="token variable">$_</span><span class="token punctuation">.</span>name <span class="token operator">+</span> <span class="token string">'.jpg'</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="用法">用法</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">export_wallper<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>init <span class="token boolean">$True</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;export-wallper-ps1&quot;&gt;export_wallper.ps1&lt;/h2&gt;
+&lt;pre class=&quot;line-numbers language-powershell&quot; data-language=&quot;powershell&quot;&gt;&lt;code class=&quot;la</summary>
+      
+    
+    
+    
+    <category term="使用手册" scheme="https://jxch.github.io/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="WIN" scheme="https://jxch.github.io/tags/WIN/"/>
+    
+  </entry>
   
   <entry>
     <title>WIN-命令行模式使用天翼云盘</title>
@@ -491,30 +516,6 @@
     <summary type="html">&lt;h2 id=&quot;规范化齐次坐标&quot;&gt;规范化齐次坐标&lt;/h2&gt;
 &lt;p&gt;齐次坐标就是用n＋1维矢量表示n维矢量。例如，在二维平面中，点P(x,y)的齐次坐标表示为(wx,wy,w)。类似地，在三维空间中，点P(x,y,z)的齐次坐标表示为（wx,wy,wz,w）。&lt;br&gt;
 w＝1就是规</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="计算机图形学" scheme="https://jxch.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计算机图形学-二维图形基本几何变换矩阵</title>
-    <link href="https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-er-wei-tu-xing-ji-ben-ji-he-bian-huan-ju-zhen/"/>
-    <id>https://jxch.github.io/2023/05/05/ji-suan-ji-tu-xing-xue/ji-suan-ji-tu-xing-xue-er-wei-tu-xing-ji-ben-ji-he-bian-huan-ju-zhen/</id>
-    <published>2023-05-05T09:02:00.000Z</published>
-    <updated>2023-05-05T09:09:10.930Z</updated>
-    
-    <content type="html"><![CDATA[<p>二维图形基本几何变换是指相对于坐标原点和坐标轴进行的几何变换，包括<strong>平移</strong>（Translate）、<strong>比例</strong>（Scale）、<strong>旋转</strong>（Rotate）、<strong>反射</strong>（Reflect）和<strong>错切</strong>（shear）5种变换。物体变换物体变换是通过变换物体上每一个顶点实现的，因此以点的二维基本几何变换为例讲解二维图形基本几何变换矩阵 。</p><h2 id="平移变换矩阵">平移变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-1.png" alt="平移变换矩阵"></p><h2 id="比例变换矩阵">比例变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-2.png" alt="比例变换矩阵"></p><h2 id="旋转变换矩阵">旋转变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-3.png" alt="旋转变换矩阵"></p><h2 id="反射变换矩阵">反射变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-4.png" alt="反射变换矩阵"><br><img src="/static/IT/Graphics/TransMatrix2-5.png" alt="反射变换矩阵"></p><h2 id="错切变换矩阵">错切变换矩阵</h2><p><img src="/static/IT/Graphics/TransMatrix2-6.png" alt="错切变换矩阵"><br><img src="/static/IT/Graphics/TransMatrix2-7.png" alt="错切变换矩阵"><br><img src="/static/IT/Graphics/TransMatrix2-8.png" alt="错切变换矩阵"></p><p>上面讨论的五种变换给出的都是点变换的公式，对于线框模型，图形的变换实际上都可以通过点变换来完成。例如直线段的变换可以通过对两个顶点坐标进行变换，连接新顶点得到变换后的新直线段；多边形的变换可以通过对每个顶点进行变换，连接新顶点得到变换后的新多边形。曲线的变换可通过变换控制多边形的控制点后，重新绘制曲线来实现。</p><hr><h2 id="二维仿射变换">二维仿射变换</h2><p>符合下面形式的坐标变换称为<strong>二维仿射变换</strong>（Affine Transformation）。<br><img src="/static/IT/Graphics/TransMatrix2-9.png" alt="二维仿射变换"><br>仿射变换具有平行线变换成平行线，有限点映射到有限点的一般特性。平移、比例、旋转、反射和错切五种变换都是二维仿射变换的特例，任何一组二维仿射变换总可表示为这5种变换的组合。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;二维图形基本几何变换是指相对于坐标原点和坐标轴进行的几何变换，包括&lt;strong&gt;平移&lt;/strong&gt;（Translate）、&lt;strong&gt;比例&lt;/strong&gt;（Scale）、&lt;strong&gt;旋转&lt;/strong&gt;（Rotate）、&lt;strong&gt;反射&lt;/strong</summary>
       
     
     
