@@ -4,6 +4,87 @@
   
     
     <entry>
+      <title>Linux-开启BBR</title>
+      <link href="/2023/05/12/yun-wei/linux-kai-qi-bbr/"/>
+      <url>/2023/05/12/yun-wei/linux-kai-qi-bbr/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"net.core.default_qdisc=fq"</span> <span class="token operator">&gt;&gt;</span> /etc/sysctl.conf<span class="token builtin class-name">echo</span> <span class="token string">"net.ipv4.tcp_congestion_control=bbr"</span> <span class="token operator">&gt;&gt;</span> /etc/sysctl.conf<span class="token comment"># 生效</span><span class="token function">sysctl</span> <span class="token parameter variable">-p</span><span class="token comment"># 查看内核是否已开启BBR</span><span class="token function">sysctl</span> net.ipv4.tcp_available_congestion_control<span class="token comment"># 查看BBR是否启动</span>lsmod <span class="token operator">|</span> <span class="token function">grep</span> bbr<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 运维手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> BBR </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>vue-echarts-更新图表</title>
+      <link href="/2023/05/12/coding/vue-echarts-geng-xin-tu-biao/"/>
+      <url>/2023/05/12/coding/vue-echarts-geng-xin-tu-biao/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>v-chart</span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>line-chart<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>line-chart<span class="token punctuation">"</span></span> <span class="token attr-name">:option</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>chartOptions<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineComponent</span><span class="token punctuation">(</span><span class="token punctuation">{</span>    <span class="token function">setup</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token keyword">let</span> chartDemo <span class="token operator">=</span> <span class="token function">getCurrentInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>refs<span class="token punctuation">[</span><span class="token string">'line-chart'</span><span class="token punctuation">]</span>        <span class="token function">onMounted</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=&gt;</span> <span class="token punctuation">{</span>            chartDemo <span class="token operator">=</span> <span class="token function">getCurrentInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>refs<span class="token punctuation">[</span><span class="token string">'line-chart'</span><span class="token punctuation">]</span>        <span class="token punctuation">}</span><span class="token punctuation">)</span>        <span class="token keyword">const</span> chartOptions <span class="token operator">=</span> <span class="token function">reactive</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>        <span class="token function">watch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> props<span class="token punctuation">.</span>data<span class="token punctuation">,</span>            <span class="token punctuation">(</span><span class="token parameter">newData</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>                <span class="token comment">// 更新 chartOptions; </span>                <span class="token comment">// 可能由于 vue-echarts 内部的 bug, 更新 reactive options 后图表会出现上次数据集残留的脏数据</span>                <span class="token comment">// 所以需要手动更新</span>                chartDemo<span class="token punctuation">.</span><span class="token function">setOption</span><span class="token punctuation">(</span>chartOptions<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>            <span class="token punctuation">}</span><span class="token punctuation">)</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 使用手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> vue </tag>
+            
+            <tag> echarts </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>市场分析-20230510-Brooks-S&amp;P Emini</title>
+      <link href="/2023/05/11/shi-chang-fen-xi/shi-chang-fen-xi-20230510-brooks-s-p-emini/"/>
+      <url>/2023/05/11/shi-chang-fen-xi/shi-chang-fen-xi-20230510-brooks-s-p-emini/</url>
+      
+        <content type="html"><![CDATA[<p><font color="red">Trading Update: Wednesday May 10, 2023</font></p><h1><font color="green">S&amp;P Emini pre-open market analysis</font></h1><h2 id="font-color-red-Emini-daily-chart-font"><font color="red">Emini daily chart</font></h2><ul><li>The Emini has had two consecutive days, with the range being less than 20 points. Bulls want follow-through buying.<ul><li>Emini连续两天涨幅都在20点以内。多头希望跟进购买</li></ul></li><li>The daily chart is in the middle of a trading range that has gone on for over a month. This means that the market is in breakout mode and deciding on the direction of the breakout.<ul><li>日线图处于已经持续了一个多月的交易区间的中间。这意味着市场处于突破模式并决定突破的方向</li></ul></li><li>Traders should assume that the probability is close to 50% for both the bulls and the bears.<ul><li>交易者应假设多头和空头的概率都接近 50%</li></ul></li><li>At the moment, the odds slightly favor the bulls, but not by much. If the bulls had a big advantage, the market would not go sideways.<ul><li>目前，赔率略有利于多头，但幅度不大。如果多头有很大的优势，市场就不会横盘整理</li></ul></li><li>Since last Friday had a strong reversal up, that increases the odds that the bulls will get a second leg up to the May 1st low.<ul><li>由于上周五出现了强劲的反转，这增加了多头再次上涨至 5 月 1 日低点的可能性</li></ul></li><li>The bulls will probably get at least a small second leg up because of the strength of the May 5th bull breakout.<ul><li>由于 5 月 5 日牛市突破的力量，多头可能至少会在第二回合上涨</li></ul></li><li>The bears had a 4-bar bear micro channel down to May 4th. The bears that sold the May 4th high are trapped and likely sold more higher. Trading ranges are forgiving if a trader uses wide stops and scales in higher. Like the bears that sold the April 26th high and scaled in higher, the market eventually allowed those bears out.<ul><li>截至 5 月 4 日，熊市有一个 4 栏熊市微频道。卖出 5 月 4 日高点的空头被困，可能卖出更高。如果交易者使用较宽的止损和较高的规模，则交易范围是宽容的。就像卖出 4 月 26 日高点并走高的空头一样，市场最终允许这些空头离场</li></ul></li><li>Overall, the market is in breakout mode, and it is important to realize that the probability is close to 50% for both the bulls and the bears. If one side had a high probability, the market would not go sideways. Traders who want high probability should wait and see a clear breakout with follow-through; otherwise, sideways is more likely.<ul><li>总体而言，市场处于突破模式，重要的是要意识到多头和空头的概率都接近 50%。如果一方有很大的概率，市场就不会横盘整理。想要高概率的交易者应该观望一个明显的突破并跟进；否则，横向的可能性更大</li></ul></li></ul><h2 id="font-color-red-Emini-5-minute-chart-and-what-to-expect-today-font"><font color="red">Emini 5-minute chart and what to expect today</font></h2><ul><li>Emini is up 27 points in the overnight Globex session.</li><li>The Globex Market had an upside breakout recently during the 5:30 AM PT report.<ul><li>Globex 市场最近在太平洋时间上午 5:30 的报告中出现了上行突破</li></ul></li><li>Today will probably gap up, and the Bulls will try to get a second leg up after last Friday’s bull breakout.<ul><li>今天可能会跳空，多头将在上周五的牛市突破后尝试第二回合上涨</li></ul></li><li>As I often say, traders should expect the open to go sideways for the first 6-12 bars. However, they should be open to a possible bull trend from the open.<ul><li>正如我经常说的，交易者应该预料到前 6-12 个柱线的开盘价会横盘整理。但是，他们应该对开盘后可能出现的牛市趋势持开放态度</li></ul></li><li>Since the odds are the market will gap up, traders should expect the bulls to get at least a second leg up. If the market sells off on the open, traders should expect the bulls to get at least an attempt up following the gap up.<ul><li>由于市场很可能会跳空，交易员应该预计多头至少会再次上涨。如果市场在开盘时抛售，交易者应该预计多头至少会在跳空后尝试上涨</li></ul></li><li>If the buying pressure is not strong on the open, traders should expect sideways to down and for the market to try and test the moving average.<ul><li>如果开盘时买盘压力不强，交易者应预期横向下跌，市场将尝试测试移动平均线</li></ul></li></ul><h2 id="font-color-red-Emini-intraday-market-update-font"><font color="red">Emini intraday market update</font></h2><ul><li>The Emini gapped up and sold off quickly down to bar 5.<ul><li>Emini 跳空并迅速抛售至 bar 5</li></ul></li><li>The selloff to bar 5 was strong enough to make the market Always In Short and increased the odds of a second leg down. However, the selloff was climactic, which increased the risk of a deep pullback.<ul><li>抛售到 5 根柱线的力度足以使市场始终处于空头状态，并增加了第二条腿下跌的可能性。然而，抛售达到高潮，这增加了深度回调的风险</li></ul></li><li>It was reasonable to buy bar 1 following the large gap up. Any selloff was more likely to convert the market into a trading range instead of a bear trend.<ul><li>在大幅上涨后买入 1 号柱是合理的。任何抛售都更有可能将市场转变为交易区间而不是熊市趋势</li></ul></li><li>The rally on bar 7 was strong. However, it followed a large selloff.<ul><li>7 号柱的涨势强劲。然而，随后出现了大规模抛售</li></ul></li><li>This meant the best the bulls could expect was a trading range. While the odds favored buyers below bar 7:10 AM PT for a second leg up, the bears got a downside breakout a few bars later, a new low of the day.<ul><li>这意味着多头可以预期的最好的是一个交易区间。虽然在太平洋时间上午 7 点 10 分柱线下方买家获得第二轮上涨的可能性较大，但空头在几个柱线后出现下行突破，创下当日新低</li></ul></li><li>As of bar 40 (9:50 AM PT), while the bears have done a good job with the selling pressure today, there has been a lot of buying pressure. This increases the risk of today not closing on its low, so traders should expect a rally back to the bar 5 low.<ul><li>截至 40 柱（太平洋时间上午 9 点 50 分），虽然空头今天很好地应对了抛售压力，但也存在很大的买盘压力。这增加了今天未收于低点的风险，因此交易者应该期待反弹回到 5 低点</li></ul></li></ul><h2 id="font-color-red-Yesterday’s-Emini-setups-font"><font color="red">Yesterday’s Emini setups</font></h2><p><img src="/static/trade/Brooks-%E8%BD%AC%E8%BD%BD/20230510-SP500-Emini-5-Min-Trending-Trading-Range-with-Close-near-Open-768x432.png" alt="Emini 5 Min - Yesterday"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 交易笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 市场分析 </tag>
+            
+            <tag> Brooks-转载 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>LeetCode-14.最长公共前缀</title>
       <link href="/2023/05/11/leetcode/leetcode-14-zui-chang-gong-gong-qian-zhui/"/>
       <url>/2023/05/11/leetcode/leetcode-14-zui-chang-gong-gong-qian-zhui/</url>
@@ -2584,7 +2665,7 @@
       <link href="/2023/04/26/suo-yin/suo-yin-ruan-jian/"/>
       <url>/2023/04/26/suo-yin/suo-yin-ruan-jian/</url>
       
-        <content type="html"><![CDATA[<table><thead><tr><th>功能</th><th>软件</th><th>备注</th></tr></thead><tbody><tr><td>视频生成字幕</td><td><a href="https://github.com/chidiwilliams/buzz/releases">Buzz</a></td><td></td></tr><tr><td>分应用代理</td><td><a href="https://www.proxifier.com/download/">Proxifier</a></td><td><a href="/2023/03/25/coding/proxifier-zhu-ce-ma/" title="proxifier-注册码">proxifier-注册码</a></td></tr><tr><td>代理软件</td><td><a href="https://github.com/2dust/v2rayN/releases">v2rayN</a></td><td></td></tr></tbody></table>]]></content>
+        <content type="html"><![CDATA[<table><thead><tr><th>功能</th><th>软件</th><th>备注</th></tr></thead><tbody><tr><td>视频生成字幕</td><td><a href="https://github.com/chidiwilliams/buzz/releases">Buzz</a></td><td></td></tr><tr><td>视频声音提取</td><td><a href="https://github.com/Anjok07/ultimatevocalremovergui/releases">UVR GUI</a></td><td></td></tr><tr><td>分应用代理</td><td><a href="https://www.proxifier.com/download/">Proxifier</a></td><td><a href="/2023/03/25/coding/proxifier-zhu-ce-ma/" title="proxifier-注册码">proxifier-注册码</a></td></tr><tr><td>代理软件</td><td><a href="https://github.com/2dust/v2rayN/releases">v2rayN</a></td><td></td></tr></tbody></table>]]></content>
       
       
       <categories>
