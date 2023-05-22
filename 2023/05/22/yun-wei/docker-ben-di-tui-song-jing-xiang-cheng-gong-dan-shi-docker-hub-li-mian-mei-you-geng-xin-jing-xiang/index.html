@@ -4,13 +4,12 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="SSL-openssl生成crt证书, PA &amp; CODING">
-    <meta name="description" content="# 生成 key
-openssl genrsa -des3 -out server.key 1024
-# 生成 csr
-openssl req -new -key server.key -out server.csr
-# 去除密码
-open">
+    <meta name="keywords" content="Docker-本地推送镜像成功但是docker hub里面没有更新镜像, PA &amp; CODING">
+    <meta name="description" content="
+登录 docker: docker login 和GUI登录
+创建令牌登录: docker login --username xxx 然后输入令牌
+删除 moby/buildkit:buildx-stable-1 镜像的全部内容
+重新推送">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +21,7 @@ open">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>SSL-openssl生成crt证书 | PA &amp; CODING</title>
+    <title>Docker-本地推送镜像成功但是docker hub里面没有更新镜像 | PA &amp; CODING</title>
     <link rel="icon" type="image/png" href="/favicon-kali.png">
     
     <style>
@@ -351,12 +350,12 @@ open">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">SSL-openssl生成crt证书</h1>
+                    <h1 class="description center-align post-title">Docker-本地推送镜像成功但是docker hub里面没有更新镜像</h1>
                 </div>
             </div>
         </div>
@@ -380,8 +379,8 @@ open">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/SSL/">
-                                <span class="chip bg-color">SSL</span>
+                            <a href="/tags/Docker/">
+                                <span class="chip bg-color">Docker</span>
                             </a>
                         
                     </div>
@@ -405,7 +404,7 @@ open">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-05-05
+                    2023-05-22
                 </div>
                 
 
@@ -414,7 +413,7 @@ open">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    52
+                    60
                 </div>
                 
 
@@ -444,14 +443,13 @@ open">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 生成 key</span>
-openssl genrsa <span class="token parameter variable">-des3</span> <span class="token parameter variable">-out</span> server.key <span class="token number">1024</span>
-<span class="token comment"># 生成 csr</span>
-openssl req <span class="token parameter variable">-new</span> <span class="token parameter variable">-key</span> server.key <span class="token parameter variable">-out</span> server.csr
-<span class="token comment"># 去除密码</span>
-openssl rsa <span class="token parameter variable">-in</span> server.key <span class="token parameter variable">-out</span> server_nopass.key
-<span class="token comment"># 生成证书</span>
-openssl x509 <span class="token parameter variable">-req</span> <span class="token parameter variable">-days</span> <span class="token number">365</span> <span class="token parameter variable">-in</span> server.csr <span class="token parameter variable">-signkey</span> server_nopass.key <span class="token parameter variable">-out</span> server.crt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <ol>
+<li>登录 docker: <code>docker login</code> 和GUI登录</li>
+<li><a target="_blank" rel="noopener" href="https://hub.docker.com/settings/security">创建令牌登录</a>: <code>docker login --username xxx</code> 然后输入令牌</li>
+<li>删除 <code>moby/buildkit:buildx-stable-1</code> 镜像的全部内容</li>
+<li>重新推送，等待一段时间</li>
+</ol>
+<p>有必要的话，开启全局代理</p>
 
                 
             </div>
@@ -478,7 +476,7 @@ openssl x509 <span class="token parameter variable">-req</span> <span class="tok
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://jxch.github.io/2023/05/05/yun-wei/ssl-openssl-sheng-cheng-crt-zheng-shu/">https://jxch.github.io/2023/05/05/yun-wei/ssl-openssl-sheng-cheng-crt-zheng-shu/</a>
+                    <a href="https://jxch.github.io/2023/05/22/yun-wei/docker-ben-di-tui-song-jing-xiang-cheng-gong-dan-shi-docker-hub-li-mian-mei-you-geng-xin-jing-xiang/">https://jxch.github.io/2023/05/22/yun-wei/docker-ben-di-tui-song-jing-xiang-cheng-gong-dan-shi-docker-hub-li-mian-mei-you-geng-xin-jing-xiang/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -516,8 +514,8 @@ openssl x509 <span class="token parameter variable">-req</span> <span class="tok
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/SSL/">
-                                    <span class="chip bg-color">SSL</span>
+                                <a href="/tags/Docker/">
+                                    <span class="chip bg-color">Docker</span>
                                 </a>
                             
                         </div>
@@ -600,13 +598,13 @@ openssl x509 <span class="token parameter variable">-req</span> <span class="tok
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/05/05/yun-wei/nginx-https-pei-zhi/">
+                <a href="/2023/05/23/ni-xiang/web-ni-xiang-xia-zai-teng-xun-ke-tang-yi-gou-shi-pin/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Nginx-https配置">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="WEB逆向-下载腾讯课堂已购视频">
                         
-                        <span class="card-title">Nginx-https配置</span>
+                        <span class="card-title">WEB逆向-下载腾讯课堂已购视频</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -617,8 +615,57 @@ openssl x509 <span class="token parameter variable">-req</span> <span class="tok
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-05-05
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-05-23
                         </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" class="post-category">
+                                    逆向工程
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/WEB%E9%80%86%E5%90%91/">
+                        <span class="chip bg-color">WEB逆向</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/05/20/yun-wei/cdn-aws-cloudfront-jie-ru/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="CDN-AWS CloudFront 接入">
+                        
+                        <span class="card-title">CDN-AWS CloudFront 接入</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -634,61 +681,8 @@ openssl x509 <span class="token parameter variable">-req</span> <span class="tok
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Nginx/">
-                        <span class="chip bg-color">Nginx</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2023/05/05/ren-lian-shi-bie/ren-lian-shi-bie-lbph-matlab/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="人脸识别-LBPH-MATLAB">
-                        
-                        <span class="card-title">人脸识别-LBPH-MATLAB</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-05
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/MATLAB/">
-                        <span class="chip bg-color">MATLAB</span>
-                    </a>
-                    
-                    <a href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
-                        <span class="chip bg-color">人脸识别</span>
+                    <a href="/tags/CDN/">
+                        <span class="chip bg-color">CDN</span>
                     </a>
                     
                 </div>
@@ -888,7 +882,7 @@ openssl x509 <span class="token parameter variable">-req</span> <span class="tok
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">220.3k</span>
+                        class="white-color">220.9k</span>
             
             
             

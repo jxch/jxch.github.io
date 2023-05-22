@@ -4,6 +4,156 @@
   
     
     <entry>
+      <title>WEB逆向-下载腾讯课堂已购视频</title>
+      <link href="/2023/05/23/ni-xiang/web-ni-xiang-xia-zai-teng-xun-ke-tang-yi-gou-shi-pin/"/>
+      <url>/2023/05/23/ni-xiang/web-ni-xiang-xia-zai-teng-xun-ke-tang-yi-gou-shi-pin/</url>
+      
+        <content type="html"><![CDATA[<ol><li>浏览器F12，然后打开要观看的视频</li><li>"网络"中找到<code>voddrm.token.xxxxxxxxx</code>，请求网址就是m3u8的地址</li><li>查看"启动器"，点击进入<code>t.load</code>对应的js文件</li><li>搜索<code>decryptkey</code>，找到类似<code>r.decryptdata ? (this.decryptkey = r.decryptdata.key = new Uint8Array(e.data),</code>的代码行</li><li>在其下一行打上断点</li><li>刷新页面进入断点</li><li>查看key: <code>r.levelkey.key</code></li><li>转为16进制: <code>Array.from(r.levelkey.key).map(i =&gt; i.toString(16).padStart(2, '0')).join('');</code></li><li>使用工具下载合并m3u8: <a href="https://github.com/nilaoda/N_m3u8DL-CLI/releases">N_m3u8DL-CLI</a><ul><li>填写m3u8地址和自定义key</li></ul></li></ol><hr><p>有时这个m3u8地址可能有问题，可以刷新重试，也可以用浏览器的<code>Video DownloadHelper</code>插件获取地址<br>建议使用<code>Video DownloadHelper</code>，方便快捷</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 逆向工程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> WEB逆向 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Docker-本地推送镜像成功但是docker hub里面没有更新镜像</title>
+      <link href="/2023/05/22/yun-wei/docker-ben-di-tui-song-jing-xiang-cheng-gong-dan-shi-docker-hub-li-mian-mei-you-geng-xin-jing-xiang/"/>
+      <url>/2023/05/22/yun-wei/docker-ben-di-tui-song-jing-xiang-cheng-gong-dan-shi-docker-hub-li-mian-mei-you-geng-xin-jing-xiang/</url>
+      
+        <content type="html"><![CDATA[<ol><li>登录 docker: <code>docker login</code> 和GUI登录</li><li><a href="https://hub.docker.com/settings/security">创建令牌登录</a>: <code>docker login --username xxx</code> 然后输入令牌</li><li>删除 <code>moby/buildkit:buildx-stable-1</code> 镜像的全部内容</li><li>重新推送，等待一段时间</li></ol><p>有必要的话，开启全局代理</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 运维手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CDN-AWS CloudFront 接入</title>
+      <link href="/2023/05/20/yun-wei/cdn-aws-cloudfront-jie-ru/"/>
+      <url>/2023/05/20/yun-wei/cdn-aws-cloudfront-jie-ru/</url>
+      
+        <content type="html"><![CDATA[<ol><li><a href="https://us-east-1.console.aws.amazon.com/cloudfront/v3/home?region=ap-northeast-1#/distributions/create">创建分配</a></li><li>填写源的完整域名和名称</li><li>缓存选 <code>Legacy cache settings</code></li><li>不启用 WAF</li><li>添加CNAME(自定义域名，与源域名不同)和SSL证书</li><li>创建分配，获取分配域名</li><li>去DNS注册商管理界面添加CNAME记录，将自定义域名映射到CloudFront分配的域名上</li><li>其他选项自行配置，比如HTTPS和HTTP端口（指的是源的端口，ACF的端口只能是80和443，建议只进行HTTPS代理，安全）</li></ol><p>等待几分钟后，在浏览器输入自定义域名会直接跳转到源服务. 比如源HTTPS的端口是443，那么页面就会显示源服务器443端口返回的信息</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 运维手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CDN </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>TLS-AWS Certificate Manager 申请证书</title>
+      <link href="/2023/05/20/yun-wei/tls-aws-certificate-manager-shen-qing-zheng-shu/"/>
+      <url>/2023/05/20/yun-wei/tls-aws-certificate-manager-shen-qing-zheng-shu/</url>
+      
+        <content type="html"><![CDATA[<ol><li><a href="https://us-east-1.console.aws.amazon.com/acm/home?region=us-east-1#/certificates/request">请求证书</a></li><li>填写完全限定域名，选择DNS验证</li><li>去域名注册商管理界面，添加DNS验证信息（ACM给的CNAME名称有问题: <code>xxx.域名.</code>，所以建议直接添加以下五条信息）</li></ol><table><thead><tr><th>类型</th><th>Host</th><th>Value</th></tr></thead><tbody><tr><td>CNAME</td><td>xxx.子域名</td><td>value</td></tr><tr><td>CNAME</td><td>xxx.域名</td><td>value</td></tr><tr><td>TXT</td><td>xxx</td><td>value</td></tr><tr><td>TXT</td><td>xxx.域名</td><td>value</td></tr><tr><td>TXT</td><td>xxx.子域名</td><td>value</td></tr></tbody></table><hr><p>等待几分钟后，ACM管理界面证书状态更新为<code>已颁发</code>，就表示验证成功，可以使用了，然后就可以删除上述五条记录了</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 运维手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> TLS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>TLS-key和crt转pem</title>
+      <link href="/2023/05/20/yun-wei/tls-key-he-crt-zhuan-pem/"/>
+      <url>/2023/05/20/yun-wei/tls-key-he-crt-zhuan-pem/</url>
+      
+        <content type="html"><![CDATA[<h2 id="ECDSA-P-256">ECDSA P 256</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">openssl pkcs8 <span class="token parameter variable">-in</span> xxx.key <span class="token parameter variable">-topk8</span> <span class="token parameter variable">-nocrypt</span> <span class="token parameter variable">-out</span> xxx.key.pemopenssl x509 <span class="token parameter variable">-in</span> xxx.crt <span class="token parameter variable">-out</span> xxx.crt.pem<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><h2 id="RSA">RSA</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">openssl rsa <span class="token parameter variable">-in</span> xxx.key <span class="token parameter variable">-out</span> xxx.key.pemopenssl x509 <span class="token parameter variable">-in</span> xxx.crt <span class="token parameter variable">-out</span> xxx.crt.pem<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 运维手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> TLS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>WIN-开启Chrome浏览器的Google翻译</title>
+      <link href="/2023/05/18/coding/win-kai-qi-chrome-liu-lan-qi-de-google-fan-yi/"/>
+      <url>/2023/05/18/coding/win-kai-qi-chrome-liu-lan-qi-de-google-fan-yi/</url>
+      
+        <content type="html"><![CDATA[<ol><li>去设置里面开启Google翻译功能</li><li>开启系统的全局代理，让浏览器走系统代理</li><li>找到一个自动翻译的页面，让浏览器自动翻译</li><li>关闭系统代理，切换回浏览器的自动代理</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 使用手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> WIN </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Caddy2-获取证书</title>
       <link href="/2023/05/17/yun-wei/caddy2-huo-qu-zheng-shu/"/>
       <url>/2023/05/17/yun-wei/caddy2-huo-qu-zheng-shu/</url>
@@ -21,6 +171,8 @@
         <tags>
             
             <tag> Caddy2 </tag>
+            
+            <tag> TLS </tag>
             
         </tags>
       
@@ -1243,9 +1395,9 @@
     
     
     <entry>
-      <title>SSL-openssl生成crt证书</title>
-      <link href="/2023/05/05/yun-wei/ssl-openssl-sheng-cheng-crt-zheng-shu/"/>
-      <url>/2023/05/05/yun-wei/ssl-openssl-sheng-cheng-crt-zheng-shu/</url>
+      <title>TLS-openssl生成crt证书</title>
+      <link href="/2023/05/05/yun-wei/tls-openssl-sheng-cheng-crt-zheng-shu/"/>
+      <url>/2023/05/05/yun-wei/tls-openssl-sheng-cheng-crt-zheng-shu/</url>
       
         <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 生成 key</span>openssl genrsa <span class="token parameter variable">-des3</span> <span class="token parameter variable">-out</span> server.key <span class="token number">1024</span><span class="token comment"># 生成 csr</span>openssl req <span class="token parameter variable">-new</span> <span class="token parameter variable">-key</span> server.key <span class="token parameter variable">-out</span> server.csr<span class="token comment"># 去除密码</span>openssl rsa <span class="token parameter variable">-in</span> server.key <span class="token parameter variable">-out</span> server_nopass.key<span class="token comment"># 生成证书</span>openssl x509 <span class="token parameter variable">-req</span> <span class="token parameter variable">-days</span> <span class="token number">365</span> <span class="token parameter variable">-in</span> server.csr <span class="token parameter variable">-signkey</span> server_nopass.key <span class="token parameter variable">-out</span> server.crt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
       
@@ -1259,7 +1411,7 @@
       
         <tags>
             
-            <tag> SSL </tag>
+            <tag> TLS </tag>
             
         </tags>
       

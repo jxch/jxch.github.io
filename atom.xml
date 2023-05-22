@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-05-17T02:28:52.337Z</updated>
+  <updated>2023-05-22T17:15:04.764Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -17,11 +17,171 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>WEB逆向-下载腾讯课堂已购视频</title>
+    <link href="https://jxch.github.io/2023/05/23/ni-xiang/web-ni-xiang-xia-zai-teng-xun-ke-tang-yi-gou-shi-pin/"/>
+    <id>https://jxch.github.io/2023/05/23/ni-xiang/web-ni-xiang-xia-zai-teng-xun-ke-tang-yi-gou-shi-pin/</id>
+    <published>2023-05-22T16:03:26.000Z</published>
+    <updated>2023-05-22T17:15:04.764Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li>浏览器F12，然后打开要观看的视频</li><li>"网络"中找到<code>voddrm.token.xxxxxxxxx</code>，请求网址就是m3u8的地址</li><li>查看"启动器"，点击进入<code>t.load</code>对应的js文件</li><li>搜索<code>decryptkey</code>，找到类似<code>r.decryptdata ? (this.decryptkey = r.decryptdata.key = new Uint8Array(e.data),</code>的代码行</li><li>在其下一行打上断点</li><li>刷新页面进入断点</li><li>查看key: <code>r.levelkey.key</code></li><li>转为16进制: <code>Array.from(r.levelkey.key).map(i =&gt; i.toString(16).padStart(2, '0')).join('');</code></li><li>使用工具下载合并m3u8: <a href="https://github.com/nilaoda/N_m3u8DL-CLI/releases">N_m3u8DL-CLI</a><ul><li>填写m3u8地址和自定义key</li></ul></li></ol><hr><p>有时这个m3u8地址可能有问题，可以刷新重试，也可以用浏览器的<code>Video DownloadHelper</code>插件获取地址<br>建议使用<code>Video DownloadHelper</code>，方便快捷</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;浏览器F12，然后打开要观看的视频&lt;/li&gt;
+&lt;li&gt;&quot;网络&quot;中找到&lt;code&gt;voddrm.token.xxxxxxxxx&lt;/code&gt;，请求网址就是m3u8的地址&lt;/li&gt;
+&lt;li&gt;查看&quot;启动器&quot;，点击进入&lt;code&gt;t.load&lt;/code&gt;对应的js文件</summary>
+      
+    
+    
+    
+    <category term="逆向工程" scheme="https://jxch.github.io/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    
+    
+    <category term="WEB逆向" scheme="https://jxch.github.io/tags/WEB%E9%80%86%E5%90%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker-本地推送镜像成功但是docker hub里面没有更新镜像</title>
+    <link href="https://jxch.github.io/2023/05/22/yun-wei/docker-ben-di-tui-song-jing-xiang-cheng-gong-dan-shi-docker-hub-li-mian-mei-you-geng-xin-jing-xiang/"/>
+    <id>https://jxch.github.io/2023/05/22/yun-wei/docker-ben-di-tui-song-jing-xiang-cheng-gong-dan-shi-docker-hub-li-mian-mei-you-geng-xin-jing-xiang/</id>
+    <published>2023-05-21T16:12:27.000Z</published>
+    <updated>2023-05-21T16:24:48.592Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li>登录 docker: <code>docker login</code> 和GUI登录</li><li><a href="https://hub.docker.com/settings/security">创建令牌登录</a>: <code>docker login --username xxx</code> 然后输入令牌</li><li>删除 <code>moby/buildkit:buildx-stable-1</code> 镜像的全部内容</li><li>重新推送，等待一段时间</li></ol><p>有必要的话，开启全局代理</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;登录 docker: &lt;code&gt;docker login&lt;/code&gt; 和GUI登录&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://hub.docker.com/settings/security&quot;&gt;创建令牌登录&lt;/a&gt;: &lt;code&gt;docker lo</summary>
+      
+    
+    
+    
+    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="Docker" scheme="https://jxch.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CDN-AWS CloudFront 接入</title>
+    <link href="https://jxch.github.io/2023/05/20/yun-wei/cdn-aws-cloudfront-jie-ru/"/>
+    <id>https://jxch.github.io/2023/05/20/yun-wei/cdn-aws-cloudfront-jie-ru/</id>
+    <published>2023-05-19T23:15:53.000Z</published>
+    <updated>2023-05-19T23:30:03.627Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li><a href="https://us-east-1.console.aws.amazon.com/cloudfront/v3/home?region=ap-northeast-1#/distributions/create">创建分配</a></li><li>填写源的完整域名和名称</li><li>缓存选 <code>Legacy cache settings</code></li><li>不启用 WAF</li><li>添加CNAME(自定义域名，与源域名不同)和SSL证书</li><li>创建分配，获取分配域名</li><li>去DNS注册商管理界面添加CNAME记录，将自定义域名映射到CloudFront分配的域名上</li><li>其他选项自行配置，比如HTTPS和HTTP端口（指的是源的端口，ACF的端口只能是80和443，建议只进行HTTPS代理，安全）</li></ol><p>等待几分钟后，在浏览器输入自定义域名会直接跳转到源服务. 比如源HTTPS的端口是443，那么页面就会显示源服务器443端口返回的信息</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://us-east-1.console.aws.amazon.com/cloudfront/v3/home?region=ap-northeast-1#/distributions/create&quot;&gt;创建分配&lt;/a&gt;&lt;/li&gt;
+&lt;li</summary>
+      
+    
+    
+    
+    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="CDN" scheme="https://jxch.github.io/tags/CDN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TLS-AWS Certificate Manager 申请证书</title>
+    <link href="https://jxch.github.io/2023/05/20/yun-wei/tls-aws-certificate-manager-shen-qing-zheng-shu/"/>
+    <id>https://jxch.github.io/2023/05/20/yun-wei/tls-aws-certificate-manager-shen-qing-zheng-shu/</id>
+    <published>2023-05-19T23:03:54.000Z</published>
+    <updated>2023-05-19T23:14:28.002Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li><a href="https://us-east-1.console.aws.amazon.com/acm/home?region=us-east-1#/certificates/request">请求证书</a></li><li>填写完全限定域名，选择DNS验证</li><li>去域名注册商管理界面，添加DNS验证信息（ACM给的CNAME名称有问题: <code>xxx.域名.</code>，所以建议直接添加以下五条信息）</li></ol><table><thead><tr><th>类型</th><th>Host</th><th>Value</th></tr></thead><tbody><tr><td>CNAME</td><td>xxx.子域名</td><td>value</td></tr><tr><td>CNAME</td><td>xxx.域名</td><td>value</td></tr><tr><td>TXT</td><td>xxx</td><td>value</td></tr><tr><td>TXT</td><td>xxx.域名</td><td>value</td></tr><tr><td>TXT</td><td>xxx.子域名</td><td>value</td></tr></tbody></table><hr><p>等待几分钟后，ACM管理界面证书状态更新为<code>已颁发</code>，就表示验证成功，可以使用了，然后就可以删除上述五条记录了</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://us-east-1.console.aws.amazon.com/acm/home?region=us-east-1#/certificates/request&quot;&gt;请求证书&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;填写完全限定域名，选择DNS</summary>
+      
+    
+    
+    
+    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="TLS" scheme="https://jxch.github.io/tags/TLS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TLS-key和crt转pem</title>
+    <link href="https://jxch.github.io/2023/05/20/yun-wei/tls-key-he-crt-zhuan-pem/"/>
+    <id>https://jxch.github.io/2023/05/20/yun-wei/tls-key-he-crt-zhuan-pem/</id>
+    <published>2023-05-19T22:47:59.000Z</published>
+    <updated>2023-05-19T23:12:35.439Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="ECDSA-P-256">ECDSA P 256</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">openssl pkcs8 <span class="token parameter variable">-in</span> xxx.key <span class="token parameter variable">-topk8</span> <span class="token parameter variable">-nocrypt</span> <span class="token parameter variable">-out</span> xxx.key.pemopenssl x509 <span class="token parameter variable">-in</span> xxx.crt <span class="token parameter variable">-out</span> xxx.crt.pem<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><h2 id="RSA">RSA</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">openssl rsa <span class="token parameter variable">-in</span> xxx.key <span class="token parameter variable">-out</span> xxx.key.pemopenssl x509 <span class="token parameter variable">-in</span> xxx.crt <span class="token parameter variable">-out</span> xxx.crt.pem<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;ECDSA-P-256&quot;&gt;ECDSA P 256&lt;/h2&gt;
+&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl pkcs8</summary>
+      
+    
+    
+    
+    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="TLS" scheme="https://jxch.github.io/tags/TLS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>WIN-开启Chrome浏览器的Google翻译</title>
+    <link href="https://jxch.github.io/2023/05/18/coding/win-kai-qi-chrome-liu-lan-qi-de-google-fan-yi/"/>
+    <id>https://jxch.github.io/2023/05/18/coding/win-kai-qi-chrome-liu-lan-qi-de-google-fan-yi/</id>
+    <published>2023-05-18T03:02:44.000Z</published>
+    <updated>2023-05-18T03:04:43.903Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li>去设置里面开启Google翻译功能</li><li>开启系统的全局代理，让浏览器走系统代理</li><li>找到一个自动翻译的页面，让浏览器自动翻译</li><li>关闭系统代理，切换回浏览器的自动代理</li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;去设置里面开启Google翻译功能&lt;/li&gt;
+&lt;li&gt;开启系统的全局代理，让浏览器走系统代理&lt;/li&gt;
+&lt;li&gt;找到一个自动翻译的页面，让浏览器自动翻译&lt;/li&gt;
+&lt;li&gt;关闭系统代理，切换回浏览器的自动代理&lt;/li&gt;
+&lt;/ol&gt;
+</summary>
+      
+    
+    
+    
+    <category term="使用手册" scheme="https://jxch.github.io/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="WIN" scheme="https://jxch.github.io/tags/WIN/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Caddy2-获取证书</title>
     <link href="https://jxch.github.io/2023/05/17/yun-wei/caddy2-huo-qu-zheng-shu/"/>
     <id>https://jxch.github.io/2023/05/17/yun-wei/caddy2-huo-qu-zheng-shu/</id>
     <published>2023-05-17T02:18:21.000Z</published>
-    <updated>2023-05-17T02:28:52.337Z</updated>
+    <updated>2023-05-19T23:12:15.400Z</updated>
     
     <content type="html"><![CDATA[<h2 id="docker-compose-yml">docker-compose.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.8'</span><span class="token key atrule">services</span><span class="token punctuation">:</span>  <span class="token key atrule">caddy</span><span class="token punctuation">:</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> caddy    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token string">"80:80"</span>      <span class="token punctuation">-</span> <span class="token string">"443:443"</span>      <span class="token punctuation">-</span> <span class="token string">"443:443/udp"</span>    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> ./caddy/file/Caddyfile<span class="token punctuation">:</span>/etc/caddy/Caddyfile      <span class="token punctuation">-</span> ./caddy/data<span class="token punctuation">:</span>/data      <span class="token punctuation">-</span> ./caddy/config<span class="token punctuation">:</span>/config<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="Caddyfile">Caddyfile</h2><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">xxx.xxxxx.com</span> <span class="token value attr-value">{</span>  <span class="token key attr-name">    root</span> <span class="token value attr-value">* /usr/share/caddy</span>    file_server<span class="token key attr-name">    log</span> <span class="token value attr-value">{</span><span class="token key attr-name">        output</span> <span class="token value attr-value">file /var/log/caddy/access.log</span>    }<span class="token key attr-name">    tls</span> <span class="token value attr-value">xicheng.jiang.1@gmail.com</span><span class="token key attr-name">    tls</span> <span class="token value attr-value">{</span><span class="token key attr-name">        protocols</span> <span class="token value attr-value">tls1.2 tls1.3</span><span class="token key attr-name">        ciphers</span> <span class="token value attr-value">TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256</span>    }}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><hr><p>证书保存在<code>data</code>目录里，使用<code>tree</code>命令查看目录结构就能找到</p>]]></content>
     
@@ -38,6 +198,8 @@
     
     
     <category term="Caddy2" scheme="https://jxch.github.io/tags/Caddy2/"/>
+    
+    <category term="TLS" scheme="https://jxch.github.io/tags/TLS/"/>
     
   </entry>
   
@@ -381,155 +543,6 @@
     
     
     <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>powershell-导出壁纸缓存图片</title>
-    <link href="https://jxch.github.io/2023/05/11/coding/powershell-dao-chu-bi-zhi-huan-cun-tu-pian/"/>
-    <id>https://jxch.github.io/2023/05/11/coding/powershell-dao-chu-bi-zhi-huan-cun-tu-pian/</id>
-    <published>2023-05-11T01:43:37.000Z</published>
-    <updated>2023-05-11T01:56:51.954Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="export-wallper-ps1">export_wallper.ps1</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token namespace">[CmdletBinding()]</span><span class="token keyword">Param</span><span class="token punctuation">(</span>    <span class="token namespace">[bool]</span> <span class="token variable">$init</span><span class="token punctuation">)</span><span class="token variable">$link_target</span> = <span class="token string">'C:\Users\xiche\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets'</span><span class="token variable">$link_dir</span> = <span class="token string">'D:\xiche\Pictures\wallper'</span><span class="token variable">$link_files</span> = <span class="token string">'D:\xiche\Pictures\wallper\*'</span><span class="token variable">$export_dir</span> = <span class="token string">'D:\xiche\Pictures\wallper_export'</span><span class="token variable">$export_files</span> = <span class="token string">'D:\xiche\Pictures\wallper_export\*'</span><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$init</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">Test-Path</span> <span class="token variable">$link_dir</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token function">Remove-Item</span> <span class="token variable">$link_dir</span> <span class="token operator">-</span>Recurse    <span class="token punctuation">}</span>    <span class="token function">New-Item</span> <span class="token operator">-</span>ItemType Junction <span class="token operator">-</span>Target <span class="token variable">$link_target</span> <span class="token operator">-</span>Path <span class="token variable">$link_dir</span>        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">Test-Path</span> <span class="token variable">$export_dir</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token function">Remove-Item</span> <span class="token variable">$export_dir</span> <span class="token operator">-</span>Recurse    <span class="token punctuation">}</span>    <span class="token function">New-Item</span> <span class="token variable">$export_dir</span> <span class="token operator">-</span><span class="token function">Type</span> Directory<span class="token punctuation">}</span><span class="token function">Copy-Item</span> <span class="token variable">$link_files</span> <span class="token operator">-</span>Destination <span class="token variable">$export_dir</span><span class="token function">Get-ChildItem</span> <span class="token variable">$export_files</span> <span class="token punctuation">|</span> <span class="token function">Rename-Item</span> <span class="token operator">-</span>NewName <span class="token punctuation">{</span> <span class="token variable">$_</span><span class="token punctuation">.</span>name <span class="token operator">+</span> <span class="token string">'.jpg'</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="用法">用法</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">export_wallper<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>init <span class="token boolean">$True</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;export-wallper-ps1&quot;&gt;export_wallper.ps1&lt;/h2&gt;
-&lt;pre class=&quot;line-numbers language-powershell&quot; data-language=&quot;powershell&quot;&gt;&lt;code class=&quot;la</summary>
-      
-    
-    
-    
-    <category term="使用手册" scheme="https://jxch.github.io/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
-    
-    
-    <category term="powershell" scheme="https://jxch.github.io/tags/powershell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>WIN-命令行模式使用天翼云盘</title>
-    <link href="https://jxch.github.io/2023/05/10/yun-wei/win-ming-ling-xing-mo-shi-shi-yong-tian-yi-yun-pan/"/>
-    <id>https://jxch.github.io/2023/05/10/yun-wei/win-ming-ling-xing-mo-shi-shi-yong-tian-yi-yun-pan/</id>
-    <published>2023-05-10T14:12:43.000Z</published>
-    <updated>2023-05-10T14:19:14.639Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="安装">安装</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">winget <span class="token function">install</span> tickstep.cloudpan189-go <span class="token parameter variable">-l</span> D:<span class="token punctuation">\</span>Programs<span class="token punctuation">\</span>cloudpan189-go --accept-package-agreements<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h2 id="使用">使用</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">help</span><span class="token comment"># 登录</span>login<span class="token comment"># 修改下载目录</span>config <span class="token builtin class-name">set</span> <span class="token parameter variable">-savedir</span> D:<span class="token punctuation">\</span>xiche<span class="token punctuation">\</span>下载<span class="token function">ls</span><span class="token builtin class-name">cd</span><span class="token comment"># 下载文件</span>d xxx.xx<span class="token comment"># 上传文件</span>u xxx.xx<span class="token comment"># 秒传文件</span>ru xxx.xx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
-&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;winget &lt;span class=&quot;token funct</summary>
-      
-    
-    
-    
-    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
-    
-    
-    <category term="WIN" scheme="https://jxch.github.io/tags/WIN/"/>
-    
-    <category term="cloudpan189-go" scheme="https://jxch.github.io/tags/cloudpan189-go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python-线程池</title>
-    <link href="https://jxch.github.io/2023/05/10/coding/python-xian-cheng-chi/"/>
-    <id>https://jxch.github.io/2023/05/10/coding/python-xian-cheng-chi/</id>
-    <published>2023-05-10T07:28:32.000Z</published>
-    <updated>2023-05-10T07:31:51.117Z</updated>
-    
-    <content type="html"><![CDATA[<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor<span class="token punctuation">,</span> wait<span class="token punctuation">,</span> ALL_COMPLETEDpool <span class="token operator">=</span> ThreadPoolExecutor<span class="token punctuation">(</span>max_workers<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">)</span>tasks <span class="token operator">=</span> <span class="token punctuation">[</span>pool<span class="token punctuation">.</span>submit<span class="token punctuation">(</span>the_function<span class="token punctuation">,</span> params<span class="token punctuation">)</span> <span class="token keyword">for</span> the_task <span class="token keyword">in</span> all_tasks<span class="token punctuation">]</span><span class="token comment"># 阻塞等待所有任务执行完</span>wait<span class="token punctuation">(</span>tasks<span class="token punctuation">,</span> return_when<span class="token operator">=</span>ALL_COMPLETED<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;pre class=&quot;line-numbers language-python&quot; data-language=&quot;python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; concu</summary>
-      
-    
-    
-    
-    <category term="使用手册" scheme="https://jxch.github.io/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
-    
-    
-    <category term="python" scheme="https://jxch.github.io/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>tensorflow-partially initialized module &#39;charset_normalizer&#39; has no attribute &#39;md__mypyc&#39;</title>
-    <link href="https://jxch.github.io/2023/05/10/coding/tensorflow-partially-initialized-module-charset-normalizer-has-no-attribute-md-mypyc/"/>
-    <id>https://jxch.github.io/2023/05/10/coding/tensorflow-partially-initialized-module-charset-normalizer-has-no-attribute-md-mypyc/</id>
-    <published>2023-05-09T18:06:06.000Z</published>
-    <updated>2023-05-09T18:07:10.737Z</updated>
-    
-    <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> <span class="token parameter variable">-U</span> --force-reinstall charset-normalizer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;pip &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; &lt;sp</summary>
-      
-    
-    
-    
-    <category term="排错笔记" scheme="https://jxch.github.io/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="tensorflow" scheme="https://jxch.github.io/tags/tensorflow/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>vue3-打包静态页面后显示空白页且页面没有挂载任何元素</title>
-    <link href="https://jxch.github.io/2023/05/08/coding/vue3-da-bao-jing-tai-ye-mian-hou-xian-shi-kong-bai-ye-qie-ye-mian-mei-you-gua-zai-ren-he-yuan-su/"/>
-    <id>https://jxch.github.io/2023/05/08/coding/vue3-da-bao-jing-tai-ye-mian-hou-xian-shi-kong-bai-ye-qie-ye-mian-mei-you-gua-zai-ren-he-yuan-su/</id>
-    <published>2023-05-08T01:20:50.000Z</published>
-    <updated>2023-05-08T01:22:55.641Z</updated>
-    
-    <content type="html"><![CDATA[<p>将 <code>vue</code> 文件中 <code>&lt;script setup&gt;</code> 里的 <code>setup</code> 删除，只保留 <code>&lt;script&gt;</code></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;将 &lt;code&gt;vue&lt;/code&gt; 文件中 &lt;code&gt;&amp;lt;script setup&amp;gt;&lt;/code&gt; 里的 &lt;code&gt;setup&lt;/code&gt; 删除，只保留 &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;&lt;/p&gt;
-</summary>
-      
-    
-    
-    
-    <category term="排错笔记" scheme="https://jxch.github.io/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="vue" scheme="https://jxch.github.io/tags/vue/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python-日期迭代器</title>
-    <link href="https://jxch.github.io/2023/05/06/coding/python-ri-qi-die-dai-qi/"/>
-    <id>https://jxch.github.io/2023/05/06/coding/python-ri-qi-die-dai-qi/</id>
-    <published>2023-05-06T01:19:41.000Z</published>
-    <updated>2023-05-06T01:38:31.254Z</updated>
-    
-    <content type="html"><![CDATA[<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> datetime<span class="token keyword">def</span> <span class="token function">date_range</span><span class="token punctuation">(</span>begin<span class="token punctuation">,</span> end<span class="token punctuation">)</span><span class="token punctuation">:</span>    range_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>    d <span class="token operator">=</span> begin    delta <span class="token operator">=</span> datetime<span class="token punctuation">.</span>timedelta<span class="token punctuation">(</span>days<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>    <span class="token keyword">while</span> d <span class="token operator">&lt;=</span> end<span class="token punctuation">:</span>        range_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>d<span class="token punctuation">)</span>        d <span class="token operator">+=</span> delta    <span class="token keyword">return</span> range_listbegin <span class="token operator">=</span> datetime<span class="token punctuation">.</span>date<span class="token punctuation">(</span><span class="token number">2022</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>end <span class="token operator">=</span> datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>date<span class="token punctuation">(</span><span class="token punctuation">)</span>date_range<span class="token punctuation">(</span>begin<span class="token punctuation">,</span> end<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;pre class=&quot;line-numbers language-python&quot; data-language=&quot;python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; dat</summary>
-      
-    
-    
-    
-    <category term="使用手册" scheme="https://jxch.github.io/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
-    
-    
-    <category term="python" scheme="https://jxch.github.io/tags/python/"/>
     
   </entry>
   
