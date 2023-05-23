@@ -8,7 +8,7 @@
       <link href="/2023/05/23/ni-xiang/web-ni-xiang-xia-zai-teng-xun-ke-tang-yi-gou-shi-pin/"/>
       <url>/2023/05/23/ni-xiang/web-ni-xiang-xia-zai-teng-xun-ke-tang-yi-gou-shi-pin/</url>
       
-        <content type="html"><![CDATA[<ol><li>浏览器F12，然后打开要观看的视频</li><li>"网络"中找到<code>voddrm.token.xxxxxxxxx</code>，请求网址就是m3u8的地址</li><li>查看"启动器"，点击进入<code>t.load</code>对应的js文件</li><li>搜索<code>decryptkey</code>，找到类似<code>r.decryptdata ? (this.decryptkey = r.decryptdata.key = new Uint8Array(e.data),</code>的代码行</li><li>在其下一行打上断点</li><li>刷新页面进入断点</li><li>查看key: <code>r.levelkey.key</code></li><li>转为16进制: <code>Array.from(r.levelkey.key).map(i =&gt; i.toString(16).padStart(2, '0')).join('');</code></li><li>使用工具下载合并m3u8: <a href="https://github.com/nilaoda/N_m3u8DL-CLI/releases">N_m3u8DL-CLI</a><ul><li>填写m3u8地址和自定义key</li></ul></li></ol><hr><p>有时这个m3u8地址可能有问题，可以刷新重试，也可以用浏览器的<code>Video DownloadHelper</code>插件获取地址<br>建议使用<code>Video DownloadHelper</code>，方便快捷</p>]]></content>
+        <content type="html"><![CDATA[<ol><li>浏览器F12，然后打开要观看的视频</li><li>"网络"中找到<code>voddrm.token.xxxxxxxxx</code>，请求网址就是m3u8的地址</li><li>查看"启动器"，点击进入<code>t.load</code>对应的js文件</li><li>搜索<code>decryptkey</code>，找到类似<code>r.decryptdata ? (this.decryptkey = r.decryptdata.key = new Uint8Array(e.data),</code>的代码行</li><li>在其下一行打上断点</li><li>刷新页面进入断点</li><li>查看key: <code>r.levelkey.key</code></li><li>转为16进制: <code>Array.from(r.levelkey.key).map(i =&gt; i.toString(16).padStart(2, '0')).join('');</code></li><li>使用工具下载合并m3u8: <a href="https://github.com/nilaoda/N_m3u8DL-CLI/releases">N_m3u8DL-CLI</a><ul><li>填写m3u8地址和自定义key</li></ul></li></ol><p>有时这个m3u8地址可能有问题，可以刷新重试，也可以用浏览器的<code>Video DownloadHelper</code>插件获取地址<br>建议使用<code>Video DownloadHelper</code>，方便快捷</p><hr><p>使用批量工具下载: <a href="https://github.com/Prince-cool/tx_course_download/releases">tx_course_download</a></p><ul><li>获取 cookie: <code>document.cookie</code></li><li>下载目录: <code>视频</code>，下载时可用目录联接，<code>mklink /J sources target</code></li></ul>]]></content>
       
       
       <categories>
@@ -324,9 +324,9 @@
       
         <tags>
             
-            <tag> BBR </tag>
-            
             <tag> WIN </tag>
+            
+            <tag> BBR </tag>
             
         </tags>
       
@@ -1374,7 +1374,7 @@
       <link href="/2023/05/05/yun-wei/nginx-https-pei-zhi/"/>
       <url>/2023/05/05/yun-wei/nginx-https-pei-zhi/</url>
       
-        <content type="html"><![CDATA[<h2 id="环境">环境</h2><p>需要 <code>http_ssl_module</code>，检查是否存在，一般自动装了<br>执行 <code>nginx -V</code> 查看输出的字符串中是否有 <code>--with-http_ssl_module</code></p><h2 id="conf">conf</h2><p>先生成证书: <a href="/2023/05/05/yun-wei/ssl-openssl-sheng-cheng-crt-zheng-shu/" title="SSL-openssl生成crt证书">SSL-openssl生成crt证书</a></p><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">server</span> <span class="token value attr-value">{</span><span class="token key attr-name">        listen</span> <span class="token value attr-value">      443 ssl;</span><span class="token key attr-name">        server_name</span> <span class="token value attr-value"> 192.168.52.132;</span><span class="token key attr-name">        ssl_certificate</span> <span class="token value attr-value">      /etc/nginx/conf.d/ssl/server.crt;</span><span class="token key attr-name">        ssl_certificate_key</span> <span class="token value attr-value">  /etc/nginx/conf.d/ssl/server_nopass.key;</span>}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>注意，不要在https中去请求http，那样不会被允许，因为会降低安全性。<br>所以，用到了https，就得全升级成https。</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="环境">环境</h2><p>需要 <code>http_ssl_module</code>，检查是否存在，一般自动装了<br>执行 <code>nginx -V</code> 查看输出的字符串中是否有 <code>--with-http_ssl_module</code></p><h2 id="conf">conf</h2><p>先生成证书: <a href="/2023/05/05/yun-wei/tls-openssl-sheng-cheng-crt-zheng-shu/" title="TLS-openssl生成crt证书">TLS-openssl生成crt证书</a></p><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">server</span> <span class="token value attr-value">{</span><span class="token key attr-name">        listen</span> <span class="token value attr-value">      443 ssl;</span><span class="token key attr-name">        server_name</span> <span class="token value attr-value"> 192.168.52.132;</span><span class="token key attr-name">        ssl_certificate</span> <span class="token value attr-value">      /etc/nginx/conf.d/ssl/server.crt;</span><span class="token key attr-name">        ssl_certificate_key</span> <span class="token value attr-value">  /etc/nginx/conf.d/ssl/server_nopass.key;</span>}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>注意，不要在https中去请求http，那样不会被允许，因为会降低安全性。<br>所以，用到了https，就得全升级成https。</p>]]></content>
       
       
       <categories>
