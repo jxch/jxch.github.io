@@ -418,7 +418,7 @@ $videos = G">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    275
+                    286
                 </div>
                 
 
@@ -461,17 +461,20 @@ $videos = G">
 
 <span class="token comment"># 初始化总时长为 0</span>
 <span class="token variable">$totalDuration</span> = 0
+<span class="token variable">$totalVideos</span> = <span class="token variable">$videos</span><span class="token punctuation">.</span>Count
 
 <span class="token comment"># 记录当前位置</span>
 <span class="token variable">$cursorLeft</span> = <span class="token namespace">[Console]</span>::CursorLeft
 <span class="token variable">$cursorTop</span> = <span class="token namespace">[Console]</span>::CursorTop
 
+<span class="token variable">$i</span> = 1
 <span class="token comment"># 遍历所有视频文件</span>
 <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$video</span> in <span class="token variable">$videos</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	<span class="token comment"># 不断刷新着显示正在扫描的视频</span>
-	<span class="token function">Write-Host</span> <span class="token variable">$video</span><span class="token punctuation">.</span>FullName  <span class="token operator">-</span>NoNewline
+	<span class="token function">Write-Host</span> <span class="token string">"[${i}/${totalVideos}] -&gt; "</span> <span class="token variable">$video</span><span class="token punctuation">.</span>FullName  <span class="token operator">-</span>NoNewline
 	<span class="token function">Write-Host</span> <span class="token operator">-</span>NoNewline <span class="token punctuation">(</span><span class="token string">" "</span> <span class="token operator">*</span> <span class="token namespace">[Console]</span>::CursorLeft<span class="token punctuation">)</span>
 	<span class="token namespace">[Console]</span>::SetCursorPosition<span class="token punctuation">(</span><span class="token variable">$cursorLeft</span><span class="token punctuation">,</span> <span class="token variable">$cursorTop</span><span class="token punctuation">)</span>
+	<span class="token variable">$i</span> = <span class="token variable">$i</span> <span class="token operator">+</span> 1
 
     <span class="token comment"># 使用 ffprobe 获取视频时长</span>
     <span class="token variable">$duration</span> = &amp; ffprobe<span class="token punctuation">.</span>exe <span class="token operator">-</span>i <span class="token variable">$video</span><span class="token punctuation">.</span>FullName <span class="token operator">-</span>show_entries format=duration <span class="token operator">-</span>v quiet <span class="token operator">-</span>of csv=<span class="token string">"p=0"</span>
@@ -490,7 +493,7 @@ $videos = G">
 <span class="token variable">$ts</span> = <span class="token namespace">[TimeSpan]</span>::FromSeconds<span class="token punctuation">(</span><span class="token variable">$totalDuration</span><span class="token punctuation">)</span>
 
 <span class="token comment"># 输出结果</span>
-<span class="token function">Write-Host</span> <span class="token string">"Total duration of all videos in ${dirPath}: <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Days<span class="token punctuation">)</span></span> days, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Hours<span class="token punctuation">)</span></span> hours, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Minutes<span class="token punctuation">)</span></span> minutes, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Seconds<span class="token punctuation">)</span></span> seconds"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">Write-Host</span> <span class="token string">"Total duration of all videos in ${dirPath}: <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Days<span class="token punctuation">)</span></span> days, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Hours<span class="token punctuation">)</span></span> hours, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Minutes<span class="token punctuation">)</span></span> minutes, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Seconds<span class="token punctuation">)</span></span> seconds"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="使用方法">使用方法</h2>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 依赖 FFmpeg 里的 ffprobe</span>
 winget install Gyan<span class="token punctuation">.</span>FFmpeg <span class="token operator">-</span>l D:\Programs\Gyan\FFmpeg <span class="token operator">--</span>accept-package-agreements
