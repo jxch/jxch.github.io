@@ -3445,9 +3445,9 @@
             
             <tag> Hadoop </tag>
             
-            <tag> Hive </tag>
-            
             <tag> Sqoop </tag>
+            
+            <tag> Hive </tag>
             
         </tags>
       
@@ -3630,9 +3630,9 @@
             
             <tag> Hadoop </tag>
             
-            <tag> Hive </tag>
-            
             <tag> HBase </tag>
+            
+            <tag> Hive </tag>
             
         </tags>
       
