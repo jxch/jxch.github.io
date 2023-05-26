@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-05-22T21:30:13.194Z</updated>
+  <updated>2023-05-26T14:01:30.187Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,88 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>powershell-统计目录下所有视频的总时长</title>
+    <link href="https://jxch.github.io/2023/05/26/template/powershell-tong-ji-mu-lu-xia-suo-you-shi-pin-de-zong-shi-chang/"/>
+    <id>https://jxch.github.io/2023/05/26/template/powershell-tong-ji-mu-lu-xia-suo-you-shi-pin-de-zong-shi-chang/</id>
+    <published>2023-05-26T13:59:34.000Z</published>
+    <updated>2023-05-26T14:01:30.187Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="代码示例">代码示例</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token namespace">[CmdletBinding()]</span><span class="token keyword">Param</span><span class="token punctuation">(</span>    <span class="token namespace">[string]</span> <span class="token variable">$dirPath</span><span class="token punctuation">)</span><span class="token function">Write-Host</span> <span class="token string">"&gt;&gt;&gt; ${dirPath}"</span><span class="token comment"># 获取目下所有可能的视频文件</span><span class="token variable">$videos</span> = <span class="token function">Get-ChildItem</span> <span class="token operator">-</span>Path <span class="token variable">$dirPath</span> <span class="token operator">-</span>Recurse <span class="token operator">-</span>Include <span class="token operator">*</span><span class="token punctuation">.</span>mp4<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>avi<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mkv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mov<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>wmv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>flv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>webm<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpg<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpeg<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>m4v<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>3gp<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ts<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>vob<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span><span class="token function">ogv</span><span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>m2ts<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mts<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>divx<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>xvid<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>rmvb<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>asf<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>qt<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>fv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mxf<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mp2<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpe<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpa<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>m2v<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>m1v<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mod<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>tod<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>dvr-ms<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>wtv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ogm<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span><span class="token function">rm</span><span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ram<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mk3d<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mks<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>nsv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>dts<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ac3<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>eac3<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>aac<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>wma<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>wav<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>flac<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ape<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>alac<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>opus<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mka<span class="token comment"># 初始化总时长为 0</span><span class="token variable">$totalDuration</span> = 0<span class="token comment"># 记录当前位置</span><span class="token variable">$cursorLeft</span> = <span class="token namespace">[Console]</span>::CursorLeft<span class="token variable">$cursorTop</span> = <span class="token namespace">[Console]</span>::CursorTop<span class="token comment"># 遍历所有视频文件</span><span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$video</span> in <span class="token variable">$videos</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment"># 不断刷新着显示正在扫描的视频</span><span class="token function">Write-Host</span> <span class="token variable">$video</span><span class="token punctuation">.</span>FullName  <span class="token operator">-</span>NoNewline<span class="token function">Write-Host</span> <span class="token operator">-</span>NoNewline <span class="token punctuation">(</span><span class="token string">" "</span> <span class="token operator">*</span> <span class="token namespace">[Console]</span>::CursorLeft<span class="token punctuation">)</span><span class="token namespace">[Console]</span>::SetCursorPosition<span class="token punctuation">(</span><span class="token variable">$cursorLeft</span><span class="token punctuation">,</span> <span class="token variable">$cursorTop</span><span class="token punctuation">)</span>    <span class="token comment"># 使用 ffprobe 获取视频时长</span>    <span class="token variable">$duration</span> = &amp; ffprobe<span class="token punctuation">.</span>exe <span class="token operator">-</span>i <span class="token variable">$video</span><span class="token punctuation">.</span>FullName <span class="token operator">-</span>show_entries format=duration <span class="token operator">-</span>v quiet <span class="token operator">-</span>of csv=<span class="token string">"p=0"</span>    <span class="token comment"># 将时长转换为秒</span>    <span class="token variable">$durationSeconds</span> = <span class="token namespace">[math]</span>::Round<span class="token punctuation">(</span><span class="token variable">$duration</span><span class="token punctuation">)</span>    <span class="token comment"># 累加总长</span><span class="token variable">$totalDuration</span> <span class="token operator">+=</span> <span class="token variable">$durationSeconds</span><span class="token punctuation">}</span><span class="token comment"># 换行</span><span class="token function">Write-Host</span> <span class="token string">""</span><span class="token comment"># 将总时长转换为时分秒格式</span><span class="token variable">$ts</span> = <span class="token namespace">[TimeSpan]</span>::FromSeconds<span class="token punctuation">(</span><span class="token variable">$totalDuration</span><span class="token punctuation">)</span><span class="token comment"># 输出结果</span><span class="token function">Write-Host</span> <span class="token string">"Total duration of all videos in ${dirPath}: <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Days<span class="token punctuation">)</span></span> days, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Hours<span class="token punctuation">)</span></span> hours, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Minutes<span class="token punctuation">)</span></span> minutes, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Seconds<span class="token punctuation">)</span></span> seconds"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="使用方法">使用方法</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 依赖 FFmpeg 里的 ffprobe</span>winget install Gyan<span class="token punctuation">.</span>FFmpeg <span class="token operator">-</span>l D:\Programs\Gyan\FFmpeg <span class="token operator">--</span>accept-package-agreements<span class="token comment"># 获取视频总长度</span><span class="token punctuation">.</span>\videos_total_time<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>dirPath <span class="token string">"G:\学习资料\图灵\5期"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;代码示例&quot;&gt;代码示例&lt;/h2&gt;
+&lt;pre class=&quot;line-numbers language-powershell&quot; data-language=&quot;powershell&quot;&gt;&lt;code class=&quot;language-powershell&quot;&gt;&lt;span cla</summary>
+      
+    
+    
+    
+    <category term="shell-template" scheme="https://jxch.github.io/categories/shell-template/"/>
+    
+    
+    <category term="powershell" scheme="https://jxch.github.io/tags/powershell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>powershell-Write-Host 回显本行</title>
+    <link href="https://jxch.github.io/2023/05/26/template/powershell-write-host-hui-xian-ben-xing/"/>
+    <id>https://jxch.github.io/2023/05/26/template/powershell-write-host-hui-xian-ben-xing/</id>
+    <published>2023-05-26T13:56:09.000Z</published>
+    <updated>2023-05-26T13:58:07.213Z</updated>
+    
+    <content type="html"><![CDATA[<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 记录当前位置</span><span class="token variable">$cursorLeft</span> = <span class="token namespace">[Console]</span>::CursorLeft<span class="token variable">$cursorTop</span> = <span class="token namespace">[Console]</span>::CursorTop<span class="token comment"># 遍历所有视频文件</span><span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$video</span> in <span class="token variable">$videos</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment"># 不断刷新着显示正在扫描的视频</span><span class="token function">Write-Host</span> <span class="token variable">$video</span><span class="token punctuation">.</span>FullName  <span class="token operator">-</span>NoNewline<span class="token function">Write-Host</span> <span class="token operator">-</span>NoNewline <span class="token punctuation">(</span><span class="token string">" "</span> <span class="token operator">*</span> <span class="token namespace">[Console]</span>::CursorLeft<span class="token punctuation">)</span><span class="token namespace">[Console]</span>::SetCursorPosition<span class="token punctuation">(</span><span class="token variable">$cursorLeft</span><span class="token punctuation">,</span> <span class="token variable">$cursorTop</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token comment"># 换行</span><span class="token function">Write-Host</span> <span class="token string">""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;pre class=&quot;line-numbers language-powershell&quot; data-language=&quot;powershell&quot;&gt;&lt;code class=&quot;language-powershell&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# 记录当</summary>
+      
+    
+    
+    
+    <category term="shell-template" scheme="https://jxch.github.io/categories/shell-template/"/>
+    
+    
+    <category term="powershell" scheme="https://jxch.github.io/tags/powershell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Capital-基于强化学习的优势率买卖信号学习</title>
+    <link href="https://jxch.github.io/2023/05/25/capital/capital-ji-yu-qiang-hua-xue-xi-de-you-shi-lu-mai-mai-xin-hao-xue-xi/"/>
+    <id>https://jxch.github.io/2023/05/25/capital/capital-ji-yu-qiang-hua-xue-xi-de-you-shi-lu-mai-mai-xin-hao-xue-xi/</id>
+    <published>2023-05-25T08:50:18.000Z</published>
+    <updated>2023-05-25T09:16:51.090Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="模型含义">模型含义</h2><p>举例来说：</p><ul><li>短期优势率弱买信号：未来20天有多大的概率（模型胜率）在股价跌破前20天最低点之前，获得1-3倍最大不利变动的盈利。</li><li>…</li></ul><hr><h2 id="模型设计">模型设计</h2><p>N日买卖信号优势率预测模型：</p><ul><li>信号：弱买，中买，强买，弱卖，中卖，强卖，观望（触发止损按观望算）</li><li>得分：买卖信号正确则加分，错误则扣分，观望信号不加分也不扣分</li><li>奖惩：按发出的买卖信号强弱与实际优势率的偏差进行奖惩，在存在优势率的买卖点发出观望信号同样按偏离程度扣分</li><li>死亡：初始得分1000，扣完即死，分越高越好；初始奖惩值1000，扣完即死</li><li>观测值：前N天的COHLV和短期EMA的百分比归一化值，以及当前的状态</li><li>优势率：未来N日的最大有利变动 / 未来N日的最大不利变动 / 当日ATR（标准化）</li><li>止损：<ul><li>时间止损：未来N日</li><li>空间止损：前N日的最高/最低价 （即未来N日的最大不利变动超过了前N日的最高/最低价）</li></ul></li><li>模型胜率：按优势率给出所有信号计算胜率</li><li>真实胜率：只计算买卖信号的胜率</li><li>数据集：<ul><li>同时观测X支股票的数据（COHLV, EMA, 优势率以及是否触发空间止损信号的数据）</li><li>每只股票都计算奖惩和得分，最后相加计算总的模型奖惩和得分</li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;模型含义&quot;&gt;模型含义&lt;/h2&gt;
+&lt;p&gt;举例来说：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;短期优势率弱买信号：未来20天有多大的概率（模型胜率）在股价跌破前20天最低点之前，获得1-3倍最大不利变动的盈利。&lt;/li&gt;
+&lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;</summary>
+      
+    
+    
+    
+    <category term="工作笔记" scheme="https://jxch.github.io/categories/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="Capital" scheme="https://jxch.github.io/tags/Capital/"/>
+    
+    <category term="工作计划" scheme="https://jxch.github.io/tags/%E5%B7%A5%E4%BD%9C%E8%AE%A1%E5%88%92/"/>
+    
+  </entry>
   
   <entry>
     <title>WEB逆向-下载腾讯课堂已购视频</title>
@@ -456,85 +538,6 @@
 &lt;blockquote&gt;
 &lt;p&gt;示例 1：&lt;br&gt;
 输入：strs = [“flower”,“flow”,“flight”]&lt;b</summary>
-      
-    
-    
-    
-    <category term="算法笔记" scheme="https://jxch.github.io/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LeetCode-13.罗马数字转整数</title>
-    <link href="https://jxch.github.io/2023/05/11/leetcode/leetcode-13-luo-ma-shu-zi-zhuan-zheng-shu/"/>
-    <id>https://jxch.github.io/2023/05/11/leetcode/leetcode-13-luo-ma-shu-zi-zhuan-zheng-shu/</id>
-    <published>2023-05-11T02:23:31.000Z</published>
-    <updated>2023-05-11T02:30:32.533Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</p><pre class="line-numbers language-none"><code class="language-none">字符          数值I             1V             5X             10L             50C             100D             500M             1000<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>例如， 罗马数字 2 写做 II ，即为两个并列的 1 。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p><p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p><ul><li>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</li><li>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。</li><li>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</li></ul><p>给定一个罗马数字，将其转换成整数。</p><blockquote><p>示例 1:<br>输入: s = “III”<br>输出: 3</p></blockquote><blockquote><p>示例 2:<br>输入: s = “IV”<br>输出: 4</p></blockquote><blockquote><p>示例 3:<br>输入: s = “IX”<br>输出: 9</p></blockquote><blockquote><p>示例 4:<br>输入: s = “LVIII”<br>输出: 58<br>解释: L = 50, V= 5, III = 3.</p></blockquote><blockquote><p>示例 5:<br>输入: s = “MCMXCIV”<br>输出: 1994<br>解释: M = 1000, CM = 900, XC = 90, IV = 4.</p></blockquote><blockquote><p>提示：<br>1 &lt;= s.length &lt;= 15<br>s 仅含字符 (‘I’, ‘V’, ‘X’, ‘L’, ‘C’, ‘D’, ‘M’)<br>题目数据保证 s 是一个有效的罗马数字，且表示整数在范围 [1, 3999] 内<br>题目所给测试用例皆符合罗马数字书写规则，不会出现跨位等情况。<br>IL 和 IM 这样的例子并不符合题目要求，49 应该写作 XLIX，999 应该写作 CMXCIX 。<br>关于罗马数字的详尽书写规则，可以参考<a href="https://b2b.partcommunity.com/community/knowledge/zh_CN/detail/10753/%E7%BD%97%E9%A9%AC%E6%95%B0%E5%AD%97#knowledge_article">罗马数字 - Mathematics</a> 。</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">romanToInt</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>        d <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'I'</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'IV'</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'V'</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">'IX'</span><span class="token punctuation">:</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token string">'X'</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">'XL'</span><span class="token punctuation">:</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token string">'L'</span><span class="token punctuation">:</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token string">'XC'</span><span class="token punctuation">:</span><span class="token number">80</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">:</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token string">'CD'</span><span class="token punctuation">:</span><span class="token number">300</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">:</span><span class="token number">500</span><span class="token punctuation">,</span> <span class="token string">'CM'</span><span class="token punctuation">:</span><span class="token number">800</span><span class="token punctuation">,</span> <span class="token string">'M'</span><span class="token punctuation">:</span><span class="token number">1000</span><span class="token punctuation">}</span>        <span class="token keyword">return</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span>get<span class="token punctuation">(</span>s<span class="token punctuation">[</span><span class="token builtin">max</span><span class="token punctuation">(</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> d<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i<span class="token punctuation">,</span> n <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;题干&quot;&gt;题干&lt;/h2&gt;
-&lt;p&gt;罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;字符         </summary>
-      
-    
-    
-    
-    <category term="算法笔记" scheme="https://jxch.github.io/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LeetCode-12.整数转罗马数字</title>
-    <link href="https://jxch.github.io/2023/05/11/leetcode/leetcode-12-zheng-shu-zhuan-luo-ma-shu-zi/"/>
-    <id>https://jxch.github.io/2023/05/11/leetcode/leetcode-12-zheng-shu-zhuan-luo-ma-shu-zi/</id>
-    <published>2023-05-11T02:17:09.000Z</published>
-    <updated>2023-05-11T02:30:35.806Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。</p><pre class="line-numbers language-none"><code class="language-none">字符          数值I             1V             5X             10L             50C             100D             500M             1000<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p><p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p><ul><li>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</li><li>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。</li><li>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</li></ul><p>给你一个整数，将其转为罗马数字。</p><blockquote><p>示例 1:<br>输入: num = 3<br>输出: “III”</p></blockquote><blockquote><p>示例 2:<br>输入: num = 4<br>输出: “IV”</p></blockquote><blockquote><p>示例 3:<br>输入: num = 9<br>输出: “IX”</p></blockquote><blockquote><p>示例 4:<br>输入: num = 58<br>输出: “LVIII”<br>解释: L = 50, V = 5, III = 3.</p></blockquote><blockquote><p>示例 5:<br>输入: num = 1994<br>输出: “MCMXCIV”<br>解释: M = 1000, CM = 900, XC = 90, IV = 4.</p></blockquote><blockquote><p>提示：<br>1 &lt;= num &lt;= 3999</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">intToRoman</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> num<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">str</span><span class="token punctuation">:</span>        <span class="token comment"># 使用哈希表，按照从大到小顺序排列</span>        hashmap <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1000</span><span class="token punctuation">:</span><span class="token string">'M'</span><span class="token punctuation">,</span> <span class="token number">900</span><span class="token punctuation">:</span><span class="token string">'CM'</span><span class="token punctuation">,</span> <span class="token number">500</span><span class="token punctuation">:</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token number">400</span><span class="token punctuation">:</span><span class="token string">'CD'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">:</span><span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">:</span><span class="token string">'XC'</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">:</span><span class="token string">'L'</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">:</span><span class="token string">'XL'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">:</span><span class="token string">'X'</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">:</span><span class="token string">'IX'</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">:</span><span class="token string">'V'</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">:</span><span class="token string">'IV'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token string">'I'</span><span class="token punctuation">}</span>        res <span class="token operator">=</span> <span class="token string">''</span>        <span class="token keyword">for</span> key <span class="token keyword">in</span> hashmap<span class="token punctuation">:</span>            <span class="token keyword">if</span> num <span class="token operator">//</span> key <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">:</span>                count <span class="token operator">=</span> num <span class="token operator">//</span> key  <span class="token comment"># 比如输入4000，count 为 4</span>                res <span class="token operator">+=</span> hashmap<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">*</span> count                 num <span class="token operator">%=</span> key        <span class="token keyword">return</span> res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;题干&quot;&gt;题干&lt;/h2&gt;
-&lt;p&gt;罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;字符         </summary>
-      
-    
-    
-    
-    <category term="算法笔记" scheme="https://jxch.github.io/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="LeetCode" scheme="https://jxch.github.io/tags/LeetCode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LeetCode-11.盛最多水的容器</title>
-    <link href="https://jxch.github.io/2023/05/11/leetcode/leetcode-11-sheng-zui-duo-shui-de-rong-qi/"/>
-    <id>https://jxch.github.io/2023/05/11/leetcode/leetcode-11-sheng-zui-duo-shui-de-rong-qi/</id>
-    <published>2023-05-11T02:10:55.000Z</published>
-    <updated>2023-05-11T02:15:23.174Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="题干">题干</h2><p>给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。<br>找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。<br>返回容器可以储存的最大水量。<br>说明：你不能倾斜容器。</p><blockquote><p>示例 1：<br>输入：[1,8,6,2,5,4,8,3,7]<br>输出：49<br>解释：容器能够容纳水的最大值为 49 (8和7, 7*7=49)。</p></blockquote><blockquote><p>示例 2：<br>输入：height = [1,1]<br>输出：1</p></blockquote><blockquote><p>提示：<br>$n == height.length$<br>$2 &lt;= n &lt;= 10^5$<br>$0 &lt;= height[i] &lt;= 10^4$</p></blockquote><h2 id="python">python</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">maxArea</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> height<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>        left<span class="token punctuation">,</span> right <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>height<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>        res <span class="token operator">=</span> <span class="token number">0</span>        <span class="token keyword">while</span> left <span class="token operator">&lt;</span> right<span class="token punctuation">:</span>            area <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>height<span class="token punctuation">[</span>left<span class="token punctuation">]</span><span class="token punctuation">,</span> height<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>right <span class="token operator">-</span> left<span class="token punctuation">)</span>            res <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> area<span class="token punctuation">)</span>            <span class="token keyword">if</span> height<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">&lt;</span> height<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">:</span>                left <span class="token operator">+=</span> <span class="token number">1</span>            <span class="token keyword">else</span><span class="token punctuation">:</span>                right <span class="token operator">-=</span> <span class="token number">1</span>        <span class="token keyword">return</span> res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;题干&quot;&gt;题干&lt;/h2&gt;
-&lt;p&gt;给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。&lt;br&gt;
-找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。&lt;br&gt;
-返回容</summary>
       
     
     
