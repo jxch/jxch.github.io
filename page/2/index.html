@@ -57,9 +57,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
-
+<meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
 </head>
 
 
@@ -405,6 +405,109 @@
     <!-- 所有文章卡片 -->
     <article id="articles" class="container articles">
         <div class="row article-row">
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/05/16/coding/tensorflow-valueerror-logits-and-labels-must-have-the-same-shape-received-none-240-1-vs-none/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="tensorflow-ValueError logits and labels must have the same shape, received ((None, 240, 1) vs (None,)).">
+                            
+                            <span class="card-title">tensorflow-ValueError logits and labels must have the same shape, received ((None, 240, 1) vs (None,)).</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                如果输入的 shape 都没问题，那应该是没加 Flatten 的原因
+model = tf.keras.models.Sequential([
+    # input_shape 保持和数据集一致
+    tf.keras.layers.
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/tensorflow/">
+                            <span class="chip bg-color">tensorflow</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/05/15/yun-wei/jhipster-error-namespace-is-not-defined-by-exports-in-package-json/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/43.jpg" class="responsive-img" alt="jhipster-error &#39;./lib/util/namespace&#39; is not defined by exports in &#39;xxxx/package.json&#39;">
+                            
+                            <span class="card-title">jhipster-error &#39;./lib/util/namespace&#39; is not defined by exports in &#39;xxxx/package.json&#39;</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                package.json 中的 exports 中添加 "./lib/util/namespace": "./lib/util/namespace.js"
+"exports": {
+  ".": "./lib/environment.js"
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-15
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/jhipster/">
+                            <span class="chip bg-color">jhipster</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
             
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
@@ -970,113 +1073,6 @@ C
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/05/11/leetcode/leetcode-11-sheng-zui-duo-shui-de-rong-qi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="LeetCode-11.盛最多水的容器">
-                            
-                            <span class="card-title">LeetCode-11.盛最多水的容器</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                题干
-给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
-找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
-返回容器可以储存的最大
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-11
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    算法笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/LeetCode/">
-                            <span class="chip bg-color">LeetCode</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/05/11/coding/powershell-dao-chu-bi-zhi-huan-cun-tu-pian/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/59.jpg" class="responsive-img" alt="powershell-导出壁纸缓存图片">
-                            
-                            <span class="card-title">powershell-导出壁纸缓存图片</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                export_wallper.ps1
-[CmdletBinding()]
-Param(
-    [bool] $init
-)
-
-$link_target = 'C:\Users\xiche\AppData\Local\Packages\Mi
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-11
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/powershell/">
-                            <span class="chip bg-color">powershell</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1183,7 +1179,7 @@ $link_target = 'C:\Users\xiche\AppData\Local\Packages\Mi
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">221.7k</span>
+                        class="white-color">223.7k</span>
             
             
             
