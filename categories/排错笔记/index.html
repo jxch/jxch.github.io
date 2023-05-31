@@ -412,11 +412,11 @@
                 
                 
                 
-                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 61">
+                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 62">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
                             style="background-color: #F9EBEA;">IT学习笔记
-                        <span class="tag-length">61</span>
+                        <span class="tag-length">62</span>
                     </span>
                 </a>
                 
@@ -466,11 +466,11 @@
                 </a>
                 
                 
-                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" title="排错笔记: 12">
+                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" title="排错笔记: 14">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #82E0AA;">排错笔记
-                        <span class="tag-length">12</span>
+                        <span class="tag-length">14</span>
                     </span>
                 </a>
                 
@@ -583,11 +583,11 @@
                 </a>
                 
                 
-                <a href="/categories/java-template/" title="java-template: 4">
+                <a href="/categories/java-template/" title="java-template: 7">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
                             style="background-color: #FFF;">java-template
-                        <span class="tag-length">4</span>
+                        <span class="tag-length">7</span>
                     </span>
                 </a>
                 
@@ -602,6 +602,106 @@
 
     <article id="articles" class="container articles">
         <div class="row tags-posts">
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/06/01/yun-wei/springcloud-gateway-bao-cuo-type-service-unavailable-status-503/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="SpringCloud-gateway报错:type=Service Unavailable, status=503">
+                            
+                            <span class="card-title">SpringCloud-gateway报错:type=Service Unavailable, status=503</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                后端没有报错，前端返回503，如果配置文件确定没有问题的话，应该是缺依赖的问题：
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-01
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/gateway/">
+                            <span class="chip bg-color">gateway</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/06/01/yun-wei/docker-win-xia-bao-cuo-bind-an-attempt-was-made-to-access-a-socket-in-a-way-forbidden-by-its-access-permissions/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/57.jpg" class="responsive-img" alt="Docker-Win下报错： bind: An attempt was made to access a socket in a way forbidden by its access permissions.">
+                            
+                            <span class="card-title">Docker-Win下报错： bind: An attempt was made to access a socket in a way forbidden by its access permissions.</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                如果没有端口占用：Restart-Service -Name winnat, 然后重试
+
+如果是端口占用了，则更换端口或杀死端口占用的进程:
+# 查找端口占用的PID
+netstat -ano | findstr $port
+
+# 查看PI
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-01
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Docker/">
+                            <span class="chip bg-color">Docker</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
@@ -1088,106 +1188,33 @@ mapred-site.xml 中加入:
                 </div>
             </div>
             
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/19/coding/hadoop-qi-dong-shi-mei-you-qi-dong-datanode/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/62.jpg" class="responsive-img" alt="Hadoop-启动时没有启动datanode">
-                            
-                            <span class="card-title">Hadoop-启动时没有启动datanode</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                原因:
-在第一次格式化dfs后，启动并使用了hadoop，后来又重新执行了格式化命令 hdfs namenode -format，这时namenode的clusterID会重新生成，而datanode的clusterID 保持不变。
-解决方
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    排错笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/coding/tensorflow-tfdml-plugin.dll-not-found/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="tensorflow-...\tensorflow-plugins\tfdml_plugin.dll not found">
-                            
-                            <span class="card-title">tensorflow-...\tensorflow-plugins\tfdml_plugin.dll not found</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                2.12.0 之后不支持直接调用 GPU, 需要安装插件
-pip install tensorflow-directml-plugin
-安装过程中如果中途报 ERROR 也没关系, 最后一行显示 successfully 就行了
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    排错笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/tensorflow/">
-                            <span class="chip bg-color">tensorflow</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
         </div>
     </article>
 </main>
+
+
+<div class="container paging">
+    <div class="row">
+        <div class="col s6 m4 l4">
+            
+            <a class="left btn-floating btn-large disabled">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            
+        </div>
+        <div class="page-info col m4 l4 hide-on-small-only">
+            <div class="center-align b-text-gray">1 / 2</div>
+        </div>
+        <div class="col s6 m4 l4">
+            
+            <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/page/2/"
+               class="right btn-floating btn-large waves-effect waves-light bg-color">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            
+        </div>
+    </div>
+</div>
 
 
 
@@ -1265,7 +1292,7 @@ pip install tensorflow-directml-plugin
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">228.3k</span>
+                        class="white-color">230k</span>
             
             
             
