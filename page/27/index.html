@@ -406,6 +406,181 @@
     <article id="articles" class="container articles">
         <div class="row article-row">
             
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/17/coding/powershell-sha-si-zhan-yong-duan-kou-de-jin-cheng/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="powershell-杀死占用端口的进程">
+                            
+                            <span class="card-title">powershell-杀死占用端口的进程</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 查找端口占用的PID
+netstat -ano | findstr $port
+
+# 查看PID对应的进程信息
+tasklist | findstr $pid
+
+# 通过进程名称结束进程
+taskkill /f /t /im $name
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/powershell/">
+                            <span class="chip bg-color">powershell</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+              <!-- 隐藏某个文章 -->
+            
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/17/coding/powershell-hou-tai-ming-ling/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="powershell-后台命令">
+                            
+                            <span class="card-title">powershell-后台命令</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 后台运行
+Start-Job -ScriptBlock {ping 8.8.8.8}
+
+# 查看后台任务
+Get-Job
+
+# 停止运行ID为1的后台任务
+Stop-Job -Id 1
+
+# 将ID为1的后台任务从后台移除
+Remove
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/powershell/">
+                            <span class="chip bg-color">powershell</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/17/yun-wei/aria2-aria2c-ariang-an-zhuang/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Aria2-Aria2c+AriaNG安装">
+                            
+                            <span class="card-title">Aria2-Aria2c+AriaNG安装</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+下载 aria2c
+下载 AriaNG-AllInOne
+运行 powersehll 命令开启RPC服务
+
+aria2c --enable-rpc --rpc-allow-origin-all
+
+浏览器打开 AriaNG 里的 index
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Aria2/">
+                            <span class="chip bg-color">Aria2</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
               <!-- 隐藏某个文章 -->
             
               <!-- 隐藏某个文章 -->
@@ -627,132 +802,6 @@ $$g(z)=\frac{1}{1+e^{-z}}$$
             </div>
               <!-- 隐藏某个文章 -->
             
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/06/ying-yu/ying-yu-dan-ci-su-ji-38000-1-vinc-vict/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/32.jpg" class="responsive-img" alt="英语单词-速记38000-1 [-vinc-=-vict-]-40词">
-                            
-                            <span class="card-title">英语单词-速记38000-1 [-vinc-=-vict-]-40词</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                -vinc-=-vict- 胜，征服
-【词源】
-
-来源于拉丁语 vicere 战胜
-来源典故：凯撒大帝 Caesar 平定庞培不下叛乱后，颁布的“三V文书”，即 Veni Vedi Vici, 为拉丁语，意为"I came, I saw, 
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-06
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    英语学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D/">
-                            <span class="chip bg-color">英语单词</span>
-                        </a>
-                        
-                        <a href="/tags/%E9%80%9F%E8%AE%B038000/">
-                            <span class="chip bg-color">速记38000</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-              <!-- 隐藏某个文章 -->
-            
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/05/ying-yu/ying-yu-dan-ci-su-ji-38000-0-gou-ci-fa/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/48.jpg" class="responsive-img" alt="英语单词-速记38000-0 [构词法]">
-                            
-                            <span class="card-title">英语单词-速记38000-0 [构词法]</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                构词法：
-
-词根：单词的本义
-前缀：表强调或方向
-后缀：表词性，偶尔表含义
-音变：发音相似，含义接近 [-vinc=-vict- 胜，征服]
-
-字母：元音 + 辅音
-元音字母: a,e,i,o,u
-半元音: y,w
-元音字母功能：连字符。无
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    英语学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D/">
-                            <span class="chip bg-color">英语单词</span>
-                        </a>
-                        
-                        <a href="/tags/%E9%80%9F%E8%AE%B038000/">
-                            <span class="chip bg-color">速记38000</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -859,7 +908,7 @@ $$g(z)=\frac{1}{1+e^{-z}}$$
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">224.7k</span>
+                        class="white-color">228.3k</span>
             
             
             
