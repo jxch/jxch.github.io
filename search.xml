@@ -4,6 +4,172 @@
   
     
     <entry>
+      <title>架构-订单支付系统设计</title>
+      <link href="/2023/06/05/jia-gou/jia-gou-ding-dan-zhi-fu-xi-tong-she-ji/"/>
+      <url>/2023/06/05/jia-gou/jia-gou-ding-dan-zhi-fu-xi-tong-she-ji/</url>
+      
+        <content type="html"><![CDATA[<p><img src="/static/IT/SpringCloud/OrderPay.png" alt="订单支付系统设计"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 架构 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 支付系统 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>架构-订单系统设计</title>
+      <link href="/2023/06/04/jia-gou/jia-gou-ding-dan-xi-tong-she-ji/"/>
+      <url>/2023/06/04/jia-gou/jia-gou-ding-dan-xi-tong-she-ji/</url>
+      
+        <content type="html"><![CDATA[<p><img src="/static/IT/SpringCloud/OrderSystem.png" alt="订单系统设计"></p><hr><h2 id="幂等">幂等</h2><p>一件事情做几次结果都一样（防止用户提交两次订单）<br>唯一性索引：生成订单ID的操作提前到核对订单页面并在页面携带此ID，提交订单时直接使用此ID</p><p>ABA问题（使用版本号）：<br>如用户修改订单详情，物品颜色（更新订单信息的ABA问题）：</p><ul><li>红色，修改成功，网络响应失败（触发重试）</li><li>绿色，用户修改成功</li><li>红色，重试成功<br>用户想要的是第二次修改的绿色，最后结果确是红色</li></ul><p>使用版本号解决这个问题：<code>update</code> db时检查 <code>version</code> 有没有发生变化</p><h2 id="读写分离">读写分离</h2><p>我的订单中，每个用户的订单都不同，所以不能用 <code>redis</code> 缓存数据，只能用读写分离优化查询速度<br>存在主从同步时数据暂时的不一致情况，可以插入支付成功页面，几秒后跳转详情页面，然后从读库查询<br><em>在要求较高的业务场景下可以在同一事务中，在写库写完就在写库读然后返回给前端</em></p><h2 id="分库分表">分库分表</h2><p>能少拆就少拆，能不拆就不拆，降低维护复杂度<br>在MySQL中，如果一行存1kb的数据，那么一张表可以在不影响性能的情况下，大概存储2100条数据</p><p>数据量大：分表<br>并发量大：分库</p><h3 id="分表分片策略">分表分片策略</h3><p>按时间或按ID取模等</p><ul><li>根据orderid mod缺陷：无法根据userid查询该用户下的所有订单<ul><li>解决方案：根据 orderid 和 userid 后几位拼接一个新的 orderid（基因法），然后 mod 取模<ul><li>缺陷：无法根据店铺ID查询该店铺下的所有订单<ul><li>解决方案 - 数据冗余：订单数据同步到其他存储，比如ES，Hadoop或MySQL（以店铺ID作为分片键的只读订单库）等</li></ul></li></ul></li></ul></li></ul><h3 id="实现方案">实现方案</h3><ul><li>Sharding-JDBC（推荐使用）</li><li>代理方式（MyCat，好久不更新了）：使用起来最简单<ul><li>缺陷：性能损失较大，需要两次请求</li></ul></li><li>历史订单归档（数据迁移，根据热尾效应，只保留近3个月的数据，提高提高表的查询速度）<ul><li>定时任务：MySQL -&gt; MongoDB<ul><li>循环批量插入（mysql delete，mongodb insert）</li><li>数据库负载很大，MySQL可以按ID范围删除（每次2000条），每次循环休眠一个随机数，让MySQL完成页面合并，降低负载</li><li>碎片优化负载很大，建议晚上迁移，一晚上迁移不完，可以暂停，第二天晚上继续迁移</li><li>迁移前做好备份</li></ul></li><li>数据一致性：需要事务，但不需要分布式事务<ul><li>获取上一次成功的最大ID，以它为起始ID：只需保证某一边有数据就可以</li></ul></li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 架构 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 幂等 </tag>
+            
+            <tag> 读写分离 </tag>
+            
+            <tag> 分库分表 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>PI-树莓派安装Kubernetes</title>
+      <link href="/2023/06/04/yun-wei/pi-shu-mei-pai-an-zhuang-kubernetes/"/>
+      <url>/2023/06/04/yun-wei/pi-shu-mei-pai-an-zhuang-kubernetes/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-sSL</span> https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg <span class="token operator">|</span> <span class="token function">sudo</span> apt-key <span class="token function">add</span> -<span class="token builtin class-name">echo</span> <span class="token string">"deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main"</span> <span class="token operator">|</span> <span class="token function">sudo</span> <span class="token function">tee</span> /etc/apt/sources.list.d/kubernetes.list<span class="token function">sudo</span> <span class="token function">apt-get</span> update<span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token parameter variable">-y</span> kubelet kubeadm kubectl kubernetes-cni<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 添加 cgroup_enable=memory cgroup_memory=1</span><span class="token function">vi</span> /boot/cmdline.txt<span class="token comment"># 重启</span><span class="token function">reboot</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 如果有无法解决的报错，可以添加这个参数暂时跳过 --ignore-preflight-errors all</span><span class="token function">sudo</span> kubeadm initkubectl apply <span class="token parameter variable">-f</span> https://docs.projectcalico.org/v3.14/manifests/calico.yamlkubectl get nodes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 运维手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> PI </tag>
+            
+            <tag> Kubernetes </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SpringCloud-分布式唯一ID-Leaf</title>
+      <link href="/2023/06/03/jia-gou/springcloud-fen-bu-shi-wei-yi-id-leaf/"/>
+      <url>/2023/06/03/jia-gou/springcloud-fen-bu-shi-wei-yi-id-leaf/</url>
+      
+        <content type="html"><![CDATA[<p>为什么需要分布式唯一ID而不是UUID：因为数据库存储采用B树（有序），<font color="orange">无序数据导致B树不断旋转</font><br>所有业务都需要分布式唯一ID吗？订单主表：全局唯一；<font color="orange">订单详情表：1. 不需要全局唯一；2. 一次性获取所有ID</font></p><h2 id="方案（推荐-Leaf-Snowflake）">方案（推荐 Leaf-Snowflake）</h2><ol><li>雪花算法（1bit + timestamp(41bit) + workid(机房号5bit+机器号5bit) + 序列号12bit）<ul><li>缺陷：<font color="orange">时钟回拨导致ID重复</font></li></ul></li><li>Mongdb: objeckID</li><li>Seata: UUID: IdWorker</li><li>数据库，一张表专门生成ID（累加，mysql: replace into；Oracle: sequence）<ul><li>缺陷：IO并发量太低，可以使用多台服务器，为了保证不重复，可以让第一台奇数，第二台偶数<ul><li>缺陷：水平扩容复杂</li></ul></li></ul></li><li>redis（incr）<ul><li>缺陷：<font color="orange">断电故障（持久化是异步的）</font></li></ul></li><li>Leaf-Segment（mysql数据表用于记录自定义批量生成的ID）<ul><li>缺陷：批量的，id不随机，<font color="orange">数据量会被猜到</font></li><li>解决毛刺现象：<font color="orange">双缓存优化</font>（日常用量的600倍，mysql宕机有10-20分钟重启）</li><li>高可用：<font color="orange">mysql强一致</font>，MGR - Paxos算法</li></ul></li><li>Leaf-Snowflake（雪花 + zookeeper，避免数据量被猜到）<ul><li><font color="orange">使用zookeeper，让workid递增，避免workid配置错误</font></li><li>解决时钟回拨<ul><li>上线新节点时，通过RPC获得其他所有leaf服务的系统时间（<code>sum(time)/nodeSize</code>），<font color="orange">相差超过阈值，则启动失败</font></li><li>老节点在运行过程中，<font color="orange">定时往zookeeper登记自己的时间戳，时间不对就失败（告警重试）</font></li></ul></li></ul></li></ol><p><img src="/static/IT/SpringCloud/Leaf.png" alt="SpringCloud-Leaf"></p><p>目前Leaf的性能在4C8G的机器上QPS能压测到近5万/s，TP999 1ms，已经能够满足大部分的业务的需求。每天提供亿数量级的调用量。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 架构 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SpringCloud </tag>
+            
+            <tag> Leaf </tag>
+            
+            <tag> 分布式ID </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SpringCloud-网关+授权中心</title>
+      <link href="/2023/06/03/jia-gou/springcloud-wang-guan-shou-quan-zhong-xin/"/>
+      <url>/2023/06/03/jia-gou/springcloud-wang-guan-shou-quan-zhong-xin/</url>
+      
+        <content type="html"><![CDATA[<p><img src="/static/IT/SpringCloud/%E7%BD%91%E5%85%B3%2B%E6%8E%88%E6%9D%83%E4%B8%AD%E5%BF%83.png" alt="SpringCloud-网关+授权中心"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 架构 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SpringCloud </tag>
+            
+            <tag> 网关 </tag>
+            
+            <tag> 授权中心 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Docker-WIN下DockerDesktop无法开启Kubernetes</title>
+      <link href="/2023/06/02/yun-wei/docker-win-xia-dockerdesktop-wu-fa-kai-qi-kubernetes/"/>
+      <url>/2023/06/02/yun-wei/docker-win-xia-dockerdesktop-wu-fa-kai-qi-kubernetes/</url>
+      
+        <content type="html"><![CDATA[<p>开启代理等方式都无效，只能换源:</p><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"registry-mirrors"</span><span class="token operator">:</span> <span class="token punctuation">[</span>  <span class="token string">"https://docker.mirrors.ustc.edu.cn"</span><span class="token punctuation">,</span>  <span class="token string">"https://cr.console.aliyun.com/"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 排错笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+            <tag> Kubernetes </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SpringCloud-gateway网关配置</title>
       <link href="/2023/06/01/template/springcloud-gateway-wang-guan-pei-zhi/"/>
       <url>/2023/06/01/template/springcloud-gateway-wang-guan-pei-zhi/</url>
@@ -2928,7 +3094,7 @@
       <link href="/2023/04/27/yun-wei/nacos-dan-ji-bu-shu/"/>
       <url>/2023/04/27/yun-wei/nacos-dan-ji-bu-shu/</url>
       
-        <content type="html"><![CDATA[<h2 id="docker-compose-yml">docker-compose.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3.8"</span><span class="token key atrule">services</span><span class="token punctuation">:</span>  <span class="token key atrule">nacos</span><span class="token punctuation">:</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> nacos/nacos<span class="token punctuation">-</span>server    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped    <span class="token key atrule">environment</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> PREFER_HOST_MODE=hostname      <span class="token punctuation">-</span> MODE=standalone    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> ./standalone<span class="token punctuation">-</span>logs/<span class="token punctuation">:</span>/home/nacos/logs    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token string">"8848:8848"</span>      <span class="token punctuation">-</span> <span class="token string">"9848:9848"</span>  <span class="token key atrule">prometheus</span><span class="token punctuation">:</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> prom/prometheus<span class="token punctuation">:</span>latest    <span class="token key atrule">restart</span><span class="token punctuation">:</span> on<span class="token punctuation">-</span>failure    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> ./prometheus<span class="token punctuation">-</span>standalone.yaml<span class="token punctuation">:</span>/etc/prometheus/prometheus.yml    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token string">"9090:9090"</span>    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> nacos  <span class="token key atrule">grafana</span><span class="token punctuation">:</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> grafana/grafana<span class="token punctuation">:</span>latest    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> 3000<span class="token punctuation">:</span><span class="token number">3000</span>    <span class="token key atrule">restart</span><span class="token punctuation">:</span> on<span class="token punctuation">-</span>failure<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="prometheus-standalone-yaml">prometheus-standalone.yaml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># my global config</span><span class="token key atrule">global</span><span class="token punctuation">:</span>  <span class="token key atrule">scrape_interval</span><span class="token punctuation">:</span>     15s <span class="token comment"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span>  <span class="token key atrule">evaluation_interval</span><span class="token punctuation">:</span> 15s <span class="token comment"># Evaluate rules every 15 seconds. The default is every 1 minute.</span>  <span class="token comment"># scrape_timeout is set to the global default (10s).</span><span class="token comment"># Alertmanager configuration</span><span class="token key atrule">alerting</span><span class="token punctuation">:</span>  <span class="token key atrule">alertmanagers</span><span class="token punctuation">:</span>    <span class="token punctuation">-</span> <span class="token key atrule">static_configs</span><span class="token punctuation">:</span>        <span class="token punctuation">-</span> <span class="token key atrule">targets</span><span class="token punctuation">:</span>          <span class="token comment"># - alertmanager:9093</span><span class="token comment"># Load rules once and periodically evaluate them according to the global 'evaluation_interval'.</span><span class="token key atrule">rule_files</span><span class="token punctuation">:</span><span class="token comment"># - "first_rules.yml"</span><span class="token comment"># - "second_rules.yml"</span><span class="token comment"># A scrape configuration containing exactly one endpoint to scrape:</span><span class="token comment"># Here it's Prometheus itself.</span><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>  <span class="token comment"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span>  <span class="token punctuation">-</span> <span class="token key atrule">job_name</span><span class="token punctuation">:</span> <span class="token string">'prometheus'</span>    <span class="token comment"># metrics_path defaults to '/metrics'</span>    <span class="token comment"># scheme defaults to 'http'.</span>    <span class="token key atrule">static_configs</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token key atrule">targets</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'localhost:9090'</span><span class="token punctuation">]</span>  <span class="token punctuation">-</span> <span class="token key atrule">job_name</span><span class="token punctuation">:</span> <span class="token string">'nacos'</span>    <span class="token key atrule">metrics_path</span><span class="token punctuation">:</span> <span class="token string">'/nacos/actuator/prometheus'</span>    <span class="token key atrule">static_configs</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token key atrule">targets</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'nacos:8848'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><hr><p>访问Nacos管理界面: <code>localhost:8848/nacos</code></p>]]></content>
+        <content type="html"><![CDATA[<h2 id="docker-compose-yml">docker-compose.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3.8"</span><span class="token key atrule">services</span><span class="token punctuation">:</span>  <span class="token key atrule">nacos</span><span class="token punctuation">:</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> nacos/nacos<span class="token punctuation">-</span>server    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped    <span class="token key atrule">environment</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> PREFER_HOST_MODE=hostname      <span class="token punctuation">-</span> MODE=standalone      <span class="token punctuation">-</span> NACOS_AUTH_IDENTITY_KEY=serverIdentity      <span class="token punctuation">-</span> NACOS_AUTH_IDENTITY_VALUE=security      <span class="token punctuation">-</span> NACOS_AUTH_TOKEN=SecretKey012345678901234567890123456789012345678901234567890123456789    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> ./standalone<span class="token punctuation">-</span>logs/<span class="token punctuation">:</span>/home/nacos/logs    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token string">"8848:8848"</span>      <span class="token punctuation">-</span> <span class="token string">"9848:9848"</span>  <span class="token key atrule">prometheus</span><span class="token punctuation">:</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> prom/prometheus<span class="token punctuation">:</span>latest    <span class="token key atrule">restart</span><span class="token punctuation">:</span> on<span class="token punctuation">-</span>failure    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> ./prometheus<span class="token punctuation">-</span>standalone.yaml<span class="token punctuation">:</span>/etc/prometheus/prometheus.yml    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token string">"9090:9090"</span>    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> nacos  <span class="token key atrule">grafana</span><span class="token punctuation">:</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> grafana/grafana<span class="token punctuation">:</span>latest    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> 3000<span class="token punctuation">:</span><span class="token number">3000</span>    <span class="token key atrule">restart</span><span class="token punctuation">:</span> on<span class="token punctuation">-</span>failure<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="prometheus-standalone-yaml">prometheus-standalone.yaml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># my global config</span><span class="token key atrule">global</span><span class="token punctuation">:</span>  <span class="token key atrule">scrape_interval</span><span class="token punctuation">:</span>     15s <span class="token comment"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span>  <span class="token key atrule">evaluation_interval</span><span class="token punctuation">:</span> 15s <span class="token comment"># Evaluate rules every 15 seconds. The default is every 1 minute.</span>  <span class="token comment"># scrape_timeout is set to the global default (10s).</span><span class="token comment"># Alertmanager configuration</span><span class="token key atrule">alerting</span><span class="token punctuation">:</span>  <span class="token key atrule">alertmanagers</span><span class="token punctuation">:</span>    <span class="token punctuation">-</span> <span class="token key atrule">static_configs</span><span class="token punctuation">:</span>        <span class="token punctuation">-</span> <span class="token key atrule">targets</span><span class="token punctuation">:</span>          <span class="token comment"># - alertmanager:9093</span><span class="token comment"># Load rules once and periodically evaluate them according to the global 'evaluation_interval'.</span><span class="token key atrule">rule_files</span><span class="token punctuation">:</span><span class="token comment"># - "first_rules.yml"</span><span class="token comment"># - "second_rules.yml"</span><span class="token comment"># A scrape configuration containing exactly one endpoint to scrape:</span><span class="token comment"># Here it's Prometheus itself.</span><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>  <span class="token comment"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span>  <span class="token punctuation">-</span> <span class="token key atrule">job_name</span><span class="token punctuation">:</span> <span class="token string">'prometheus'</span>    <span class="token comment"># metrics_path defaults to '/metrics'</span>    <span class="token comment"># scheme defaults to 'http'.</span>    <span class="token key atrule">static_configs</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token key atrule">targets</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'localhost:9090'</span><span class="token punctuation">]</span>  <span class="token punctuation">-</span> <span class="token key atrule">job_name</span><span class="token punctuation">:</span> <span class="token string">'nacos'</span>    <span class="token key atrule">metrics_path</span><span class="token punctuation">:</span> <span class="token string">'/nacos/actuator/prometheus'</span>    <span class="token key atrule">static_configs</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token key atrule">targets</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'nacos:8848'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><hr><p>访问Nacos管理界面: <code>localhost:8848/nacos</code></p>]]></content>
       
       
       <categories>

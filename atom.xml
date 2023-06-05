@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-05-31T19:33:44.044Z</updated>
+  <updated>2023-06-04T20:51:23.576Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,174 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>架构-订单支付系统设计</title>
+    <link href="https://jxch.github.io/2023/06/05/jia-gou/jia-gou-ding-dan-zhi-fu-xi-tong-she-ji/"/>
+    <id>https://jxch.github.io/2023/06/05/jia-gou/jia-gou-ding-dan-zhi-fu-xi-tong-she-ji/</id>
+    <published>2023-06-04T20:48:59.000Z</published>
+    <updated>2023-06-04T20:51:23.576Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/static/IT/SpringCloud/OrderPay.png" alt="订单支付系统设计"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;/static/IT/SpringCloud/OrderPay.png&quot; alt=&quot;订单支付系统设计&quot;&gt;&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="架构" scheme="https://jxch.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
+    
+    
+    <category term="支付系统" scheme="https://jxch.github.io/tags/%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>架构-订单系统设计</title>
+    <link href="https://jxch.github.io/2023/06/04/jia-gou/jia-gou-ding-dan-xi-tong-she-ji/"/>
+    <id>https://jxch.github.io/2023/06/04/jia-gou/jia-gou-ding-dan-xi-tong-she-ji/</id>
+    <published>2023-06-04T14:24:04.000Z</published>
+    <updated>2023-06-04T15:26:11.521Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/static/IT/SpringCloud/OrderSystem.png" alt="订单系统设计"></p><hr><h2 id="幂等">幂等</h2><p>一件事情做几次结果都一样（防止用户提交两次订单）<br>唯一性索引：生成订单ID的操作提前到核对订单页面并在页面携带此ID，提交订单时直接使用此ID</p><p>ABA问题（使用版本号）：<br>如用户修改订单详情，物品颜色（更新订单信息的ABA问题）：</p><ul><li>红色，修改成功，网络响应失败（触发重试）</li><li>绿色，用户修改成功</li><li>红色，重试成功<br>用户想要的是第二次修改的绿色，最后结果确是红色</li></ul><p>使用版本号解决这个问题：<code>update</code> db时检查 <code>version</code> 有没有发生变化</p><h2 id="读写分离">读写分离</h2><p>我的订单中，每个用户的订单都不同，所以不能用 <code>redis</code> 缓存数据，只能用读写分离优化查询速度<br>存在主从同步时数据暂时的不一致情况，可以插入支付成功页面，几秒后跳转详情页面，然后从读库查询<br><em>在要求较高的业务场景下可以在同一事务中，在写库写完就在写库读然后返回给前端</em></p><h2 id="分库分表">分库分表</h2><p>能少拆就少拆，能不拆就不拆，降低维护复杂度<br>在MySQL中，如果一行存1kb的数据，那么一张表可以在不影响性能的情况下，大概存储2100条数据</p><p>数据量大：分表<br>并发量大：分库</p><h3 id="分表分片策略">分表分片策略</h3><p>按时间或按ID取模等</p><ul><li>根据orderid mod缺陷：无法根据userid查询该用户下的所有订单<ul><li>解决方案：根据 orderid 和 userid 后几位拼接一个新的 orderid（基因法），然后 mod 取模<ul><li>缺陷：无法根据店铺ID查询该店铺下的所有订单<ul><li>解决方案 - 数据冗余：订单数据同步到其他存储，比如ES，Hadoop或MySQL（以店铺ID作为分片键的只读订单库）等</li></ul></li></ul></li></ul></li></ul><h3 id="实现方案">实现方案</h3><ul><li>Sharding-JDBC（推荐使用）</li><li>代理方式（MyCat，好久不更新了）：使用起来最简单<ul><li>缺陷：性能损失较大，需要两次请求</li></ul></li><li>历史订单归档（数据迁移，根据热尾效应，只保留近3个月的数据，提高提高表的查询速度）<ul><li>定时任务：MySQL -&gt; MongoDB<ul><li>循环批量插入（mysql delete，mongodb insert）</li><li>数据库负载很大，MySQL可以按ID范围删除（每次2000条），每次循环休眠一个随机数，让MySQL完成页面合并，降低负载</li><li>碎片优化负载很大，建议晚上迁移，一晚上迁移不完，可以暂停，第二天晚上继续迁移</li><li>迁移前做好备份</li></ul></li><li>数据一致性：需要事务，但不需要分布式事务<ul><li>获取上一次成功的最大ID，以它为起始ID：只需保证某一边有数据就可以</li></ul></li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;/static/IT/SpringCloud/OrderSystem.png&quot; alt=&quot;订单系统设计&quot;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;幂等&quot;&gt;幂等&lt;/h2&gt;
+&lt;p&gt;一件事情做几次结果都一样（防止用户提交两次订单）&lt;br&gt;
+唯一性索引：生成订单ID</summary>
+      
+    
+    
+    
+    <category term="架构" scheme="https://jxch.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
+    
+    
+    <category term="幂等" scheme="https://jxch.github.io/tags/%E5%B9%82%E7%AD%89/"/>
+    
+    <category term="读写分离" scheme="https://jxch.github.io/tags/%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/"/>
+    
+    <category term="分库分表" scheme="https://jxch.github.io/tags/%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PI-树莓派安装Kubernetes</title>
+    <link href="https://jxch.github.io/2023/06/04/yun-wei/pi-shu-mei-pai-an-zhuang-kubernetes/"/>
+    <id>https://jxch.github.io/2023/06/04/yun-wei/pi-shu-mei-pai-an-zhuang-kubernetes/</id>
+    <published>2023-06-03T22:52:26.000Z</published>
+    <updated>2023-06-03T23:04:53.471Z</updated>
+    
+    <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-sSL</span> https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg <span class="token operator">|</span> <span class="token function">sudo</span> apt-key <span class="token function">add</span> -<span class="token builtin class-name">echo</span> <span class="token string">"deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main"</span> <span class="token operator">|</span> <span class="token function">sudo</span> <span class="token function">tee</span> /etc/apt/sources.list.d/kubernetes.list<span class="token function">sudo</span> <span class="token function">apt-get</span> update<span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token parameter variable">-y</span> kubelet kubeadm kubectl kubernetes-cni<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 添加 cgroup_enable=memory cgroup_memory=1</span><span class="token function">vi</span> /boot/cmdline.txt<span class="token comment"># 重启</span><span class="token function">reboot</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 如果有无法解决的报错，可以添加这个参数暂时跳过 --ignore-preflight-errors all</span><span class="token function">sudo</span> kubeadm initkubectl apply <span class="token parameter variable">-f</span> https://docs.projectcalico.org/v3.14/manifests/calico.yamlkubectl get nodes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; &lt;span clas</summary>
+      
+    
+    
+    
+    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="PI" scheme="https://jxch.github.io/tags/PI/"/>
+    
+    <category term="Kubernetes" scheme="https://jxch.github.io/tags/Kubernetes/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringCloud-分布式唯一ID-Leaf</title>
+    <link href="https://jxch.github.io/2023/06/03/jia-gou/springcloud-fen-bu-shi-wei-yi-id-leaf/"/>
+    <id>https://jxch.github.io/2023/06/03/jia-gou/springcloud-fen-bu-shi-wei-yi-id-leaf/</id>
+    <published>2023-06-03T14:54:35.000Z</published>
+    <updated>2023-06-03T15:51:05.261Z</updated>
+    
+    <content type="html"><![CDATA[<p>为什么需要分布式唯一ID而不是UUID：因为数据库存储采用B树（有序），<font color="orange">无序数据导致B树不断旋转</font><br>所有业务都需要分布式唯一ID吗？订单主表：全局唯一；<font color="orange">订单详情表：1. 不需要全局唯一；2. 一次性获取所有ID</font></p><h2 id="方案（推荐-Leaf-Snowflake）">方案（推荐 Leaf-Snowflake）</h2><ol><li>雪花算法（1bit + timestamp(41bit) + workid(机房号5bit+机器号5bit) + 序列号12bit）<ul><li>缺陷：<font color="orange">时钟回拨导致ID重复</font></li></ul></li><li>Mongdb: objeckID</li><li>Seata: UUID: IdWorker</li><li>数据库，一张表专门生成ID（累加，mysql: replace into；Oracle: sequence）<ul><li>缺陷：IO并发量太低，可以使用多台服务器，为了保证不重复，可以让第一台奇数，第二台偶数<ul><li>缺陷：水平扩容复杂</li></ul></li></ul></li><li>redis（incr）<ul><li>缺陷：<font color="orange">断电故障（持久化是异步的）</font></li></ul></li><li>Leaf-Segment（mysql数据表用于记录自定义批量生成的ID）<ul><li>缺陷：批量的，id不随机，<font color="orange">数据量会被猜到</font></li><li>解决毛刺现象：<font color="orange">双缓存优化</font>（日常用量的600倍，mysql宕机有10-20分钟重启）</li><li>高可用：<font color="orange">mysql强一致</font>，MGR - Paxos算法</li></ul></li><li>Leaf-Snowflake（雪花 + zookeeper，避免数据量被猜到）<ul><li><font color="orange">使用zookeeper，让workid递增，避免workid配置错误</font></li><li>解决时钟回拨<ul><li>上线新节点时，通过RPC获得其他所有leaf服务的系统时间（<code>sum(time)/nodeSize</code>），<font color="orange">相差超过阈值，则启动失败</font></li><li>老节点在运行过程中，<font color="orange">定时往zookeeper登记自己的时间戳，时间不对就失败（告警重试）</font></li></ul></li></ul></li></ol><p><img src="/static/IT/SpringCloud/Leaf.png" alt="SpringCloud-Leaf"></p><p>目前Leaf的性能在4C8G的机器上QPS能压测到近5万/s，TP999 1ms，已经能够满足大部分的业务的需求。每天提供亿数量级的调用量。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;为什么需要分布式唯一ID而不是UUID：因为数据库存储采用B树（有序），&lt;font color=&quot;orange&quot;&gt;无序数据导致B树不断旋转&lt;/font&gt;&lt;br&gt;
+所有业务都需要分布式唯一ID吗？订单主表：全局唯一；&lt;font color=&quot;orange&quot;&gt;订单详情表：1. </summary>
+      
+    
+    
+    
+    <category term="架构" scheme="https://jxch.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
+    
+    
+    <category term="SpringCloud" scheme="https://jxch.github.io/tags/SpringCloud/"/>
+    
+    <category term="Leaf" scheme="https://jxch.github.io/tags/Leaf/"/>
+    
+    <category term="分布式ID" scheme="https://jxch.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8FID/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringCloud-网关+授权中心</title>
+    <link href="https://jxch.github.io/2023/06/03/jia-gou/springcloud-wang-guan-shou-quan-zhong-xin/"/>
+    <id>https://jxch.github.io/2023/06/03/jia-gou/springcloud-wang-guan-shou-quan-zhong-xin/</id>
+    <published>2023-06-02T23:36:44.000Z</published>
+    <updated>2023-06-02T23:38:54.767Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/static/IT/SpringCloud/%E7%BD%91%E5%85%B3%2B%E6%8E%88%E6%9D%83%E4%B8%AD%E5%BF%83.png" alt="SpringCloud-网关+授权中心"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;/static/IT/SpringCloud/%E7%BD%91%E5%85%B3%2B%E6%8E%88%E6%9D%83%E4%B8%AD%E5%BF%83.png&quot; alt=&quot;SpringCloud-网关+授权中心&quot;&gt;&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="架构" scheme="https://jxch.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
+    
+    
+    <category term="SpringCloud" scheme="https://jxch.github.io/tags/SpringCloud/"/>
+    
+    <category term="网关" scheme="https://jxch.github.io/tags/%E7%BD%91%E5%85%B3/"/>
+    
+    <category term="授权中心" scheme="https://jxch.github.io/tags/%E6%8E%88%E6%9D%83%E4%B8%AD%E5%BF%83/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker-WIN下DockerDesktop无法开启Kubernetes</title>
+    <link href="https://jxch.github.io/2023/06/02/yun-wei/docker-win-xia-dockerdesktop-wu-fa-kai-qi-kubernetes/"/>
+    <id>https://jxch.github.io/2023/06/02/yun-wei/docker-win-xia-dockerdesktop-wu-fa-kai-qi-kubernetes/</id>
+    <published>2023-06-01T17:35:57.000Z</published>
+    <updated>2023-06-01T17:37:28.825Z</updated>
+    
+    <content type="html"><![CDATA[<p>开启代理等方式都无效，只能换源:</p><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"registry-mirrors"</span><span class="token operator">:</span> <span class="token punctuation">[</span>  <span class="token string">"https://docker.mirrors.ustc.edu.cn"</span><span class="token punctuation">,</span>  <span class="token string">"https://cr.console.aliyun.com/"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;开启代理等方式都无效，只能换源:&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-json&quot; data-language=&quot;json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token property</summary>
+      
+    
+    
+    
+    <category term="排错笔记" scheme="https://jxch.github.io/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="Docker" scheme="https://jxch.github.io/tags/Docker/"/>
+    
+    <category term="Kubernetes" scheme="https://jxch.github.io/tags/Kubernetes/"/>
+    
+  </entry>
   
   <entry>
     <title>SpringCloud-gateway网关配置</title>
@@ -391,168 +559,6 @@
     
     
     <category term="JavaScript" scheme="https://jxch.github.io/tags/JavaScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JavaScript-将二维曲线图SVG的Path转为二维坐标数组</title>
-    <link href="https://jxch.github.io/2023/05/30/template/javascript-jiang-er-wei-qu-xian-tu-svg-de-path-zhuan-wei-er-wei-zuo-biao-shu-zu/"/>
-    <id>https://jxch.github.io/2023/05/30/template/javascript-jiang-er-wei-qu-xian-tu-svg-de-path-zhuan-wei-er-wei-zuo-biao-shu-zu/</id>
-    <published>2023-05-29T21:44:16.000Z</published>
-    <updated>2023-05-29T21:56:40.946Z</updated>
-    
-    <content type="html"><![CDATA[<p>保留两位小数：</p><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">pathToPoints</span><span class="token punctuation">(</span><span class="token parameter">path</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token keyword">const</span> commands <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">(?=[LMC])</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token keyword">const</span> points <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> command <span class="token keyword">of</span> commands<span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">const</span> <span class="token punctuation">[</span>type<span class="token punctuation">,</span> <span class="token operator">...</span>args<span class="token punctuation">]</span> <span class="token operator">=</span> command<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\s,]+</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'M'</span> <span class="token operator">||</span> type <span class="token operator">===</span> <span class="token string">'L'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>      points<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'C'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>      points<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>        <span class="token punctuation">[</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">,</span>        <span class="token punctuation">[</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">,</span>        <span class="token punctuation">[</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">]</span>      <span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>  <span class="token punctuation">}</span>  <span class="token keyword">return</span> points<span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>如果只关心C(三次贝塞尔曲线)的最终坐标：</p><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">pathToPoints</span><span class="token punctuation">(</span><span class="token parameter">path</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token keyword">const</span> commands <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">(?=[LMC])</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token keyword">const</span> points <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> command <span class="token keyword">of</span> commands<span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">const</span> <span class="token punctuation">[</span>type<span class="token punctuation">,</span> <span class="token operator">...</span>args<span class="token punctuation">]</span> <span class="token operator">=</span> command<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\s,]+</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'M'</span> <span class="token operator">||</span> type <span class="token operator">===</span> <span class="token string">'L'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>      points<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'C'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>      points<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">[</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">+</span>args<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>  <span class="token punctuation">}</span>  <span class="token keyword">return</span> points<span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><hr><p>示例</p><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> path <span class="token operator">=</span> <span class="token string">'M 0.0,100.0 C 1.0,92.6 2.0,65.0 5.0,63.0 C 8.0,61.0 11.0,86.4 15.0,90.0 C 19.0,93.6 21.0,98.7 25.0,80.8 C 29.0,63.0 31.0,9.8 35.0,0.8 C 39.0,-8.3 41.0,22.4 45.0,35.7 C 49.0,49.1 51.0,59.3 55.0,67.5 C 59.0,75.7 61.0,74.4 65.0,76.6 C 69.0,78.8 71.0,78.1 75.0,78.6 C 79.0,79.1 81.0,81.2 85.0,79.1 C 89.0,76.9 91.0,72.1 95.0,68.0 C 99.0,63.8 101.0,69.0 105.0,58.3 C 109.0,47.6 111.0,26.1 115.0,14.6 C 119.0,3.1 121.0,-1.8 125.0,0.8 C 129.0,3.5 131.0,17.6 135.0,27.8 C 139.0,38.0 141.0,48.2 145.0,51.7 C 149.0,55.3 151.0,43.8 155.0,45.5 C 159.0,47.3 161.0,58.8 165.0,60.5 C 169.0,62.2 171.0,52.3 175.0,54.0 C 179.0,55.8 181.0,65.9 185.0,69.3 C 189.0,72.7 191.0,70.6 195.0,71.1 C 199.0,71.6 201.0,79.6 205.0,72.0 C 209.0,64.3 211.0,40.1 215.0,32.6 C 219.0,25.2 221.0,33.3 225.0,34.8 C 229.0,36.3 231.0,47.0 235.0,40.1 C 239.0,33.1 241.0,-3.2 245.0,0.0 C 249.0,3.2 251.0,40.5 255.0,56.2 C 259.0,71.9 261.0,74.5 265.0,78.5 C 269.0,82.5 271.0,77.5 275.0,76.2 C 279.0,74.9 281.0,71.2 285.0,72.0 C 289.0,72.8 291.0,79.0 295.0,80.0 C 299.0,81.0 301.0,78.2 305.0,77.0 C 309.0,75.8 311.0,76.4 315.0,74.2 C 319.0,72.0 321.0,71.3 325.0,66.1 C 329.0,60.9 331.0,47.5 335.0,48.0 C 339.0,48.6 341.0,67.4 345.0,68.8 C 349.0,70.2 351.0,58.4 355.0,55.2 C 359.0,51.9 361.0,55.7 365.0,52.7 C 369.0,49.8 371.0,41.7 375.0,40.4 C 379.0,39.2 381.0,43.5 385.0,46.5 C 389.0,49.5 391.0,52.4 395.0,55.4 C 399.0,58.4 401.0,58.5 405.0,61.5 C 409.0,64.4 411.0,69.4 415.0,70.1 C 419.0,70.9 421.0,66.7 425.0,65.2 C 429.0,63.7 431.0,63.2 435.0,62.6 C 439.0,62.1 441.0,63.1 445.0,62.4 C 449.0,61.7 451.0,62.0 455.0,59.3 C 459.0,56.6 461.0,47.2 465.0,48.8 C 469.0,50.3 471.0,62.9 475.0,67.2 C 479.0,71.5 481.0,67.9 485.0,70.3 C 489.0,72.8 491.0,80.1 495.0,79.5 C 499.0,79.0 501.0,72.6 505.0,67.5 C 509.0,62.4 511.0,54.4 515.0,54.1 C 519.0,53.8 521.0,66.8 525.0,66.0 C 529.0,65.2 531.0,51.0 535.0,50.1 C 539.0,49.2 541.0,58.9 545.0,61.4 C 549.0,64.0 551.0,61.2 555.0,62.9 C 559.0,64.7 561.0,70.7 565.0,70.2 C 569.0,69.7 571.0,63.5 575.0,60.5 C 579.0,57.5 581.0,55.9 585.0,55.3 C 589.0,54.8 591.0,53.8 595.0,57.9 C 599.0,62.0 601.0,72.3 605.0,75.7 C 609.0,79.1 611.0,75.4 615.0,74.9 C 619.0,74.4 621.0,71.7 625.0,73.2 C 629.0,74.6 631.0,80.1 635.0,82.1 C 639.0,84.1 641.0,85.7 645.0,83.3 C 649.0,80.9 651.0,75.2 655.0,70.1 C 659.0,65.1 661.0,58.9 665.0,58.0 C 669.0,57.0 671.0,63.6 675.0,65.4 C 679.0,67.3 681.0,64.9 685.0,67.1 C 689.0,69.3 691.0,76.1 695.0,76.5 C 699.0,76.9 701.0,69.8 705.0,69.1 C 709.0,68.4 711.0,74.7 715.0,72.9 C 719.0,71.1 721.0,62.9 725.0,60.2 C 729.0,57.5 731.0,57.6 735.0,59.5 C 739.0,61.5 741.0,66.4 745.0,69.9 C 749.0,73.3 751.0,76.5 755.0,76.7 C 759.0,76.9 761.0,70.0 765.0,70.7 C 769.0,71.4 771.0,85.2 775.0,80.1 C 779.0,75.0 781.0,50.7 785.0,45.2 C 789.0,39.8 791.0,47.4 795.0,52.7 C 799.0,58.1 801.0,66.0 805.0,72.1 C 809.0,78.2 811.0,80.6 815.0,83.1 C 819.0,85.7 821.0,85.4 825.0,84.9 C 829.0,84.3 831.0,82.5 835.0,80.4 C 839.0,78.3 841.0,74.7 845.0,74.4 C 849.0,74.1 851.0,78.0 855.0,78.9 C 859.0,79.8 861.0,82.0 865.0,78.8 C 869.0,75.7 871.0,66.3 875.0,63.4 C 879.0,60.4 881.0,62.9 885.0,64.1 C 889.0,65.4 891.0,74.2 895.0,69.6 C 899.0,65.1 901.0,48.6 905.0,41.5 C 909.0,34.5 911.0,27.5 915.0,34.6 C 919.0,41.6 921.0,65.7 925.0,76.8 C 929.0,87.9 931.0,87.4 935.0,90.0 C 939.0,92.6 941.0,90.0 945.0,90.0 C 949.0,90.0 951.0,90.0 955.0,90.0 C 959.0,90.0 961.0,90.0 965.0,90.0 C 969.0,90.0 971.0,90.0 975.0,90.0 C 979.0,90.0 981.0,91.3 985.0,90.0 C 989.0,88.7 992.0,84.7 995.0,83.4 C 998.0,82.1 999.0,80.1 1000.0,83.4 C 1001.0,86.7 1000.0,96.7 1000.0,100.0'</span><span class="token keyword">var</span> points <span class="token operator">=</span> <span class="token function">pathToPoints</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;保留两位小数：&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-javascript&quot; data-language=&quot;javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token</summary>
-      
-    
-    
-    
-    <category term="JS-template" scheme="https://jxch.github.io/categories/JS-template/"/>
-    
-    
-    <category term="JavaScript" scheme="https://jxch.github.io/tags/JavaScript/"/>
-    
-    <category term="SVG" scheme="https://jxch.github.io/tags/SVG/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>powershell-统计目录下所有视频的总时长</title>
-    <link href="https://jxch.github.io/2023/05/26/template/powershell-tong-ji-mu-lu-xia-suo-you-shi-pin-de-zong-shi-chang/"/>
-    <id>https://jxch.github.io/2023/05/26/template/powershell-tong-ji-mu-lu-xia-suo-you-shi-pin-de-zong-shi-chang/</id>
-    <published>2023-05-26T13:59:34.000Z</published>
-    <updated>2023-05-26T14:14:49.985Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="代码示例">代码示例</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token namespace">[CmdletBinding()]</span><span class="token keyword">Param</span><span class="token punctuation">(</span>    <span class="token namespace">[string]</span> <span class="token variable">$dirPath</span><span class="token punctuation">)</span><span class="token function">Write-Host</span> <span class="token string">"&gt;&gt;&gt; ${dirPath}"</span><span class="token comment"># 获取目下所有可能的视频文件</span><span class="token variable">$videos</span> = <span class="token function">Get-ChildItem</span> <span class="token operator">-</span>Path <span class="token variable">$dirPath</span> <span class="token operator">-</span>Recurse <span class="token operator">-</span>Include <span class="token operator">*</span><span class="token punctuation">.</span>mp4<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>avi<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mkv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mov<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>wmv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>flv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>webm<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpg<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpeg<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>m4v<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>3gp<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ts<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>vob<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span><span class="token function">ogv</span><span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>m2ts<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mts<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>divx<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>xvid<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>rmvb<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>asf<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>qt<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>fv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mxf<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mp2<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpe<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mpa<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>m2v<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>m1v<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mod<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>tod<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>dvr-ms<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>wtv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ogm<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span><span class="token function">rm</span><span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ram<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mk3d<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mks<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>nsv<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>dts<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ac3<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>eac3<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>aac<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>wma<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>wav<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>flac<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>ape<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>alac<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>opus<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">.</span>mka<span class="token comment"># 初始化总时长为 0</span><span class="token variable">$totalDuration</span> = 0<span class="token variable">$totalVideos</span> = <span class="token variable">$videos</span><span class="token punctuation">.</span>Count<span class="token comment"># 记录当前位置</span><span class="token variable">$cursorLeft</span> = <span class="token namespace">[Console]</span>::CursorLeft<span class="token variable">$cursorTop</span> = <span class="token namespace">[Console]</span>::CursorTop<span class="token variable">$i</span> = 1<span class="token comment"># 遍历所有视频文件</span><span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$video</span> in <span class="token variable">$videos</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment"># 不断刷新着显示正在扫描的视频</span><span class="token function">Write-Host</span> <span class="token string">"[${i}/${totalVideos}] -&gt; "</span> <span class="token variable">$video</span><span class="token punctuation">.</span>FullName  <span class="token operator">-</span>NoNewline<span class="token function">Write-Host</span> <span class="token operator">-</span>NoNewline <span class="token punctuation">(</span><span class="token string">" "</span> <span class="token operator">*</span> <span class="token namespace">[Console]</span>::CursorLeft<span class="token punctuation">)</span><span class="token namespace">[Console]</span>::SetCursorPosition<span class="token punctuation">(</span><span class="token variable">$cursorLeft</span><span class="token punctuation">,</span> <span class="token variable">$cursorTop</span><span class="token punctuation">)</span><span class="token variable">$i</span> = <span class="token variable">$i</span> <span class="token operator">+</span> 1    <span class="token comment"># 使用 ffprobe 获取视频时长</span>    <span class="token variable">$duration</span> = &amp; ffprobe<span class="token punctuation">.</span>exe <span class="token operator">-</span>i <span class="token variable">$video</span><span class="token punctuation">.</span>FullName <span class="token operator">-</span>show_entries format=duration <span class="token operator">-</span>v quiet <span class="token operator">-</span>of csv=<span class="token string">"p=0"</span>    <span class="token comment"># 将时长转换为秒</span>    <span class="token variable">$durationSeconds</span> = <span class="token namespace">[math]</span>::Round<span class="token punctuation">(</span><span class="token variable">$duration</span><span class="token punctuation">)</span>    <span class="token comment"># 累加总长</span><span class="token variable">$totalDuration</span> <span class="token operator">+=</span> <span class="token variable">$durationSeconds</span><span class="token punctuation">}</span><span class="token comment"># 换行</span><span class="token function">Write-Host</span> <span class="token string">""</span><span class="token comment"># 将总时长转换为时分秒格式</span><span class="token variable">$ts</span> = <span class="token namespace">[TimeSpan]</span>::FromSeconds<span class="token punctuation">(</span><span class="token variable">$totalDuration</span><span class="token punctuation">)</span><span class="token comment"># 输出结果</span><span class="token function">Write-Host</span> <span class="token string">"Total duration of all videos in ${dirPath}: <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Days<span class="token punctuation">)</span></span> days, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Hours<span class="token punctuation">)</span></span> hours, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Minutes<span class="token punctuation">)</span></span> minutes, <span class="token function">$<span class="token punctuation">(</span><span class="token variable">$ts</span><span class="token punctuation">.</span>Seconds<span class="token punctuation">)</span></span> seconds"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="使用方法">使用方法</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 依赖 FFmpeg 里的 ffprobe</span>winget install Gyan<span class="token punctuation">.</span>FFmpeg <span class="token operator">-</span>l D:\Programs\Gyan\FFmpeg <span class="token operator">--</span>accept-package-agreements<span class="token comment"># 获取视频总长度</span><span class="token punctuation">.</span>\videos_total_time<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>dirPath <span class="token string">"G:\学习资料\图灵\5期"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;代码示例&quot;&gt;代码示例&lt;/h2&gt;
-&lt;pre class=&quot;line-numbers language-powershell&quot; data-language=&quot;powershell&quot;&gt;&lt;code class=&quot;language-powershell&quot;&gt;&lt;span cla</summary>
-      
-    
-    
-    
-    <category term="shell-template" scheme="https://jxch.github.io/categories/shell-template/"/>
-    
-    
-    <category term="powershell" scheme="https://jxch.github.io/tags/powershell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>powershell-Write-Host 回显本行</title>
-    <link href="https://jxch.github.io/2023/05/26/template/powershell-write-host-hui-xian-ben-xing/"/>
-    <id>https://jxch.github.io/2023/05/26/template/powershell-write-host-hui-xian-ben-xing/</id>
-    <published>2023-05-26T13:56:09.000Z</published>
-    <updated>2023-05-26T13:58:07.213Z</updated>
-    
-    <content type="html"><![CDATA[<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 记录当前位置</span><span class="token variable">$cursorLeft</span> = <span class="token namespace">[Console]</span>::CursorLeft<span class="token variable">$cursorTop</span> = <span class="token namespace">[Console]</span>::CursorTop<span class="token comment"># 遍历所有视频文件</span><span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$video</span> in <span class="token variable">$videos</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment"># 不断刷新着显示正在扫描的视频</span><span class="token function">Write-Host</span> <span class="token variable">$video</span><span class="token punctuation">.</span>FullName  <span class="token operator">-</span>NoNewline<span class="token function">Write-Host</span> <span class="token operator">-</span>NoNewline <span class="token punctuation">(</span><span class="token string">" "</span> <span class="token operator">*</span> <span class="token namespace">[Console]</span>::CursorLeft<span class="token punctuation">)</span><span class="token namespace">[Console]</span>::SetCursorPosition<span class="token punctuation">(</span><span class="token variable">$cursorLeft</span><span class="token punctuation">,</span> <span class="token variable">$cursorTop</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token comment"># 换行</span><span class="token function">Write-Host</span> <span class="token string">""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;pre class=&quot;line-numbers language-powershell&quot; data-language=&quot;powershell&quot;&gt;&lt;code class=&quot;language-powershell&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# 记录当</summary>
-      
-    
-    
-    
-    <category term="shell-template" scheme="https://jxch.github.io/categories/shell-template/"/>
-    
-    
-    <category term="powershell" scheme="https://jxch.github.io/tags/powershell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Capital-基于强化学习的优势率买卖信号学习</title>
-    <link href="https://jxch.github.io/2023/05/25/capital/capital-ji-yu-qiang-hua-xue-xi-de-you-shi-lu-mai-mai-xin-hao-xue-xi/"/>
-    <id>https://jxch.github.io/2023/05/25/capital/capital-ji-yu-qiang-hua-xue-xi-de-you-shi-lu-mai-mai-xin-hao-xue-xi/</id>
-    <published>2023-05-25T08:50:18.000Z</published>
-    <updated>2023-05-25T09:16:51.090Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="模型含义">模型含义</h2><p>举例来说：</p><ul><li>短期优势率弱买信号：未来20天有多大的概率（模型胜率）在股价跌破前20天最低点之前，获得1-3倍最大不利变动的盈利。</li><li>…</li></ul><hr><h2 id="模型设计">模型设计</h2><p>N日买卖信号优势率预测模型：</p><ul><li>信号：弱买，中买，强买，弱卖，中卖，强卖，观望（触发止损按观望算）</li><li>得分：买卖信号正确则加分，错误则扣分，观望信号不加分也不扣分</li><li>奖惩：按发出的买卖信号强弱与实际优势率的偏差进行奖惩，在存在优势率的买卖点发出观望信号同样按偏离程度扣分</li><li>死亡：初始得分1000，扣完即死，分越高越好；初始奖惩值1000，扣完即死</li><li>观测值：前N天的COHLV和短期EMA的百分比归一化值，以及当前的状态</li><li>优势率：未来N日的最大有利变动 / 未来N日的最大不利变动 / 当日ATR（标准化）</li><li>止损：<ul><li>时间止损：未来N日</li><li>空间止损：前N日的最高/最低价 （即未来N日的最大不利变动超过了前N日的最高/最低价）</li></ul></li><li>模型胜率：按优势率给出所有信号计算胜率</li><li>真实胜率：只计算买卖信号的胜率</li><li>数据集：<ul><li>同时观测X支股票的数据（COHLV, EMA, 优势率以及是否触发空间止损信号的数据）</li><li>每只股票都计算奖惩和得分，最后相加计算总的模型奖惩和得分</li></ul></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;模型含义&quot;&gt;模型含义&lt;/h2&gt;
-&lt;p&gt;举例来说：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;短期优势率弱买信号：未来20天有多大的概率（模型胜率）在股价跌破前20天最低点之前，获得1-3倍最大不利变动的盈利。&lt;/li&gt;
-&lt;li&gt;…&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&quot;</summary>
-      
-    
-    
-    
-    <category term="工作笔记" scheme="https://jxch.github.io/categories/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Capital" scheme="https://jxch.github.io/tags/Capital/"/>
-    
-    <category term="工作计划" scheme="https://jxch.github.io/tags/%E5%B7%A5%E4%BD%9C%E8%AE%A1%E5%88%92/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>WEB逆向-下载腾讯课堂已购视频</title>
-    <link href="https://jxch.github.io/2023/05/23/ni-xiang/web-ni-xiang-xia-zai-teng-xun-ke-tang-yi-gou-shi-pin/"/>
-    <id>https://jxch.github.io/2023/05/23/ni-xiang/web-ni-xiang-xia-zai-teng-xun-ke-tang-yi-gou-shi-pin/</id>
-    <published>2023-05-22T16:03:26.000Z</published>
-    <updated>2023-05-22T21:30:13.194Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li>浏览器F12，然后打开要观看的视频</li><li>"网络"中找到<code>voddrm.token.xxxxxxxxx</code>，请求网址就是m3u8的地址</li><li>查看"启动器"，点击进入<code>t.load</code>对应的js文件</li><li>搜索<code>decryptkey</code>，找到类似<code>r.decryptdata ? (this.decryptkey = r.decryptdata.key = new Uint8Array(e.data),</code>的代码行</li><li>在其下一行打上断点</li><li>刷新页面进入断点</li><li>查看key: <code>r.levelkey.key</code></li><li>转为16进制: <code>Array.from(r.levelkey.key).map(i =&gt; i.toString(16).padStart(2, '0')).join('');</code></li><li>使用工具下载合并m3u8: <a href="https://github.com/nilaoda/N_m3u8DL-CLI/releases">N_m3u8DL-CLI</a><ul><li>填写m3u8地址和自定义key</li></ul></li></ol><p>有时这个m3u8地址可能有问题，可以刷新重试，也可以用浏览器的<code>Video DownloadHelper</code>插件获取地址<br>建议使用<code>Video DownloadHelper</code>，方便快捷</p><hr><p>使用批量工具下载: <a href="https://github.com/Prince-cool/tx_course_download/releases">tx_course_download</a></p><ul><li>获取 cookie: <code>document.cookie</code></li><li>下载目录: <code>视频</code>，下载时可用目录联接，<code>mklink /J sources target</code></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ol&gt;
-&lt;li&gt;浏览器F12，然后打开要观看的视频&lt;/li&gt;
-&lt;li&gt;&quot;网络&quot;中找到&lt;code&gt;voddrm.token.xxxxxxxxx&lt;/code&gt;，请求网址就是m3u8的地址&lt;/li&gt;
-&lt;li&gt;查看&quot;启动器&quot;，点击进入&lt;code&gt;t.load&lt;/code&gt;对应的js文件</summary>
-      
-    
-    
-    
-    <category term="逆向工程" scheme="https://jxch.github.io/categories/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
-    
-    
-    <category term="WEB逆向" scheme="https://jxch.github.io/tags/WEB%E9%80%86%E5%90%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker-本地推送镜像成功但是docker hub里面没有更新镜像</title>
-    <link href="https://jxch.github.io/2023/05/22/yun-wei/docker-ben-di-tui-song-jing-xiang-cheng-gong-dan-shi-docker-hub-li-mian-mei-you-geng-xin-jing-xiang/"/>
-    <id>https://jxch.github.io/2023/05/22/yun-wei/docker-ben-di-tui-song-jing-xiang-cheng-gong-dan-shi-docker-hub-li-mian-mei-you-geng-xin-jing-xiang/</id>
-    <published>2023-05-21T16:12:27.000Z</published>
-    <updated>2023-05-21T16:24:48.592Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li>登录 docker: <code>docker login</code> 和GUI登录</li><li><a href="https://hub.docker.com/settings/security">创建令牌登录</a>: <code>docker login --username xxx</code> 然后输入令牌</li><li>删除 <code>moby/buildkit:buildx-stable-1</code> 镜像的全部内容</li><li>重新推送，等待一段时间</li></ol><p>有必要的话，开启全局代理</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ol&gt;
-&lt;li&gt;登录 docker: &lt;code&gt;docker login&lt;/code&gt; 和GUI登录&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://hub.docker.com/settings/security&quot;&gt;创建令牌登录&lt;/a&gt;: &lt;code&gt;docker lo</summary>
-      
-    
-    
-    
-    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
-    
-    
-    <category term="Docker" scheme="https://jxch.github.io/tags/Docker/"/>
     
   </entry>
   

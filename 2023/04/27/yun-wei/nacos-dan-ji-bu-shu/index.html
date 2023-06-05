@@ -419,7 +419,7 @@ services:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    199
+                    205
                 </div>
                 
 
@@ -458,6 +458,9 @@ services:
     <span class="token key atrule">environment</span><span class="token punctuation">:</span>
       <span class="token punctuation">-</span> PREFER_HOST_MODE=hostname
       <span class="token punctuation">-</span> MODE=standalone
+      <span class="token punctuation">-</span> NACOS_AUTH_IDENTITY_KEY=serverIdentity
+      <span class="token punctuation">-</span> NACOS_AUTH_IDENTITY_VALUE=security
+      <span class="token punctuation">-</span> NACOS_AUTH_TOKEN=SecretKey012345678901234567890123456789012345678901234567890123456789
     <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
       <span class="token punctuation">-</span> ./standalone<span class="token punctuation">-</span>logs/<span class="token punctuation">:</span>/home/nacos/logs
     <span class="token key atrule">ports</span><span class="token punctuation">:</span>
@@ -476,7 +479,7 @@ services:
     <span class="token key atrule">image</span><span class="token punctuation">:</span> grafana/grafana<span class="token punctuation">:</span>latest
     <span class="token key atrule">ports</span><span class="token punctuation">:</span>
       <span class="token punctuation">-</span> 3000<span class="token punctuation">:</span><span class="token number">3000</span>
-    <span class="token key atrule">restart</span><span class="token punctuation">:</span> on<span class="token punctuation">-</span>failure<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> on<span class="token punctuation">-</span>failure<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="prometheus-standalone-yaml">prometheus-standalone.yaml</h2>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># my global config</span>
 <span class="token key atrule">global</span><span class="token punctuation">:</span>
@@ -954,7 +957,7 @@ services:
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">230k</span>
+                        class="white-color">231.3k</span>
             
             
             
