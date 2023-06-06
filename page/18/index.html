@@ -57,9 +57,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
+
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
 </head>
 
 
@@ -405,6 +405,181 @@
     <!-- 所有文章卡片 -->
     <article id="articles" class="container articles">
         <div class="row article-row">
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/20/coding/hadoop-fs-chang-yong-ming-ling/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Hadoop-fs-常用命令">
+                            
+                            <span class="card-title">Hadoop-fs-常用命令</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+
+
+命令
+作用
+
+
+
+
+hadoop fs -help
+帮助命令
+
+
+hadoop fs -ls /
+显示目录信息
+
+
+hadoop fs -ls hdfs://hadoop01:9000/
+显示目录信息(使用Nn节点)
+
+
+hadoop
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/19/coding/hadoop-classnotfoundexception/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Hadoop-ClassNotFoundException">
+                            
+                            <span class="card-title">Hadoop-ClassNotFoundException</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+输入命令 hadoop classpath, 将结果复制下来
+mapred-site.xml 中加入:
+
+&lt;property&gt;
+   &lt;name&gt;mapreduce.application.classpath&lt
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/19/coding/hadoop-qi-dong-shi-mei-you-qi-dong-datanode/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/62.jpg" class="responsive-img" alt="Hadoop-启动时没有启动datanode">
+                            
+                            <span class="card-title">Hadoop-启动时没有启动datanode</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                原因:
+在第一次格式化dfs后，启动并使用了hadoop，后来又重新执行了格式化命令 hdfs namenode -format，这时namenode的clusterID会重新生成，而datanode的clusterID 保持不变。
+解决方
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
             
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
@@ -919,159 +1094,6 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ji-xian-qi-wang-qiao/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="计算机网络-集线器/网桥">
-                            
-                            <span class="card-title">计算机网络-集线器/网桥</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                集线器
-集线器 ： 是使用电子器件来模拟实际电缆线的工作，因此整个系统仍然像一个传统的以太网那样运行。  使用集线器的以太网在逻辑上仍是一个总线网，各工作站使用的还是 CSMA/CD 协议，并共享逻辑上的总线。  集线器很像一个多接口的转发
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-icmp/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/59.jpg" class="responsive-img" alt="计算机网络-ICMP">
-                            
-                            <span class="card-title">计算机网络-ICMP</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                网际控制报文协议 ICMP
-为了提高 IP 数据报交付成功的机会,在网际层使用了网际控制报文协议 ICMP (InternetControl Message Protocol)。 ICMP 允许主机或路由器报告差错情况和提供有关异常情况的报
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ospf/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="计算机网络-OSPF">
-                            
-                            <span class="card-title">计算机网络-OSPF</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                基本特点
-内部网关协议 OSPF (Open Shortest Path First) 的基本特点 ：
-
-“开放”表明 OSPF 协议不是受某一家厂商控制,而是公开发表的。
-“最短路径优先”是因为使用了 Dijkstra 提出的最短路径算法
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1089,7 +1111,7 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">18 / 34</div>
+            <div class="center-align b-text-gray">18 / 35</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1178,7 +1200,7 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">231.3k</span>
+                        class="white-color">232.3k</span>
             
             
             
