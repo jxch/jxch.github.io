@@ -5,13 +5,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Shadowsocks-部署, PA &amp; CODING">
-    <meta name="description" content="shadowsocks 服务端
-docker-compose.yml
-shadowsocks: 
-  image: appso/shadowsocks-libev 
-  ports: 
-    - 12346:12346
-    - 123">
+    <meta name="description" content="docker-compose.yml
+compose
+version: &#39;3.8&#39;
+services:
+  shadowsocks: 
+    image: shadowsocks/shadowsocks-libev 
+    restar">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -419,7 +419,7 @@ shadowsocks:
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    44
+                    167
                 </div>
                 
 
@@ -449,8 +449,53 @@ shadowsocks:
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1>shadowsocks 服务端</h1>
-<h2 id="docker-compose-yml">docker-compose.yml</h2>
+                <h2 id="docker-compose-yml">docker-compose.yml</h2>
+<h3 id="compose">compose</h3>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.8'</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">shadowsocks</span><span class="token punctuation">:</span> 
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> shadowsocks/shadowsocks<span class="token punctuation">-</span>libev 
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span> 
+      <span class="token punctuation">-</span> 12346<span class="token punctuation">:</span><span class="token number">12346</span>
+      <span class="token punctuation">-</span> 12346<span class="token punctuation">:</span>12346/udp 
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span> 
+      <span class="token punctuation">-</span> ./shadowsocks<span class="token punctuation">:</span>/etc/shadowsocks<span class="token punctuation">-</span>libev
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> DNS_ADDRS=8.8.8.8<span class="token punctuation">,</span>8.8.4.4
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> ss<span class="token punctuation">-</span>server <span class="token punctuation">-</span>c /etc/shadowsocks<span class="token punctuation">-</span>libev/config.json<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="swarm">swarm</h3>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.8'</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">shadowsocks</span><span class="token punctuation">:</span> 
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> shadowsocks/shadowsocks<span class="token punctuation">-</span>libev 
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span> 
+      <span class="token punctuation">-</span> 12346<span class="token punctuation">:</span><span class="token number">12346</span>
+      <span class="token punctuation">-</span> 12346<span class="token punctuation">:</span>12346/udp 
+    <span class="token key atrule">configs</span><span class="token punctuation">:</span> 
+      <span class="token punctuation">-</span> <span class="token key atrule">source</span><span class="token punctuation">:</span> shadowsocks_config
+        <span class="token key atrule">target</span><span class="token punctuation">:</span> /etc/shadowsocks<span class="token punctuation">-</span>libev/config.json 
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> DNS_ADDRS=8.8.8.8<span class="token punctuation">,</span>8.8.4.4
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> ss<span class="token punctuation">-</span>server <span class="token punctuation">-</span>c /etc/shadowsocks<span class="token punctuation">-</span>libev/config.json
+
+<span class="token key atrule">configs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">shadowsocks_config</span><span class="token punctuation">:</span>
+    <span class="token key atrule">file</span><span class="token punctuation">:</span> /root/server/config/shadowsocks/config.json<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="config-json">config.json</h2>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"server"</span><span class="token operator">:</span><span class="token string">"0.0.0.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"server_port"</span><span class="token operator">:</span><span class="token number">12346</span><span class="token punctuation">,</span>
+    <span class="token property">"password"</span><span class="token operator">:</span><span class="token string">"UUID"</span><span class="token punctuation">,</span>
+    <span class="token property">"timeout"</span><span class="token operator">:</span><span class="token number">3000</span><span class="token punctuation">,</span>
+    <span class="token property">"method"</span><span class="token operator">:</span><span class="token string">"aes-256-gcm"</span><span class="token punctuation">,</span>
+    <span class="token property">"fast_open"</span><span class="token operator">:</span><span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token property">"mode"</span><span class="token operator">:</span><span class="token string">"tcp_and_udp"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h2 id="amd版-旧版">[amd版] 旧版</h2>
+<h3 id="docker-compose-yml-2">docker-compose.yml</h3>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">shadowsocks</span><span class="token punctuation">:</span> 
   <span class="token key atrule">image</span><span class="token punctuation">:</span> appso/shadowsocks<span class="token punctuation">-</span>libev 
   <span class="token key atrule">ports</span><span class="token punctuation">:</span> 
@@ -458,7 +503,7 @@ shadowsocks:
     <span class="token punctuation">-</span> 12346<span class="token punctuation">:</span>12346/udp 
   <span class="token key atrule">volumes</span><span class="token punctuation">:</span> 
     <span class="token punctuation">-</span> ./shadowsocks<span class="token punctuation">:</span>/etc/shadowsocks<span class="token punctuation">-</span>libev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="config-json">config.json</h2>
+<h3 id="config-json-2">config.json</h3>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
     <span class="token property">"server"</span><span class="token operator">:</span><span class="token string">"0.0.0.0"</span><span class="token punctuation">,</span>
     <span class="token property">"server_port"</span><span class="token operator">:</span><span class="token number">12346</span><span class="token punctuation">,</span>
@@ -904,7 +949,7 @@ shadowsocks:
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">235k</span>
+                        class="white-color">237.5k</span>
             
             
             
