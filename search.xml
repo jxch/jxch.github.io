@@ -4,6 +4,122 @@
   
     
     <entry>
+      <title>JavaScript-计算皮尔逊相关系数</title>
+      <link href="/2023/06/21/template/javascript-ji-suan-pi-er-xun-xiang-guan-xi-shu/"/>
+      <url>/2023/06/21/template/javascript-ji-suan-pi-er-xun-xiang-guan-xi-shu/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// 计算皮尔逊相关系数</span><span class="token keyword">function</span> <span class="token function">pearsonCorrelation</span><span class="token punctuation">(</span><span class="token parameter">s<span class="token punctuation">,</span> t</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">let</span> sum1 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">let</span> sum2 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">let</span> sum1Sq <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">let</span> sum2Sq <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">let</span> pSum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">let</span> n <span class="token operator">=</span> s<span class="token punctuation">.</span>length<span class="token punctuation">;</span>    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        sum1 <span class="token operator">+=</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>        sum2 <span class="token operator">+=</span> t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>        sum1Sq <span class="token operator">+=</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        sum2Sq <span class="token operator">+=</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        pSum <span class="token operator">+=</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>    <span class="token keyword">let</span> num <span class="token operator">=</span> pSum <span class="token operator">-</span> <span class="token punctuation">(</span>sum1 <span class="token operator">*</span> sum2<span class="token punctuation">)</span> <span class="token operator">/</span> n<span class="token punctuation">;</span>    <span class="token keyword">let</span> den <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">sqrt</span><span class="token punctuation">(</span>        <span class="token punctuation">(</span>sum1Sq <span class="token operator">-</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>sum1<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">/</span> n<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>sum2Sq <span class="token operator">-</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>sum2<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">/</span> n<span class="token punctuation">)</span>    <span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">if</span> <span class="token punctuation">(</span>den <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">return</span> num <span class="token operator">/</span> den<span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token comment">// 计算相似度 (0-1，值越大越相似)</span><span class="token keyword">function</span> <span class="token function">pccSimilarity</span><span class="token punctuation">(</span><span class="token parameter">s<span class="token punctuation">,</span> t</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token function">pearsonCorrelation</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> t<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> JS-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JavaScript </tag>
+            
+            <tag> 分类算法 </tag>
+            
+            <tag> 皮尔逊相关系数 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JavaScript-计算余弦相似度</title>
+      <link href="/2023/06/21/template/javascript-ji-suan-yu-xian-xiang-si-du/"/>
+      <url>/2023/06/21/template/javascript-ji-suan-yu-xian-xiang-si-du/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// 计算余弦相似度</span><span class="token keyword">function</span> <span class="token function">cosineSimilarity</span><span class="token punctuation">(</span><span class="token parameter">s<span class="token punctuation">,</span> t</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">let</span> dotProduct <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">let</span> magnitude1 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">let</span> magnitude2 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> s<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        dotProduct <span class="token operator">+=</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>        magnitude1 <span class="token operator">+=</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        magnitude2 <span class="token operator">+=</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>    magnitude1 <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">sqrt</span><span class="token punctuation">(</span>magnitude1<span class="token punctuation">)</span><span class="token punctuation">;</span>    magnitude2 <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">sqrt</span><span class="token punctuation">(</span>magnitude2<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">if</span> <span class="token punctuation">(</span>magnitude1 <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">||</span> magnitude2 <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">return</span> dotProduct <span class="token operator">/</span> <span class="token punctuation">(</span>magnitude1 <span class="token operator">*</span> magnitude2<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> JS-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JavaScript </tag>
+            
+            <tag> 分类算法 </tag>
+            
+            <tag> 余弦相似度 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JavaScript-计算曼哈顿距离</title>
+      <link href="/2023/06/21/template/javascript-ji-suan-man-ha-dun-ju-chi/"/>
+      <url>/2023/06/21/template/javascript-ji-suan-man-ha-dun-ju-chi/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// 计算曼哈顿距离</span><span class="token keyword">function</span> <span class="token function">manhattanDistance</span><span class="token punctuation">(</span><span class="token parameter">s<span class="token punctuation">,</span> t</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">let</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> s<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        sum <span class="token operator">+=</span> Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>    <span class="token keyword">return</span> sum<span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token comment">// 计算相似度</span><span class="token keyword">function</span> <span class="token function">manhattanSimilarity</span><span class="token punctuation">(</span><span class="token parameter">s<span class="token punctuation">,</span> t</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">return</span> <span class="token number">1</span> <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">+</span> <span class="token function">manhattanDistance</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> JS-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JavaScript </tag>
+            
+            <tag> 分类算法 </tag>
+            
+            <tag> 曼哈顿距离 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JavaScript-计算斯皮尔曼等级相关系数</title>
+      <link href="/2023/06/21/template/javascript-ji-suan-si-pi-er-man-deng-ji-xiang-guan-xi-shu/"/>
+      <url>/2023/06/21/template/javascript-ji-suan-si-pi-er-man-deng-ji-xiang-guan-xi-shu/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// 计算斯皮尔曼等级相关系数</span><span class="token keyword">function</span> <span class="token function">spearmanRankCorrelation</span><span class="token punctuation">(</span><span class="token parameter">s<span class="token punctuation">,</span> t</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token comment">// 计算排名</span>    <span class="token keyword">function</span> <span class="token function">rank</span><span class="token punctuation">(</span><span class="token parameter">arr</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token keyword">let</span> sorted <span class="token operator">=</span> arr<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> a <span class="token operator">-</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token keyword">return</span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">v</span> <span class="token operator">=&gt;</span> sorted<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>    <span class="token keyword">let</span> n <span class="token operator">=</span> s<span class="token punctuation">.</span>length<span class="token punctuation">;</span>    <span class="token keyword">let</span> rankS <span class="token operator">=</span> <span class="token function">rank</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">let</span> rankT <span class="token operator">=</span> <span class="token function">rank</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">let</span> dSquaredSum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        dSquaredSum <span class="token operator">+=</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>rankS<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> rankT<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>    <span class="token keyword">return</span> <span class="token number">1</span> <span class="token operator">-</span> <span class="token punctuation">(</span><span class="token number">6</span> <span class="token operator">*</span> dSquaredSum<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token punctuation">(</span>n <span class="token operator">*</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token comment">// 计算相似度 (0-1，值越大越相似)</span><span class="token keyword">function</span> <span class="token function">spearmanRankSimilarity</span><span class="token punctuation">(</span><span class="token parameter">s<span class="token punctuation">,</span> t</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token function">spearmanRankCorrelation</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> t<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> JS-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JavaScript </tag>
+            
+            <tag> 分类算法 </tag>
+            
+            <tag> 斯皮尔曼等级相关系数 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>JavaScript-使用条件概率表达式计算对象数组的条件概率</title>
       <link href="/2023/06/20/template/javascript-shi-yong-tiao-jian-gai-lu-biao-da-shi-ji-suan-dui-xiang-shu-zu-de-tiao-jian-gai-lu/"/>
       <url>/2023/06/20/template/javascript-shi-yong-tiao-jian-gai-lu-biao-da-shi-ji-suan-dui-xiang-shu-zu-de-tiao-jian-gai-lu/</url>
