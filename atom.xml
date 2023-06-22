@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-06-21T06:41:13.122Z</updated>
+  <updated>2023-06-22T02:54:04.299Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>K线形态-光K线</title>
+    <link href="https://jxch.github.io/2023/06/22/k-xian-xing-tai/k-xian-xing-tai-guang-k-xian/"/>
+    <id>https://jxch.github.io/2023/06/22/k-xian-xing-tai/k-xian-xing-tai-guang-k-xian/</id>
+    <published>2023-06-22T02:52:26.000Z</published>
+    <updated>2023-06-22T02:54:04.299Z</updated>
+    
+    <content type="html"><![CDATA[<p>一端或两端没有影线的K线<br>只有当其形成于强趋势之中，才是一个建仓形态<br>（比如在强劲上升趋势中，如果出现一根没有上影线或下影线的多头趋势K线，那么它就是一个买入形态）</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;一端或两端没有影线的K线&lt;br&gt;
+只有当其形成于强趋势之中，才是一个建仓形态&lt;br&gt;
+（比如在强劲上升趋势中，如果出现一根没有上影线或下影线的多头趋势K线，那么它就是一个买入形态）&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="K线形态" scheme="https://jxch.github.io/categories/K%E7%BA%BF%E5%BD%A2%E6%80%81/"/>
+    
+    
+    <category term="K线形态" scheme="https://jxch.github.io/tags/K%E7%BA%BF%E5%BD%A2%E6%80%81/"/>
+    
+  </entry>
   
   <entry>
     <title>JavaScript-计算皮尔逊相关系数</title>
@@ -513,34 +540,6 @@ b. “&lt;font color=&quot;orange&quot;&gt;刚刚好&lt;/font&gt;”解决问题
 &lt;ol&gt;
 &lt;li&gt;&lt;font color=&quot;orange&quot;&gt;构建领域地图（边界）&lt;/font&gt;&lt;br&gt;
 a. 在DDD中推荐了&lt;font color=&quot;</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="DDD" scheme="https://jxch.github.io/tags/DDD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DDD-MVC与DDD四层架构</title>
-    <link href="https://jxch.github.io/2023/06/09/it/ddd-mvc-yu-ddd-si-ceng-jia-gou/"/>
-    <id>https://jxch.github.io/2023/06/09/it/ddd-mvc-yu-ddd-si-ceng-jia-gou/</id>
-    <published>2023-06-08T20:12:02.000Z</published>
-    <updated>2023-06-08T20:17:54.009Z</updated>
-    
-    <content type="html"><![CDATA[<p>一个需求非常确定的项目，不管多复杂，都没有必要非转型成DDD，短平快的设计方式更为快捷。<br>如果项目中有很多不确定性，以往的设计模式会遇到非常多的变数，这时DDD就是一个很好的选项了。</p><h2 id="DDD-重构">DDD 重构</h2><ol><li>抽象数据持久层 - 建立<font color="orange">仓库</font>（让业务逻辑不再需要面向数据库编程，而是面向实体编程）</li><li>ACL <font color="orange">防腐层</font> - 抽象第三方服务（防止第三方服务状态不可控，入参出参强耦合的问题）</li><li>重构业务逻辑<br>a. 使用<font color="orange">值对象</font>（具有业务意义的对象）<br>i. 比如做参数校验，避免类似逻辑分散出去，污染系统代码<br>b. 使用<font color="orange">充血模型</font>改造实体类，保留改变状态的方法<br>c. 使用<font color="orange">领域服务封装实体逻辑</font>（跨领域对象的行为）</li></ol><p>改造之后：</p><ol><li>最底层不再是数据库，而是实体(Entity)，值对象(ValueObject)，领域服务(Domain Service)。这些对象都不依赖任何外部服务和框架。这些对象可以打包成一个领域层(Domain Layer)。<font color="orange">领域层没有任何外部依赖关系</font>。</li><li>原有的Service层，经过重新编排后，只依赖于一些抽象出来的防腐层(ACL)和仓库工厂(Repository)。他们的具体实现都是通过依赖注入进来的。他们一起负责整个组件的编排，这样就可以把他们打包成一个应用层(Application Layer)。<font color="orange">应用层依赖领域层，但是不依赖具体实现</font>。</li><li>最后是一些与外部依赖打交道的组件。这些组件的实现通常依赖外部具体的技术实现和框架，可以统称为<font color="orange">基础设施层</font>(Infrastructure Layer)。</li></ol><p>开发业务时，可以优先开发领域层的业务逻辑，然后再写应用层的服务编排，而具体的外部依赖与具体实现可以最后再完成。整体就形成了一种以<font color="orange">领域优先</font>的架构形式。</p><p><img src="/static/IT/DDD/DDD4.png" alt="DDD 四层架构"></p><hr><h2 id="传统-MVC-事务脚本式编码的问题">传统 MVC 事务脚本式编码的问题</h2><ol><li>代码层面的软件老化风险（代码不断膨胀）<br>a. 数据来源被固定<br>b. 业务逻辑无法复用<br>c. 业务逻辑与数据存储相互依赖</li><li>架构层面的软件老化风险（不敢升级，不敢写新功能）<br>a. 数据结构变更<br>b. JDBC依赖调整<br>c. 第三方服务变更<br>d. MQ中间件调整</li><li>随之而来的实施及测试问题<br>a. 设施搭建困难（依赖的外部组件太多）<br>b. 测试用例覆盖困难</li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;一个需求非常确定的项目，不管多复杂，都没有必要非转型成DDD，短平快的设计方式更为快捷。&lt;br&gt;
-如果项目中有很多不确定性，以往的设计模式会遇到非常多的变数，这时DDD就是一个很好的选项了。&lt;/p&gt;
-&lt;h2 id=&quot;DDD-重构&quot;&gt;DDD 重构&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;</summary>
       
     
     
