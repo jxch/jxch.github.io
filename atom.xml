@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-06-22T02:54:04.299Z</updated>
+  <updated>2023-06-25T09:01:49.083Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,90 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>日记-20230625-集权社会的运行逻辑</title>
+    <link href="https://jxch.github.io/2023/06/25/ri-ji/ri-ji-20230625-ji-quan-she-hui-de-yun-xing-luo-ji/"/>
+    <id>https://jxch.github.io/2023/06/25/ri-ji/ri-ji-20230625-ji-quan-she-hui-de-yun-xing-luo-ji/</id>
+    <published>2023-06-25T08:49:55.000Z</published>
+    <updated>2023-06-25T09:01:49.083Z</updated>
+    
+    <content type="html"><![CDATA[<p>本质是利用了人类脱离了地方社区的政治庇护会因缺乏安全感而主动向上层移动的本能：</p><ol><li>人只有在社区中才有安全感，打破地方社团（摧毁地方上的政治势力，服从上层社区），使之缺乏安全感（动物本能）</li><li>维护上升通道的相对公平，世界上只有一个社团—即上流社会，不断向上抽血，使地方无强人，更加不会形成独立的政治势力</li><li>保证上升通道足够窄—使其只有一种或几种上升方式，让底层对上升通道形成强依赖，让人与人之间充满上升竞争，这样就不会团结起来反抗上流社会了</li></ol><p>政治是社会的基础，权力是政治的基础，安全感是权力的基础，而制造稀缺就是控制安全感最立竿见影的手段（正常社会也有稀缺，而集权社会在于人为的制造稀缺）<br>集权社会的逻辑漏洞就是稀缺和安全感，只要内心充实，就不会被稀缺所惑；只要内心强大，就不会刻意的去上流社会寻找外在的安全感<br>因此社会的物质文明发展必将导致集权社会的破产而被迫转型为民主社会</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;本质是利用了人类脱离了地方社区的政治庇护会因缺乏安全感而主动向上层移动的本能：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;人只有在社区中才有安全感，打破地方社团（摧毁地方上的政治势力，服从上层社区），使之缺乏安全感（动物本能）&lt;/li&gt;
+&lt;li&gt;维护上升通道的相对公平，世界上只有一个社团—</summary>
+      
+    
+    
+    
+    <category term="思考" scheme="https://jxch.github.io/categories/%E6%80%9D%E8%80%83/"/>
+    
+    
+    <category term="日记" scheme="https://jxch.github.io/tags/%E6%97%A5%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>capital-K线形态识别系统</title>
+    <link href="https://jxch.github.io/2023/06/24/capital/capital-k-xian-xing-tai-shi-bie-xi-tong/"/>
+    <id>https://jxch.github.io/2023/06/24/capital/capital-k-xian-xing-tai-shi-bie-xi-tong/</id>
+    <published>2023-06-24T14:38:07.000Z</published>
+    <updated>2023-06-24T14:41:29.332Z</updated>
+    
+    <content type="html"><![CDATA[<p>k线的周期性和分形性是天然的差值和降维算法，高级的未必是适合的，在k线形态识别上，AI未必优于简单的概率统计。</p><p>模型调优：</p><ul><li>模型的灵敏度取决于前置状态的丰富度</li><li>模型的准确度取决于后置状态的丰富度</li><li>模型分类的数量取决于样本k线的长度</li></ul><p><img src="/static/capital/%E5%88%86%E7%B1%BB%E5%99%A8.png" alt="K线形态识别系统"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;k线的周期性和分形性是天然的差值和降维算法，高级的未必是适合的，在k线形态识别上，AI未必优于简单的概率统计。&lt;/p&gt;
+&lt;p&gt;模型调优：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型的灵敏度取决于前置状态的丰富度&lt;/li&gt;
+&lt;li&gt;模型的准确度取决于后置状态的丰富度&lt;/li&gt;
+&lt;li&gt;模</summary>
+      
+    
+    
+    
+    <category term="工作笔记" scheme="https://jxch.github.io/categories/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="Capital" scheme="https://jxch.github.io/tags/Capital/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Iphone-更换地区解锁应用商店</title>
+    <link href="https://jxch.github.io/2023/06/23/yun-wei/iphone-geng-huan-di-qu-jie-suo-ying-yong-shang-dian/"/>
+    <id>https://jxch.github.io/2023/06/23/yun-wei/iphone-geng-huan-di-qu-jie-suo-ying-yong-shang-dian/</id>
+    <published>2023-06-22T22:48:47.000Z</published>
+    <updated>2023-06-22T22:49:45.387Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li>去设置里将国家设为美国</li><li>去应用商店里将国家设为台湾（无需验证，验证时会自动跳过）</li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;去设置里将国家设为美国&lt;/li&gt;
+&lt;li&gt;去应用商店里将国家设为台湾（无需验证，验证时会自动跳过）&lt;/li&gt;
+&lt;/ol&gt;
+</summary>
+      
+    
+    
+    
+    <category term="运维手册" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/"/>
+    
+    
+    <category term="Iphone" scheme="https://jxch.github.io/tags/Iphone/"/>
+    
+  </entry>
   
   <entry>
     <title>K线形态-光K线</title>
@@ -468,86 +552,6 @@
     <category term="docker-compose.yml" scheme="https://jxch.github.io/tags/docker-compose-yml/"/>
     
     <category term="MinIO" scheme="https://jxch.github.io/tags/MinIO/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DDD-主要概念</title>
-    <link href="https://jxch.github.io/2023/06/09/it/ddd-zhu-yao-gai-nian/"/>
-    <id>https://jxch.github.io/2023/06/09/it/ddd-zhu-yao-gai-nian/</id>
-    <published>2023-06-08T21:21:52.000Z</published>
-    <updated>2023-06-08T21:25:16.907Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li>软件的核心复杂性<br>a. 技术主动理解业务（<font color="orange">领域驱动</font>）<br>b. “<font color="orange">刚刚好</font>”解决问题（兼顾灵活性-分层抽象）</li><li>领域设计<br>a. 构建<font color="orange">领域地图</font>（边界）<br>b. 使用<font color="orange">四层架构</font><br>c. 领域的内敛（<font color="orange">业务上的限界</font>，而非技术上的隔离）<br>d. <font color="orange">单体优先</font> -&gt; 拆分成微服务</li><li>DDD 架构（构建通用型领域仓库）<br>a. 包结构： <pre class="line-numbers language-none"><code class="language-none">applicationdomain    xxx     adaptor          interface     entity      infrastructure     repository     service<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><img src="/static/IT/DDD/DDD-NS.png" alt="领域-菱形架构"><br><img src="/static/IT/DDD/DDD-d.png" alt="DDD 设计方案"></li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ol&gt;
-&lt;li&gt;软件的核心复杂性&lt;br&gt;
-a. 技术主动理解业务（&lt;font color=&quot;orange&quot;&gt;领域驱动&lt;/font&gt;）&lt;br&gt;
-b. “&lt;font color=&quot;orange&quot;&gt;刚刚好&lt;/font&gt;”解决问题（兼顾灵活性-分层抽象）&lt;/li&gt;
-&lt;li&gt;领域设计&lt;b</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="DDD" scheme="https://jxch.github.io/tags/DDD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DDD-通用型领域</title>
-    <link href="https://jxch.github.io/2023/06/09/it/ddd-tong-yong-xing-ling-yu/"/>
-    <id>https://jxch.github.io/2023/06/09/it/ddd-tong-yong-xing-ling-yu/</id>
-    <published>2023-06-08T21:12:27.000Z</published>
-    <updated>2023-06-08T21:19:01.884Z</updated>
-    
-    <content type="html"><![CDATA[<p>可以<font color="orange">构建领域仓库，实现领域复用</font>：也可以用于优化中台战略，并且取缔大中台（中台拆分），因为一个中台组不可能同时满足所有其他项目组的需求</p><p>通过消息契约层，不光保证逻辑边界清晰，同时也保证数据边界也很清晰<br><img src="/static/IT/DDD/DDD-NS.png" alt="领域-菱形架构"></p><p><img src="/static/IT/DDD/DDD-clear.png" alt="领域-清晰架构"></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;可以&lt;font color=&quot;orange&quot;&gt;构建领域仓库，实现领域复用&lt;/font&gt;：也可以用于优化中台战略，并且取缔大中台（中台拆分），因为一个中台组不可能同时满足所有其他项目组的需求&lt;/p&gt;
-&lt;p&gt;通过消息契约层，不光保证逻辑边界清晰，同时也保证数据边界也很清晰&lt;br</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="DDD" scheme="https://jxch.github.io/tags/DDD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DDD-领域划分设计</title>
-    <link href="https://jxch.github.io/2023/06/09/it/ddd-ling-yu-hua-fen-she-ji/"/>
-    <id>https://jxch.github.io/2023/06/09/it/ddd-ling-yu-hua-fen-she-ji/</id>
-    <published>2023-06-08T20:45:35.000Z</published>
-    <updated>2023-06-08T21:18:35.181Z</updated>
-    
-    <content type="html"><![CDATA[<p><font color="orange">高内聚，低耦合</font>：单一职责原则、依赖反转原则、开放封闭原则</p><ol><li><font color="orange">构建领域地图（边界）</font><br>a. 在DDD中推荐了<font color="orange">事件风暴会议</font>这样的具体形式，也强调了<font color="orange">统一语言</font>的理论模型。<br>b. 针对各个核心环节，优先构建单元测试案例，从而形成一些<font color="orange">TDD</font>测试驱动设计的实践场景。<br>c. 领域并不是天然存在的，这需要依赖于软件团队对软件需求的合理分析。并且分析的过程，即不能太过偏向于真实的业务领域，也不能太过偏向于极度抽象的技术领域，需要在整个项目团队内形成共识，然后通过初步抽象的通用语言将设计结果固化下来。</li><li>使用<font color="orange">四层架构</font>巩固领域基础（包结构） <pre class="line-numbers language-none"><code class="language-none">applicationdomain    xxx     adaptor          interface     entity      infrastructure     repository     service<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><font color="orange">划分限界上下文</font>，巩固领域划分（DDD落地实践的关键）<br>a. 传统MVC设计方式中，强调的是技术隔离，而并没有从业务上的限界上下文边界，所以，逻辑边界是混乱的。<br>b. 领域应该是<font color="orange">足够内敛</font>的，每个领域内的业务能力是与当前领域的知识语境紧密相连的。一个领域想要调用另外一个领域的业务能力，只能通过对方暴露出来的业务能力进行协作，而不能去干预对方领域的实现细节。所谓的单体架构、微服务架构、甚至包括MQ事件驱动架构，在DDD的视野中，都是领域之间的不同协作方式而已，对领域内部都是没有影响的。<br>c. <img src="/static/IT/DDD/DDD-neilian.png" alt="DDD 内敛"></li><li><font color="orange">单体架构优先</font>（SPI）<br>a. 越是复杂的项目，就越应该重视单体架构的快速验证和快速试错，这对于提高复杂项目的运行效率是非常重要的<br>b. 然后将单体架构中的关键领域拆分成微服务（比如SPI切换为Nacos，由于有防腐层，所以只需要切换抽象接口的实现类即可）</li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;font color=&quot;orange&quot;&gt;高内聚，低耦合&lt;/font&gt;：单一职责原则、依赖反转原则、开放封闭原则&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;font color=&quot;orange&quot;&gt;构建领域地图（边界）&lt;/font&gt;&lt;br&gt;
-a. 在DDD中推荐了&lt;font color=&quot;</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="DDD" scheme="https://jxch.github.io/tags/DDD/"/>
     
   </entry>
   

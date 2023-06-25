@@ -409,6 +409,172 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2023/06/01/yun-wei/springcloud-gateway-bao-cuo-type-service-unavailable-status-503/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="SpringCloud-gateway报错:type=Service Unavailable, status=503">
+                            
+                            <span class="card-title">SpringCloud-gateway报错:type=Service Unavailable, status=503</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                后端没有报错，前端返回503，如果配置文件确定没有问题的话，应该是缺依赖的问题：
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-01
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/gateway/">
+                            <span class="chip bg-color">gateway</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/06/01/yun-wei/docker-win-xia-bao-cuo-bind-an-attempt-was-made-to-access-a-socket-in-a-way-forbidden-by-its-access-permissions/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/57.jpg" class="responsive-img" alt="Docker-Win下报错： bind: An attempt was made to access a socket in a way forbidden by its access permissions.">
+                            
+                            <span class="card-title">Docker-Win下报错： bind: An attempt was made to access a socket in a way forbidden by its access permissions.</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                如果没有端口占用：Restart-Service -Name winnat, 然后重试
+
+如果是端口占用了，则更换端口或杀死端口占用的进程:
+# 查找端口占用的PID
+netstat -ano | findstr $port
+
+# 查看PI
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-01
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Docker/">
+                            <span class="chip bg-color">Docker</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/06/01/template/springcloud-nacos-pei-zhi-zhong-xin/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/58.jpg" class="responsive-img" alt="SpringCloud-Nacos配置中心">
+                            
+                            <span class="card-title">SpringCloud-Nacos配置中心</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                bootstrap.yml
+spring:
+  application:
+    name: cloud-order # 微服务的名称
+  profiles:
+    active: dev
+bootstrap-dev.yml
+spring
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-01
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/java-template/" class="post-category">
+                                    java-template
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Nacos/">
+                            <span class="chip bg-color">Nacos</span>
+                        </a>
+                        
+                        <a href="/tags/SpringCloud/">
+                            <span class="chip bg-color">SpringCloud</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2023/06/01/template/springcloud-nacos-zhu-ce-zhong-xin/">
                         <div class="card-image">
                             
@@ -928,174 +1094,6 @@ window_heig
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/05/30/template/javascript-huo-qu-youtube-shi-pin-bo-fang-jin-du-tiao-shang-de-re-du-tong-ji-shu-ju/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/41.jpg" class="responsive-img" alt="JavaScript-获取YouTube视频播放进度条上的热度统计数据">
-                            
-                            <span class="card-title">JavaScript-获取YouTube视频播放进度条上的热度统计数据</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                获取视频秒数对应的热度数据（Y轴最大值是100）：
-function timeToSeconds(time) {
-  const parts = time.split(':');
-  let hours = 0;
-  let minutes
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-30
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/JS-template/" class="post-category">
-                                    JS-template
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JavaScript/">
-                            <span class="chip bg-color">JavaScript</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/05/30/template/javascript-jiang-er-wei-qu-xian-tu-svg-de-path-zhuan-wei-er-wei-zuo-biao-shu-zu/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/55.jpg" class="responsive-img" alt="JavaScript-将二维曲线图SVG的Path转为二维坐标数组">
-                            
-                            <span class="card-title">JavaScript-将二维曲线图SVG的Path转为二维坐标数组</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                保留两位小数：
-function pathToPoints(path) {
-  const commands = path.split(/(?=[LMC])/);
-  const points = [];
-  for (const comm
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-30
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/JS-template/" class="post-category">
-                                    JS-template
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JavaScript/">
-                            <span class="chip bg-color">JavaScript</span>
-                        </a>
-                        
-                        <a href="/tags/SVG/">
-                            <span class="chip bg-color">SVG</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/05/26/template/powershell-tong-ji-mu-lu-xia-suo-you-shi-pin-de-zong-shi-chang/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/52.jpg" class="responsive-img" alt="powershell-统计目录下所有视频的总时长">
-                            
-                            <span class="card-title">powershell-统计目录下所有视频的总时长</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                代码示例
-[CmdletBinding()]
-Param(
-    [string] $dirPath
-)
-
-Write-Host "&gt;&gt;&gt; ${dirPath}"
-
-# 获取目下所有可能的视频文件
-$videos = G
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-26
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/shell-template/" class="post-category">
-                                    shell-template
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/powershell/">
-                            <span class="chip bg-color">powershell</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1113,7 +1111,7 @@ $videos = G
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">4 / 36</div>
+            <div class="center-align b-text-gray">4 / 37</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1202,7 +1200,7 @@ $videos = G
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">238.8k</span>
+                        class="white-color">239.3k</span>
             
             
             

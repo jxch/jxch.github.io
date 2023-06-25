@@ -4,6 +4,81 @@
   
     
     <entry>
+      <title>日记-20230625-集权社会的运行逻辑</title>
+      <link href="/2023/06/25/ri-ji/ri-ji-20230625-ji-quan-she-hui-de-yun-xing-luo-ji/"/>
+      <url>/2023/06/25/ri-ji/ri-ji-20230625-ji-quan-she-hui-de-yun-xing-luo-ji/</url>
+      
+        <content type="html"><![CDATA[<p>本质是利用了人类脱离了地方社区的政治庇护会因缺乏安全感而主动向上层移动的本能：</p><ol><li>人只有在社区中才有安全感，打破地方社团（摧毁地方上的政治势力，服从上层社区），使之缺乏安全感（动物本能）</li><li>维护上升通道的相对公平，世界上只有一个社团—即上流社会，不断向上抽血，使地方无强人，更加不会形成独立的政治势力</li><li>保证上升通道足够窄—使其只有一种或几种上升方式，让底层对上升通道形成强依赖，让人与人之间充满上升竞争，这样就不会团结起来反抗上流社会了</li></ol><p>政治是社会的基础，权力是政治的基础，安全感是权力的基础，而制造稀缺就是控制安全感最立竿见影的手段（正常社会也有稀缺，而集权社会在于人为的制造稀缺）<br>集权社会的逻辑漏洞就是稀缺和安全感，只要内心充实，就不会被稀缺所惑；只要内心强大，就不会刻意的去上流社会寻找外在的安全感<br>因此社会的物质文明发展必将导致集权社会的破产而被迫转型为民主社会</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 思考 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 日记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>capital-K线形态识别系统</title>
+      <link href="/2023/06/24/capital/capital-k-xian-xing-tai-shi-bie-xi-tong/"/>
+      <url>/2023/06/24/capital/capital-k-xian-xing-tai-shi-bie-xi-tong/</url>
+      
+        <content type="html"><![CDATA[<p>k线的周期性和分形性是天然的差值和降维算法，高级的未必是适合的，在k线形态识别上，AI未必优于简单的概率统计。</p><p>模型调优：</p><ul><li>模型的灵敏度取决于前置状态的丰富度</li><li>模型的准确度取决于后置状态的丰富度</li><li>模型分类的数量取决于样本k线的长度</li></ul><p><img src="/static/capital/%E5%88%86%E7%B1%BB%E5%99%A8.png" alt="K线形态识别系统"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工作笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Capital </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Iphone-更换地区解锁应用商店</title>
+      <link href="/2023/06/23/yun-wei/iphone-geng-huan-di-qu-jie-suo-ying-yong-shang-dian/"/>
+      <url>/2023/06/23/yun-wei/iphone-geng-huan-di-qu-jie-suo-ying-yong-shang-dian/</url>
+      
+        <content type="html"><![CDATA[<ol><li>去设置里将国家设为美国</li><li>去应用商店里将国家设为台湾（无需验证，验证时会自动跳过）</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 运维手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Iphone </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>K线形态-光K线</title>
       <link href="/2023/06/22/k-xian-xing-tai/k-xian-xing-tai-guang-k-xian/"/>
       <url>/2023/06/22/k-xian-xing-tai/k-xian-xing-tai-guang-k-xian/</url>
