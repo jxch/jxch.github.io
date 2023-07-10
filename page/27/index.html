@@ -409,32 +409,454 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/05/coding/python-logging-zi-dong-da-yin-fang-fa-ru-kou-ri-zhi/">
+                    <a href="/2023/04/16/coding/numpy-bao-cun-bian-liang-dao-ben-di/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/38.jpg" class="responsive-img" alt="python-logging-自动打印方法入口日志">
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="numpy-保存数组变量到本地">
                             
-                            <span class="card-title">python-logging-自动打印方法入口日志</span>
+                            <span class="card-title">numpy-保存数组变量到本地</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                from functools import wraps
-import logging
+                                import numpy as np
 
+training = ...
 
-def fun_log(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
+# 保存
+np.savez('training', d1=training['x'], d2=training['y'])
+
+# 读取
+training = np.lo
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/numpy/">
+                            <span class="chip bg-color">numpy</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/14/yun-wei/postgresql-bu-shu/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="PostgreSQL-部署">
+                            
+                            <span class="card-title">PostgreSQL-部署</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                docker-compose.yml
+version: '3.8'
+services:
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    ports:
      
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-14
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/docker-compose-yml/">
+                            <span class="chip bg-color">docker-compose.yml</span>
+                        </a>
+                        
+                        <a href="/tags/PostgreSQL/">
+                            <span class="chip bg-color">PostgreSQL</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/13/capital/capital-ji-yu-shen-jing-wang-luo-de-qu-shi-jiao-yi-ru-chang-dian-yu-ce-mo-xing/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="Capital-基于神经网络的趋势交易入场点预测模型">
+                            
+                            <span class="card-title">Capital-基于神经网络的趋势交易入场点预测模型</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                经验证噪音过多，短期无法迅速除噪，该项目暂时挂起，启动capital系列其他项目
+基于神经网络的趋势交易入场点预测模型
+可将价格行为学中的全部价格行为入场点都做成模型，先从最简单的趋势入场点开始做起
+不同周期下趋势的表征也不同，比如大周期下
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    工作笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Capital/">
+                            <span class="chip bg-color">Capital</span>
+                        </a>
+                        
+                        <a href="/tags/%E5%B7%A5%E4%BD%9C%E8%AE%A1%E5%88%92/">
+                            <span class="chip bg-color">工作计划</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/12/coding/shen-jing-wang-luo-wang-luo-mo-xing/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="神经网络-网络模型">
+                            
+                            <span class="card-title">神经网络-网络模型</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+  graph LR
+    A((x)) --w1--&gt; B((N1)) --&gt;C[F1] --w2--&gt; D((N2)) --&gt;E[F2] --w3--&gt; F((y)) --分类/打分--&gt; R[F
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-12
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">神经网络</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/11/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-10/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-10">
+                            
+                            <span class="card-title">道德的谱系-2罪欠,良知谴责-10</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+随着实力的不断增强，社团不再把个人的犯罪行为看得那么严重，因为对社团来说，犯罪行为不再像从前那样被认为对整体的存在构成危险和颠覆：肇事者不再会被“剥夺法律权利”和被驱逐，公众的愤怒也不允许像从前那样肆无忌惮地在他身上宣泄，——确切地说，肇
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
+                            <span class="chip bg-color">道德的谱系</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/11/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-9/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-9">
+                            
+                            <span class="card-title">道德的谱系-2罪欠,良知谴责-9</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+如果我们一直用史前时代的标准加以衡量（也就是那种无论任何时代都是现存的，或者可能重现的史前时代），就会发现：公共社团与其成员之间也存在那种重要的基本关系，即债权人和他的债务人之间的关系。人们生活在一个公共社团里，享受着社团的优越性（那是何
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
+                            <span class="chip bg-color">道德的谱系</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/11/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-8/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/55.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-8">
+                            
+                            <span class="card-title">道德的谱系-2罪欠,良知谴责-8</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+现在继续进行我们的研究，我们已经看到，罪欠感和个人责任感起源于人类历史上最古老与最原始的人际关系，起源于买主和卖主的关系，债权人和债务人的关系：正是在这里首先出现了人反对人的现象，也正是在这里首先出现了人和人相比较的情况。人们发现，不管文
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
+                            <span class="chip bg-color">道德的谱系</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/11/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-7/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/54.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-7">
+                            
+                            <span class="card-title">道德的谱系-2罪欠,良知谴责-7</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+不过，我阐述这些思想的意图绝不是要帮助我们的悲观主义者们，向他们那走了调的、嘎嘎作响的、厌倦生命的磨盘上加水；相反，应当着力证明的乃是，在人类还未曾对他们的残酷行为感到羞耻的时候，地球上的生活比有悲观主义者存在的今天要欢乐很多。随着人们面
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
+                            <span class="chip bg-color">道德的谱系</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/10/coding/python-da-bao-wei-exe-wen-jian/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/54.jpg" class="responsive-img" alt="python-打包为exe文件">
+                            
+                            <span class="card-title">python-打包为exe文件</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 不太好使，运行命令经常会报错，推荐使用 auto-py-to-exe 进行UI界面的操作 
+pip install pyinstaller
+
+# UI界面操作
+pip install auto-py-to-exe
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-10
                             </span>
                             <span class="publish-author">
                                 
@@ -465,31 +887,28 @@ def fun_log(func):
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/05/coding/python-lru-cache-mei-ri-zi-dong-qing-li-huan-cun/">
+                    <a href="/2023/04/10/coding/python-ming-ling-xing-can-shu/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/58.jpg" class="responsive-img" alt="python-lru_cache-每日自动清理缓存">
+                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="python-命令行参数">
                             
-                            <span class="card-title">python-lru_cache-每日自动清理缓存</span>
+                            <span class="card-title">python-命令行参数</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                from functools import wraps
-import logging
-import utils.date_utils as date_utils
+                                import argparse
 
-
-class TodayCacheManager(object):
-    
+parser = argparse.ArgumentParser(description='翻译文本和文件')
+parser.add_argument('-C', '--encoding', help='文
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-10
                             </span>
                             <span class="publish-author">
                                 
@@ -517,33 +936,33 @@ class TodayCacheManager(object):
             </div>
               <!-- 隐藏某个文章 -->
             
+              <!-- 隐藏某个文章 -->
+            
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/05/coding/python-stockstats-gu-piao-fen-xi/">
+                    <a href="/2023/04/10/coding/python-diao-yong-google-fan-yi/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="python-stockstats-股票分析">
+                            <img src="/medias/featureimages/37.jpg" class="responsive-img" alt="python-调用Google翻译">
                             
-                            <span class="card-title">python-stockstats-股票分析</span>
+                            <span class="card-title">python-调用Google翻译</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                pip install stockstats
-import stockstats
+                                pip install -U deep-translator
+from deep_translator import GoogleTranslator
 
-
-def stockstats_default(old_df):
-    ss = stockstats.StockDataFrame.retype(old
+print(GoogleTranslator(source='auto', targe
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-10
                             </span>
                             <span class="publish-author">
                                 
@@ -563,493 +982,6 @@ def stockstats_default(old_df):
                         
                         <a href="/tags/python/">
                             <span class="chip bg-color">python</span>
-                        </a>
-                        
-                        <a href="/tags/stockstats/">
-                            <span class="chip bg-color">stockstats</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/05/yun-wei/dockerfile-nginx-bu-shu-jing-tai-ye-mian/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Dockerfile-Nginx部署静态页面">
-                            
-                            <span class="card-title">Dockerfile-Nginx部署静态页面</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Dockerfile
-FROM nginx:stable-alpine-slim
-COPY ./dist /usr/share/nginx/html
-COPY ./default.conf /etc/nginx/conf.d/
-RUN ch
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
-                                    运维手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Dockerfile/">
-                            <span class="chip bg-color">Dockerfile</span>
-                        </a>
-                        
-                        <a href="/tags/Nginx/">
-                            <span class="chip bg-color">Nginx</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/05/coding/vite-axios-jie-jue-kua-yu/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="vite-axios-解决跨域">
-                            
-                            <span class="card-title">vite-axios-解决跨域</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                import axios from 'axios'
-
-const api = axios.create({
-    baseURL: '/api',
-    timeout: 30000,
-    headers: {'Accept': '
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/vite/">
-                            <span class="chip bg-color">vite</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/05/coding/flask-jie-jue-kua-yu/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/63.jpg" class="responsive-img" alt="flask-解决跨域">
-                            
-                            <span class="card-title">flask-解决跨域</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                pip install flask_cors
-# 两种方式
-
-# 全局
-CORS(app, supports_credentials=True)
-
-# 包装在 @app.route 之上
-@cross_origin()
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Flask/">
-                            <span class="chip bg-color">Flask</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/05/zuo-pin/shi-ci-tian-jing-sha-chun-yan/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="诗词-天净沙·春燕">
-                            
-                            <span class="card-title">诗词-天净沙·春燕</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-天净沙·春燕
-日暮西山新雨，燕子花柳旧曲，吹落梧桐醉语。羁旅几许，惹得青丝万缕。
-
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%9C%E5%93%81/" class="post-category">
-                                    作品
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AF%97%E8%AF%8D/">
-                            <span class="chip bg-color">诗词</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/05/yun-wei/dockerswarm-geng-xin-jing-xiang-he-rong-qi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/41.jpg" class="responsive-img" alt="DockerSwarm-更新镜像和容器">
-                            
-                            <span class="card-title">DockerSwarm-更新镜像和容器</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                docker service update --image xxxx_image_name xxxx_container_name
-docker service update xxxx_container_name
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
-                                    运维手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Docker/">
-                            <span class="chip bg-color">Docker</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/05/yun-wei/dockercompose-geng-xin-jing-xiang-he-rong-qi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/49.jpg" class="responsive-img" alt="DockerCompose-更新镜像和容器">
-                            
-                            <span class="card-title">DockerCompose-更新镜像和容器</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                docker-compose pull
-docker-compose up -d
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
-                                    运维手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Docker/">
-                            <span class="chip bg-color">Docker</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/05/coding/vue-echarts-zheng-he/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/46.jpg" class="responsive-img" alt="vue-echarts-整合">
-                            
-                            <span class="card-title">vue-echarts-整合</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                npm install -D echarts vue-echarts --save
-main.js 按需引入:
-import {createApp} from 'vue'
-import App from './App.vue'
-import
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/vue/">
-                            <span class="chip bg-color">vue</span>
-                        </a>
-                        
-                        <a href="/tags/echarts/">
-                            <span class="chip bg-color">echarts</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/05/coding/javascript-chroma-js-se-jie-cao-zuo/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="JavaScript-chroma-js-色阶操作">
-                            
-                            <span class="card-title">JavaScript-chroma-js-色阶操作</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                npm install -D chroma-js --save
-import chroma from 'chroma-js'
-
-const chroma_scale_green = chroma.scale(['White', 'green
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JavaScript/">
-                            <span class="chip bg-color">JavaScript</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/05/coding/javascript-dayjs-shi-jian-cao-zuo-ji-ge-shi-hua/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="JavaScript-dayjs-时间操作及格式化">
-                            
-                            <span class="card-title">JavaScript-dayjs-时间操作及格式化</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                npm install -D dayjs --save
-import dayjs from "dayjs";
-
-// 获取三个月前的一个日期并格式化
-dayjs(new Date()).subtract(3, 'month').format
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JavaScript/">
-                            <span class="chip bg-color">JavaScript</span>
                         </a>
                         
                     </div>
@@ -1075,7 +1007,7 @@ dayjs(new Date()).subtract(3, 'month').format
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">27 / 37</div>
+            <div class="center-align b-text-gray">27 / 41</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1164,7 +1096,7 @@ dayjs(new Date()).subtract(3, 'month').format
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">239.3k</span>
+                        class="white-color">305.8k</span>
             
             
             

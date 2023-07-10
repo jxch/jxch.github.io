@@ -409,28 +409,29 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/coding/python-hu-lue-jing-gao/">
+                    <a href="/2023/04/22/coding/hive-chuang-kou-han-shu-chang-yong-han-shu/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="python-忽略警告">
+                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Hive-窗口函数-常用函数">
                             
-                            <span class="card-title">python-忽略警告</span>
+                            <span class="card-title">Hive-窗口函数-常用函数</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                import warnings
+                                CREATE TABLE window_demo(cookieid STRING, createtime STRING, pv INT)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
 
-warnings.filterwarnings('ignore')
-
+loa
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                             </span>
                             <span class="publish-author">
                                 
@@ -448,8 +449,8 @@ warnings.filterwarnings('ignore')
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/python/">
-                            <span class="chip bg-color">python</span>
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
                         </a>
                         
                     </div>
@@ -461,32 +462,28 @@ warnings.filterwarnings('ignore')
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/coding/pandas-dataframe-cha-xun-di-yi-ge-fu-he-tiao-jian-de-index/">
+                    <a href="/2023/04/22/coding/hive-dd-yu-dmll-chang-yong-ming-ling/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="pandas-dataframe查询第一个符合条件的index">
+                            <img src="/medias/featureimages/54.jpg" class="responsive-img" alt="Hive-dd与dmll-常用命令">
                             
-                            <span class="card-title">pandas-dataframe查询第一个符合条件的index</span>
+                            <span class="card-title">Hive-dd与dmll-常用命令</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                # A 列第一个大于 2 的 index
-df['A'].gt(2).idxmax()
-
-# A 列最后一个小于 2 的 index
-# 技巧: 使用 [::-1] 进行反转
-df['A'][::-1].lt(2).idxmax()
-
-# 
+                                创建表
+CREATE [EXTERNAL] TABLE [IF NOT EXISTS] table_name
+    [(col_name data_type [COMMENT col_comment], ...)]
+    [COMMEN
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                             </span>
                             <span class="publish-author">
                                 
@@ -504,8 +501,8 @@ df['A'][::-1].lt(2).idxmax()
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/pandas/">
-                            <span class="chip bg-color">pandas</span>
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
                         </a>
                         
                     </div>
@@ -514,187 +511,33 @@ df['A'][::-1].lt(2).idxmax()
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/coding/python-zhi-xing-sql-yu-ju/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="python-执行sql语句">
-                            
-                            <span class="card-title">python-执行sql语句</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                # 比如 pgsql 
-# 开源数据库都差不多, 导入对应的包就可以了
-import psycopg2
-
-conn = psycopg2.connect(database=self.db_database, user=self.db_use
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/python/">
-                            <span class="chip bg-color">python</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
               <!-- 隐藏某个文章 -->
             
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/coding/pandas-dataframe-zhi-jie-du-xie-shu-ju-ku/">
+                    <a href="/2023/04/22/coding/hive-psqlexception-bu-zhi-yuan-10-yan-zheng-lei-xing/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="pandas-dataframe直接读写数据库">
+                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="Hive-PSQLException: 不支援 10 验证类型">
                             
-                            <span class="card-title">pandas-dataframe直接读写数据库</span>
+                            <span class="card-title">Hive-PSQLException: 不支援 10 验证类型</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                import pandas as pd
-from sqlalchemy import create_engine
+                                报错：PSQLException: 不支援 10 验证类型。请核对您已经组态 pg_hba.conf 文件包含客户端的IP位址或网路区段，以及驱动程序所支援的验证架构模式已被支援
+原因：驱动不兼容（需要更新驱动版本）
 
-conn = create_engine(f'{self.db_engine}://{self.db_user}:{self
+去官网或者使用Mav
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/pandas/">
-                            <span class="chip bg-color">pandas</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/coding/python-xian-cheng-chi-ti-jiao-ren-wu/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="python-线程池提交任务">
-                            
-                            <span class="card-title">python-线程池提交任务</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED
-
-pool = ThreadPoolExecutor(max_w
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/python/">
-                            <span class="chip bg-color">python</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/coding/tensorflow-tfdml-plugin.dll-not-found/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="tensorflow-...\tensorflow-plugins\tfdml_plugin.dll not found">
-                            
-                            <span class="card-title">tensorflow-...\tensorflow-plugins\tfdml_plugin.dll not found</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                2.12.0 之后不支持直接调用 GPU, 需要安装插件
-pip install tensorflow-directml-plugin
-安装过程中如果中途报 ERROR 也没关系, 最后一行显示 successfully 就行了
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                             </span>
                             <span class="publish-author">
                                 
@@ -712,8 +555,8 @@ pip install tensorflow-directml-plugin
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/tensorflow/">
-                            <span class="chip bg-color">tensorflow</span>
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
                         </a>
                         
                     </div>
@@ -725,33 +568,145 @@ pip install tensorflow-directml-plugin
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/coding/tensorflow-gpu-zhi-chi/">
+                    <a href="/2023/04/22/coding/hive-wstxparsingexception-illegal-character-entity-expansion-character/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="tensorflow-GPU支持">
+                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Hive-WstxParsingException: Illegal character entity: expansion character">
                             
-                            <span class="card-title">tensorflow-GPU支持</span>
+                            <span class="card-title">Hive-WstxParsingException: Illegal character entity: expansion character</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
-安装N卡驱动
-使用conda创建虚拟环境
-安装conda依赖包
-
-# 使用 conda 安装 cuda 和 cudnn
-conda install cudatoolkit=11.3.1 cudnn=8.2.1
-
-# 自 2.11.0 之后
+                                hive-site.xml 文件第 3215 行左右有一个特殊字符 (&amp;#8;)，删掉它:
+214      &lt;description&gt;
+3215       Ensures commands with OVERWRIT
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/22/yun-wei/hadoop-hive-an-zhuang/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/49.jpg" class="responsive-img" alt="Hadoop-Hive-安装">
+                            
+                            <span class="card-title">Hadoop-Hive-安装</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                安装
+
+tar -zxvf apache-hive-3.1.3-bin.tar.gz -C /opt/hive
+cp hive-env.sh.template hive-env.sh
+hive-env.sh export JAVA_HOME
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/22/coding/hadoop-gong-tong-hao-you-demo/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/52.jpg" class="responsive-img" alt="Hadoop-共同好友Demo">
+                            
+                            <span class="card-title">Hadoop-共同好友Demo</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                思路
+原数据:
+A:B,C,D,F,E,O
+B:A,C,E,K
+C:F,A,D,I
+D:A,E,F,L
+E:B,C,D,M,L
+F:A,s,C,D,E,O,M
+G:A,C,D,E,F
+H:A,C,D,E,O
+I:A,O
+J:B,O
+K:A,
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                             </span>
                             <span class="publish-author">
                                 
@@ -769,8 +724,8 @@ conda install cudatoolkit=11.3.1 cudnn=8.2.1
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/tensorflow/">
-                            <span class="chip bg-color">tensorflow</span>
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
                         </a>
                         
                     </div>
@@ -782,31 +737,49 @@ conda install cudatoolkit=11.3.1 cudnn=8.2.1
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/coding/tensorflow-gou-jian-jing-tai-tu-shi-li/">
+                    <a href="/2023/04/22/coding/hadoop-dao-pai-suo-yin-wen-zhang-dan-ci-tong-ji-demo/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/53.jpg" class="responsive-img" alt="tensorflow-构建静态图示例">
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Hadoop-倒排索引-文章单词统计Demo">
                             
-                            <span class="card-title">tensorflow-构建静态图示例</span>
+                            <span class="card-title">Hadoop-倒排索引-文章单词统计Demo</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                import tensorflow as tf
-import matplotlib.pyplot as plt
+                                思路 (倒推法)
+第二步:
 
-training = ...
-validation = ...
+Reduce
 
-model = tf.keras.models.Sequen
+key:单词
+values[] 文章–次数
+
+
+Map
+
+key: 单词
+value: 文章–次数
+
+
+
+第一步:
+
+Reduce
+
+key: 单词–文档位置
+value: 单词次数
+
+
+Map
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                             </span>
                             <span class="publish-author">
                                 
@@ -824,8 +797,8 @@ model = tf.keras.models.Sequen
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/tensorflow/">
-                            <span class="chip bg-color">tensorflow</span>
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
                         </a>
                         
                     </div>
@@ -837,40 +810,57 @@ model = tf.keras.models.Sequen
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/coding/numpy-bao-cun-bian-liang-dao-ben-di/">
+                    <a href="/2023/04/22/yun-wei/hadoop-gao-ke-yong-ji-qun-bu-shu/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="numpy-保存数组变量到本地">
+                            <img src="/medias/featureimages/47.jpg" class="responsive-img" alt="Hadoop-高可用集群部署">
                             
-                            <span class="card-title">numpy-保存数组变量到本地</span>
+                            <span class="card-title">Hadoop-高可用集群部署</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                import numpy as np
+                                架构示例
 
-training = ...
 
-# 保存
-np.savez('training', d1=training['x'], d2=training['y'])
 
-# 读取
-training = np.lo
+
+主机名
+IP
+服务
+进程
+
+
+
+
+HA1
+192.168.140.130
+Hadoop
+NN(active), ZKFC
+
+
+HA2
+192.168.140.131
+Hadoop
+NN(standby), ZKFC
+
+
+H
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
                                 </a>
                                 
                                 
@@ -881,8 +871,8 @@ training = np.lo
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/numpy/">
-                            <span class="chip bg-color">numpy</span>
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
                         </a>
                         
                     </div>
@@ -894,13 +884,13 @@ training = np.lo
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/14/yun-wei/postgresql-bu-shu/">
+                    <a href="/2023/04/21/yun-wei/zookeeper-gao-ke-yong-ji-qun-bu-shu-dockerswarm/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="PostgreSQL-部署">
+                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Zookeeper-高可用集群部署[DockerSwarm]">
                             
-                            <span class="card-title">PostgreSQL-部署</span>
+                            <span class="card-title">Zookeeper-高可用集群部署[DockerSwarm]</span>
                         </div>
                     </a>
 
@@ -909,17 +899,18 @@ training = np.lo
                             
                                 docker-compose.yml
 version: '3.8'
+
 services:
-  postgres:
-    image: postgres
-    restart: unless-stopped
+  zoo1:
+    image: zookeeper
+    hostname: zoo1
     ports:
-     
+      - 2181:218
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
                             </span>
                             <span class="publish-author">
                                 
@@ -941,8 +932,8 @@ services:
                             <span class="chip bg-color">docker-compose.yml</span>
                         </a>
                         
-                        <a href="/tags/PostgreSQL/">
-                            <span class="chip bg-color">PostgreSQL</span>
+                        <a href="/tags/Zookeeper/">
+                            <span class="chip bg-color">Zookeeper</span>
                         </a>
                         
                     </div>
@@ -954,35 +945,38 @@ services:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/13/capital/capital-ji-yu-shen-jing-wang-luo-de-qu-shi-jiao-yi-ru-chang-dian-yu-ce-mo-xing/">
+                    <a href="/2023/04/21/coding/nfs-rocky-an-zhuang-nfs/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="Capital-基于神经网络的趋势交易入场点预测模型">
+                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="NFS-Rocky安装NFS">
                             
-                            <span class="card-title">Capital-基于神经网络的趋势交易入场点预测模型</span>
+                            <span class="card-title">NFS-Rocky安装NFS</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                经验证噪音过多，短期无法迅速除噪，该项目暂时挂起，启动capital系列其他项目
-基于神经网络的趋势交易入场点预测模型
-可将价格行为学中的全部价格行为入场点都做成模型，先从最简单的趋势入场点开始做起
-不同周期下趋势的表征也不同，比如大周期下
+                                # 服务端和客户端都需安装
+dnf install nfs-utils
+
+# 启动服务端
+systemctl enable nfs-server
+systemctl start nfs-server
+systemctl status nfs
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-13
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    工作笔记
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
                                 </a>
                                 
                                 
@@ -993,12 +987,8 @@ services:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Capital/">
-                            <span class="chip bg-color">Capital</span>
-                        </a>
-                        
-                        <a href="/tags/%E5%B7%A5%E4%BD%9C%E8%AE%A1%E5%88%92/">
-                            <span class="chip bg-color">工作计划</span>
+                        <a href="/tags/NFS/">
+                            <span class="chip bg-color">NFS</span>
                         </a>
                         
                     </div>
@@ -1010,34 +1000,36 @@ services:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/12/coding/shen-jing-wang-luo-wang-luo-mo-xing/">
+                    <a href="/2023/04/21/coding/nfs-linux-pei-zhi-nfs-fu-wu/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="神经网络-网络模型">
+                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="NFS-Linux配置NFS服务">
                             
-                            <span class="card-title">神经网络-网络模型</span>
+                            <span class="card-title">NFS-Linux配置NFS服务</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
-  graph LR
-    A((x)) --w1--&gt; B((N1)) --&gt;C[F1] --w2--&gt; D((N2)) --&gt;E[F2] --w3--&gt; F((y)) --分类/打分--&gt; R[F
+                                服务端
+创建服务端共享目录
+配置NFSv4服务器时，一个好的做法是使用全局NFS根目录，并将实际目录绑定到共享挂载点。
+一般使用/srv/nfs4目录作为NFS根目录。
+sudo mount --bind /var/www /srv/nfs
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-12
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
                                 </a>
                                 
                                 
@@ -1048,8 +1040,8 @@ services:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">神经网络</span>
+                        <a href="/tags/NFS/">
+                            <span class="chip bg-color">NFS</span>
                         </a>
                         
                     </div>
@@ -1075,7 +1067,7 @@ services:
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">22 / 37</div>
+            <div class="center-align b-text-gray">22 / 41</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1164,7 +1156,7 @@ services:
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">239.3k</span>
+                        class="white-color">305.8k</span>
             
             
             

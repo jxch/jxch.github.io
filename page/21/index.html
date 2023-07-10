@@ -409,36 +409,34 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/17/shi-chang-fen-xi/shi-chang-fen-xi-20230413-brooks-s-p-emini/">
+                    <a href="/2023/04/23/coding/hbase-rowkey-she-ji-you-hua/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/63.jpg" class="responsive-img" alt="市场分析-20230413-Brooks-S&amp;P Emini">
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="HBase-rowkey设计优化">
                             
-                            <span class="card-title">市场分析-20230413-Brooks-S&amp;P Emini</span>
+                            <span class="card-title">HBase-rowkey设计优化</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                Trading Update: Thursday April 13, 2023
-S&amp;P Emini pre-open market analysis
-Emini daily chart
-
-The Emini gapped up ye
+                                性能上考虑
+一条数据的唯一标识就是 rowkey，而这行数据最终存储到哪一个分区里面，取决于分区(HBase-预分区)，如果从性能上考虑 rowkey 优化，应该考虑的是让数据均匀的分布在所有的 region 中，防止数据的倾斜。
+设计方案
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E4%BA%A4%E6%98%93%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    交易笔记
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
                                 </a>
                                 
                                 
@@ -449,12 +447,8 @@ The Emini gapped up ye
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E5%B8%82%E5%9C%BA%E5%88%86%E6%9E%90/">
-                            <span class="chip bg-color">市场分析</span>
-                        </a>
-                        
-                        <a href="/tags/Brooks-%E8%BD%AC%E8%BD%BD/">
-                            <span class="chip bg-color">Brooks-转载</span>
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
                         </a>
                         
                     </div>
@@ -466,27 +460,406 @@ The Emini gapped up ye
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-mac/">
+                    <a href="/2023/04/23/coding/hbase-yu-fen-qu/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="计算机网络-MAC">
+                            <img src="/medias/featureimages/36.jpg" class="responsive-img" alt="HBase-预分区">
                             
-                            <span class="card-title">计算机网络-MAC</span>
+                            <span class="card-title">HBase-预分区</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                MAC 地址
-在局域网中，硬件地址又称为物理地址，或 MAC 地址。 802 标准所说的“地址”严格地讲应当是每一个站的“名字”或标识符。  将48位的“名字”称为“地址”仅仅是一种习惯。
-IEEE 的注册管理机构 RA 负责向厂家分配地址
+                                在默认情况下，在使用 hbase 创建表的时候会自动创建一个 region 分区，所有 hbase 的客户端的数据都写到这个 region 分区里面，一直到 region 足够大的时候才进行切分。每一个 region 维护着 startRo
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/23/yun-wei/hadoop-hbase-hive-ji-cheng/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Hadoop-HBase-Hive-集成">
+                            
+                            <span class="card-title">Hadoop-HBase-Hive-集成</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                HBase 提供的查询主要还是通过 key 的方式进行的，相比 hive，hbase 的查询要薄弱很多。Hive 整合 HBase 后的使用场景:
+
+通过 Hive 把数据加载到 HBase 中，数据源可以是文件也可以是 Hive 中的表
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
+                        </a>
+                        
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/23/coding/hbase-java-api-chang-yong-cao-zuo-demo/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="HBase-Java api 常用操作Demo">
+                            
+                            <span class="card-title">HBase-Java api 常用操作Demo</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                pom.xml
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.hbase&lt;/groupId&gt;
+    &lt;artifactId&gt;hbase-server&lt;/ar
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/23/coding/hbase-stop-hbase-sh-no-hbase-master-found/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="HBase-stop-hbase.sh: no hbase master found">
+                            
+                            <span class="card-title">HBase-stop-hbase.sh: no hbase master found</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+hbase-env.sh 中添加: export HBASE_PID_DIR=/var/hbase/pids
+jps 查看 hbase 相关的 pid, 然后 kill -9 结束进程
+start-hbase.sh 启动 hbase
+
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/23/coding/hbase-servernotrunningyetexception-server-is-not-running-yet/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="HBase-ServerNotRunningYetException: Server is not running yet">
+                            
+                            <span class="card-title">HBase-ServerNotRunningYetException: Server is not running yet</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                hbase-site.xml 中添加:
+&lt;property&gt;
+  &lt;name&gt;hbase.wal.provider&lt;/name&gt;
+  &lt;value&gt;filesystem&lt;/value&g
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/23/coding/hbase-chang-yong-ming-ling/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/53.jpg" class="responsive-img" alt="HBase-常用命令">
+                            
+                            <span class="card-title">HBase-常用命令</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                hbase shell 进入shell
+help 命令查看帮助文档
+list 命令查看数据库中的表
+创建表
+创建 person 表，包含 info, data 两个列族
+然后查看表结构
+create 'person', 'info', 'd
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/23/yun-wei/hadoop-hbase-gao-ke-yong-ji-qun-bu-shu/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Hadoop-HBase-高可用集群部署">
+                            
+                            <span class="card-title">Hadoop-HBase-高可用集群部署</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+启动 Hadoop 集群: Hadoop-集群部署 | Hadoop-高可用集群部署
+启动 Zookeeper 集群: Zookeeper-高可用集群部署[DockerSwarm]
+修改 HBase 配置文件
+
+hbase-env.sh 
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/23/hadoop/hadoop-13-hbase-te-dian/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Hadoop-13.HBase-特点">
+                            
+                            <span class="card-title">Hadoop-13.HBase-特点</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                HBase 列式数据库简介
+HBase 是一个开源的非关系型分布式数据库（NoSql） 原型是 Google 的 BigTable 论文，受到了该论文思想的启发，目前作为Hadoop 的子项目来开发维护。它介于 nosql 和 RDBMS 
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
                             </span>
                             <span class="publish-author">
                                 
@@ -504,8 +877,12 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
                         </a>
                         
                     </div>
@@ -517,26 +894,26 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ji-xian-qi-wang-qiao/">
+                    <a href="/2023/04/22/hadoop/hadoop-12-hive-te-dian/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="计算机网络-集线器/网桥">
+                            <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="Hadoop-12.Hive-特点">
                             
-                            <span class="card-title">计算机网络-集线器/网桥</span>
+                            <span class="card-title">Hadoop-12.Hive-特点</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                集线器
-集线器 ： 是使用电子器件来模拟实际电缆线的工作，因此整个系统仍然像一个传统的以太网那样运行。  使用集线器的以太网在逻辑上仍是一个总线网，各工作站使用的还是 CSMA/CD 协议，并共享逻辑上的总线。  集线器很像一个多接口的转发
+                                Hive 简介
+Hive 是属于 Hadoop 的数据仓库工具，可以让使用者将结构化数据映射成一张张数据库的表，让用户能通过 SQL 来查询数据。用户出 SQL 命令给 hive，hive 把 SQL 语句转换成 MapReduce 查询分
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                             </span>
                             <span class="publish-author">
                                 
@@ -554,8 +931,12 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
                         </a>
                         
                     </div>
@@ -567,33 +948,35 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-icmp/">
+                    <a href="/2023/04/22/coding/hive-udf-zi-ding-yi-han-shu-da-xiao-xie-zhuan-huan-demo/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/59.jpg" class="responsive-img" alt="计算机网络-ICMP">
+                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Hive-UDF自定义函数-大小写转换Demo">
                             
-                            <span class="card-title">计算机网络-ICMP</span>
+                            <span class="card-title">Hive-UDF自定义函数-大小写转换Demo</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                网际控制报文协议 ICMP
-为了提高 IP 数据报交付成功的机会,在网际层使用了网际控制报文协议 ICMP (InternetControl Message Protocol)。 ICMP 允许主机或路由器报告差错情况和提供有关异常情况的报
+                                pom.xml
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.hive&lt;/groupId&gt;
+    &lt;artifactId&gt;hive-exec&lt;/artifa
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
                                 </a>
                                 
                                 
@@ -604,8 +987,8 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
                         </a>
                         
                     </div>
@@ -617,36 +1000,38 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ospf/">
+                    <a href="/2023/04/22/coding/hive-fen-tong/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="计算机网络-OSPF">
+                            <img src="/medias/featureimages/51.jpg" class="responsive-img" alt="Hive-分桶">
                             
-                            <span class="card-title">计算机网络-OSPF</span>
+                            <span class="card-title">Hive-分桶</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                基本特点
-内部网关协议 OSPF (Open Shortest Path First) 的基本特点 ：
+                                创建桶表
+set hive.enforce.bucketing=true;
+set mapreduce.job.reduces=4;
 
-“开放”表明 OSPF 协议不是受某一家厂商控制,而是公开发表的。
-“最短路径优先”是因为使用了 Dijkstra 提出的最短路径算法
+drop table person_buck;
+
+create table person_buck(si
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
                                 </a>
                                 
                                 
@@ -657,397 +1042,8 @@ IEEE 的注册管理机构 RA 负责向厂家分配地址
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-arp-rarp/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="计算机网络-ARP/RARP">
-                            
-                            <span class="card-title">计算机网络-ARP/RARP</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-不管网络层使用的是什么协议，在实际网络的链路上传送数据帧时，最终还是必须使用硬件地址。 每一个主机都设有一个 ARP 高速缓存(ARP cache)，里面有所在的局域网上的各主机和路由器的 IP 地址到硬件地址的映射表。 当主机 A 欲向
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ip/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="计算机网络-IP">
-                            
-                            <span class="card-title">计算机网络-IP</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                网际层的 IP 协议及配套协议
-
-网络互连
-互连在一起的网络要进行通信，会遇到许多问题需要解决，如：
-
-不同的寻址方案
-不同的最大分组长度
-不同的网络接入机制
-不同的超时控制
-不同的差错恢复方法
-不同的状态报告方法
-不同的路由选择技术
-不同
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-rip/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="计算机网络-RIP">
-                            
-                            <span class="card-title">计算机网络-RIP</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                路由信息协议 RIP(Routing Information Protocol) 是内部网关协议 IGP中最先得到广泛使用的协议。RIP 是一种分布式的基于距离向量的路由选择协议。
-RIP 协议要求网络中的每一个路由器都要维护从它自己到其他
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-udp/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="计算机网络-UDP">
-                            
-                            <span class="card-title">计算机网络-UDP</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                UDP 只在 IP 的数据报服务之上增加了很少一点的功能，即端口的功能和差错检测的功能。UDP 用户数据报只能提供不可靠的交付。
-UDP 的主要特点
-
-UDP 是无连接的，即发送数据之前不需要建立连接。
-UDP 使用尽最大努力交付，即不保证
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ppp-mac-ip-udp-tcp-de-shu-ju-bao-ge-shi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="计算机网络-PPP/MAC/IP/UDP/TCP的数据报格式">
-                            
-                            <span class="card-title">计算机网络-PPP/MAC/IP/UDP/TCP的数据报格式</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                PPP 协议的帧格式：
-PPP 是面向字节的，所有的 PPP 帧的长度都是整数字节。
-
-
-PPP 有一个 2 个字节的协议字段
-当协议字段为 0x0021 时，PPP 帧的信息字段就是IP 数据报。
-若为 0xC021, 则信息字段是 PP
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-icmp-rip-ospf-shu-ju-bao-ge-shi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="计算机网络-ICMP/RIP/OSPF数据报格式">
-                            
-                            <span class="card-title">计算机网络-ICMP/RIP/OSPF数据报格式</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-
-ICMP 报文的格式
-ICMP报文装在IP数据报中，但是它不是高层协议，而是IP层协议。
-
-
-类型
-3 终点不可达
-11 时间超过
-12 参数问题
-5 改变路由
-8或0 回送请求或回答
-13或14 时间戳请求或回答
-代码 ： 进一步区分
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-xing-neng-zhi-biao/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/44.jpg" class="responsive-img" alt="计算机网络-性能指标">
-                            
-                            <span class="card-title">计算机网络-性能指标</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                计算机网络的性能指标：
-
-速率
-带宽
-吞吐量
-时延
-
-
-速率：
-速率即数据率(data rate)或比特率(bit rate)是计算机网络中最重要的一个性能指标。速率的单位是 b/s，或kb/s, Mb/s, Gb/s等。速率往往是指额定速
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
+                        <a href="/tags/Hive/">
+                            <span class="chip bg-color">Hive</span>
                         </a>
                         
                     </div>
@@ -1073,7 +1069,7 @@ ICMP报文装在IP数据报中，但是它不是高层协议，而是IP层协议
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">21 / 37</div>
+            <div class="center-align b-text-gray">21 / 41</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1162,7 +1158,7 @@ ICMP报文装在IP数据报中，但是它不是高层协议，而是IP层协议
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">239.3k</span>
+                        class="white-color">305.8k</span>
             
             
             

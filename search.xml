@@ -4,6 +4,1306 @@
   
     
     <entry>
+      <title>11.数据高可用</title>
+      <link href="/2023/07/10/architect/dian-shang-xi-tong/11-shu-ju-gao-ke-yong/"/>
+      <url>/2023/07/10/architect/dian-shang-xi-tong/11-shu-ju-gao-ke-yong/</url>
+      
+        <content type="html"><![CDATA[<p>缓存不命中：把<strong>全量数据</strong>都放在Redis 集群中，处理读请求的时候，只需要读取Redis，而不用访问数据库。很多大型互联网公司都在使用这种方法<br>更新缓存：</p><ul><li>启动一个更新缓存的服务接收数据变更的消息队列中的消息，然后注意解决消息的<strong>可靠性</strong>问题即可，这种方式实现起来很简单，也没有什么侵入性。</li><li>使用 Binlog 实时更新Redis 缓存（Canal）<ul><li>由于在整个缓存更新链路上，减少了一个收发消息队列的环节，从MySQL 更新到Redis 更新的时延变得更短，出现故障的可能性也更低，这也是为什么很多大型互联网企业更青睐于采用这种方案的原因。</li></ul></li></ul><h1>Canal 详解</h1><p><font color="green">它通过模拟MySOL主从复制的交互协议，<strong>把自己伪装成一个MySOL的从节点</strong>，向 MySOL 主节点发送dump 请求。</font>MySOL 收到请求后，就会向 Canal 开始推送Binlog，Canal 解析Binlog 字节流之后，将其转换为便于读取的结构化数据，供下游程序订阅使用。<br>Canal有个服务端，在模拟MySOL从节点获得数据库服务器的数据后，我们可以使用一个包含Canal Client的服务程序获得Canal服务端解析出的数据，也可以通过配置让Canal服务端直接将数据发送给MQ，当然我们的Canal Client 程序经过数据处理后也可以发送给MQ。不管是经过Canal Client程序还是直接发给MQ，接下来还可由第三方的服务或者存储系统进行后续处理。</p><h2 id="配置">配置</h2><ol><li><strong>先开启 Binlog 写入功能，配置binlog-format为ROW模式</strong></li><li><strong>给Canal 设置一个用来复制数据的MySQL账号</strong></li><li><font color="green"><strong>修改canal.properties 文件，比较关键的是canal.destinations</strong></font></li><li><font color="green"><strong>修改instance.properties</strong></font><ol><li><strong>MySQL 主服务的连接配置</strong></li><li><strong>要对哪些相关的业务表进行监视</strong></li></ol></li></ol><h2 id="跨系统实时数据同步">跨系统实时数据同步</h2><p>如果是按照关键字搜索，放在ES 中会比放在MySQL 中更合适。所以在大规模系统中，对于海量数据的处理原则都是根据业务对数据查询的需求反过来确定选择什么数据库、如何组织数据结构、如何分片数据等之类的问题，这样才能获得最优的查询性能。在大型互联网企业中、其核心业务数据，以不同的数据结构和存储方式，保存几十甚至上百份，都是非常正常的。</p><p>当然为了能够支撑下游的众多数据库，从 Canal 出来的Binlog 数据肯定不能直接写入下游的众多数据库中。原因也很明显：一是写不过来；二是下游的每个数据库，在写入之前可能还要处理一些数据转换和过滤的工作。所以一般我们会增加一个<font color="green"><strong>消息队列来解耦上下游</strong></font>。</p><h1>更换数据库</h1><p>既不能长时间停止服务，也不能丢失数据</p><h2 id="不停机更换数据库">不停机更换数据库</h2><p>我们在设计迁移方案的时候，<font color="green"><strong>一定要保证每一步都是可逆的</strong></font>。也就是必须保证，每执行完一个步骤,一旦出现任何问题，都能快速回滚到上一个步骤。</p><ol><li>首先要做的一点是，<font color="green"><strong>把旧库的数据全部复制到新库中</strong></font>。因为旧库还在服务线上业务，所以<strong>不断会有数据写入旧库</strong>，我们不仅要向新库复制数据，<font color="green"><strong>还要保证新旧两个库的数据是实时同步的</strong></font>。所以，需要用一个同步程序来实现新旧两个数据库的实时同步。可以使用Binlog 实现两个异构数据库之间数据的实时同步。<font color="green"><strong>这一步不需要回滚，因为这里只增加了一个新库和一个同步程序</strong></font>，对系统的旧库和程序没有任何改变。<font color="green"><strong>即使新上线的同步程序影响到了旧库，停掉同步程序也就可以了。</strong></font></li><li>改造DAO层<ol><li><font color="green"><strong>支持双写新旧两个库</strong></font>，并且预留<strong>热切换开关</strong>，能通过开关控制三种写状态:只写旧库、只写新库和同步双写</li><li><font color="green"><strong>支持读取新旧两个库</strong></font>，同样预留<strong>热切换开关</strong>，控制读取旧库还是新库</li></ol></li><li><font color="green">然后上线新版服务，这个时候服务仍然是<strong>只读写旧库</strong>，不读写新库。<strong>让新版服务稳定运行至少一到两周的时间</strong></font>，其间我们不仅要验证新版服务的稳定性，还要<font color="green"><strong>验证新旧两个库中的数据是否保持一致</strong></font>。这个过程中，如果新版服务<font color="green"><strong>出现任何问题，都要立即下线新版服务，回滚到旧版本的服务</strong></font>。<ul><li><font color="green"><strong>稳定一段时间之后，就可以开启订单服务的双写开关了</strong>。<strong>开启双写开关的同时，需要停掉同步程序</strong></font>。这里有一个需要特别注意的问题是，这里双写的业务逻辑，一定是<font color="green"><strong>先写旧库，再写新库，并且以旧库的结果为准</strong></font>。</li><li><font color="green"><strong>如果旧库写成功，新库写失败，则返回成功</strong>，但这个时候要记录日志，后续我们会根据这个日志来验证新库是否还有问题。<strong>如果旧库写失败，则直接返回失败</strong>，同时也不再写新库了。<strong>不能让新库影响到现有业务的可用性和数据准确性</strong>。如果<strong>出现任何问题都要关闭双写</strong>,回滚到只读写旧库的状态。</font></li><li>切换到双写之后,新库与旧库的数据可能会出现不一致的问题。<ul><li>停止同步程序和开启双写，这两个过程很难做到无缝衔接</li><li>双写的第略也不能保证新旧库的强一致性。对于这个问题,我们需要上线一个<font color="green"><strong>比对和补偿的程序</strong></font>，用于比对旧库最近的数据变更，然后检查新库中的数据是否一致，如果不一致，则需要进行补偿</li></ul></li><li>开启双写之后，还需要<strong>稳定运行至少几周的时间</strong>，并且在这期间我们需要不断地检查，以确保不能有旧库写成功、新库写失败的问题。如果在几周之后比对程序发现新旧两个库的数据没有不一致的情况，那就可以认为新旧两个库的数据一直都是保持同步的。</li></ul></li><li>接下来就可以用类似<font color="green"><strong>灰度发布的方式把读请求逐步切换到新库上</strong>。同样，运行期间如果<strong>出现任何问题，都要再切回到旧库</strong></font>。</li><li><font color="green">将<strong>全部读请求都切换到新库上之后，其实读写请求已经全部切换到新库上了</strong></font>，虽然实际的切换已经完成,但后续还有需要收尾的步骤。<ul><li><font color="green">**再稳定一段时间之后，就可以停掉比对程序，把订单服务的写状态改为只写新库。至此，旧库就可以下线了。**注意，在整个迁移过程中,<strong>只有这个步骤是不可逆的</strong>。</font>由于这一步的主要操作就是摘掉已经不再使用的旧库，因此对于正在使用的新库并不会有什么影响，实际出问题的可能性已经非常小了。</li><li>双写切换为新库单写这一步不可逆的主要原因是，一旦切换为新库单写，旧库的数据与新库的就不一致了，这种情况是无法再切换回旧库的。所以问题的关键是，切换为新库单写后，需要保证旧库的数据能与新库保持同步。<font color="green">这时双写需要增加一种过渡状态：**从双写以旧库为准过渡到双写以新库为准。然后把比对和补偿程序反过来，用新库的数据补偿旧库的数据。**这样就可以做到一旦出现问题，就直接切回到旧库上。</font>但是这样做一般成本比较高。</li></ul></li><li>至此们完成了在线更换数据库的全部流程。<font color="green">双写版本的服务也完成了它的历史使命，<strong>可以在下一次升级订单服务版本的时候下线双写功能</strong>。</font></li></ol><p><font color="green">数据表的变更，如果只是新增表，这个很简单，一般直接回退到旧版本程序即可；但如果牵涉到<strong>表字段的变化</strong>就麻烦些，但是也可以采用类似的思路，<strong>双写新旧表并设计热切换开关</strong>。</font></p><h2 id="实现比对和补偿程序">实现比对和补偿程序</h2><p>这个比对和补偿程序的实现难点在于，我们要比对的是两个随时都在变化的数据厍中的数据。</p><p>像订单这类时效性比较强的数据，是比较容易进行比对和补偿的。因为订单一旦完成之后，几乎就不会再改变了，比对和补偿程序就可以根据订单完成时间，每次只比对这个时间窗口内完成的订单。补偿的逻辑也很简单，<font color="green"><strong>发现不一致的情况后，直接用旧库的订单数据覆盖新库的订单数据就可以了</strong></font>。<br>这样，切换双写期间，对于少量不一致的订单数据，等到订单完成之后，补偿程序会将其修正。后续在双写的时候只要新库不是频繁写入失败，就可以保证两个库的数据完全一致。<br>比较麻烦的是更一般的情况，比如像商品信息之类的数据，随时都有可能会发生变化。如果数据上带有更新时间,那么比对程序就可以利用这个更新时间，<font color="green"><strong>每次从旧库中读取一个更新时间窗口内的数据，到新库中查找具有相同主键的数据进行比对</strong></font>，如果发现数据不一致，则还要比对一下更新时间。</p><ul><li><font color="green"><strong>如果新库数据的更新时间晚于旧库数据，那么很可能是比对期间数据发生了变化，这种情况暂时不要补偿，放到下个时间窗口继续进行比对即可。</strong></font></li><li><font color="green"><strong>时间窗口的结束时间不要选取当前时间，而是要比当前时间早一点，比如1分钟之前，这样就可以避免比对正在写入的数据了。</strong></font></li></ul><p><strong>如果数据没带时间戳信息，那就只能从旧库中读取Binlog</strong>，获取数据变化信息后到新库中查找对应的数据进行比对和补偿。</p><h1>安全地实现数据备份和恢复</h1><p>一般来说，由存储系统导致的比较严重的损失主要有两种情况。</p><ol><li><strong>数据丢失造成的直接财产损失</strong>。比如订单数据丢失造成了大量的坏账。为了避免这种损失，系统需要保证数据的<strong>高可靠性</strong>。</li><li><strong>存储系统的损坏</strong>，造成整个业务系统停止服务而带来的损失。比如，电商系统停服期间造成的收入损失。为了避免这种损失，系统需要保证存储服务的<strong>高可用性</strong>。</li></ol><p>保证数据安全，最简单且有效的方法就是<strong>定期备份数据</strong>，这样无论因为出现何种问题而导致的数据损失，都可以通过备份来恢复数据。</p><p>最简单的备份方式就是<strong>全量备份</strong>。备份的时候把所有的数据复制一份，存放到文件中，恢复的时候再把文件中的数据复制回去，这样就可以保证恢复之后,数据库中的数据与备份时的数据是完全一样的。在 MySQL 中，我们可以使用mysqldump 命令执行全量备份。</p><p><strong>不过全量备份的代价非常高</strong>：首先备份文件包含了数据库中的所有数据，占用的磁盘空间非常大；其次,每次备份操作都要拷贝大量的数据，备份过程中会占用数据库服务器大量的CPU和磁盘IO 资源、同时为了保证数据一致性，备份过程中很有可能会锁表。这此都会导致在备份期间数据库本身的性能严重下降。所以我们不能频繁地对数据库执行全量备份操作。</p><p>一般来说，在生产系统中每天执行一次全量备份就已经是非常频繁的了。这就意味着，如果数据库中的数据丢失了就只能恢复到最近一次全量备份的那个时间点，这个时间点之后的数据是无法找回的。也就是说，因为全量备份的代价比较高不能频繁地执行备份操作,所以<strong>全量备份不能做到完全无损的恢复</strong>。</p><p>相比于全量备份，<strong>增量备份每次只用备份相对于上一次备份发生了变化的那部分数据，所以增量备份的速度更快。</strong></p><p>MySQL 自带的 Binlog 就是一种实时的增量备份工具。Binlog 所记录的就是MySQL 数据变更的操作日志。开启 Binlog 之后，MySQL 中数据的每次更新操作，都会记录到Binlog 中。Binlog 是可以回放的，回放Binlog，就相当于是把之前对数据库中所有数据的更新操作，都按顺序重新执行一遍，回放完成之后数据自然就恢复了。这就是Binlog 增量备份的基本原理。很多数据库都有类似于MySQL Binlog 的日志工具，原理也与Binlog 相同，备份和恢复的方法也与之类似。<font color="green"><strong>通过定期的全量备份配合 Binlog，我们可以把数据恢复到任意一个时间点</strong></font></p><p>在执行备份和恢复的时候，需要特别注意如下两个要点：</p><ol><li>“<font color="green"><strong>不要把所有的鸡蛋放在同一个篮子中</strong></font>”，无论是全量备份还是Binlog，都不要与数据库存放在同一个服务器上。最好能存放到不同的机房，甚至不同城市离得越远越好。这样即使出现机房着火、光缆被挖断甚至地震也不怕数据丢失。</li><li>在回放 Binlog 的时候，<font color="green"><strong>指定的起始时间可以比全量备份的时间稍微提前一点儿</strong></font>，这样可以确保全量备份之后的所有操作都在恢复的Binlog 范围内，从而保证数据恢复的完整性。<ul><li><font color="green"><strong>为了确保回放的幂等性，需要将Binlog的格式设置为ROW格式</strong></font></li></ul></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 缓存 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>10.高并发缓存</title>
+      <link href="/2023/07/10/architect/dian-shang-xi-tong/10-gao-bing-fa-huan-cun/"/>
+      <url>/2023/07/10/architect/dian-shang-xi-tong/10-gao-bing-fa-huan-cun/</url>
+      
+        <content type="html"><![CDATA[<p>缓存大体可以分为三类: 客户端缓存；服务端缓存；网络中的缓存。<br>根据规模和部署方式缓存也可以分为:单体缓存；缓存集群；分布式缓存。</p><p><strong>缓存一定是离用户越近越好</strong></p><p>缓存的分类：</p><ul><li>客户端缓存</li><li>页面缓存</li><li>浏览器缓存</li><li>APP缓存</li><li>网络缓存</li><li>Web代理缓存（Nginx）</li><li>边缘缓存（CDN）</li><li>服务端缓存</li><li>数据库缓存（innodb_buffer_pool_size）</li><li>应用级缓存（Caffeine，Ehcache）<ul><li>缓存预热</li></ul></li><li>平台级缓存（Redis）</li></ul><h1>缓存的数据一致性</h1><p>缓存更新方案：</p><ol><li>先更新缓存，再更新数据库（一般不考虑）<ul><li>更新缓存成功，更新数据库出现异常了，导致缓存数据与数据库数据完全不一致，而且很难察觉，因为缓存中的数据一直都存在。</li></ul></li><li>先更新数据库，再更新缓存（一般不考虑）<ul><li>原因跟第一个一样，数据库更新成功了，缓存更新失败，同样会出现数据不一致问题。</li></ul></li><li>先删除缓存，后更新数据库（不建议）<ul><li>A进程删除缓存后，还没来得及更新数据库，就被B进程查询数据库（缓存为空）后再次更新了缓存（相当于没删）<ul><li>解决方案：延时双删（删缓存 - 写数据库 - 休眠1s再删缓存）</li></ul></li><li>A进程删除缓存、写数据库后，主从同步时，被B从从库查数据（缓存为空，从库复制还未完成），再次更新了缓存（相当于没删）<ul><li>解决方案：1. 延时双删；2. 更新redis的查询操作，指向主库查询</li></ul></li><li>异步双删，增加吞吐量</li><li>不推荐的原因：1. 缓存穿透到DB；2. 休眠时间不好设置</li></ul></li><li><font color="green"><strong>先更新数据库，后删除缓存</strong></font><ul><li>依然有并发问题：进程A查询数据库（缓存为空）后写入缓存前，被进程B更新了数据库，导致缓存与DB不一致<ul><li>概率极低，因为需要让进程B写数据库的操作耗时比进程读数据库还短，而读库操作一般比写库要快</li><li>解决方案：1. 设置缓存失效时间；2. 异步延时删除；3. <font color="green"><strong>使用Canal监听binlog日志，更新缓存</strong></font></li></ul></li></ul></li></ol><p>删除缓存失败的解决方案：</p><ol><li>使用MQ再次删除</li><li>使用canal采集binlog日志，发送到MQ中，然后通过ACK机制确认处理删除缓存</li></ol><h2 id="缓存更新的设计模式">缓存更新的设计模式</h2><ul><li>Cache Aside （最常用，因为强一致的实现性能往往较差）：缓存失效时由调用方加载（上面的第四种方案）</li><li>Read/Write Through：把更新数据库操作由缓存自己代理了</li><li>Read Through：缓存失效时由用缓存服务自己来加载</li><li>Write Through：当有数据更新的时候，如果没有命中缓存，直接更新数据库，然后返回。如果命中了缓存，则更新缓存，然后再由Cache自己更新数据库。</li><li>Write Behind Caching：，在更新数据的时候，只更新缓存，不更新数据库，而我们的缓存会异步地批量更新数据库<ul><li>数据不是强一致性的，而且可能会丢失</li><li>实现复杂</li></ul></li></ul><h2 id="缓存数据一致性">缓存数据一致性</h2><ol><li>本地缓存<ul><li>设置失效时间（毛刺现象）</li><li><font color="green"><strong>设置双缓存</strong></font><ul><li>只有两份本地缓存都没有，才会到远程获得。</li><li>正式缓存是最后一次写入后经过固定时间过期</li><li>备份缓存是设置最后一次访问后经过固定时间过期</li><li>异步刷新：正式缓存只有无效才会被重新写入，备份缓存无论是否无效都会重新写入</li></ul></li><li>强制本地缓存失效和手动刷新本地缓存（CacheManagerController）</li></ul></li><li>Redis使用canal更新缓存</li></ol><h1>Redis集群</h1><h2 id="Redis-Cluster">Redis Cluster</h2><p>每个集群的槽数都是固定的16 384(即16×1024)个，客户端可以连接集群的任意一个节点来访问集群的数据，如果数据不在当前这个节点上，那就向客户端返回一个重定向的命令。支持主从复制（内部通过选举来确定有主节点的存活），支持读写分离（需要客户端的支持）。</p><h2 id="大厂不用Redis-Cluster构建集群">大厂不用Redis Cluster构建集群</h2><p>Redis Cluster 采用了一种去中心化的流言（Gossip）协议来传播集群配置的变化。传播速度比较慢，而且是集群规模越大，传播的速度就越慢。</p><p>比如说10个节点的状态信息约1kb。同时redis集群内节点，每秒都在发ping消息。在这种情况下，一个总节点数为200的Redis集群，默认情况下，这时ping/pong消息占用带宽达到25M，这还只是槽的范围是0 ～16383 的情况。其次redis 的集群主节点越多，心跳包的消息体内携带的数据越多。如果节点过1000 个，也会导致<strong>网络拥堵</strong>。因此redis 作者，不建议redis cluster 节点数量超过<strong>1000个</strong>。</p><h3 id="构建超大规模集群">构建超大规模集群</h3><h4 id="代理">代理</h4><p>比较常用的方法是采用一种基于代理的方式，即在客户端和Redis 节点之间</p><ol><li>负责在客户端和Redis 节点之间转发请求和响应。客户端只与代理服务打交道，代理收到客户端的请求之后，会转发到对应的Redis 节点上，节点返回的响应再经由代理转发返回给客户端。</li><li>负责监控集群中所有Redis 节点的状态，如果发现存在问题节点，就及时进行主从切换。</li><li>维护集群的元数据，这个元数据主要是集群所有节点的主从信息,以及槽和节点的关系映射表。像开源的Redis 集群方案twemproxy 和 Codis，采用的都是代理服务这种架构。</li></ol><p>优点：对客户端透明,从客户端的视角来看,整个集群就像是一个超大容量的单节点Redis 一样。除此之外,由于分片算法是受代理服务控制的，因此扩容比较方便，新节点加入集群后，直接修改代理服务中的元数据就可以完成扩容。</p><p>缺点：由于增加了一层代理转发，因此每次数据访问的链路变得更长了，这必然会导致一定的性能损失。而且代理服务本身也是集群的单点。当然，我们可以把代理服务也做成一个集群来解决单点问题，那样集群就更复杂了。</p><h4 id="客户端">客户端</h4><p><font color="green"><strong>把代理服务的寻址功能前移到客户端中。</strong></font>客户端在发起请求之前,首先会查询元数据，客户端可以自行缓存元数据，这样访问性能基本上就与单机版的Redis 一样了。如果某个分片的主节点宕机了，就会选举新的主节点，并更新元数据中的信息。对集样的扩容操作也比较简单，除了必须完成数据的迁移工作之外，再更新一下元数据就可以了。</p><p>当然元数据服务仍然是一个单点，但是它的数据量不大，访问量也不大，相对来说比较容易实现。利用已有的ZooKeeper、etcd 甚至MySQL 都可以被用来实现上述元数据服务。定制客户端的Redis 集群方案应该是最适合超大规模Redis 集群的方案，在性能、弹性、高可用等几个方面的表现都非常好，缺点是整个架构比较复杂，客户端不能通用，需要开发定制化的Redis 客户端，所以往往只有规模足够大的企业才能负担得起高昂的定制开发成本。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 缓存 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>09.分布式事务</title>
+      <link href="/2023/07/10/architect/dian-shang-xi-tong/09-fen-bu-shi-shi-wu/"/>
+      <url>/2023/07/10/architect/dian-shang-xi-tong/09-fen-bu-shi-shi-wu/</url>
+      
+        <content type="html"><![CDATA[<h1>Seata架构</h1><ul><li>TC&nbsp;(Transaction&nbsp;Coordinator)&nbsp;-&nbsp;事务协调者：维护全局和分支事务的状态，驱动全局事务提交或回滚。</li><li>TM&nbsp;(Transaction&nbsp;Manager)&nbsp;-&nbsp;事务管理器：定义全局事务的范围：开始全局事务、提交或回滚全局事务。</li><li>RM&nbsp;(Resource&nbsp;Manager)&nbsp;-&nbsp;资源管理器：管理分支事务处理的资源，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚。</li></ul><p>其中，TC&nbsp;为单独部署的&nbsp;Server&nbsp;服务端，TM&nbsp;和&nbsp;RM&nbsp;为嵌入到应用中的&nbsp;Client&nbsp;客户端。</p><p>一个分布式事务的生命周期：<br>1.&nbsp;TM&nbsp;请求&nbsp;TC&nbsp;开启一个全局事务。TC&nbsp;会生成一个&nbsp;XID&nbsp;作为该全局事务的编号。XID会在微服务的调用链路中传播，保证将多个微服务的子事务关联在一起。<br>2.&nbsp;RM&nbsp;请求&nbsp;TC&nbsp;将本地事务注册为全局事务的分支事务，通过全局事务的&nbsp;XID&nbsp;进行关联。<br>3.&nbsp;TM&nbsp;请求&nbsp;TC&nbsp;告诉&nbsp;XID&nbsp;对应的全局事务是进行提交还是回滚。<br>4.&nbsp;TC&nbsp;驱动&nbsp;RM&nbsp;们将&nbsp;XID&nbsp;对应的自己的本地事务进行提交还是回滚。</p><h2 id="分库分表全局事务（ShardingSphere）">分库分表全局事务（ShardingSphere）</h2><p>不能简单的在全局事务发起方使用 <code>@GlobalTransactional</code>，因为seata找不到逻辑表对应的物理表，需要融入&nbsp;Apache&nbsp;ShardingSphere&nbsp;分布式事务</p><p>整合&nbsp;Seata&nbsp;AT&nbsp;事务时，需要将&nbsp;TM，RM&nbsp;和&nbsp;TC&nbsp;的模型融入&nbsp;Apache&nbsp;ShardingSphere&nbsp;的分布式事务生态中。&nbsp;在数据库资源上，Seata&nbsp;通过对接&nbsp;DataSource&nbsp;接口，让&nbsp;JDBC&nbsp;操作可以同&nbsp;TC&nbsp;进行远程通信。&nbsp;同样，Apache&nbsp;ShardingSphere&nbsp;也是面向&nbsp;DataSource&nbsp;接口，对用户配置的数据源进行聚合。&nbsp;因此，将&nbsp;DataSource&nbsp;封装为&nbsp;基于Seata&nbsp;的&nbsp;DataSource&nbsp;后，就可以将&nbsp;Seata&nbsp;AT&nbsp;事务融入到&nbsp;Apache&nbsp;ShardingSphere的分片生态中。</p><ol><li>引入依赖</li><li>配置seata.conf <pre class="line-numbers language-config" data-language="config"><code class="language-config">client&nbsp;{    application.id&nbsp;=&nbsp;tulingmall‐order‐curr    transaction.service.group&nbsp;=&nbsp;tuling‐order‐group}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li><li>开启全局事务配置:<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// GlobalTransactional和ShardingTransactionType不能同时出现</span> <span class="token annotation punctuation">@ShardingTransactionType</span><span class="token punctuation">(</span><span class="token class-name">TransactionType</span><span class="token punctuation">.</span><span class="token constant">BASE</span><span class="token punctuation">)</span> <span class="token annotation punctuation">@Transactional</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li><li>关闭Seata数据源自动代理<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">seata</span><span class="token punctuation">:</span>    <span class="token key atrule">enable‐auto‐data‐source‐proxy</span><span class="token punctuation">:</span> false <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li></ol><h1>柔性事务：可靠消息最终一致性</h1><h2 id="本地消息表方案">本地消息表方案</h2><ol><li>定时任务扫描日志<ul><li>启动独立的线程，定时对消息日志表中的消息进行扫描并发送至消息中间件，在消息中间件反馈发送成功后删除该消息日志，否则等待定时任务下一周期重试。</li></ul></li><li>消费消息（幂等控制）<ul><li>可以使用MQ的ack（即消息确认）机制，消费者监听MQ，如果消费者接收到消息并且业务处理完成后向MQ发送ack（即消息确认），此时说明消费者正常消费消息完成，MQ将不再向消费者推送消息，否则消费者会不断重试向消费者来发送消息。</li><li>由于消息会重复投递，需要实现幂等性。</li></ul></li></ol><h2 id="Rocketmq事务消息">Rocketmq事务消息</h2><p>RocketMQ事务消息设计则主要是为了<strong>解决Producer端的消息发送与本地事务执行的原子性问题</strong>，RocketMQ的设计中broker与producer端的双向通信能力，使得broker天生可以作为一个事务协调者存在；而RocketMQ本身提供的存储机制为事务消息提供了持久化能力；RocketMQ的高可用机制以及可靠消息设计则为事务消息在系统发生异常时依然能够保证达成事务的最终一致性。在RocketMQ&nbsp;4.3后实现了完整的事务消息，实际上其实是对本地消息表的一个封装，将本地消息表移动到了MQ内部，解决Producer端的消息发送与本地事务执行的原子性问题。</p><ol><li>Producer发送事务消息<ul><li>Producer（MQ发送方）发送事务消息至MQ&nbsp;Server，MQ&nbsp;Server将消息状态标记为Prepared（预览状态），注意此时这条消息消费者（MQ订阅方）是无法消费到的。</li></ul></li><li>MQ&nbsp;Server回应消息发送成功<ul><li>MQ&nbsp;Server接收到Producer发送的消息则回应发送成功表示MQ已接收到消息。</li></ul></li><li>Producer执行本地事务</li><li>消息投递<ul><li>若Producer本地事务执行成功则自动向MQ&nbsp;Server发送commit消息</li><li>MQ&nbsp;Server接收到commit消息后将“该消息”状态标记为可消费，此时MQ订阅方即正常消费消息；</li><li>若Producer&nbsp;本地事务执行失败则自动向MQ&nbsp;Server发送rollback消息，MQ&nbsp;Server接收到rollback消息后将删除“该消息”。</li><li>MQ订阅方消费消息，消费成功则向MQ回应ack，否则将重复接收消息。这里ack默认自动回应，即程序执行正常则自动回应ack。</li></ul></li><li>事务回查<ul><li>如果执行Producer端本地事务过程中，执行端挂掉，或者超时，MQ&nbsp;Server将会不停的询问同组的其他Producer来获取事务执行状态，这个过程叫事务回查。MQ&nbsp;Server会根据事务回查结果来决定是否投递消息。</li></ul></li></ol><p>对用户则来说，用户需要分别实现本地事务执行以及本地事务回查方法（<code>RocketMQLocalTransactionListener</code>），因此只需关注本地事务的执行状态即可。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 分布式事务 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>08.支付超时</title>
+      <link href="/2023/07/10/architect/dian-shang-xi-tong/08-zhi-fu-chao-shi/"/>
+      <url>/2023/07/10/architect/dian-shang-xi-tong/08-zhi-fu-chao-shi/</url>
+      
+        <content type="html"><![CDATA[<h1>延迟任务（不推荐）</h1><ol><li>下单时增加一个定时任务，在五分钟后对订单进行超时判断。</li><li>超时判断时，可以先去支付宝上查询订单支付状态。</li></ol><p>如果已支付，则判断订单是否正常结束，这是因为在用户完成扫码支付后，支付宝正常会往图灵电商发送支付成功的通知。但是这个通知是没有事务保证的，所以是非常有可能失败的，这时就需要在订单超时判断时对状态进行对齐。<br>如果未支付，则需要释放库存，取消本地订单，然后通知支付宝取消支付订单。</p><p><strong>五分钟时间太长了，而支付宝的通知又没有事务保证</strong>，通常企业中的做法并不会等到订单超时时才去查询订单状态，而是<strong>在后台会多次频繁查询支付宝支付状态</strong>，这样可以更及时的获得支付结果。例如五分钟超时时间，至少需要半分钟或者一分钟去查一次支付宝订单状态，如果支付成功了，就及时结束后续等待处理过程。如果没有完成支付，就再开启下一个定时任务，等待下次检查。</p><h1>RocketMQ事务消息（推荐）</h1><p>RocketMQ事务消息机制的核心是对消息状态进行不断的确认。循环确认的过程就正好可以用来改造，解决上面说的频繁任务调度的问题。这样就可以专注于开发业务逻辑，而不用关注频繁复杂的任务调度逻辑。</p><ol><li>支付宝预下单时发送事务消息：通知下游服务进行订单取消</li><li>发送消息后，会先执行本地事务。<ul><li>将订单ID放到Redis中，这样可以在后续进行支付状态检查时，快速找到对应的业务信息。</li><li>只要下单成功，就会返回<code>UNKOWN</code>状态，这样RocketMQ会在之后进行状态回查（检查支付宝支付状态）。</li></ul></li><li>然后在事务状态回查时<ul><li>会自行记录回查次数，超过最大次数就直接取消订单（<code>transactionCheckInterval</code>，默认回查15次，间隔60s，超过<code>ROLLBACK</code>）<ul><li>如果没有超过最大次数，就可以去支付宝中查询订单支付状态。<ul><li>如果已经支付完成，则返回<code>ROLLBACK</code>状态，消息取消，后续就不会再进行本地订单取消了。</li><li>如果未支付，则记录回查次数后，返回<code>UNKNOWN</code>状态，等待下次回查。</li></ul></li></ul></li></ul></li><li>如果订单已经超时（事务消息成功发送出去了）<ul><li>下游的消费者就会完成取消本地订单，释放库存等操作。</li></ul></li><li>如果本地订单已经取消，而支付宝支付状态已经成功，则退款</li></ol><h2 id="通过聚合支付进行分布式事务控制">通过聚合支付进行分布式事务控制</h2><p>如果在对接过程中，直接使用支付宝的二维码通知用户进行当面支付。而用户使用支付宝扫码支付的过程，电商都是完全不知道的，也就没有办法对用户的支付动作进行控制。比如如果电商本地的订单已经超时，就要阻止用户进行扫码支付。可以在支付宝的回调接口判断订单状态，如果订单式已关闭，则发起订单回退。这样显然效率是不高的。</p><p>在很多电商项目中，会采用聚合支付的方式，统一对接多个第三方支付方。用户的支付动作就不是直接与支付宝这样的第三方支付公司交互完成，而是要经过电商后台转发请求完成。这时，就可以通过添加一些分布式锁机制，保证整个支付业务是串行执行的，以<strong>防止在电商进行订单超时回退后，用户再次扫码支付</strong>。</p><h2 id="正向通知与反向通知">正向通知与反向通知</h2><p>当前是通过事务消息通知下游服务订单取消，这其实就是一种反向通知的方式。但是其实最直观的方式还是使用正向通知，即通过事务消息通知下游服务进行订单支付确认，这样这个下单的消息就容易扩展更多的下游消费者。订单下单确认是用户完成支付后，支付宝发起的通知来确认的。这时，如果<strong>订单确认的下游服务实现了幂等控制</strong>，就完全可以将事务消息机制改为正向通知。即在事务消息回查过程中，确认用户已经完成了支付，就发送消息通知下游服务订单支付成功。这样也可以防止支付宝通知丢失造成的订单状态缺失。</p><p>而用户订单超时判断，则可以在事务消息的状态回查过程中，通过记录回查次数判断。如果已经超时，则返回Rollback。同时启动另外一个消息生产者，往下游服务发送一个订单取消的消息，这样也是可以的。</p><h2 id="兜底补偿机制">兜底补偿机制</h2><p>对于订单超时后的回退处理，不光通过RocketMQ的事务消息进行了通知，另外也部署<strong>定时任务</strong>，批量回退超时的订单。<br>这其实就是一种事务消息的兜底补偿机制，以处理那些事务消息机制有可能漏处理的超时订单。在设计金融相关业务时，这种兜底策略会显得尤为重要。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 支付超时 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>07.订单系统设计</title>
+      <link href="/2023/07/09/architect/dian-shang-xi-tong/07-ding-dan-xi-tong-she-ji/"/>
+      <url>/2023/07/09/architect/dian-shang-xi-tong/07-ding-dan-xi-tong-she-ji/</url>
+      
+        <content type="html"><![CDATA[<h1>重复下单问题（幂等）</h1><ol><li>用户在点击“提交订单”的按钮时，不小心点了两下</li><li>网络错误也有可能会导致重传，很多RPC框架和网关都拥有自动重试机制</li></ol><h2 id="font-color-green-主键唯一约束-font"><font color="green">主键唯一约束</font></h2><p>为订单系统增加一个“生成订单号”的服务,这个服务没有参数,返回值就是一个新的、全局唯一的订单号。在用户进入创建订单的页面时，<font color="green"><strong>前端页面会先调用这个生成订单号的服务得到一个订单号，在用户提交订单的时候，在创建订单的请求中带着这个订单号。</strong></font>这个订单号就是订单表的主键，这样，无论是用户原因,还是网络原因等各种情况导致的重试,这些重复请求中的订单号都是相同的。订单服务在订单表中插入数据的时候，<strong>这些重复的INSERT语句中的主键，都是同一个订单号</strong>。数据库的主键唯一约束特性就可以保证，只有一次INSERT 语句的执行是成功的,这样就实现了创建订单服务的幂等性。</p><p>还有一点需要注意的是，在具体实现时，如果是因为重复订单导致插入订单表的语句失败，那么订单服务就不要再把这个错误返回给前端页面了。否则，就有可能会出现用户点击创建订单按钮后，页面提示创建订单失败，而实际上订单已经创建成功了。正确的做法是,遇到这种情况,订单服务直接返回“订单创建成功”的响应即可。要做到这一点，可以捕获 <code>java.sql.SQLIntegrityConstraintViolationException</code> 或者 <code>org.springframework.dao.DuplicateKeyException</code> 来实现。</p><h1>订单ABA问题（幂等）</h1><p>比如连续两次更新订单信息，第一次的更新由于网络问题发生重试，又覆盖了第二次的更新，导致ABA问题</p><h2 id="font-color-green-版本戳-font"><font color="green">版本戳</font></h2><p>数据库表添加<strong>version字段</strong>，每次查询订单的时候，版本号需要随着订单数据返回给页面。<font color="green"><strong>页面在更新数据的请求时,需要把该版本号作为更新请求的参数再带回给订单更新服务</strong></font>。订单服务在更新数据的时候需要<strong>比较订单当前数据的版本号与消息中的版本号是否一致</strong>，如果不一致就拒绝更新数据。如果版本号一致，则还需要在更新数据的同时，把版本号<strong>加1</strong>。当然需要特别注意的是，“比较版本号、更新数据和把版本号加1”这个过程必须在同一个事务里面执行，只有这一系列操作具备<strong>原子性</strong>，才能真正保证并发操作的安全性。<code>UPDATE orders set tracking_number = 666,version = version + 1 WHERE version = ?;</code></p><h1>读写分离</h1><p>使用Redis 作为MySQL 的前置缓存，可以帮助MySQL 挡住绝大部分的查询请求。但是与用户相关的系统,即使同一个功能界面，用户看到的数据也是不一样的。使用缓存的效果就没有那么好了.随着系统的用户数量越来越多,穿透到MySQL 数据库中的读写请求也会越来越多</p><p>读写分离是提升 MySQL 并发能力的<strong>首选方案</strong>，当单个MySQL 无法满足要求的时候，只能用多个MySQL 实例来承担大量的读写请求。MySQL 与大部分常用的关系型数据库一样,都是典型的单机数据库,不支持分布式部署。用一个单机数据库的多个实例组成一个集群,提供分布式数据库服务,是一件非常困难的事情。一个简单且非常有效的是用多个具有相同数据的MySOL 实例来分担大量查询请求，也就是“读写分离”。很多系统，特别是互联网系统，数据的读写比例严重不均衡，<strong>读写比例一般在9:1</strong>到几十比1，即平均每发生几十次查询请求，才会有一次更新请求，那就是说数据库需要应对的绝大部分请求都是只读查询请求。</p><p><font color="gray">分布式存储系统支持分布式写是非常困难的，因为很难解决好数据一致性的问题。但分布式读相对来说就简单得多，能够把数据尽可能实时同步到只读实例上，它们就可以分担大量的查询请求了。读写分离的另一个好处是，实施起来相对比较简单。把使用单机MySQL 的系统升级为读写分离的多实例架构非常容易，一般不需要修改系统的业务逻辑，只需要简单修改DAO (Data Access Object,一般指应用程序中负责访问数据库的抽象层)层的代码,把对数据库的读写请求分开，请求不同的MySQL 实例就可以了。通过读写分离这样一个简单的存储架构升级，数据库支持的并发数量就可以增加几倍到十几倍。所以，当系统的用户数越来越多时，读写分离应该是首要考虑的扩容方案。</font></p><h2 id="数据不一致问题">数据不一致问题</h2><p>读写分离的一个副作用是，可能会存在数据不一致的问题。原因是数据库中的数据在主库完成更新后，是异步同步到每个从库上的，这个过程会有一个微小的时间差。正常情况下，主从延迟非常小，以几毫秒计。但即使是这样小的延迟，也会导致在某个时刻主库和从库上数据不一致的问题。应用程序需要能够接受并克服这种主从不一致的情况，否则就会引发一些由于主从延迟而导致的数据错误。</p><p>回顾我们的订单系统业务，用户对购物车发起商品结算创建订单，进入订单页，打开支付页面进行支付，支付完成后，按道理应该再返回到支付之前的订单页。但如果这时马上自动返回到订单页，就很有可能会出现订单状态还是显示“未支付”的问题。因为支付完成后，订单库的主库中订单状态已经更新了，但订单页查询的从库中这条订单记录的状态可能还未更新，如何解决这种问题呢？其实这个问题并没有特别好的技术手段来解决，所以可以看到，稍微上点规模的电商网站并不会支付完成后自动跳到到订单页，而是<font color="green"><strong>增加了一个支付完成页面</strong></font>，这个页面其实没有任何新的有效信息，就是告诉你支付成功的信息。如果想再查看一下刚刚支付完成的订单，需要手动选择，这样就能很好地规避主从同步延迟的问题。</p><p><strong>如果是那些数据更新后需要立刻查询的业务，这两个步骤可以放到一个数据库事务中，同一个事务中的查询操作也会被路由到主库</strong>，这样就可以规避主从不一致的问题了，还有一种解决方式则是<strong>对查询部分单独指定进行主库查询</strong>。总的来说，对于这种因为主从延迟而带来的数据不一致问题，并没有一种简单方便且通用的技术方案可以解决，对此，我们需要重新设计业务逻辑，<font color="green"><strong>尽量规避更新数据后立即去从库查询刚刚更新的数据</strong></font>。</p><h1>分库分表</h1><p>绝大部分电商企业的在线交易类业务，比如订单、支付相关的系统，还是无法离开MySQL的。原因是只有MySOL之类的关系型数据库，才能提供金融级的事务保证。目前的分布式事务的各种解法方案多少都有些不够完善。</p><h2 id="如何规划分库分表">如何规划分库分表</h2><p>以订单表为例，首先,我们需要思考的问题是，选择分库还是分表，或者两者都有，分库就是把数据拆分到不同的MySQL 数据库实例中，分表就是把数据拆分到一个数据库的多张表里面。在考虑到底是选择分厍还是分表之前,我们需要首先明确一个原则，那就是<strong>能小拆就小拆</strong>. 原因很简单，数据拆得越分散,并发和维护就越麻烦，系统出问题的概率也就越大。</p><p>遵循上面这个原则，还需要进一步了解，哪种情况适合分表，哪种情况适合分库。选择分厍或是分表的目的是解决如下两个问题。</p><ol><li>是为了解决因数据量太大而导致查询慢的问题。这里所说的“查询”，其实主要是事务中的查询和更新操作，因为只读的查询可以通过缓存和主从分离来解决。分表主要用于解决因数据量大而导致的查询慢的问题。</li><li>是为了应对高并发的问题。如果一个数据库实例撑不住，就把并发请求分散到多个实例中，所以分库可用于解决高并发的问题。</li></ol><p>简单地说，<strong>如果数据量太大，就分表；如果并发请求量高，就分库</strong>。一般情况下,我们的解决方案大都需要同时做分库分表,我们可以根据预估的并发量和数据量，分别计算应该拆分成多少个库以及多少张表。</p><h2 id="分库分表案例">分库分表案例</h2><h3 id="数据量">数据量</h3><p>在设计系统，我们预估订单的数量每个月订单2000W，一年的订单数可达2.4 亿。而每条订单的大小大致为1KB，按照我们在MySQL 中学习到的知识，为了让B+树的高度控制在一定范围，保证查询的性能，<strong>每个表中的数据不宜超过2000W</strong>。在这种情况下，为了存下2.4 亿的订单，我们似乎应该将订单表分为16（12 往上取最近的2 的幂）张表。</p><p>但是这样设计，有个问题，我们只考虑了订单表，没有考虑<strong>订单详情表</strong>。我们预估一张订单下的商品平均为10 个，那既是一年的订单详情数可以达到24亿，同样以每表2000W 记录计算，应该订单详情表为128（120 往上取最近的2的幂）张，而订单表和订单详情表虽然记录数上是一对一的关系，但是表之间还是一对一，也就是说订单表也要为128 张。经过再三分析，我们最终将订单表和订单详情表的张数定为32 张。这会导致订单详情表单表的数据量达到8000W（但是我们会对历史数据进行数据迁移，比如迁移到Mongodb或es）</p><h3 id="选择分片键">选择分片键</h3><p>选择分片链有一个最重要的参考因素是我们的业务是如何访问数据的？</p><p>比如我们把订单ID 作为分片键来诉分订单表。那么拆分之后,如果按照订单ID 来查询订单,就需要先根据订单ID 和分片算法,计算所要查的这个订单具体在哪个分片上，也就是哪个库的哪张表中，然后再去那个分片执行查询操作即可。但是当用户打开“我的订单”这个页面的时候，它的查询条件是用户ID，由于这里没有订单ID，因此我们无法知道所要查询的订单具体在哪个分片上，也就没法查了。如果要强行查询的话，那就只能把所有的分片都查询一遍，再合并查询结果，这个过程比较麻烦，而且性能很差，对分页也很不友好。</p><p>这个问题的解决办法是，在生成订单ID的时候，<font color="green"><strong>把用户ID的后几位作为订单ID的一部分。这样按订单ID查询的时候，就可以根据订单ID中的用户ID找到分片。</strong></font><strong>所以在我们的系统中订单ID从唯一ID服务获取ID后，还会将用户ID的后两位拼接，形成最终的订单ID。</strong></p><p>然而，系统对订单的查询万式，肯定不只是按订单ID 或按用户ID 查询两种方式。比如如果有商家希望查询自家家店的订单，有与订单相关的各种报表。对订单做了分库分表，就没法解决了。这个问题又该怎么解决呢？</p><p>一般的做法是，<font color="green"><strong>把订单里数据同步到其他存储系统中</strong></font>，然后在其他存储系统里解决该问题。比如可以再<strong>构建一个以店铺ID作为分片键的只读订单库，专供商家使用</strong>。或者数据同步到Hadoop分布式文件系统（HDFS）中，然后通过一些大数据技术生成与订单相关的报表。</p><p>在分片算法上，我们知道常用的有按范围，比如时间范围分片，哈希分片，查表法分片。一旦做了分库分表，就会极大地限制数据库的查询能力，原本很简单的查询，分库分表之后，可能就没法实现了。分库分表一定是在数据量和并发请求量大到所有招数都无效的情况下，我们才会采用的<strong>最后一招</strong>。</p><h3 id="具体实现">具体实现</h3><ol><li>纯手工方式：修改应用程序的DAO 层代码，定义多个数据源，在代码中需要访问数据库的每个地方指定每个数据库请求的数据源。</li><li>组件方式：使用像<font color="green"><strong>Sharding-JDBC</strong></font>这些组件集成在应用程序内，用于代理应用程序的所有数据库请求，并把请求自动路由到对应的数据库实例上。</li><li>代理方式: 在应用程序和数据库实例之间部署一组数据库代理实例,比如Atlas 或Sharding-Proxy。对于应用程序来说,数据库代理把自己伪装成一个单节点的MySQL 实例,应用程序的所有数据库请求都将发送给代理，代理分离请求，然后将分离后的请求转发给对应的数据库实例。</li></ol><p>在这三种方式中一般推荐第二种，使用分离组件的方式。采用这种方式,<strong>代码侵入非常少</strong>,同时还能兼顾性能和稳定性。<br>如果应用程序是一个逻辑非常简单的微服务,简单到只有几个SQL,或者应用程序使用的编程语言没有合适的读写分离组件,那么也可以考虑通过纯手工的方式。<br>不推荐使用代理方式（第三种方式），原因是代理方式加长了系统运行时数据库请求的调用链路,会造成一定的性能损失，而且代理服务本身也可能会出现故障和性能瓶颈等问题。代理方式有一个好处，对应用程序完全透明。</p><h1>归档历史数据</h1><p>所谓归档，也是一种拆分数据的策略。简单地说，就是把大量的历史订单移到另外一张历史订单表或数据存储中。为什这么做呢？订单数据有个特点：具备时间属性的，并且随着系统的运行，数据累计增长越来越多。但其实订单数据在使用上有个特点，最近的数据使用最频繁，超过一定时间的数据很少使用，这被称之为<font color="green"><strong>热尾效应</strong></font>。</p><p>因为新数据只占数据息量中很少的一部分，所以把新老数据分开之后，新数据的数据量就少很多，查询速度也会因此快很多。虽然与之前的总量相比，老数据没有减少太多，但是因为老数据很少会被访问到，所以即使慢一点儿也不会有太大的问题，而且还可以使用其他的存储系统提升查询速度。</p><p>这样拆分数据的另外一个好处是，拆分订单时，<strong>系统需要改动的代码非常少</strong>。对订单表的大部分操作都是在订单完成之前执行的，这些业务逻辑都是完全不用修改的。即使是像退货退款这类订单完成之后的操作，也是有时限的，这些业务逻辑也不需要修改,还是按照之前那样操作订单即可。</p><p><strong>基本上只有查询统计类的功能会查到历史订单</strong>，这些都需要稍微做些调整。按照查询条件中的时间范围，选择去订单表还是历史订单中查询就可以了。很多大型互联网电商在逐步发展壮大的过程中，长达数年的时间采用的都是这种订单拆分的方案，正如我们前面看到的京东就是如此。</p><h2 id="分布式事务">分布式事务</h2><p>考察迁移的过程，我们是逐表批次删除，对于每张订单表，先从MySQL 从获得指定批量的数据，写入MongoDB，再从MySQL 中删除已写入MongoDB 的部分，这里存在着一个多源的数据操作，为了保证数据的一致性，看起来似乎需要分布式事务。<font color="green"><strong>但是其实这里并不需要分布式事务，解决的关键在于写入订单数据到MongoDB 时，我们要记住同时写入当前迁入数据的最大订单ID，让这两个操作执行在同一个事务之中。这样，在MySQL 执行数据迁移时，总是去MongoDB 中获得上次处理的最大OrderId，作为本次迁移的查询起始ID。当然数据写入MongoDB 后，还要记得删除MySQL 中对应的数据。</strong></font></p><p>在这个过程中，我们需要注意的问题是，<strong>尽量不要影响线上的业务</strong>。迁移如此大量的数据，或多或少都会影响数据库的性能，因此应该尽量选择在<strong>闲时迁移</strong>而且每次数据库操作的记录数不宜太多。按照一般的经验，对MySQL 的操作的记录条数<strong>每次控制在10000以下是比较合适</strong>，在我们的系统中缺省是2000 条。更重要的是，迁<strong>移之前一定要做好备份</strong>，这样的话，即使不小心误操作了，也能用备份来恢复。</p><h2 id="如何批量删除大量数据">如何批量删除大量数据</h2><p>虽然我们是按时间迁出订单表中的数据，<font color="green"><strong>但是删除最好还是按ID来删除，并且同样要控制住每次删除的记录条数</strong></font>，太大的数量容易遇到错误。</p><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">delete</span> <span class="token keyword">from</span> ${orderTableName} o <span class="token keyword">WHERE</span> o<span class="token punctuation">.</span>id <span class="token operator">&gt;=</span> <span class="token comment">#{minOrder!d} and o.id &lt;= #{maxOrderId} </span><span class="token keyword">order</span> <span class="token keyword">by</span> id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>这样每次删除的时候，由于条件变成了主键比较，而在MySQL 的InnoDB 存储引擎中，表数据结构就是按照主键组织的一棵B+树，同时B+树本身就是有序的，因此优化后不仅查找变得非常快,而且也不需要再进行额外的排序操作了。</p><p>为什么要加一个排序的操作呢？因为<font color="green"><strong>按ID排序后，每批删除的记录基本上都是ID连续的一批记录</strong></font>，由于B+树的有序性，这些ID 相近的记录，在磁盘的物理文件上，大致也是存放在一起的，这样删除效率会比较高，也便于MySQL 回收页。</p><p>关于大批量删除数据，还有一个点需要注意一下，<font color="green"><strong>执行删除语句后，最好能停顿一小会，因为删除后肯定会牵涉到大量的B+树页面分裂和合并</strong></font>，这个时候MySQL的本身的负载就不小了，停顿一小会，可以让MySQL的负载更加均衡。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 订单系统 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>06.微服务网关整合OAuth2.0授权中心</title>
+      <link href="/2023/07/09/architect/dian-shang-xi-tong/06-wei-fu-wu-wang-guan-zheng-he-oauth2-0-shou-quan-zhong-xin/"/>
+      <url>/2023/07/09/architect/dian-shang-xi-tong/06-wei-fu-wu-wang-guan-zheng-he-oauth2-0-shou-quan-zhong-xin/</url>
+      
+        <content type="html"><![CDATA[<ol><li>配置授权服务器（AuthorizationServerConfigurerAdapte - 授权码/密码）<ol><li>DB模式</li><li>内存模式</li></ol></li><li>SpringSecurity（WebSecurityConfigurerAdapter）</li><li>JWT：头部（header）、载荷（payload）与签名（signature 加盐）<ol><li>一次性验证、无状态认证</li><li>注销续约复杂，不适合会话管理</li></ol></li><li>JWT非对称加密（公钥私钥）</li><li>扩展JWT中的存储内容（TokenEnhancer）</li><li>接入网关服务（GlobalFilter）<ol><li>过滤不需要认证的url</li><li>校验token（需要从授权服务获取公钥）<ul><li>不能直接通过@LoadBalancer配置RestTemplate去获取公钥，因为Spring容器启动过程中@LoadBalancer还未生效</li></ul></li><li>校验通过后，从token中获取的用户登录信息存储到请求头中</li></ol></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 授权中心 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>05.分布式唯一ID</title>
+      <link href="/2023/07/09/architect/dian-shang-xi-tong/05-fen-bu-shi-wei-yi-id/"/>
+      <url>/2023/07/09/architect/dian-shang-xi-tong/05-fen-bu-shi-wei-yi-id/</url>
+      
+        <content type="html"><![CDATA[<ul><li><strong>全局唯一性</strong>：不能出现重复的ID号，既然是唯一标识，这是最基本的要求。</li><li><strong>趋势递增、单调递增</strong>：保证下一个ID一定大于上一个ID。</li><li><strong>信息安全</strong>：如果ID是连续的，恶意用户的扒取工作就非常容易做了，直接按照顺序下载指定URL 即可；如果是订单号就更危险了，竞对可以直接知道我们一天的单量。所以在一些应用场景下，会需要ID 无规则、不规则。</li></ul><h1>常见方法</h1><h2 id="UUID">UUID</h2><p>UUID(Universally Unique Identifier)的标准型式包含 32 个 16 进制数字，以连字号分为五段，<strong>形式为 8-4-4-4-12 的 32 个字符</strong>，示例：<br>550e8400-e29b-41d4-a716-446655440000，到目前为止业界一共有5种方式生成UUID，详情见IETF 发布的UUID 规范 A Universally Unique IDentifier (UUID) URN Namespace。</p><ul><li>优点：性能非常高，本地生成，没有网络消耗。</li><li>缺点：<ul><li>不易于存储：UUID 太长，16 字节128 位，通常以36 长度的字符串表示，很多场景不适用。</li><li>信息不安全：基于 MAC 地址生成 UUID 的算法可能会造成 <font color="red"><strong>MAC 地址泄露</strong></font>，这个漏洞曾被用于寻找梅丽莎病毒的制作者位置。</li></ul></li><li>ID 作为主键时在特定的环境会存在一些问题，比如做 DB 主键的场景下，UUID 就非常不适用<ul><li>MySQL 官方有明确的建议主键要尽量越短越好，36 个字符长度的 UUID 不符合要求。</li><li>对 MySQL 索引不利：如果作为数据库主键，在InnoDB 引擎下，UUID 的无序性可能会引起数据位置频繁变动，严重影响性能。在MySQL InnoDB 引擎中使用的是聚集索引，由于多数 RDBMS 使用 B-tree 的数据结构来存储索引数据，在主键的选择上面我们应该<font color="red"><strong>尽量使用有序的主键保证写入性能</strong></font>。</li></ul></li></ul><h2 id="雪花算法">雪花算法</h2><p>这种方案大致来说是一种以划分命名空间（UUID 也算，由于比较常见，所以单独分析）来生成ID 的一种算法，Snowflake 是Twitter 开源的分布式 ID 生成算法。Snowflake 把64-bit分别划分成多段</p><ul><li>第 0 位： 符号位（标识正负），始终为 0，没有用，不用管。</li><li>第 1~41 位 ：一共41位，用来表示<strong>时间戳</strong>，单位是毫秒，可以支撑 2 ^41 毫秒（约69 年）</li><li>第 42~52 位 ：一共10位，一般来说，<strong>前5位表示机房 ID，后5位表示机器ID</strong>（实际项目中可以根据实际情况调整），这样就可以区分不同集群/机房的节点，这样就可以表示32 个IDC，每个IDC 下可以有32 台机器。</li><li>第 53~64 位 ：一共12位，用来表示<strong>序列号</strong>。 序列号为自增值，代表单台机器每毫秒能够产生的最大 ID 数(2^12 = 4096),也就是说单台机器<strong>每毫秒最多可以生成4096个唯一ID</strong>。</li></ul><p>理论上snowflake 方案的QPS约为409.6w/s，这种分配方式可以保证在任何一个IDC的任何一台机器在任意毫秒内生成的ID都是不同的。</p><ul><li>优点：<ul><li>毫秒数在高位，自增序列在低位，整个ID都是趋势递增的。</li><li>不依赖数据库等第三方系统，以服务的方式部署，稳定性更高，生成ID的性能也是非常高的。</li><li>可以根据自身业务特性分配bit位，非常灵活。</li></ul></li><li>缺点：强依赖机器时钟，如果机器上<font color="red"><strong>时钟回拨</strong></font>，会导致发号重复或者服务会处于不可用状态。</li></ul><h2 id="Mongdb-ObjectID">Mongdb ObjectID</h2><p>它也可以算作是和snowflake类似方法，通过 “<strong>时间+机器码+pid+inc</strong>” 共12 个字节，通过4+3+2+3的方式最终标识成一个24长度的十六进制字符。</p><h2 id="Seata-UUID">Seata UUID</h2><p>Seata 内置了一个分布式 UUID 生成器，用于辅助生成全局事务 ID 和分支事务 ID，我们同样可以拿来使用，完整类名为：<code>io.seata.common.util.IdWorker</code></p><h2 id="数据库生成-MySQL">数据库生成 (MySQL)</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token identifier"><span class="token punctuation">`</span>sequence_id<span class="token punctuation">`</span></span> <span class="token punctuation">(</span> <span class="token identifier"><span class="token punctuation">`</span>id<span class="token punctuation">`</span></span> <span class="token keyword">bigint</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token keyword">unsigned</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span> <span class="token identifier"><span class="token punctuation">`</span>stub<span class="token punctuation">`</span></span> <span class="token keyword">char</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token identifier"><span class="token punctuation">`</span>id<span class="token punctuation">`</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">UNIQUE</span> <span class="token keyword">KEY</span> <span class="token identifier"><span class="token punctuation">`</span>stub<span class="token punctuation">`</span></span> <span class="token punctuation">(</span><span class="token identifier"><span class="token punctuation">`</span>stub<span class="token punctuation">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">ENGINE</span><span class="token operator">=</span><span class="token keyword">InnoDB</span> <span class="token keyword">DEFAULT</span> <span class="token keyword">CHARSET</span><span class="token operator">=</span>utf8mb4<span class="token punctuation">;</span>stub<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>段无意义，只是为了占位，便于我们插入或者修改数据。并且，给 stub 字段创建了唯一索引，保证其唯一性。</p><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">BEGIN</span><span class="token punctuation">;</span><span class="token keyword">REPLACE</span> <span class="token keyword">INTO</span> sequence_id <span class="token punctuation">(</span>stub<span class="token punctuation">)</span> <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'stub'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token keyword">SELECT</span> LAST_INSERT_ID<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token keyword">COMMIT</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>插入数据这里，我们没有使用 insert into 而是使用 replace into 来插入数据。replace 是insert 的增强版，replace into 首先尝试插入数据到表中，</p><ol><li>如果发现表中已经有此行数据（根据主键或者唯一索引判断）则先删除此行数据，然后插入新的数据。</li><li>否则，直接插入新数据。</li></ol><ul><li>优点：非常简单，利用现有数据库系统的功能实现，成本小，有DBA 专业维护。ID号单调自增，存储消耗空间小。</li><li>缺点：<ul><li>支持的并发量不大</li><li>存在数据库单点问题（可以使用数据库集群解决，不过增加了复杂度）</li><li>ID 没有具体业务含义、安全问题（比如<font color="red"><strong>根据订单 ID 的递增规律就能推算出每天的订单量</strong></font>，商业机密啊！ ）</li><li>每次获取 ID 都要访问一次数据库（<font color="red"><strong>增加了对数据库的压力</strong></font>，获取速度也慢）</li></ul></li></ul><p>对于MySQL 性能问题，可用如下方案解决：在分布式系统中我们可以<strong>多部署几台机器，每台机器设置不同的初始值，且步长和机器数相等</strong>。比如有两台机器。设置步长step 为2，TicketServer1 的初始值为1（1，3，5，7，9，11…）、TicketServer2 的初始值为2（2，4，6，8，10…）。这是Flickr（雅虎旗下图片分享网站）团队在2010 年撰文介绍的一种主键生成策略（Ticket Servers: Distributed Unique Primary Keys on the Cheap ）。为了实现上述方案分别设置两台机器对应的参数，TicketServer1 从1 开始发号，TicketServer2 从2 开始发号，两台机器每次发号之后都递增2。假设我们要部署N 台机器，步长需设置为N，每台的初始值依次为0,1,2…N-1。</p><p>这种架构貌似能够满足性能的需求，但有以下几个缺点：</p><ul><li>系统<font color="red"><strong>水平扩展比较困难</strong></font>，比如定义好了步长和机器台数之后，如果要添加机器该怎么做？假设现在只有一台机器发号是1,2,3,4,5（步长是1），这个时候需要扩容机器一台。可以这样做：把第二台机器的初始值设置得比第一台超过很多，比如140（假设在扩容时间之内第一台不可能发到140），同时设置步长为2，那么这台机器下发的号码都是140 以后的偶数。然后摘掉第一台，把ID 值保留为奇数，比如7，然后修改第一台的步长为2。让它符合我们定义的号段标准，对于这个例子来说就是让第一台以后只能产生奇数。扩容方案看起来复杂吗？貌似还好，现在想象一下如果我们线上有100 台机器，这个时候要扩容该怎么做？简直是噩梦。所以系统水平扩展方案复杂难以实现。</li><li>ID <font color="red"><strong>没有了单调递增的特性</strong></font>，只能趋势递增，这个缺点对于一般业务需求不是很重要，可以容忍。</li><li><strong>数据库压力</strong>还是很大，每次获取ID 都得读写一次数据库，只能靠堆机器来提高性能。</li></ul><h2 id="Redis">Redis</h2><p>通过 Redis 的 incr 命令即可实现对 id 原子顺序递增。为了提高可用性和并发，我们可以使用 Redis Cluster。</p><p>除了高可用和并发之外，我们知道 Redis 基于内存，我们需要<strong>持久化数据</strong>，避免重启机器或者机器故障后数据丢失。很明显，Redis 方案性能很好并且生成的 ID 是有序递增的。不过，我们也知道，即使 Redis 开启了持久化，不管是快照（snapshotting，RDB）、只追加文件（append-only file, AOF）还是 RDB 和AOF 的混合持久化依然<font color="red"><strong>存在着丢失数据的可能，那就意味着产生的 ID 存在着重复的概率</strong></font>。</p><h1>分布式ID微服务</h1><h2 id="Leaf-segment">Leaf-segment</h2><p>Leaf-segment 方案，在使用数据库的方案上，做了如下改变：</p><ul><li>原 MySQL 方案每次获取 ID 都得读写一次数据库，造成数据库压力大。改为<strong>批量获取</strong>，每次获取一个segment(step 决定大小)号段的值。用完之后再去数据库获取新的号段，可以大大的减轻数据库的压力。</li><li><strong>各个业务不同的发号需求用 biz_tag 字段来区分</strong>，每个 biz-tag 的 ID 获取相互隔离，互不影响。如果以后有性能需求需要对数据库扩容，不需要上述描述的复杂的扩容操作，只需要对 biz_tag 分库分表就行。</li><li>biz_tag 用来区分业务，max_id 表示该 biz_tag 目前所被分配的 ID 号段的最大值，step 表示每次分配的号段长度。原来获取ID 每次都需要写数据库，现在只需要把step 设置得足够大，比如1000。那么只有当1000 个号被消耗完了之后才会去重新读写一次数据库。<strong>读写数据库的频率从1减小到了1/step</strong>。</li></ul><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">Begin</span><span class="token keyword">UPDATE</span> <span class="token keyword">table</span> <span class="token keyword">SET</span> max_id<span class="token operator">=</span>max_id<span class="token operator">+</span>step <span class="token keyword">WHERE</span> biz_tag<span class="token operator">=</span>xxx<span class="token keyword">SELECT</span> tag<span class="token punctuation">,</span> max_id<span class="token punctuation">,</span> step <span class="token keyword">FROM</span> <span class="token keyword">table</span> <span class="token keyword">WHERE</span> biz_tag<span class="token operator">=</span>xxx<span class="token keyword">Commit</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><ul><li>优点：<ul><li>Leaf 服务可以很方便的<strong>线性扩展</strong>，性能完全能够支撑大多数业务场景。ID 号码是趋势递增的8byte 的64 位数字，满足上述数据库存储的主键要求。</li><li>容灾性高：Leaf 服务内部有<strong>号段缓存</strong>，即使DB 宕机，短时间内Leaf 仍能正常对外提供服务。</li><li>可以自定义 max_id 的大小，非常方便业务从原有的ID方式上迁移过来。</li></ul></li><li>缺点：<ul><li>ID 号码不够随机，能够<font color="red"><strong>泄露发号数量</strong></font>的信息，不太安全。</li><li>TP999 数据波动大，当号段使用完之后还是会在获取新号段时在更新数据库的I/O依然会存在着等待，tg999 数据会出现<font color="red"><strong>偶尔的尖刺</strong></font>。</li><li><strong>DB 宕机</strong>会造成整个系统不可用。</li></ul></li></ul><h3 id="双buffer优化">双buffer优化</h3><p><font color="gray">Leaf 取号段的时机是在号段消耗完的时候进行的，也就意味着号段临界点的ID 下发时间取决于下一次从DB取回号段的时间，并且在这期间进来的请求也会因为DB号段没有取回来，导致线程阻塞。如果请求DB 的网络和DB 的性能稳定，这种情况对系统的影响是不大的，但是假如取DB 的时候网络发生抖动，或者DB 发生慢查询就会导致整个系统的响应时间变慢。为此，希望DB 取号段的过程能够做到无阻塞，不需要在DB 取号段的时候阻塞请求线程，即当号段消费到某个点时就异步的把下一个号段加载到内存中。而不需要等到号段用尽的时候才去更新号段。这样做就可以很大程度上的降低系统的TP999 指标。</font><br>采用双buffer 的方式，Leaf 服务内部有两个号段缓存区segment。<strong>当前号段已下发10%时</strong>，如果下一个号段未更新，则<strong>另启一个更新线程去更新下一个号段</strong>。<strong>当前号段全部下发完后</strong>，如果下个号段准备好了则<strong>切换到下个号段为当前segment接着下发</strong>，循环往复。<br>通常<strong>推荐segment长度设置为服务高峰期发号QPS 的600 倍（10 分钟），这样即使DB 宕机，Leaf 仍能持续发号10-20 分钟不受影响</strong>。每次请求来临时都会判断下个号段的状态，从而更新此号段，所以偶尔的网络抖动不会影响下个号段的更新。</p><h3 id="Leaf-高可用容灾">Leaf 高可用容灾</h3><p>对于第三点“DB 可用性”问题，可以采用<strong>一主两从</strong>的方式，同时分机房部署，Master 和Slave 之间采用半同步方式同步数据。美团内部使用了奇虎360 的Atlas 数据库中间件（已开源，改名为DBProxy）做主从切换。当然这种方案在一些情况会退化成异步模式，甚至在非常极端情况下仍然会造成数据不一致的情况，但是出现的概率非常小。如果要保证100%的数据强一致，可以选择使用“类Paxos算法”实现的强一致MySQL 方案，如MySQL 5.7 中的MySQL Group Replication。但是运维成本和精力都会相应的增加，根据实际情况选型即可。</p><h2 id="Leaf-snowflake">Leaf-snowflake</h2><p>Leaf-segment 方案可以生成趋势递增的ID，同时ID 号是可计算的，不适用于订单ID 生成场景，比如竞对在两天中午12 点分别下单，通过订单id 号相减就能大致计算出公司一天的订单量，这个是不能忍受的。面对这一问题，美团提供了Leaf-snowflake 方案。</p><p>Leaf-snowflake 方案完全沿用snowflake 方案的bit 位设计，即是“1+41+10+12”的方式组装ID 号。对于workerID 的分配，当服务集群数量较小的情况下，完全可以手动配置。Leaf 服务规模较大，动手配置成本太高。所以<strong>使用Zookeeper 持久顺序节点的特性自动对snowflake节点配置wokerID</strong>。</p><p>Leaf-snowflake 是按照下面几个步骤启动的：</p><ul><li>启动Leaf-snowflake 服务，连接Zookeeper，在leaf_forever 父节点下检查自己是否已经注册过（是否有该顺序子节点）。</li><li>如果有注册过直接取回自己的workerID（zk 顺序节点生成的int 类型ID 号），启动服务。</li><li>如果没有注册过，就在该父节点下面创建一个持久顺序节点，创建成功后取回顺序号当做自己的workerID 号，启动服务。</li></ul><h3 id="弱依赖ZooKeeper">弱依赖ZooKeeper</h3><p>除了每次会去ZK 拿数据以外，也会在<strong>本机文件系统上缓存一个workerID文件</strong>。当ZooKeeper 出现问题，恰好机器出现问题需要重启时，能保证服务能够正常启动。这样做到了对三方组件的弱依赖。</p><h3 id="解决时钟问题">解决时钟问题</h3><p>首先在启动时，服务会进行检查：</p><ol><li>新节点通过检查综合对比其余Leaf 节点的系统时间来判断自身系统时间是否准确，具体做法是取所有运行中的Leaf-snowflake 节点的服务IP：Port，然后通过RPC 请求得到所有节点的系统时间，计算<strong>sum(time)/nodeSize</strong>，然后看本机时间与这个平均值是否在阈值之内来确定当前系统时间是否准确，准确正常启动服务，不准确认为本机系统时间发生大步长偏移，启动失败并报警。</li><li>在ZooKeeper 中登记过的老节点，同样会<strong>比较自身系统时间和ZooKeeper上本节点曾经的记录时间以及所有运行中的Leaf-snowflake节点的时间，不准确同样启动失败并报警</strong>。</li><li>在运行过程中，<strong>每隔一段时间节点都会上报自身系统时间写入ZooKeeper</strong>。</li></ol><p>在服务运行过程中，机器的NTP 同步也会造成秒级别的回退，由于强依赖时钟，对时间的要求比较敏感，美团建议有三种解决方案，</p><ol><li>可以<strong>直接关闭NTP同步</strong>；</li><li>在时钟回拨的时候<strong>直接不提供服务直接返回ERROR_CODE，等时钟追上</strong></li><li><strong>做一层重试，然后上报报警系统</strong>，更或者是发现有时钟回拨之后<strong>自动摘除本身节点并报警</strong></li></ol><p>从美团的实际运行情况来看，在2017 年闰秒出现那一次出现过部分机器回拨，由于Leaf-snowflake 的策略保证，成功避免了对业务造成的影响。<br>Leaf 在美团点评公司内部服务包含金融、支付交易、餐饮、外卖、酒店旅游猫眼电影等众多业务线。目前Leaf 的性能在4C8G 的机器上QPS 能压测到近<strong>5万/s</strong>，TP999 1ms，已经能够满足大部分的业务的需求。每天提供亿数量级的调用量。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 分布式唯一ID </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>04.微服务全链路灰度发布</title>
+      <link href="/2023/07/08/architect/dian-shang-xi-tong/04-wei-fu-wu-quan-lian-lu-hui-du-fa-bu/"/>
+      <url>/2023/07/08/architect/dian-shang-xi-tong/04-wei-fu-wu-quan-lian-lu-hui-du-fa-bu/</url>
+      
+        <content type="html"><![CDATA[<p>灰度发布&nbsp;Gray&nbsp;Release（又名金丝雀发布&nbsp;Canary&nbsp;Release）。不停机旧版本，部署新版本，高比例流量（例如：95%）走旧版本，低比例流量（例如：5%）切换到新版本，通过监控观察无问题，逐步扩大范围，最终把所有流量都迁移到新版本上。属无损发布。</p><p>优点：灵活简单，不需要用户标记驱动。安全性高，新版本如果出现问题，只会发生在低比例的流量上<br>缺点：成本较高，需要部署稳定/灰度两套环境</p><p>微服务体系架构中，服务之间的依赖关系错综复杂，有时某个功能发版依赖多个服务同时升级上线。我们希望可以对这些服务的新版本同时进行小流量灰度验证，这就是微服务架构中特有的全链路灰度场景，通过构建从网关到整个后端服务的环境隔离来对多个不同版本的服务进行灰度验证。在发布过程中，我们只需部署服务的灰度版本，流量在调用链路上流转时，由流经的网关、各个中间件以及各个微服务来识别灰度流量，并动态转发至对应服务的灰度版本。<br>**无论是微服务网关还是微服务本身都需要识别流量，根据治理规则做出动态决策。当服务版本发生变化时，这个调用链路的转发也会实时改变。**相比于利用机器搭建的灰度环境，这种方案不仅可以节省大量的机器成本和运维人力，而且可以帮助开发者实时快速的对线上流量进行精细化的全链路控制。</p><h1>全链路灰度设计思路</h1><ol><li>链路上各个组件和服务能够根据请求流量特征进行<strong>动态路由</strong>。</li><li>需要对服务下的所有节点进行分组，能够区分版本。</li><li>需要对流量进行<strong>灰度标识、版本标识</strong>。</li><li>需要识别出不同版本的灰度流量。</li></ol><p>首先，需要支持动态路由功能，对于Spring&nbsp;Cloud、Dubbo开发框架，可以对出口流量实现自定义Filter，在该Filter中完成流量识别以及标签路由。同时需要借助分布式链路追踪技术完成流量标识链路传递以及流量自动染色。此外，需要引入一个中心化的流量治理平台，方便各个业务线的开发者定义自己的全链路灰度规则。实现全链路灰度的能力，无论是成本还是技术复杂度都是比较高的，以及后期的维护、扩展都是非常大的成本。</p><h2 id="标签路由">标签路由</h2><p>标签路由通过对服务下所有节点<strong>按照标签名和标签值不同进行分组</strong>，使得订阅该服务节点信息的服务消费端可以**按需访问该服务的某个分组，**即所有节点的一个子集。服务消费端可以使用服务提供者节点上的任何标签信息，根据所选标签的实际含义，消费端可以将标签路由应用到更多的业务场景中。</p><h2 id="节点打标">节点打标</h2><p><strong>给服务节点添加不同的标签</strong>：</p><ul><li><strong>K8S</strong>：在使用Kubernetes&nbsp;Service作为服务发现的业务系统中，服务提供者通过向ApiServer提交Service资源完成服务暴露，服务消费端监听与该Service资源下关联的Endpoint资源，从Endpoint资源中获取关联的业务Pod&nbsp;资源，读取上面的Labels数据并作为该节点的元数据信息。所以，我们<strong>只要在业务应用描述资源Deployment中的Pod模板中为节点添加标签即可</strong>。</li><li><strong>Nacos</strong>：一般是需要业务根据其使用的微服务框架来决定打标方式。如果Java应用使用的Spring&nbsp;Cloud微服务开发框架，我们可以为业务容器添加对应的环境变量来完成标签的添加操作。比如我们希望为节点添加版本灰度标，那么为业务容器添加<code>spring.cloud.nacos.discovery.metadata.version=gray</code>，这样框架向Nacos注册该节点时会为其添加一个标签<code>verison=gray</code>。</li></ul><h2 id="流量染色">流量染色</h2><p>为请求流量添加不同灰度标识来方便区分。我们可以在请求的源头上对流量进行染色，前端在发起请求时根据用户信息或者平台信息的不同对流量进行打标。如果前端无法做到，我们也可以在微服务网关上对匹配特定路由规则的请求动态添加流量标识。此外，流量在链路中流经灰度节点时，如果请求信息中不含有灰度标识，需要自动为其染色，接下来流量就可以在后续的流转过程中优先访问服务的灰度版本。<strong>保证请求链路上的各个组件能够识别出不同的灰度流量</strong>。</p><h2 id="分布式链路追踪">分布式链路追踪</h2><p>借助于分布式链路追踪思想，我们也可以传递一些自定义信息，比如灰度标识。<strong>保证灰度标识能够在链路中一直传递下去</strong>。</p><h1>框架</h1><ul><li><a href="https://github.com/Nepxion/Discovery">Discovery</a>：Spring</li><li><a href="https://help.aliyun.com/document_detail/359851.html">MSE</a>：阿里云平台</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 微服务灰度发布 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>03.微服务架构拆分</title>
+      <link href="/2023/07/08/architect/dian-shang-xi-tong/03-wei-fu-wu-jia-gou-chai-fen/"/>
+      <url>/2023/07/08/architect/dian-shang-xi-tong/03-wei-fu-wu-jia-gou-chai-fen/</url>
+      
+        <content type="html"><![CDATA[<h1>微服务拆分时机</h1><p>微服务不仅仅是技术的升级，更是开发方式、组织架构、开发观念的转变。</p><ul><li><strong>业务规模</strong>：业务模式得到市场的验证，需要进一步加快脚步快速占领市场，这时业务的规模变得越来越大，按产品生命周期来划分（导入期、成长期、成熟期、衰退期）这时一般在成长期阶段。<strong>如果是导入期，尽量采用单体架构</strong>。</li><li><strong>团队规模</strong>：一般是团队达到百人的时候，主要还是要结合业务复杂度</li><li><strong>技术储备</strong>：领域驱动设计、注册中心、配置中心、日志系统、持续交付、监控系统、分布式定时任务、CAP&nbsp;理论、分布式调用链、API&nbsp;网关等等。</li><li><strong>人才储备</strong>：精通微服务落地经验的架构师及相应开发人员。</li><li><strong>研发效率</strong>：研发效率大幅下降。</li></ul><h1>微服务拆分原则</h1><ul><li>单一服务内部功能<strong>高内聚低耦合</strong>：每个服务只完成自己职责内的任务，对于不是自己职责的功能交给其它服务来完成</li><li><strong>闭包原则</strong>（CCP）：微服务的闭包原则就是当我们需要改变一个微服务的时候，所有依赖都在这个微服务的组件内，不需要修改其他微服务</li><li><strong>服务自治、接口隔离</strong>原则：尽量消除对其他服务的强依赖，这样可以降低沟通成本，提升服务稳定性。服务通过标准的接口隔离，隐藏内部实现细节。这使得服务可以独立开发、测试、部署、运行，以服务为单位持续交付。</li><li><strong>持续演进</strong>原则：在服务拆分的初期，你其实很难确定服务究竟要拆成什么样。应逐步划分，持续演进，<strong>避免服务数量的爆炸性增长</strong>。</li><li>拆分的过程尽量<strong>避免影响产品的日常功能迭代</strong>：也就是说要一边做产品功能迭代，一边完成服务化拆分。比如<strong>优先剥离比较独立的边界服务</strong>（如短信服务等），从非核心的服务出发减少拆分对现有业务的影响，也给团队一个练习、试错的机会。同时<strong>当两个服务存在依赖关系时优先拆分被依赖的服务</strong>。</li><li><strong>服务接口的定义要具备可扩展性</strong>：比如微服务的接口因为升级把之前的三个参数改成了四个，上线后导致调用方大量报错，推荐做法服务接口的参数类型最好是封装类，这样如果增加参数就不必变更接口的签名</li><li><strong>避免环形依赖与双向依赖</strong>：尽量不要有服务之间的环形依赖或双向依赖，原因是存在这种情况说明我们的<strong>功能边界</strong>没有化分清楚或者有通用的功能没有下沉下来。</li><li><strong>阶段性合并</strong>：随着你对业务领域理解的逐渐深入或者业务本身逻辑发生了比较大的变化，亦或者之前的拆分没有考虑的很清楚，导致拆分后的服务边界变得越来越混乱，这时就要<strong>重新梳理领域边界，不断纠正拆分的合理性</strong>。</li><li><strong>自动化驱动</strong>：部署和运维的成本会随着服务的增多呈指数级增长，每个服务都需要部署、监控、日志分析等运维工作，成本会显著提升。因此，在服务划分之前，应该首先构建自动化的工具及环境。开发人员应该以自动化为驱动力，简化服务在创建、开发、测试、部署、运维上的重复性工作，通过工具实现更可靠的操作，避免微服务数量增多带来的开发、管理复杂度问题。</li></ul><h1>微服务拆分策略</h1><h2 id="功能维度拆分策略">功能维度拆分策略</h2><p>大的原则是基于业务复杂度拆分服务：<strong>业务复杂度足够高，应该基于领域驱动拆分服务。业务复杂度较低，选择基于数据驱动拆分服务</strong></p><ul><li><strong>基于数据驱动</strong>拆分服务：自下而上的架构设计方法，通过分析需求，确定整体数据结构，<strong>根据表之间的关系拆分服务</strong>。<ul><li>拆分步骤：需求分析，抽象数据结构，划分服务，确定调用关系和业务流程验证。</li></ul></li><li><strong>基于领域驱动</strong>拆分服务：自上而下的架构设计方法，通过和领域专家建立统一的语言，不断交流，<strong>确定关键业务场景，逐步确定边界上下文</strong>。领域驱动更强调业务实现效果，认为自下而上的设计可能会导致技术人员不能更好地理解业务方向，进而偏离业务目标。<ul><li>拆分步骤：通过模型和领域专家建立统一语言，业务分析，寻找聚合，确定服务调用关系，业务流程验证和持续优化。</li></ul></li><li><strong>从已有单体架构中逐步拆分服务</strong><ul><li>拆分步骤：前后端分离，提取公共基础服务（如授权服务，分布式ID服务），不断从老系统抽取服务，垂直划分优先，适当水平切分</li></ul></li></ul><p>以上几种拆分方式不是多选一，而是可以<strong>根据实际情况自由排列组合</strong>。<br><strong>拆分不仅仅是架构上的调整，也意味着要在组织结构上做出相应的适应性优化，以确保拆分后的服务由相对独立的团队负责维护。</strong></p><h2 id="非功能维度拆分策略">非功能维度拆分策略</h2><p>主要考虑六点：<strong>扩展性、复用性、高性能、高可用、安全性、异构性</strong></p><ul><li><strong>扩展性</strong>：<strong>区分系统中变与不变的部分</strong>，不变的部分一般是成熟的、通用的服务功能，变的部分一般是改动比较多、满足业务迭代扩展性需要的功能，我们可以将不变的部分拆分出来，作为共用的服务，将变的部分独立出来满足个性化扩展需要同时根据二八原则，系统中经常变动的部分大约只占&nbsp;20%，而剩下的&nbsp;80%&nbsp;基本不变或极少变化，这样的拆分也解决了发布频率过多而影响成熟服务稳定性的问题。</li><li><strong>复用性</strong>：不同的业务里或服务里经常会出现<strong>重复的功能</strong>，比如每个服务都有鉴权、限流、安全及日志监控等功能，可以将这些通过的功能拆分出来形成独立的服务。</li><li><strong>高性能</strong>：将性能要求高或者性能压力大的模块拆分出来，<strong>避免性能压力大的服务影响其它服务</strong>。<ul><li>我们也可以基于<strong>读写分离</strong>来拆分，比如电商的商品信息，在&nbsp;App&nbsp;端主要是商品详情有大量的读取操作，但是写入端商家中心访问量确很少。因此可以对流量较大或较为核心的服务做读写分离，拆分为两个服务发布，一个负责读，另外一个负责写。</li><li><strong>数据一致性</strong>是另一个基于性能维度拆分需要考虑的点，<strong>对于强一致的数据，属于强耦合，尽量放在同一个服务中</strong>（但是有时会因为各种原因需要进行拆分，那就需要有相应的机制进行保证），弱一致性通常可以拆分为不同的服务。</li></ul></li><li><strong>高可用</strong>：将可靠性要求高的核心服务和可靠性要求低的非核心服务拆分开来，然后<strong>重点保证核心服务的高可用</strong>。具体拆分的时候，核心服务可以是一个也可以是多个，只要最终的服务数量满足“三个火枪手”的原则就可以。</li><li><strong>安全性</strong>：不同的服务可能对信息安全有不同的要求，因此把需要<strong>高度安全的服务拆分出来</strong>，进行区别部署，比如设置特定的&nbsp;DMZ&nbsp;区域对服务进行分区部署，可以更有<strong>针对性地满足信息安全的要求</strong>，也可以降低对防火墙等安全设备吞吐量、并发性等方面的要求，降低成本，提高效率。</li><li><strong>异构性</strong>：对于对开发语言种类有要求的业务场景，可以用<strong>不同的语言</strong>将其功能独立出来实现一个独立服务。</li></ul><h1>拆分注意的风险</h1><ul><li>不打无准备之仗：开发团队是否具备足够的经验，<strong>能否驾驭微服务的技术栈</strong>，可能是第一个需要考虑的点。</li><li><strong>不断纠正</strong>：我们需要承认我们的认知是有限的，只能基于目前的业务状态和有限的对未来的预测来制定出一个相对合适的拆分方案，而不是所谓的最优方案，任何方案都只能保证在当下提供了相对合适的粒度和划分原则，要时刻做好在未来的末一个时刻会变得不和时宜、需要再次调整的准备。</li><li>要做行动派，而不是理论派：在具体怎么拆分上，也不要太纠结于是否合适，<strong>如果拆了之后发现真的不合适，在重新调整就好了</strong>。如果要灵活调整，可以针对服务化架构搭建起一套完整的能力体系，比如服务治理平台、数据迁移工具、数据双写等等</li><li>服务只拆不合：<ul><li><strong>拆相当于我们开发代码，合相当于重构代码</strong>。随着我们对应用程序领域的了解越来越深，它们需要随着时间的推移而变化。</li><li>人员和服务数量的不匹配，导致的<strong>维护成本</strong>增加，也是导致服务合并的一个重要原因。</li><li>如果<strong>微服务数量过多和资源不匹配</strong>，则可以考虑合并多个微服务到服务包，部署到一台服务器，这样可以节省服务运行时的基础资源消耗也降低了维护成本。需要注意的是，<strong>虽然服务包是运行在一个进程中，但是服务包内的服务依然要满足微服务定义</strong>，以便在未来某一天要重新拆开的时候可以很快就分离</li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 微服务拆分 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>02.多数据源架构</title>
+      <link href="/2023/07/08/architect/dian-shang-xi-tong/02-duo-shu-ju-yuan-jia-gou/"/>
+      <url>/2023/07/08/architect/dian-shang-xi-tong/02-duo-shu-ju-yuan-jia-gou/</url>
+      
+        <content type="html"><![CDATA[<h1>01. AbstractRoutingDataSource（Spring）</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Component</span><span class="token annotation punctuation">@Primary</span> <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DynamicDataSource</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractRoutingDataSource</span> <span class="token punctuation">{</span>    <span class="token comment">// 更改数据源时切换 ThreadLocal 即可</span>    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> name <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token annotation punctuation">@Autowired</span>    <span class="token class-name">DataSource</span> dataSource1<span class="token punctuation">;</span>    <span class="token annotation punctuation">@Autowired</span>    <span class="token class-name">DataSource</span> dataSource2<span class="token punctuation">;</span>    <span class="token annotation punctuation">@Override</span>    <span class="token keyword">protected</span> <span class="token class-name">Object</span> <span class="token function">determineCurrentLookupKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token keyword">return</span> name<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>    <span class="token annotation punctuation">@Override</span>    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterPropertiesSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token comment">// 为targetDataSources初始化所有数据源</span>        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">&gt;</span></span> targetDataSources<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        targetDataSources<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"W"</span><span class="token punctuation">,</span>dataSource1<span class="token punctuation">)</span><span class="token punctuation">;</span>        targetDataSources<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"R"</span><span class="token punctuation">,</span>dataSource2<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">setTargetDataSources</span><span class="token punctuation">(</span>targetDataSources<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment">// 为defaultTargetDataSource 设置默认的数据源</span>        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">setDefaultTargetDataSource</span><span class="token punctuation">(</span>dataSource1<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">afterPropertiesSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h1>02. SqlSessionFactory（MyBatis）</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span><span class="token comment">// 使用不同数据源的接口放到不同的 mapper 包下即可</span><span class="token annotation punctuation">@MapperScan</span><span class="token punctuation">(</span>basePackages <span class="token operator">=</span> <span class="token string">"com.tuling.datasource.dynamic.mybatis.mapper.r"</span><span class="token punctuation">,</span> sqlSessionFactoryRef<span class="token operator">=</span><span class="token string">"rSqlSessionFactory"</span><span class="token punctuation">)</span><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RMyBatisConfig</span> <span class="token punctuation">{</span>    <span class="token annotation punctuation">@Bean</span>    <span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"spring.datasource.datasource2"</span><span class="token punctuation">)</span>    <span class="token keyword">public</span> <span class="token class-name">DataSource</span> <span class="token function">dataSource2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token keyword">return</span> <span class="token class-name">DruidDataSourceBuilder</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>    <span class="token annotation punctuation">@Bean</span>    <span class="token annotation punctuation">@Primary</span>    <span class="token keyword">public</span> <span class="token class-name">SqlSessionFactory</span> <span class="token function">rSqlSessionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>        <span class="token keyword">final</span> <span class="token class-name">SqlSessionFactoryBean</span> sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SqlSessionFactoryBean</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        sessionFactory<span class="token punctuation">.</span><span class="token function">setDataSource</span><span class="token punctuation">(</span><span class="token function">dataSource2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment">// 指定主库对应的mapper.xml文件</span>        sessionFactory<span class="token punctuation">.</span><span class="token function">setMapperLocations</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">PathMatchingResourcePatternResolver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getResources</span><span class="token punctuation">(</span><span class="token string">"classpath:mapper/r/*.xml"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token keyword">return</span> sessionFactory<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span>    <span class="token annotation punctuation">@Bean</span>    <span class="token keyword">public</span> <span class="token class-name">DataSourceTransactionManager</span> <span class="token function">rTransactionManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>        <span class="token class-name">DataSourceTransactionManager</span> dataSourceTransactionManager <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DataSourceTransactionManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        dataSourceTransactionManager<span class="token punctuation">.</span><span class="token function">setDataSource</span><span class="token punctuation">(</span><span class="token function">dataSource2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token keyword">return</span> dataSourceTransactionManager<span class="token punctuation">;</span>    <span class="token punctuation">}</span>    <span class="token annotation punctuation">@Bean</span>    <span class="token keyword">public</span> <span class="token class-name">TransactionTemplate</span> <span class="token function">rTransactionTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">TransactionTemplate</span><span class="token punctuation">(</span><span class="token function">rTransactionManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h1>03. dynamic-datasource</h1><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>com.baomidou<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>dynamic-datasource-spring-boot-starter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>3.5.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>  <span class="token key atrule">datasource</span><span class="token punctuation">:</span>    dynamic<span class="token punctuation">:</span>      <span class="token comment"># 设置默认的数据源或者数据源组,默认值即为master</span>      primary<span class="token punctuation">:</span> master      <span class="token comment"># 严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源</span>      strict<span class="token punctuation">:</span> <span class="token boolean important">false</span>      datasource<span class="token punctuation">:</span>        master<span class="token punctuation">:</span>          url<span class="token punctuation">:</span> jdbc<span class="token punctuation">:</span>mysql<span class="token punctuation">:</span>//127.0.0.1<span class="token punctuation">:</span>3306/datasource1<span class="token punctuation">?</span>serverTimezone=UTC<span class="token important">&amp;useUnicode=true&amp;characterEncoding=UTF8&amp;useSSL=false</span>          username<span class="token punctuation">:</span> root          password<span class="token punctuation">:</span> <span class="token number">123456</span>          initial<span class="token punctuation">-</span><span class="token key atrule">size</span><span class="token punctuation">:</span> <span class="token number">1</span>          min<span class="token punctuation">-</span><span class="token key atrule">idle</span><span class="token punctuation">:</span> <span class="token number">1</span>          max<span class="token punctuation">-</span><span class="token key atrule">active</span><span class="token punctuation">:</span> <span class="token number">20</span>          test<span class="token punctuation">-</span><span class="token key atrule">on-borrow</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>          driver<span class="token punctuation">-</span><span class="token key atrule">class-name</span><span class="token punctuation">:</span> com.mysql.cj.jdbc.Driver        slave_1<span class="token punctuation">:</span>          url<span class="token punctuation">:</span> jdbc<span class="token punctuation">:</span>mysql<span class="token punctuation">:</span>//127.0.0.1<span class="token punctuation">:</span>3306/datasource2<span class="token punctuation">?</span>serverTimezone=UTC<span class="token important">&amp;useUnicode=true&amp;characterEncoding=UTF8&amp;useSSL=false</span>          username<span class="token punctuation">:</span> root          password<span class="token punctuation">:</span> <span class="token number">123456</span>          initial<span class="token punctuation">-</span><span class="token key atrule">size</span><span class="token punctuation">:</span> <span class="token number">1</span>          min<span class="token punctuation">-</span><span class="token key atrule">idle</span><span class="token punctuation">:</span> <span class="token number">1</span>          max<span class="token punctuation">-</span><span class="token key atrule">active</span><span class="token punctuation">:</span> <span class="token number">20</span>          test<span class="token punctuation">-</span><span class="token key atrule">on-borrow</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>          driver<span class="token punctuation">-</span><span class="token key atrule">class-name</span><span class="token punctuation">:</span> com.mysql.cj.jdbc.Driver<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@DS</span><span class="token punctuation">(</span><span class="token string">"master"</span><span class="token punctuation">)</span><span class="token annotation punctuation">@DSTransactional</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据源 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>01.单体VS微服务</title>
+      <link href="/2023/07/08/architect/dian-shang-xi-tong/01-dan-ti-vs-wei-fu-wu/"/>
+      <url>/2023/07/08/architect/dian-shang-xi-tong/01-dan-ti-vs-wei-fu-wu/</url>
+      
+        <content type="html"><![CDATA[<h1>单体服务的优点</h1><ul><li><strong>应用的开发很简单</strong>，IDE 和其他开发工具只需要构建这一个单独的应用程序</li><li><strong>易于对应用程序进行大规模的更改</strong>:可以更改代码和数据库模式，然后构建和部署测试相对简单。</li><li><strong>开发测试简单</strong>:开发者只需要写几个端到端的测试,启动应用程序，调用 RESTAPI，然后使用 Selenium 这样的工具测试用户界面。</li><li><strong>部署简单</strong>明了:开发者唯一需要做的,就是把 WAR 文件复制到安装了 Tomcat 的服务器上。</li><li><strong>横向扩展简单</strong>:运行多个实例，由一个负载均衡器进行调度。</li></ul><h1>单体服务的缺点</h1><p>单体架构存在着巨大的局限性。<strong>随着业务的复杂和用户的增多</strong>，小巧的、简单的、由一个小团队开发维护的应用程序就会演变成一个由大团队开发的巨无霸单体应用程序。此时应用就变成了单体地狱。开发变得缓慢和痛苦。</p><h2 id="font-color-red-过度的复杂性-font"><font color="red">过度的复杂性</font></h2><p>大型单体应用程序的首要问题就是它的过度复杂性，系统本身过于庞大和复杂导致任何一个开发者都很难理解它的全部。因此，修复软件中的问题和正确地实现新功能就变得困难且耗时。各种交付截止时间都可能被错过。这种极度的复杂性正在形成一个恶性循环:由于代码库太难于理解，因此开发人员在更改时更容易出错，每一次更改都会让代码库变得更复杂、更难懂。就演变成为了我们常说的“<strong>代码屎山</strong>”。</p><h2 id="font-color-red-开发速度缓慢-font"><font color="red">开发速度缓慢</font></h2><p>巨大的项目<strong>从编辑到构建、运行再到测试这个周期花费的时间越来越长</strong>,这严重地影响了团队的工作效率。</p><h2 id="font-color-red-部署周期长-易出问题-font"><font color="red">部署周期长,易出问题</font></h2><p>巨大的项目从代码完成到运行在生产环境是一个漫长且费力的过程。一个问题是，<font color="red"><strong>众多开发人员都向同一个代码库提交代码更改，这常常使得这个代码库的构建结果处于无法交付的状态。采用功能分支来解决这个问题时，带来的是漫长且痛苦的合并过程。</strong></font>紧接着，一旦团队完成一个冲刺任务，随后迎接他们的将是一个漫长的测试和代码稳定周期。把更改推向生产环境的另一个挑战是运行测试需要很长时间。因为代码库如此复杂,以至于一个更改可能引起的影响是未知的，为了避免<font color="red"><strong>牵一发而动全身</strong></font>的后果，即使是一个微小的更改，开发人员也必须在持续集成服务器上运行所有的测试套件。系统的某些部分甚至还需要手工测试。如果测试失败，诊断和修复也需要更多的时间。因此，<font color="red"><strong>完成这样的测试往往需要数天甚至更长时间</strong></font>。</p><h2 id="font-color-red-难以扩展和可靠性不佳-font"><font color="red">难以扩展和可靠性不佳</font></h2><p>在很多的时候，<font color="red"><strong>应用的不同功能和模块对资源的需求是相互冲突的</strong></font>。例如，有些模块需要将数据保存在一个大型的内存数据库中，理想情况下运行这个应用的服务器应该有较大容量的内存；另外，有些模块存在大量的计算又需要比较快的CPU，这需要项目部署在具有多个高性能 CPU 和大内存的服务器之上。因为这些模块都是在一个应用程序内，因此在选用服务器时必须满足所有模块的需要。<font color="red"><strong>应用程序缺乏故障隔离</strong></font>，因为所有模块都在同一个进程中运行。每隔一段时间，在一个模块中的代码错误，例如内存泄漏，将会导致应用程序的所有实例都崩溃。</p><h1>单体应用的适用场景</h1><p><font color="green"><strong>小、少、短、快、雏</strong></font><br>公司规模较小，开发团队人数较少、产品上线周期短、产品在快速迭代期，核心功能尚未稳定时；或者用户规模和用户群体较少时。</p><h1>微服务架构的特点</h1><p>今天,针对大型复杂应用的开发,越来越多的共识趋向于考虑使用微服务架构。但微服务到底是什么？针对微服务架构有多种定义。有些仅仅是在字面意义上做了定义:服务应该是微小的不超过 100 行代码,等等。另外有些定义要求服务的开发周期必须被限制在两周之内。<br>曾在 Netflix 工作的著名架构师Adrian Cockcroft 把<strong>微服务架构定义为面向服务的架构，它们由松耦合和具有边界上下文的元素组成</strong>。由这个定义可以看到，微服务其实<strong>和 DDD 是天生一对</strong>。</p><h2 id="微服务是模块化的">微服务是模块化的</h2><p>模块化是开发大型、复杂应用程序的基础。现代互联网应用程序为了让不同的人开发和理解，大型应用需要拆分为模块。在单体应用中，模块通常由一组编程语言所提供的结构（例如Java 的包）,或者Java JAR 文件这样的构建制品来定义。但是，即使这样，随着时间的推移和反复的开发迭代,单体应用依然会变成我们前面所说的单体地狱。<br>微服务架构使用服务作为模块化的单元。服务的 API 为它自身构筑了一个不可逾越的边界,你无法越过 API 去访问服务内部的类，这与采用 Java 包的单体应用完全不同。因此模块化的服务更容易随着时间推移而不断演化。微服务架构也带来其他的好处,例如服务可以独立进行部署和扩展。</p><h2 id="每个服务都拥有自己的数据库">每个服务都拥有自己的数据库</h2><p>微服务架构的一个关键特性是每一个服务之间都是<strong>松耦合</strong>的，它们仅通过 API 进行通信。实现这种松耦合的方式之一，是每个服务都拥有自己的私有数据库。对于我们的项目来说，订单服务拥有一个包括 oms_order 等表的数据库，用户服务拥有一个包含 ums_member 等表的数据库。在开发阶段就可以修改自己服务的数据库模式，而不必同其他服务的开发者协调。在运行时，服务实现了相互之间的独立。服务不会因为其他的服务锁住了数据库而进入堵塞的状态。</p><h1>微服务架构的好处</h1><ul><li>使大型的复杂应用程序可以<strong>持续交付和持续部署</strong>。</li><li>每个服务都相对较小并<strong>容易维护</strong>。</li><li>服务可以<strong>独立部署</strong>。</li><li>服务可以<strong>独立扩展</strong>。</li><li>微服务架构可以实现团队的自主和松散耦合。</li><li>更容易实验和采纳新的技术。</li><li>更好的<strong>容错性</strong>，比如更好的故障隔离。</li></ul><h1>微服务架构的弊端</h1><h2 id="font-color-red-服务的拆分和定义是一项挑战-font"><font color="red">服务的拆分和定义是一项挑战</font></h2><p>采用微服务架构首当其冲的问题，就是根本没有一个具体的、良好定义的算法可以完成服务的拆分工作。与软件开发一样，服务的拆分和定义更像是一门艺术。更糟糕的是，如果对系统的服务拆分出现了偏差，你很有可能会构建出一个<font color="red"><strong>分布式的单体应用</strong></font>: <strong>一个包含了一大堆互相之间紧耦合的服务，却又必须部署在一起的所谓分布式系统。<strong>这将会把单体架构和微服务架构</strong>两者的弊端集于一身</strong>。</p><h2 id="font-color-red-分布式系统带来的各种复杂性-font-使开发、测试和部署变得更困难"><font color="red">分布式系统带来的各种复杂性</font>,使开发、测试和部署变得更困难</h2><p>使用微服务架构的另一个问题是开发人员必须处理创建分布式系统的额外复杂性。服务必须使用进程间通信机制。这比简单的方法调用更复杂。此外，<font color="red"><strong>必须设计服务来处理局部故障,并处理远程服务不可用或出现高延迟的各种情况。</strong></font>实现跨多个服务的用例需要使用不熟悉的技术。每个服务都有自己的数据库,这使得实现<font color="red"><strong>跨服务的事务和查询</strong></font>成为一项挑战。基于微服务的应用程序必须使用所谓的 Saga 来维护服务之间的<font color="red"><strong>数据一致性</strong></font>。基于微服务的应用程序**无法使用简单查询从多个服务中检索数据。**相反，它必须使用 API 组合或 CQRS 视图实现查询。</p><p>IDE 等开发工具都是为单体应用设计的，它们并不具备开发分布式应用所需要的特定功能支持。编写<strong>包含多项服务在内的自动化测试</strong>也是很令人头疼的工作。这些都是跟微服务架构直接相关的问题。因此,团队中的开发人员必须具备先进的软件开发和交付技能才能成功使用微服务。</p><p>微服务架构还引入了显著的<strong>运维复杂性</strong>。必须在生产环境中管理更多活动组件:不同类型服务的多个实例。要成功部署微服务，需要高度自动化的基础设施,比如自动化部署等等。</p><h2 id="font-color-red-当部署跨越多个服务的功能时需要谨慎地协调-font"><font color="red">当部署跨越多个服务的功能时需要谨慎地协调</font></h2><p>使用微服务架构的另外一项挑战在于当部署跨越多个服务的功能时需要谨慎地协调更多开发团队。必须制定一个发布计划，<font color="red"><strong>把服务按照依赖关系进行排序</strong></font>，这就是我们常说的服务编排。这跟单体架构下批量部署多个组件的方式截然不同。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 电商系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 微服务 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>26.03.缩梯</title>
+      <link href="/2023/07/08/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-03-suo-ti/"/>
+      <url>/2023/07/08/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-03-suo-ti/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc26%2FSlide3.JPG" alt="图 26.3 缩梯"></p><blockquote><p><font color="red"><strong>市场每一次突破幅度都小于上一次,说明动能在减弱,可能很快出现较深的回撤甚至反转。</strong></font>如图26.3所示,<strong>市场走出楼梯形态上升趋势,形成3个或以上趋势性上移的高点和低点,大致处于一个通道之中。</strong><font color="green"><strong>K线4、6、8形成缩梯,代表上升动能减弱,预示行情可能反转。</strong></font><font color="black"><strong>上升通道相当于一个大的熊旗,在K线9向下突破。</strong></font><br><font color="green"><strong>在K线9突破之后,市场出现突破回踩</strong></font>,<font color="black"><strong>并在K线10形成高点下降,进入一段楼梯形态的下降趋势。</strong></font><font color="green">K线10与截至K线9下跌走势中第一次反弹的高点大致构成一个双顶熊旗。K线11对下降通道下轨构成过靶,引发一轮两段式的小规模反转并向上超越通道上轨。</font><br><font color="green"><strong>当市场开始形成楼梯形下跌趋势,通常你可以在每一根强趋势K线向下突破时逆势刮头皮。在每一根空头趋势K线收盘跌破前一个摆动低点时刮头皮做多。</strong></font><font color="green">同样在楼梯形上涨行情中,你可以在每一根趋势K线超越上一个摆动高点时刮头皮做空。</font>不过一般来讲,<font color="green">**更安全的做法是在市场反转时挂止损单入场。**比如说,如果市场从通道底部向上反转,可以在前一根K线高点上方挂单入场。</font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第26章 楼梯形态：宽幅趋势通道<br>第3个案例（图 26.3）<br>第378-379页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-楼梯形态 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>26.02.楼梯形态加速进入强劲趋势</title>
+      <link href="/2023/07/08/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-02-lou-ti-xing-tai-jia-su-jin-ru-qiang-jing-qu-shi/"/>
+      <url>/2023/07/08/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-02-lou-ti-xing-tai-jia-su-jin-ru-qiang-jing-qu-shi/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc26%2FSlide2.JPG" alt="图 26.2 楼梯形态加速进入强劲趋势"></p><blockquote><p>如图26.2所示,<font color="red"><strong>楼梯形态有时候会加速,进入更强劲的趋势。</strong></font>在欧元兑美元的日线图上,<strong>截至K线7,市场处于一个上升通道,形成3个高点抬升和低点抬升,因此属于楼梯形态上升趋势。</strong><br><font color="black"><strong>K线8是一根多头趋势K线,突破通道上轨。随后出现一根空头反转K线,但没有被触发。</strong></font><font color="red"><strong>突破走势应该可以持续到将通道等距上移的平行线位置(安德鲁叉运动)</strong></font>,结果的确如此。<font color="orange"><strong>在楔形顶部失败的情况下,这种加速上涨是很常见的。</strong></font><strong>截至K线6有3波向上推动</strong>,<font color="black"><strong>不过如果你从截至K线4的那波强劲拉升算起,也可以将K线8前面那波小幅向上推动看成第三波。</strong></font><font color="red"><strong>楔形失败之后往往会出现大约与楔形高度等距的行情</strong></font>(从K线6高点到K线3或K线1低点)。</p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第26章 楼梯形态：宽幅趋势通道<br>第2个案例（图 26.2）<br>第377-378页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-楼梯形态 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>26.01.下降楼梯</title>
+      <link href="/2023/07/08/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-01-xia-jiang-lou-ti/"/>
+      <url>/2023/07/08/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-01-xia-jiang-lou-ti/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc26%2FSlide1.JPG" alt="图 26.1 下降楼梯"></p><blockquote><p><font color="red"><strong>下降楼梯形态是一个向下倾斜的通道,每次突破至新低之后都会回撤至突破点之上。</strong></font>比如说,在图26.1中,<font color="black"><strong>从K线8到K线9的下跌形成向下突破,随后的回撤站上了K线7的低点;截至K线11的下跌突破了K线9,随后的回撤站上K线9突破点,与上一个区间形成重叠。</strong></font><br><font color="green"><strong>部分交易者会在趋势通道线附近做多,在趋势线附近做空。其他交易者则关注回撤之前突破走势的幅度。</strong></font>比如说,<font color="black"><strong>K线5低点大约低于K线3低点4个点。激进多头将会在K线5低点下方3~4个点挂限价单买入。他们的买单将会在K线7获得成交。一旦市场跌破K线7,他们又在K线7低点下方3~4个点挂买单,将会在截至K线9的下跌中获得成交(K线9低点低于K线7低点4个点)由于前面的反弹也是大约4个点,他们将会在入场点上方大约3个点的位置锁定利润。对于截至K线11和16的下跌,他们也如法炮制。在截至K线13的下跌过程中他们也进行了同样的挂单,但由于跌幅太小,并未获得成交。空头的做法刚好相反。</strong></font><strong>他们看到前面的反弹为4~6个点,因此他们在最近摆动低点上方3~5个点的位置分批建立空单。</strong><font color="green"><strong>这种操作手法只适合经验丰富的交易者。初学者应该只采取挂止损单的方法入场,因为这样他们入场时市场已经朝他们的方向运行</strong></font>(将在第二本书讨论)。<br><font color="black"><strong>K线7是第三波向下推动,属于缩梯形态</strong></font>(K线7跌破K线5的幅度小于K线5跌破K线3的幅度)。图中的通道线是大致画的,目的让大家看到市场处于下跌通道之中。<strong>在通道内,双向交易迹象明显,交易者在发现恰当建仓形态时可低买高卖。</strong></p><p>本图的深入探讨</p><p>在图26.1中,<font color="black"><strong>当天市场开盘处于前一天开始的下降通道下轨附近。开盘的向下突破失败,市场出现双K线反转并引发连续4根K线的迅速拉升。市场测试下降趋势线之后形成双顶,然后急速下跌至K线13。</strong></font><font color="orange"><strong>急速上涨之后又急速下跌,说明多空双方在激烈争夺对通道方向的控制权。</strong></font><font color="black"><strong>多头启动了一个通道,但在趋势线处失败,反转进入下跌通道。</strong></font><font color="green"><strong>市场在K线16测试趋势通道线之后向上反转,但K线16低点未能触到通道线,意味着多头非常激进。K线16是一个双K线反转,同时也是一个末端旗形做多形态(K线15构成一个4根K线的末端旗形)。</strong></font><br><font color="red"><strong>三连推并不能保证趋势一定反转。</strong></font><font color="black"><strong>截至K线7的下跌过程中并未表现出多少买压,没有一根长多头趋势K线,也没有高潮性反转。从K线7开始的上涨也不是特别强劲。这并不是强势反转应有的特征,因此并未吸引足够的多头参与并带来反转。</strong></font>相反,<font color="green"><strong>市场形成了一个楔形熊旗(K线6以及随后从K线7开始的两波向上推动共同构成三连推)和高点下降(虽然反弹站上了K线6,表现出一定力度,但仍低于K线4),然后下跌趋势恢复。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第26章 楼梯形态：宽幅趋势通道<br>第1个案例（图 26.1）<br>第376-377页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-楼梯形态 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>26.00.02.楼梯形态交易日</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-00-02-lou-ti-xing-tai-jiao-yi-ri/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-00-02-lou-ti-xing-tai-jiao-yi-ri/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p><font color="red"><strong>当市场走出3波或以上趋势性摆动,构成一个略微倾斜的交易区间或者通道,多头和空头都表现活跃,但一方略微掌握更大的控制权。每次回撤都会超越突破点,使得每一突破走势与随后的回撤之间存在重叠。</strong></font><strong>在宽幅通道内,双向交易正在发生,因此交易者可以寻找两个方向的入场机会。</strong><font color="red"><strong>如果突破幅度越来越小,就属于缩梯形态,意味着动能减弱。它通常会导致两段式反转走势和趋势线突破。</strong></font><font color="orange"><strong>许多三连推反转都属于失败并反转的楼梯形态或缩梯形态。</strong></font><font color="black"><strong>在较高时间级别上,楼梯形态往往只是回调或旗形。</strong></font><font color="red"><strong>楼梯形态经常发生在交易日最后1~2个小时,然后在第二天开盘突破这个旗形。</strong></font><font color="black"><strong>比如说,某天走出的宽幅上升通道可能只是一个大的熊旗,下跌趋势可能在第二天向下突破。</strong></font><br><font color="red"><strong>有时候,楼梯形态可能突然加速,以顺势方向突破趋势通道。如果随后立即反转,那么这一过靶与反转走势有可能造成至少两段式调整。如果没有反转,突破走势可能至少再持续两波行情,或发生大致相当于通道高度的等距运动(价格超越通道的距离应该大约相当于通道之内的距离)。</strong></font><br><font color="green"><strong>交易者将会密切关注突破走势超越最近摆动点的幅度,然后利用这一幅度来对后面的突破走势进行逆势交易,期待市场出现突破回踩。</strong></font>比如说,<font color="black"><strong>如果最近的摆动低点低于上一个摆动低点14个最小报价单位,交易者将会从最近摆动低点下方10单位左右开始分批买入(往往在趋势通道线附近)。如果最近一次突破之后的回撤幅度约为15单位,他们将会在低点上方大约10-15单位寻求锁定利润(往往在趋势线附近)。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第26章 楼梯形态：宽幅趋势通道<br>第375-376页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 楼梯形态 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>26.00.01.楼梯形态交易日的主要特征</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-00-01-lou-ti-xing-tai-jiao-yi-ri-de-zhu-yao-te-zheng/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-00-01-lou-ti-xing-tai-jiao-yi-ri-de-zhu-yao-te-zheng/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>楼梯形态交易日的主要特征:</p><ul><li><font color="red"><strong>楼梯形态交易日是趋势性交易区间交易日的变体,至少包含3个交易区间。</strong></font></li><li><font color="red">交易日波动剧烈,但形成趋势性高点和低点。</font></li><li><font color="red">由于波动较大,交易者往往会朝两个方向交易,<strong>但他们应该试图让部分或全部顺势头寸参与摆动。</strong></font></li><li><font color="red"><strong>几乎在所有突破之后市场都会出现超越突破点的回撤(突破测试),造成相邻摆动之间存在一些重叠。</strong></font>举例而言,<font color="orange"><strong>在宽幅下降通道中,所有突破至新低的走势都跟随一波反弹,返回突破点之上但未能超越最近的摆动高点。不过,有时候会有一两波反弹略微超过上一个摆动高点。这将让部分交易者怀疑市场是否正在反转,但通常情况下趋势会很快恢复。</strong></font></li><li><font color="red"><strong>如果每一次突破都比上一次幅度小一点,就属于缩梯形态,说明动能减弱可能引发更大的调整。</strong></font></li></ul></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第26章 楼梯形态：宽幅趋势通道<br>第375页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 楼梯形态 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>25.04.趋势在几天之后恢复</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-04-qu-shi-zai-ji-tian-zhi-hou-hui-fu/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-04-qu-shi-zai-ji-tian-zhi-hou-hui-fu/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc25%2FSlide4.JPG" alt="图 25.4 趋势在几天之后恢复"></p><blockquote><p><font color="red"><strong>趋势恢复形态可以持续几个交易日。</strong></font>在图25.4中,<strong>市场截至K线2走出一轮强劲下跌,然后进入交易区间,持续了两个半交易日。</strong><font color="orange"><strong>交易区间可以持续很长时间,通常情况下都会朝趋势方向突破。</strong></font><font color="black"><strong>几天后,下跌趋势恢复,市场进入第二轮下跌,从K线5持续到K线14。</strong></font><br><font color="black"><strong>从K线5到K线6的下跌也跟随一个交易区间,第二波下跌结束于第二天开盘后的K线9。</strong></font><br><font color="black"><strong>从K线7到K线9的下跌同样跟随一个交易区间,持续到K线13,下跌趋势恢复发生在截至K线14的下跌行情。</strong></font><strong>因此本例中有3个交易日都属于趋势恢复形态。</strong></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第25章 趋势恢复交易日<br>第4个案例（图 25.4）<br>第373-374页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势恢复交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>25.03.趋势恢复</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-03-qu-shi-hui-fu/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-03-qu-shi-hui-fu/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc25%2FSlide3.JPG" alt="图 25.3 趋势恢复"></p><blockquote><p><font color="red"><strong>有时候,虽然最初的上涨只有几根强趋势K线,看起来似乎会造成交易区间交易日,趋势恢复行情仍可能非常强劲。</strong></font>在图25.中,<font color="black"><strong>市场对前一天低点假突破之后,从一个扩散三角形底部上涨,形成始于开盘的上升趋势。上涨持续两根K线,然后在前一天交易区间中部止步不前。</strong></font><font color="orange"><strong>任何三连推形态所造成的上涨通常至少有两波</strong></font>(本例最终也是如此)。<font color="black"><strong>K线2是一次突破回踩,引发新轮小幅上涨,但市场开始失去动能。接下来市场继续在均线上方弱势运行到K线3。</strong></font>在这个时点,我们很明显感到有什么地方不太对劲。我们知道,<font color="black"><strong>始于开盘的上升趋势是最强劲的趋势类型之一,但例中的趋势显然算不上强劲。这意味着交易者很快将对行情的属性重新作出评估</strong></font>,然后决定离场还是等待。<strong>他们可能转而判断当天可能成为交易区间交易日,甚至可能再创盘中新低。</strong><font color="green"><strong>K线2低点有可能跟随一个双底牛旗,但由于强势多头的缺席,空头有可能将市场强力打压至当天新低,K线2低点有可能失败。</strong></font><font color="green"><strong>K线4是跌破K线2低点之后的第二波小幅向下推动</strong></font>,**市场从这里展开了一轮持续到收盘的上升趋势,构成一个趋势恢复交易日(尽管较弱)。**此外,<font color="green"><strong>K线4刚好是对始于开盘趋势的信号K线高点的突破回测。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第25章 趋势恢复交易日<br>第3个案例（图 25.3）<br>第372-373页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势恢复交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>25.02.窄幅交易区间之后反转</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-02-zhai-fu-jiao-yi-qu-jian-zhi-hou-fan-zhuan/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-02-zhai-fu-jiao-yi-qu-jian-zhi-hou-fan-zhuan/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc25%2FSlide2.JPG" alt="图 25.2 窄幅交易区间之后反转"></p><blockquote><p><font color="red"><strong>有时候强劲趋势之后形成的窄幅交易区间会造成趋势反转而非趋势恢复。</strong></font>在图25.2中,<font color="orange"><strong>市场当天从K线3出现一轮强劲抛盘,然后进入窄幅交易区间,持续数小时。这种走势往往会导致尾盘恢复下跌趋势,而且尾盘下跌行情规模与初始下跌相当。在最后一轮下跌开始之前,市场往往对区间上轨频繁做出假突破。</strong></font><font color="green"><strong>K线12是一笔摆动做空交易的完美建仓形态,因为它是一根空头反转K线,在交易日尾盘突破窄幅交易区间的上轨。然而它后面那根K线并未成为一轮大跌行情的入场K线,而是形成一根小内包阳线,因此属于突破回踩做多形态。K线12为突破走势,这根内包K线为走势暂停(属于回调的一种)。</strong></font></p><p>本图的深入探讨</p><p>在图25.2中,<font color="green"><strong>交易日大幅跳空低开,第一根K线为强势多头反转K线,构成一个突破失败做多形态,有可能开启始于开盘的上升趋势交易日。</strong></font><br><font color="green"><strong>K线13和K线14均为长多头趋势K线,构成两根K线的突破走势。通常情况下,所有突破都会跟随一段与突破幅度相当的等距行情。</strong></font><font color="orange"><strong>等距幅度的测量一般是从急速行情第一根K线的开盘或低点到最后一根K线的收盘或高点。</strong></font><strong>市场当天刚好收于从K线13开盘到K线14高点幅度的等距目标处。</strong><br><font color="red"><strong>大部分下跌趋势恢复交易日开盘后都不会出现大幅上涨,而本例中一开盘的大拉升说明多头当天有激进买入的意愿。</strong></font><font color="orange"><strong>因此,虽然午盘的震荡为尾盘出现新一轮大跌做了极好的铺垫,但你不可能百分之百确定,因为总是有40%的可能性出现完全相反的情况。</strong></font><font color="green"><strong>市场有可能上涨测试当天开盘的另一个线索是,当天低点几乎刚好处于从开盘到第一轮上涨行情高点幅度的等距下跌目标处。</strong></font><font color="orange"><strong>也就是说,当天开盘处于全天振幅的中位。如果市场返回这一位置,在日线上将收出一根十字星(这种情况十分常见)。</strong></font>另外,<font color="green"><strong>我们注意到市场反复测试K线7低点的支撑位,但不断获得买盘支撑,无法跌破哪怕1个最小报价单位。K线8后面那根内包K线、K线9后面那根内包K线以及K线10和K线11的低点抬升均构成双底回踩做多建仓形态。</strong></font><br><font color="orange"><strong>这根支撑线低于最初的K线5入场K线(卖出高潮之后预期的回撤)1个最小报价单位。</strong></font><font color="green"><strong>K线5是当天低点双K线反转形态的入场K线。</strong></font><font color="orange"><strong>市场扫掉了这根入场K线下方的止损,但始终无法进一步下跌1个单位。这说明强势多头在行动。</strong></font>在整个窄幅交易区间中,买入和卖出程序(程序化交易)都在活动,但最终买入程序战胜了卖出程序。<strong>所有这些空头都必然要回补,从而增强了市场买压。除此之外,许多卖出程序还会转为买人程序,进一步强化买盘力度。</strong><font color="black"><strong>截至K线14的急速拉升之后跟随一个上升通道,持续到收盘。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第25章 趋势恢复交易日<br>第2个案例（图 25.2）<br>第371-372页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势恢复交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>25.01.跳空高开之后测试缺口</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-01-tiao-kong-gao-kai-zhi-hou-ce-shi-que-kou/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-01-tiao-kong-gao-kai-zhi-hou-ce-shi-que-kou/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc25%2FSlide1.JPG" alt="图 25.1 跳空高开之后测试缺口"></p><blockquote><p><font color="red"><strong>在大幅跳空交易日,市场往往会在趋势开始之前测试开盘缺口。</strong></font>如图25.1所示,<font color="black"><strong>市场大幅跳空高开,以双底形式测试开盘低点,然后大幅上涨至K线3。从这里开始,市场进入窄幅交易区间,持续时间超过3个小时,让交易者误以为好的交易时机巳经过去了。</strong></font><font color="green"><strong>K线6小幅探破下降趋势通道线和K线4信号K线高点之后向上反转。这一走势导致一些空头错误地入场做空,许多多头被震仓出局。截至收盘的这轮上涨行情的信号K线是当天第一根均线缺口K线。</strong></font><br>当天还有不少其他做多入场点,<font color="green"><strong>比如K线7、9、10对微型趋势线假突破之后的向上反转。</strong></font><br>在图25.1中,<font color="green"><strong>K线7是一个高2买点,也是跌破微型上升趋势线1个最小报价单位之后向上反转。</strong></font><br><font color="green"><strong>K线8是高2买点的变体</strong></font>(阴线一阳线一阴线:K线7后面那根K线是阴线,因此是第一次向下推动,下一根K线为阳线,属于向上推动,接着又是一根阴线,为第二次向下推动)。</p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第25章 趋势恢复交易日<br>第1个案例（图 25.1）<br>第370页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势恢复交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>25.00.02.趋势恢复交易日</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-00-02-qu-shi-hui-fu-jiao-yi-ri/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-00-02-qu-shi-hui-fu-jiao-yi-ri/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p><font color="red"><strong>有时候交易日头一个小时左右会出现一轮强劲趋势,然后市场震荡数小时之久。一旦出现这种行情,尤其当震荡走势处于极窄交易区间,交易日就可能成为趋势恢复交易日。</strong></font><strong>不要因为午盘乏味的震荡行情而放弃</strong>,<font color="red"><strong>因为最后一个小时左右市场可能走出强劲趋势。突破通常发生在早盘趋势的方向,有时候也会朝相反方向突破,从而使交易日成为反转交易日。</strong></font>举例而言,<strong>假如始于开盘的趋势为下跌趋势,通常尾盘会向下突破交易区间,使得交易日开在高点附近、收在低点附近。</strong><font color="black"><strong>在上午11点和中午之间(PST时间),市场经常出现仅1~2根K线的强势反转假突破,将交易者套在错误的方向(做多),接下来往往迅速朝另一个方向突破。市场从反转假突破到再次反转,通常时间非常短</strong></font>,<strong>但如果你早有思想准备,就有可能抓住收盘前的一波大跌行情。</strong><font color="orange"><strong>少数情况下,反转突破会获得成功,如果最后一个小时走出趋势的话,有可能回撤开盘下跌趋势的部分或全部。</strong></font><br><font color="red"><strong>午盘的横盘走势不一定非得是窄幅交易区间,而是通常出现朝两个方向的可交易的波段。</strong></font><font color="orange"><strong>有时候市场会出现3波力度很弱的逆势推动,构成一个楔形旗。另一些情况下,第三波推动未能超越第二波,从而构成头肩旗(大部分头肩反转形态都会失败并成为持续形态)。</strong></font><font color="black"><strong>由于这一形态通常有三波推动而非两波,交易者往往误以为这一逆势价格行为可能成为一轮新的反向趋势,从而过早退出开盘时所建立的头寸。</strong></font><strong>不要被市场所欺骗,当你看到不错的建仓形态,与早盘趋势的方向相同,要准备好入场。</strong><font color="black"><strong>两个方向都会有交易者分批建仓,到某个时点,许多交易者头寸规模会达到极限。一旦发生突破,亏损的一方将无法继续增仓,唯一的选择就是祈祷然后止损。</strong></font>举例来说,假如市场早盘出现一轮强劲下跌趋势,然后进入横盘,在接下来几个小时的交易区间内,多头和空头将会不断分批建仓,许多交易者头寸规模将达到最大极限。一旦市场向下突破,多头将无法继续买入。当大批多头没有剩余子弹,空头就失去了对手。随着市场下跌,越来越多的多头将会认输割肉,造成市场在收盘前加速下跌。<font color="orange"><strong>这种类型交易日难做的地方在于,午盘乏味的横盘走势往往会让交易者放弃当天的操作,而实际上他们应该将其视为机会。要提前做好入场准备。这种形态最完美的形式每个月仅出现2~3次。</strong></font><br><font color="red"><strong>有时候交易日中段的走势并非交易区间,而是持续数小时的弱势反方向趋势运动,让交易者怀疑当天可能成为反转交易日而非趋势恢复交易日。</strong></font><font color="orange"><strong>实际上这种情况往往构成较弱的趋势恢复交易日,虽然让人感觉更像交易区间交易日,但最后结果往往开盘和收盘分别位于当日振幅的两端。密切注意市场是否会在最后一个小时恢复开盘的趋势,做好入场准备。</strong></font>举例来说,<strong>市场开盘后出现一轮强劲抛盘,然后以非常低的动能走出三波向上推动,回撤初始下跌的部分甚至全部跌幅。</strong><font color="black"><strong>在这种情况下,我们要做好心理准备,因为市场有可能向下突破上升通道并恢复下跌趋势,直到收盘。</strong></font><font color="green"><strong>如果市场先突破上升通道的上轨然后向下反转,那么可能是非常不错的摆动做空交易入场点。另外,市场在跌破通道下轨之后也可能出现不错的低风险做空点。再或者,你可以等下跌趋势恢复之后,在突破回踩时或回踩均线时入场。</strong></font><strong>虽然5分钟图可能看起来像交易区间,但在较高时间级别上可能像ABC调整。如果市场收于最低点附近,在日线图上可能形成一根空头趋势K线。</strong><br><font color="red"><strong>趋势恢复形态经常横跨2个或以上的交易日。</strong></font><font color="orange"><strong>虽然5分钟图也许看起来波动很大,但在60分钟图上可能只是构成简单的ABC调整。</strong></font>举例来说,<strong>市场第一天一开始出现两个小时的强劲拉升,然后进入交易区间。</strong><font color="black"><strong>交易区间可能持续到第二天头两个小时,那么前一天的趋势随时都可能恢复。</strong></font><strong>如果你意识到这种可能性,就更可能愿意让较高比例头寸参与摆动,从而抓住一波大幅上涨行情。</strong></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第25章 趋势恢复交易日<br>第368-370页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 趋势恢复交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>25.00.01.趋势恢复交易日的主要特征</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-00-01-qu-shi-hui-fu-jiao-yi-ri-de-zhu-yao-te-zheng/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/25.qu-shi-hui-fu-jiao-yi-ri/25-00-01-qu-shi-hui-fu-jiao-yi-ri-de-zhu-yao-te-zheng/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>趋势恢复交易日的主要特征</p><ul><li><font color="red"><strong>交易日头一个小时左右走出强劲趋势,然后进入交易区间。</strong></font></li><li><font color="red"><strong>交易区间持续数小时</strong>,往往让交易者以为平淡走势将持续到收盘。</font></li><li><font color="red"><strong>趋势在最后1~2个小时恢复。</strong></font></li><li><font color="red"><strong>第二波行情通常与第一波幅度相当。</strong></font></li><li><font color="red"><strong>那个漫长的交易区间往往是窄幅交易区间。</strong></font></li><li><font color="red"><strong>交易日晚些时候市场通常会突破交易区间,试图让趋势逆转,但这种走势多半是陷阱。接下来市场反转并朝相反方向突破并持续到收盘。在区间极窄的情况下假突破概率更高。</strong></font></li><li><font color="red"><strong>对于那些未能较早入场或在突破时入场的交易者,通常会有突破回踩的入场机会。</strong></font></li></ul></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第25章 趋势恢复交易日<br>第368页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 趋势恢复交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>24.03.较小时间级别上的强势入场点</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-03-jiao-xiao-shi-jian-ji-bie-shang-de-qiang-shi-ru-chang-dian/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-03-jiao-xiao-shi-jian-ji-bie-shang-de-qiang-shi-ru-chang-dian/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc24%2FSlide3.JPG" alt="图 24.3 较小时间级别上的强势入场点"></p><blockquote><p>在稳定的上升趋势中,<strong>3分钟图上的买入机会要多于5分钟图</strong>(见图24.3)。<font color="green"><strong>左边3分钟图上的K线1和K线2是很短的逆势内包K线,构成高1买点</strong></font>,<strong>但在5分钟图上并没有明确信号。</strong><font color="green"><strong>K线3的买点在两张图上都可以看到(在5分钟图上,它是急速拉升行情中的高1买点,虽然其实体为阴线)。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第24章 反转交易日<br>第3个案例（图 24.3）<br>第367页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-反转交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>24.02.大部分反转都是从趋势性交易区间交易日开始</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-02-da-bu-fen-fan-zhuan-du-shi-cong-qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri-kai-shi/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-02-da-bu-fen-fan-zhuan-du-shi-cong-qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri-kai-shi/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc24%2FSlide2.JPG" alt="图 24.2 大部分反转都是从趋势性交易区间交易日开始"></p><blockquote><p>如图24.2所示,<font color="red"><strong>大部分反转交易日都是从趋势性交易区间交易日开始的</strong></font>,<font color="black"><strong>当天同时还是急速与通道下跌趋势交易日和始于开盘的下跌趋势交易日。</strong></font>,<font color="orange"><strong>市场在三连推下跌(K线8、15和17)之后向上反转,形成多头反转交易日、趋势性上涨到收盘。这种情况在趋势性交易区间交易日是很常见的。</strong></font></p><p>本图的深入探讨</p><p><font color="red"><strong>一般情况下,开盘大幅跳空可以引发朝任意方向的趋势。</strong></font>在图24.2中,<font color="black"><strong>由于第一根K线是强空头趋势K线,因此进入下跌趋势的概率更高。</strong></font><font color="green"><strong>这是一个突破失败建仓形态,交易者可以在其低点下方做空,期待市场走出始于开盘的下跌趋势交易日。</strong></font><br><font color="green"><strong>K线4和K线5均为长空头趋势K线,因此属于急速下跌和卖出高潮。连续两次高潮通常会跟随至少数根K线的走势暂停或回撤</strong></font>,<strong>本例中即截至K线7高点的回撤。</strong><font color="green"><strong>K线7是第三次卖出高潮,而第三次连续的卖出高潮通常会造成更大幅度的回撤。</strong></font><font color="black"><strong>截至K线8的下跌属于急速与高潮类型的下跌趋势,接下来市场反弹至K线10,测试了截至K线8通道性下跌的起点K线7。</strong></font><font color="green"><strong>这构成一个双顶熊旗,市场最终以等距运动跌至当天最低点。</strong></font><font color="black"><strong>截至K线8的整轮下跌处于一个窄幅通道,因此相当于一波较大的急速行情。</strong></font><br><font color="orange"><strong>在出现一个大型楔形底部之后,市场往往会至少走出两段式上涨,测试楔形顶部(例中即K线10高点),而回撤走势中K线的数量通常至少是楔形中K线数量的1/3。</strong></font><font color="green"><strong>这个大楔形也是在从K线4到K线8急速下跌之后的下跌通道,从而也构成测试K线10高点的一个理由(通道的起点往往会遭到测试)。测试可能会突破那个高点,但更常见的情况是构成一个双顶熊旗</strong></font>,本例即是如此。<br><font color="green"><strong>当市场出现楔形反转,比较安全的买点通常是在出现低点拾升(比如K线19)之后或者在K线22失败的低2上方。</strong></font><font color="black"><strong>我们看到市场出现一根大阳线入场K线,意味着交易者认为上涨走势不再仅仅是熊旗反弹</strong></font>,<font color="green"><strong>而是可能出现等距上涨,返回上方交易区间。</strong></font>本例中当天的行情较为复杂,<font color="black"><strong>那个楔形反转也可以被看作一个趋势性交易区间交易日中的下方交易区间的底部。</strong></font>如果足够多交易者都持这一观点,<font color="green"><strong>那么在K线17后面那根内包K线上方(第一个入场点)买入就是合理的,可以预期市场向上测试上方交易区间的底部。</strong></font><br><font color="black"><strong>K线11、13和14构成一个楔形牛旗,但市场并未向上反转,而是向下突破。</strong></font><font color="green"><strong>在这种情况下,市场通常会出现相当于从楔形顶部到底部幅度的等距下跌。</strong></font>K线10是楔形顶部,<strong>截至K线15的下跌超过了等距下跌目标。</strong><font color="orange"><strong>如果超越等距目标,市场回撤之后往往还会有一波下跌</strong></font>,本例正是如此。<br><font color="black"><strong>虽然截至K线18的上涨有两段行情,但这轮上涨K线数量太少,不足以充分修正那个大楔形底部。而且,它处于一个窄幅通道之内,因此可能只是两波或以上上涨中的第一波。截至K线20的上涨为第二波,但问题依然存在。从K线17到K线20的上涨包含的K线数量太少,不足以修正一个如此巨大的楔形,而且仍处于相对较窄的通道。</strong></font><font color="green"><strong>这就造成一种不确定性,增加了市场需要更大规模的第二波上涨的可能性,以便让交易者确信楔形得到充分调整。</strong></font><br><font color="black"><strong>从K线21到K线25的上涨可能足以让交易者认为充分的两段式调整已经结束,但市场接下来继续向上突破,截至K线27出现3根K线的急速拉升。</strong></font>实际上,<font color="green"><strong>在从K线17到K线25的上升通道中,空头一直无法制造一波有力的向下突破,一直没有出现明确的两段式向下调整。</strong></font><font color="orange"><strong>在第一波上涨之后未能出现明确的回调,说明多头力量很强。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第24章 反转交易日<br>第2个案例（图 24.2）<br>第365-366页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-反转交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>24.01.强趋势可能失败</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-01-qiang-qu-shi-ke-neng-shi-bai/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-01-qiang-qu-shi-ke-neng-shi-bai/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc24%2FSlide1.JPG" alt="图 24.1 强趋势可能失败"></p><blockquote><p><font color="red"><strong>强趋势可以从一天任何时间开始,即便当天最初为一轮相反方向的强趋势。</strong></font>如图24.1所示,<strong>市场当天第一个小时走出一轮剧烈的两段式上涨,随后以窄幅通道向下测试均线。接下来市场横盘2个多小时,最终在K线9向下突破进入一个更低的区间。最后一个可以获利的买点是上午8点50分(PST时间)的K线5。如果你继续刮头皮做多,最终将会意识到自己每笔交易都是亏钱的,而这恰恰说明市场正处于下跌趋势之中,只是你没有看到或者看到了但不愿相信。</strong><br><strong>市场出现回撤是因为多头锁定利润。为何交易者会在趋势如此强劲的情况下锁定利润呢?</strong><font color="black"><strong>因为无论趋势多么强劲,市场都可能会出现深度回撤(可以让交易者在低得多的位置再次入场),有时候趋势还可能反转。如果他们不至少先锁定部分利润可能会眼睁睁看着一大笔利润消失甚至转为亏损。</strong></font></p><p>本图的深入探讨</p><p>在图24.1中,<font color="black"><strong>市场开盘突破了前一天最后一个小时形成的交易区间。第一根K线出现长上影线,说明卖家力量较强,因此在其上方买入风险较大。市场连续上涨6根K线,然后在K线2急剧向下反转(可能是因为7点钟的经济数据)。</strong></font><font color="green"><strong>市场在经济数据公布前表现出强劲上升动能,并无见顶或买入高潮的迹象,因此在这轮上涨的最后一根K线下方做空是不明智的。这是一轮始于开盘上升趋势的首次回撤,属于买入形态。不过,K线2急速下跌的力度有些超乎寻常,不太符合上升趋势交易日的特征。</strong></font><br><font color="green"><strong>K线3低点(K线2底部)与K线1低点有可能构成一个双底。</strong></font><font color="orange"><strong>在跳空高开的情况下,市场经常会测试开盘第一根K线的低点,然后展开一轮上升趋势。</strong></font><font color="black"><strong>由于开盘区间高度超过近期日均波幅的30%,不算一个太好的突破模式建仓形态。向上突破之后走出强劲、持续趋势的可能性较低。即便市场最终形成上升趋势交易日,也可能是较弱的类型,比如趋势性交易区间交易日。</strong></font><font color="green"><strong>K线3后面的双内包形态(i)是不错的做多信号,但由于市场不太可能走出强劲上升趋势,多头应该在实现2~4个点浮盈之后至少先锁定一半利润。而且,K线3急速下跌也可能在回撤之后跟随个下跌通道。</strong></font>在这里,<font color="black"><strong>K线4的抬升高点为回撤过程。K线4前一根K线和往前第三根K线都属于买入高潮K线。</strong></font><font color="orange"><strong>连续的买入高潮往往会造成至少两段式调整,持续大约10根K线。</strong></font><font color="green"><strong>由于当天并非明确的上升趋势交易日,而且K线3曾发生强劲抛盘,这根反转K线是一个可接受的低2做空形态。</strong></font><br><font color="black"><strong>截至K线5的回撤跌破了上升趋势线,K线6高点下降为持续到收盘的下跌趋势埋下了伏笔。</strong></font><font color="green"><strong>K线6是一波两根K线急速下跌的第一根K线,提醒交易者接下来可能进入一个下跌通道。K线5前一根K线以及K线3大阴线都属于急速下跌。</strong></font><font color="black"><strong>在下跌通道运行过程中,还有其他一些急速下跌K线。另外,在K线8前一根K线之后,市场一直无法收盘站上均线。这些信号都说明空头力量较为强大。</strong></font><br><strong>在大部分强劲趋势通道中,摆动交易比刮头皮更容易获利</strong>,<font color="green"><strong>因为频繁的回撤往往会扫掉哪怕是顺势刮头皮头寸的止损(比如K线8和K线10的卖点),造成亏损。最好的方法是跟踪止损,随着市场下跌将止损移动到上一个摆动高点上方。</strong></font><br><font color="green"><strong>K线9急速下跌走势突破了上方交易区间,然后以一轮完美的等距下跌运行到收盘。</strong></font><font color="black"><strong>K线9构成一个突破缺口(上方区间底部与K线10突破回踩之间的缺口)。缺口的中线也刚好是从K线4到收盘前最低点下跌行情的中间位置。</strong></font><br><strong>在日线上,当天的行情可能是一根实体很短、带长上影线的十字星K线。</strong><font color="green"><strong>如果它出现在日线图上可能发生向下反转的区域,可以是一根很好的做空信号K线。</strong></font><br>请注意,<font color="green"><strong>市场在K线5和K线9之间不断形成高点下降和低点下降,暗示市场可能正处于一轮下跌趋势之中。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第24章 反转交易日<br>第1个案例（图 24.1）<br>第363-365页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-反转交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>24.00.02.反转交易日</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-00-02-fan-zhuan-jiao-yi-ri/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-00-02-fan-zhuan-jiao-yi-ri/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p><font color="orange"><strong>某些最强劲的趋势行情是从盘中或者尾盘开始的。有时候它们始于交易区间突破或者高潮性趋势反转(通常是消息推动的,但这并不重要)。</strong></font><font color="red"><strong>无论哪种情况,市场都可以进入大趋势行情,中间只有很小的回撤。市场会出现重叠度很低、影线很短的多根长趋势K线。这属于突破走势,将造成市场"始终入场"的方向明确逆转。</strong></font><font color="green"><strong>在这种情况下,你必须快速入场,并将大部分头寸参与摆动,哪怕走势看起来属于高潮、已经过度涨跌(的确已经过度,但市场的过度行为还可能持续很长时间)。你应该用非常激进的手法来交易这种急速突破行情,确保自己至少持有一个较小头寸,因为行情可以持续非常久。</strong></font>如何交易强势突破将在第二本书关于突破的章节有详细论述,反转则在第三本书细讲。<br><font color="orange"><strong>在其他情况下,市场先走出趋势性行情,然后进入回调,但回调走势不断延伸,最终成为相反方向的一个趋势通道。</strong></font><font color="red"><strong>在通道开始之前,市场几乎总是会出现至少一波逆势急速运动。因此每当你看到回调走势出现强劲的逆势急速运动,须警惕趋势可能正在反转。</strong></font>举例而言,<font color="black"><strong>假如市场头1~2个小时出现一轮强劲下跌,你预计接下来会出现一轮回踩均线的两段式反弹,但反弹以一根非常强势的多头趋势K线开始,那么你就应该考虑到这根K线有可能属于急速上涨,接下来将会走出一个持续的上升通道,而不是一个小型熊旗。到交易日结束,这一回撤可能会延伸到超越之前的下跌趋势,在日线图上收出一根多头反转K线。</strong></font><font color="green"><strong>如果你较早意识到这种可能性,就应该只考虑做多,反之,如果一味地希望市场恢复头一个小时的下跌趋势,你的做空交易一定会亏钱。</strong></font><font color="red"><strong>许多此类交易日可以归为其他类型的趋势交易日,通常是趋势性交易区间交易日。实际上,大部分反转交易日都是从趋势性交易区间交易日开始的。</strong></font><strong>反过来,对于开盘后的上升趋势反转为持续的下降通道,原理也是一样的。</strong></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第24章 反转交易日<br>第362-363页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 反转交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>24.00.01.反转交易日的主要特征</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-00-01-fan-zhuan-jiao-yi-ri-de-zhu-yao-te-zheng/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/24.fan-zhuan-jiao-yi-ri/24-00-01-fan-zhuan-jiao-yi-ri-de-zhu-yao-te-zheng/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>反转交易日的主要特征:</p><ul><li><font color="red">交易日先出现某个方向的趋势,然后进入相反方向趋势直到收盘。</font></li><li><font color="red"><strong>大部分情况下都始于趋势性交易区间交易日。</strong></font></li><li><font color="red"><strong>如果反转发生在最后两个小时而且走势强劲,反转走势通常会延续到第二天甚至后面数天。</strong></font></li></ul></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第24章 反转交易日<br>第362页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 反转交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.11.强劲下跌交易日中的双顶</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-11-qiang-jing-xia-die-jiao-yi-ri-zhong-de-shuang-ding/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-11-qiang-jing-xia-die-jiao-yi-ri-zhong-de-shuang-ding/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc23%2FSlide11.JPG" alt="图 23.11 强劲下跌交易日中的双顶"></p><blockquote><p><font color="red"><strong>始于开盘的趋势在强劲趋势启动前可以出现双顶或双底。</strong></font>如图23.11所示,<font color="black"><strong>K线7试图引发一轮始于开盘的下跌趋势,但上午7点(PST时间)的一份经济数据使得市场向上测试高点。这种情况十分常见。</strong></font><font color="red"><strong>虽然市场截至K线9形成一个小型交易区间,你必须总是考虑到这种可能性:市场在释放下跌动能之前只是在等待经济数据。</strong></font><br><font color="green"><strong>当天开盘区间的高度不及近期日均波幅的1/3,使得市场处于突破模式。当市场在第一根K线之后急速下跌又急速拉升(向下反转再向上反转),部分交易者将会在突破时入场,预期交易日波幅将扩大数倍。</strong></font><font color="black"><strong>市场跌破K线7双K线反转之后,K线7反转K线就成了一个摆动高点。市场站上K线8之后,K线8就成了一个摆动低点和向上反转。</strong></font><font color="green"><strong>这些交易者会在K线7顶部上方1个最小报价单位挂买单,在K线8底部下方挂卖单。一旦K线9站上K线7高点使买单成交,他们将会把K线8下方的卖出挂单加大一倍。当市场跌破K线8,他们的多单将被止损,空单将获得成交,从而反手做空。</strong></font><strong>这是这种形态常规的操作手法,不过通常还可以更激进一些。</strong><font color="green"><strong>更好的方法是在K线7双K线反转下方做空,锁定部分刮头皮利润,然后收紧保护性止损。下一步,交易者可以在K线8(均线处的高2)反手做多。同样,锁定部分多头刮头皮利润,收紧止损。接着在K线9外包阴线下方反手做空,因为这根K线造成部分多头被套,而且它正在与K线7构成双顶熊旗。交易者同样可以锁定部分刮头皮利润、收紧止损,剩余头寸参与摆动,直到出现明确的买入信号。如果买入信号没有出现,他们可以一直持有空头到收盘。如果他们在K线15、18或21低点买入,在锁定利润后必须反手做空。做不到反手的话,他们应该要么继续持有空头,要么平多后借反弹重新开空。</strong></font><br><strong>虽然交易日由一个小型交易区间开始,部分交易者可能认为属于趋势性交易区间交易日或者下跌趋势恢复交易日</strong>,<font color="black"><strong>但由于回撤幅度都非常小,我们所面对的实际上是一轮非常强劲的下跌趋势。</strong></font><font color="green"><strong>在这种行情中,我们需要确保自己在交易日大部分或全部时间里都持有空头。如果将其视为趋势性交易区间交易日,你可能会去做多,往往错失做空机会。</strong></font><font color="black"><strong>从K线15开始的反弹幅度约为K线9启动下跌趋势之后前面回撤幅度的两倍。当天虽然不是典型的小幅回撤趋势交易日(这种交易日往往要到尾盘,比如PST时间上午11点之后才会出现回撤扩大),但依然属于强劲下跌趋势交易日。</strong></font></p><p>本图的深入探讨</p><p>在图23.11中,<font color="green"><strong>K线11、13和15构成一个楔形,但由于市场已经有大约20根K线没有触到均线,而且下跌通道很窄,因此楔形可能仅造成价格回踩均线,而空头将会在均线附近大举做空。</strong></font><strong>多头成功组织起一轮两段式上涨,持续到K线17(均线缺口K线)。</strong><font color="orange"><strong>下跌趋势中的第一根均线缺口K线往往会引发最后一轮下跌,然后才能出现幅度更大的反弹。</strong></font><br><font color="orange"><strong>由于截至那根均线缺口K线的上涨几乎肯定会突破一根重要的下降趋势线,因此接下来对下跌行情低点的测试(以低点抬升或低点下降的方式)通常会引发一轮持续的向上调整甚至反转。</strong></font><strong>市场试图在K线18以及截至K线21的小楔形向上反转。</strong><font color="black"><strong>截至K线22是一波强劲的两根K线急速拉升,造成多头被套、空头被震仓</strong></font>,<font color="orange"><strong>然而老练的交易者知道在趋势交易日中市场往往会在上午11点(PST时间)之后出现强劲的逆势运动,因此随时准备在其失败后做空</strong></font><font color="green"><strong>(比如K线24的小型双顶)。这一做空形态的信号K线是一根内包阴线,K线22和24还与K线17构成一个更大的双顶熊旗。截至K线25的急速下挫之后是两根强多头趋势K线,构成K线26突破回踩卖点,可以抓住收盘前最后一波下跌行情。</strong></font><font color="black"><strong>K线25是一个三角形扩散底部(3个低点是K线18、21和25)的信号K线,但这个底部最终失败,K线26反而成为突破回踩做空形态的入场K线。</strong></font><font color="orange"><strong>失败的楔形往往会引发等距下跌</strong></font>,收盘前的下跌大致接近这一目标。<br><font color="black"><strong>这使得交易日成为趋势恢复交易日截至K线13的走势为初始下跌,然后进入持续几个小时的交易区间(截至K线24),收盘前走出第二轮下跌。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第11个案例（图 23.11）<br>第359-361页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.10.强趋势中的建仓形态往往很弱</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-10-qiang-qu-shi-zhong-de-jian-cang-xing-tai-wang-wang-hen-ruo/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-10-qiang-qu-shi-zhong-de-jian-cang-xing-tai-wang-wang-hen-ruo/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc23%2FSlide10.JPG" alt="图 23.10 强趋势中的建仓形态往往很弱"></p><blockquote><p>图23.10是一个<strong>始于开盘的上升趋势交易日,如此明确的趋势为何交易起来非常困难?</strong><font color="red"><strong>因为大部分顺势入场点看起来都很弱,同时市场出现大量小幅回撤,诱使交易者过早出场。所有这些回撤都没有扫到2个点的金额止损位(强趋势中的最佳止损策略)。</strong></font><font color="orange"><strong>市场出现如此多横向震荡的小K线,导致根据价格行为所设置的止损被频繁触发,这就使得坚持最初的2个点止损更具合理性。在如此强劲的上升趋势中,你需要想尽一切办法持有多头仓位。</strong></font><font color="red"><strong>强势而顽固的趋势通常由大量带影线和高度重叠的小K线所组成,但回撤幅度非常小,基本为横向调整。</strong></font><br><font color="orange"><strong>在大幅高开的情况下,市场走出上升或下跌的趋势性交易日的可能性很大,而像本例这种巨型缺口更可能引发上升趋势。</strong></font><font color="green"><strong>由于头几根K线没有出现抛压,有可能形成始于开盘的上升趋势,交易者必须找机会做多。</strong></font><strong>市场全天稳步上涨,原因是机构需要建立多头头寸,但他们会在整个交易日分批买入,因为他们害怕期待中的回调不会出现。他们的持续买入使得市场无法出现深度回撤。</strong><font color="black"><strong>他们之所以不愿一次性全部买入,是因为这样做将造成耗竭性买入高潮,可能造成剧烈反转并大幅跌破他们的买入价。</strong></font>而且,<strong>在市场上涨过程当中,随着投资者信心增强,机构全天会不断接到买入指令。</strong></p><p>本图的深入探讨</p><p>在图23.10<font color="green"><strong>这种强劲趋势中,你可以以任何理由在任何时间买入。在回调K线上方买入较为稳妥,但也可以在前一根K线低点或其下方挂限价单买入。在这种行情中,在任何K线下方做空都是错误的策略。</strong></font><strong>如果你非要做空,应该只在K线上方或强趋势K线收盘时做空。当交易日如此强劲,大部分交易者都不应该做空,因为它可能造成干扰,导致你错过买入机会。这些买入机会属于强趋势中的摆动交易,因此比刮头皮更容易获利。</strong><br><font color="black"><strong>K线3是一波两根K线急速拉升的第一根K线,随后市场以窄幅交易区间进入横向震荡,然后开始通道性上涨。</strong></font><font color="orange"><strong>最强劲的趋势倾向于不停地产生反转形态,但看起来似乎总是不太对劲。</strong></font><strong>冒进空头不停地落入陷阱,以为小K线意味着风险(止损)很小,但在亏损4~5次之后,他们当天已经注定亏损,要追平几乎不太可能。我们不能仅仅因为风险很小就参与一笔交易,还需要考虑成功率和利润目标。</strong><br><strong>空头将K线5、7、9看成三连推形态(楔形的变体),将K线7、9、10也看成另一个楔形。</strong><font color="orange"><strong>然而当楔形的调整为横向而非下跌,你应该判断出趋势非常强劲,停止寻找反转,只做顺势交易。</strong></font><br><font color="black"><strong>K线14恰好是联储公布利率决议的时间,市场先是迅速跳水,但立即向上反转,最低点高于K线5高点1个最小报价单位。</strong></font><br><strong>尾盘市场出现了几波两根K线的拉升</strong>(K线16、K线17、K线21为这些两根K线拉升走势的第一根K线)。<br><strong>这种强劲趋势往往全天不断出现反转形态,但这些建仓形态总是不太对劲,几乎总是会失败。</strong><font color="black"><strong>截至K线9的楔形位于一个几乎完全由多头趋势K线所构成的上升通道之内。市场连续两个多小时没有触到均线。这说明多头力量很强大,做空胜算不高。K线10刺破趋势通道线,但收出一根阳线。而且,通道非常窄,市场在前面并未表现出空头动能。</strong></font><font color="orange"><strong>在强趋势行情中,你只能在二次信号做空,而且前面必须表现出空头动能,比如5~10根K线的测试均线的回撤。</strong></font><strong>不具备这个条件,任何做空都相当于赌市场突然无缘无故地改变全天的行为模式。</strong><font color="black"><strong>全天最大的回撤仅9个最小报价单位。如果你在某根K线下方做空,价格从你的入场点下跌5单位之后,你需要市场再下跌5单位才能获得1个点的刮头皮利润。由于市场一直在频繁发生回撤,而回撤幅度从未超过9单位,所以你的空头交易成功率是非常低的。</strong></font><font color="orange"><strong>只有在成功率达到60%或更高的情况下,你才能够冒6个甚至7个单位的风险,刮取1个点的利润</strong></font>,<strong>所以这里是不能做空的。你也许会说,截至K线12的走势突破了上升趋势线,因此K线13的抬升高点是一个可接受的做空点。</strong><font color="black"><strong>但均线就在价格下方6单位,市场一直还没有回踩均线,因此在均线处一定会迎来买盘。而且,K线13是连续第五根阳线,在上升动能如此强劲的情况下,显然不宜做空。</strong></font><br><font color="red"><strong>在大部分强趋势交易日,市场往往会在上午11点和中午之间(PST时间)出现剧烈、短暂的反转,将弱势多头震仓出局,并套住那些希望挽回之前亏损的冒进空头。</strong></font><font color="orange"><strong>这种走势通常受消息触发,不过这不重要。重要的是它通常会构成买入机会,只要你不被市场的急速下跌所吓住。</strong></font><br>在本例中,联储议息声明在上午11点15分公布。<strong>消息公布后,K线14一度呈现出大阴线的外观。但如果你在这根K线收盘之前做空,以为消息将促使市场进步大跌,那么你就违背了</strong><font color="red"><strong>一条重要纪律:应该等待K线收盘,因为这根K线在4分钟时是一根大阴线,收盘时可能变成一根十字星甚至多头反转K线。</strong></font><br><font color="green"><strong>K线16是出现在从K线14低点到K线15高点上涨走势之后的一个抬升低点,接下来的K线17构成一个突破回踩做多入场点。</strong></font><font color="black"><strong>所有急速行情都应该同时被视为高潮和突破</strong></font>,<font color="green"><strong>从K线16开始的两根K线急速拉升是一次突破,相应地K线17就是一次突破回踩。</strong></font><br><font color="black"><strong>K线19是一个双顶熊旗,但市场前面没有出现强势下挫走势,因此市场在K线17急速拉升之后更有可能只是横向调整。</strong></font><br><font color="green"><strong>K线20是一根多头反转K线和高2买点,K线21(入场K线的后一根K线)跌破入场K线低点,将部分多头震仓出局。由于入场K线仅突破K线20高点1单位,保护性止损应该设在K线20信号K线下方,不要过早收紧止损。</strong></font>正如前面所言,<font color="black"><strong>强趋势交易日会有各种把戏让多头过早退出、空头过早做空。空头必须回补空头头寸,增加了市场买压,而且至少在接下来1~2根K线不会继续做空。他们刚刚出现亏损,需要休整一下才会再次寻找做空机会。</strong></font><strong>那些刚刚被震仓出局的多头将会追高买入,使得市场上升动能进一步增强。</strong></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第10个案例（图 23.10）<br>第356-359页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.09.始于开盘的趋势发生反转</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-09-shi-yu-kai-pan-de-qu-shi-fa-sheng-fan-zhuan/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-09-shi-yu-kai-pan-de-qu-shi-fa-sheng-fan-zhuan/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc23%2FSlide9.JPG" alt="图 23.9 始于开盘的趋势发生反转"></p><blockquote><p><font color="red"><strong>并非所有始于开盘的趋势交易日都会成为与初始趋势同向的强劲趋势交易日。</strong></font>在图23.9中,<strong>交易日开盘后走出一段下跌趋势。当天开盘跳空跌破前一天的低点,但立即出现回撤,几乎完全回补缺口。</strong><font color="green">**K线1是一个突破回踩做空建仓形态。**市场连续下跌5根K线,**在K线3构成首次回撤做空形态,但接下来进入窄幅交易区,并未立即触发卖点。**虽然可以做一笔刮头皮,<strong>市场在K线4的拾升低点向上反转。</strong></font></p><p>本图的深入探讨</p><p>在图23.9中,<font color="green"><strong>K线1是开盘跌破前一天收盘前交易区间后的突破回踩做空建仓形态。</strong></font><font color="orange"><strong>截至K线2的初始跌势幅度约为12点,相当于近期日均波幅。一旦市场反转站上开盘高点、向上突破,接下来很可能出现等距上涨。有时候等距上涨幅度相当于当天开盘到当天低点的距离,然后在收盘时返回开盘价附近,从而在日线上构成一根十字星。在其他情况下,等距上涨幅度相当于整个初始下跌行情的高度。</strong></font><strong>图中当天最高点K线17仅低于等距运动目标3个最小报价单位。向上反转超越开盘区间的走势在日线上构成一根长下影线。</strong><font color="orange"><strong>当市场从一个大开盘区间的等距上涨目标附近转跌,通常情况下都会跌回原形,收于区间中部。</strong></font>本例即是如此。<br><font color="green"><strong>从K线4到K线5的急速拉升也可用作等距运动目标的计算,不过实际上并未如此发生,而是按照"第一波=第二波"的原理发生的。</strong></font><font color="black"><strong>第一波是从K线4到K线5.第二波是从K线6低点到K线17高点。截至收盘的下跌还测试了急速上涨之后上升通道的起点K线6。</strong></font><br><font color="black"><strong>市场从K线15开始出现两根K线的急速下挫,随后发生回撤并在K线17形成高点拾升。</strong></font><font color="orange"><strong>有时候急速下跌之后的回撤可以形成高点拾升,但这种情况下,通常回撤结束之后还会再出现一轮急速下跌。</strong></font>在这里,<font color="black"><strong>K线17后面那根长内包阴线就是急速下跌,从K线18开始的下跌构成第二轮急速下跌。截至K线13的3根K线下跌也是一波急速行情,因此有可能对后面最终出现的下跌行情产生了一些影响。</strong></font><font color="orange"><strong>当市场开始形成多根空头趋势K线,卖压将开始累积,往往最终战胜多头</strong></font>,本例也是如此。</p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第9个案例（图 23.9）<br>第355-356页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.08.开盘为交易日最高点</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-08-kai-pan-wei-jiao-yi-ri-zui-gao-dian/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-08-kai-pan-wei-jiao-yi-ri-zui-gao-dian/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc23%2FSlide8.JPG" alt="图 23.8 开盘为交易日最高点"></p><blockquote><p><font color="red">有时候,始于开盘的下跌趋势会开在当天最高点。</font>在图23.8中,<font color="black"><strong>K线12是当天第一根K线,开在最高点并向下突破了前一天收盘前形成的楔形。</strong></font><strong>大部分交易者都没有那么快的反应速度,能够在前一天收盘的那根内包K线下方卖出</strong>,<font color="green"><strong>不过在第一根K线收盘时开一个小的空仓是合理的。<strong>如果你错过了第一个入场点,可以在1分钟图上的小幅回撤中卖出,或者</strong>等待5分钟图出现做空建仓形态。当市场出现始于开盘的下跌趋势,在第一次回撤时卖出属于高概率的交易。</strong></font><strong>不过交易者在实际操作中往往有一定心理障碍</strong>,就本例来讲,<font color="black"><strong>这相当于在一轮大幅下跌行情的低点附近卖出。</strong></font><font color="green"><strong>K线15是首次回撤做空机会的信号K线,同时回撤走势刚好在均线下方向下反转。由于空头迫切想要人场,所以并没有等市场真正测试均线,而是在均线下方卖出。</strong></font><font color="black"><strong>在市场连续走出5根阳线之后,部分交易者可能不敢做空。</strong></font><font color="green"><strong>但这些阳线实体都很短,而且是一轮急速下跌之后的第一次回撤,因此属于可靠的低1做空形态。它也是对均线的测试,并与K线13高点构成双顶熊旗。</strong></font><br><font color="black"><strong>当天行情成为一轮急速与通道下跌趋势,通道部分从K线15(以及K线17)开始,在K线19结束。尾盘出现反弹,并未收于当天低点。</strong></font></p><p>本图的深入探讨</p><p>与大部分交易日一样,图23.8中<strong>还存在其他的急速与通道行为。</strong><font color="black"><strong>K线12与其后一根K线构成急速下跌,K线13以及K线14前一根K线亦然,截至K线14的整轮下跌也是急速行情。K线15后面两根K线也构成急速下跌,从K线17的低2开始进人下跌通道,在K线19结束。</strong></font><br><font color="black"><strong>K线16也是对突破K线14和K线1低点走势的一次突破回踩。它非常接近于突破前一天的低点,因此可以表现得像实际突破之后的回撤(交易中只需要近似就够了)。</strong></font><strong>空头做空的迫切性使得第一次回撤未能触到均线。他们担心反弹可能到不了均线,所以以价格无法达到均线目标这一假设为前提大规模做空。当回撤走势在均线下方掉头向下,空头变得非常激进、迫切感更强了。他们急切想要做空,哪怕在相对较低的位置,因此市场可能进一步下跌。</strong><br><font color="black"><strong>K线19属于急速拉升,随后的通道性上涨阶段从K线20拾升低点开始。K线20后面那根K线也属于急速拉升,引发截至K线21的3根K线上升通道。</strong></font><br>市场前一交易日也存在急速与通道形态,<font color="black"><strong>比如截至K线2的急速拉升以及从K线3或K线5开始的通道性上涨。从K线5到K线6的走势也是急速行情,以及K线7前面那根K线。二者的通道部分均从K线8低点开始。从K线5到K线7的整个上涨行情在较高时间级别上可能也对应一波急速拉升。</strong></font><br><font color="green"><strong>前一天收盘前的上升通道刺破了趋势通道线(根据连接K线5和K线9的上升趋势线画平行线而成)。当市场在K线12(当天第一根K线)返回通道之内、接下来至少会测试通道下轨。下一个目标是根据通道高度测量的等距下跌,再下一个目标则是前一天通道的起点,即K线8低点。由于截至K线11的上涨呈楔形、市场测试了楔形起点下方的位置,因此下一个目标是等距下跌。</strong></font><strong>用K线11的高点减去K线8的低点得出楔形高度,然后用楔形起点K线8低点减去这一幅度。</strong><font color="black"><strong>这一目标在市场跌破K线17低点时被超越。</strong></font><br><font color="green"><strong>K线19是市场第二次突破下降趋势通道线(连接K线15和K线17高点趋势线的平行线)之后向上反转,因此可能出现两段式反弹。</strong></font><strong>K线18试图在小幅探破趋势通道线之后反转,但市场一直没有站上双K线反转的高点,因此并未触发做多入场点。</strong><br><font color="green"><strong>我们必须意识到,虽然前一天收盘前形成楔形顶部,但依然属于一轮强劲的上升趋势。这使得交易新手在当天开盘后期待市场延续升势,而否认不断展开的反转走势。</strong></font><font color="red"><strong>虽然有时候某种判断似乎显而易见,但我们永远要想到它的反面,因为它将会有40%的可能性发生。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第8个案例（图 23.8）<br>第353-355页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.07.跳空交易日第一根K线往往指示趋势方向</title>
+      <link href="/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-07-tiao-kong-jiao-yi-ri-di-yi-gen-k-xian-wang-wang-zhi-shi-qu-shi-fang-xiang/"/>
+      <url>/2023/07/07/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-07-tiao-kong-jiao-yi-ri-di-yi-gen-k-xian-wang-wang-zhi-shi-qu-shi-fang-xiang/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc23%2FSlide7.JPG" alt="图 23.7 跳空交易日第一根K线往往指示趋势方向"></p><blockquote><p>在图23.7中,<strong>市场以中等缺口跳空下跌。</strong><font color="black"><strong>K线3是第一根K线,为空头趋势K线,有可能成为一轮始于开盘的下跌趋势的起点。市场反转前一交易日摆动低点K线2的尝试失败,因此可能测试前一天的下一个支撑位,也就是K线1的低点。</strong></font><font color="green"><strong>交易者将会在K线3低点下方1个最小报价单位处挂单做空。一旦跌破前一天的低点市场就有可能再次试图向上反转,至少是短暂地,因此交易者将会在第一根较佳的信号K线上方1单位挂单做多。</strong></font><font color="black"><strong>部分交易者将会在K线4上方买入,但它是一根空头趋势K线,收于振幅中位之下,更安全的做法是等下一根K线收盘,看是否会出现更好的形态。</strong></font><font color="green"><strong>第二根K线是一根实体长度不错的阳线,与K线4构成双K线反转。入场点在其高点上方。</strong></font>一般来讲,<font color="black"><strong>在多头趋势K线上方买入总是更安全一些,尤其在逆势交易的时候。</strong></font><br><font color="green"><strong>如果买单没有成交,下一根K线形成低点下降,交易者将会尝试在其高点上方买入,希望市场对前一天低点的突破出现失败,形成开盘反转。然而如果市场进步大幅下跌,而没有出现好的买入形态,交易者应该只考虑做空,可以等反弹突破某根趋势线之后。</strong></font><br><font color="black"><strong>市场出现两段式上涨,测试均线,站上了当天最高点,并构成均线处的一个双顶熊旗。突破K线4的那根长多头趋势K线紧跟着一根阴线,不是太理想,意味着市场可能形成交易区间而非上升趋势。</strong></font><strong>市场一直在交易区间震荡,直到中午时分。</strong><font color="orange"><strong>在这个时点,区间宽度大约为日均波动区间的一半。这提醒交易者市场可能发生突破,让波动区间大约扩大一倍,形成趋势性交易区间交易日。</strong></font><font color="green"><strong>突破走势从始于K线10的急速下挫开始。</strong></font>图上没有显示当天尾盘的行情,实际上<font color="orange"><strong>市场尾盘强势向上反转并收于始于K线7的窄幅交易区间范围之内。这种情况在趋势性交易区间交易日经常发生。窄幅交易区间具有磁力,倾向于在市场突破之后又将其拉回去。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第7个案例（图 23.7）<br>第352-353页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.06.缺口可引发上升趋势或下跌趋势</title>
+      <link href="/2023/07/06/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-06-que-kou-ke-yin-fa-shang-sheng-qu-shi-huo-xia-die-qu-shi/"/>
+      <url>/2023/07/06/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-06-que-kou-ke-yin-fa-shang-sheng-qu-shi-huo-xia-die-qu-shi/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc23%2FSlide6.JPG" alt="图 23.6 缺口可引发上升趋势或下跌趋势"></p><blockquote><p>图23.6中显示了<strong>3个连续的开盘缺口,虽然3天第一根K线都是空头趋势K线,结果却各不相同。K线1和K线9同时也是日线图上的开盘缺口。</strong><br><font color="green"><strong>K线1没有上影线,下影线极短,为长空头趋势K线,属于大幅跳空高开交易日的极佳做空形态。紧接着的入场K线也是一根长阴线。</strong></font><font color="orange"><strong>如果交易日第一根K线是强趋势K线(见嵌图),通常会出现延续性走势,如果前两根K线都很强劲,那么向上反转的尝试往往会形成高点下降</strong></font>,本例即是如此。<font color="orange"><strong>当市场跳空高开之后遭遇强劲抛盘,往往会成为始于开盘的下跌趋势交易日。</strong></font><font color="black"><strong>截至K线3是一轮强劲反弹,测试开盘价位,但这次失败的开盘反转造成一个高点下降或者双顶,然后进人一轮漫长的下跌。K线2是尝试对突破前一天高点的走势构成突破回踩,但空头力量过于强大,反弹在K线3失败。</strong></font><br><font color="black"><strong>K线6往后两根K线是一根强多头反转K线,也是在开盘的空头趋势K线跌破前一天最后两个小时上升通道之后的开盘反转。</strong></font><font color="green"><strong>上升通道相当于熊旗,那么这根多头反转K线就是试图让突破旗形的走势归于失败。</strong></font>在本例中,<font color="orange"><strong>在开盘第一根K线下方做空风险很高,虽然它是一根空头趋势K线,但位于前一天尾盘交易区间的底部附近,而在交易区间底部做空往往是失败的策略,尤其在缺乏明确方向的市场中(交易区间)。</strong></font><br><font color="green"><strong>截至K线7的强劲上涨测试了前一天的收盘,并形成一个高点下降或双顶。那根阴线信号K线使其成为一个不错的做空机会。</strong></font><strong>多头锁定利润造成市场回调。为什么在趋势如此强劲的情况下,交易者还会锁定利润呢?</strong><font color="black"><strong>因为无论趋势如何强劲,市场都可能发生深度回撤,让交易者能够在更好的价位再次人场,有时候趋势还会反转。</strong></font><strong>如果他们不先至少锁定部分利润,就有可能眼看着一大笔利润消失甚至转亏。</strong><br><font color="black"><strong>K线9跳空低开并跌破前一天的最低点,形成一根空头趋势K线,但上下影线都较长,说明交易者在这根K线收盘前买进。第二根K线是一根阴线,收于最低点,意味着空头非常强势,但紧接着又出现一根强多头趋势K线,从而构成反转。虽然买点并未被触发,但至少说明空头并无杀跌的迫切欲望。</strong></font><font color="green"><strong>在缺口如此之大的情况下,所有人都知道市场已过度下跌,如果不能立即出现延续性跌势,市场将会迅速反转、以化解这种极端状况。</strong></font><br><font color="black"><strong>K线10是一根长空头趋势K线,因此属于卖出高潮。下一根K线为内包K线,使得市场处于突破模式。</strong></font><font color="green"><strong>如果市场不立即出现延续性跌势,空头将会开始大规模回补空头头寸,打算在较高位置再卖出;多头也将买人,希望自己买在当天最低点。</strong></font><font color="black"><strong>市场已经在一个大的下跌通道运行数天,并处于通道底部,因此很有可能向上反转,而突破通道下轨、进入更陡峭下跌趋势的概率则较低。</strong></font>通道没有画出来,下降趋势线可以连接K线1和K线7的高点而成,下降趋势通道线可以大致连接K线4和K线8的低点画出来。<font color="green"><strong>多头还会在阳线上方买人,比如K线10前面那根阳线,以及K线10往后数两根K线的那根阳线。他们还会在K线12后面那根内包小阳线上方买人(失败的低2)。</strong></font><font color="black"><strong>由于市场可能已经从当天低点以及一个持续两天的牛旗(下降通道相当于牛旗)向上反转,因此这是一个不错的买点。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第6个案例（图 23.6）<br>第350-352页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.05.开盘第一根强势K线可能是骗入的</title>
+      <link href="/2023/07/06/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-05-kai-pan-di-yi-gen-qiang-shi-k-xian-ke-neng-shi-pian-ren-de/"/>
+      <url>/2023/07/06/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-05-kai-pan-di-yi-gen-qiang-shi-k-xian-ke-neng-shi-pian-ren-de/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc23%2FSlide5.JPG" alt="图 23.5 开盘第一根强势K线可能是骗入的"></p><blockquote><p><font color="red"><strong>有时候第一根K线可能诱使交易者做错方向,然后交易日成为朝相反方向的强劲趋势交易日。</strong></font>如图23.5所示,<strong>市场当天开盘跳空跌破前一天的低点,并突破了前一天后半部分形成的宽幅交易区间(头肩顶熊旗)。</strong><font color="black"><strong>当天第一根K线(K线9)是多头趋势K线,这种情况往往会造成部分回补缺口的走势甚至形成一轮上升趋势许多交易者在其上方1个最小报价单位处挂单做多。然而两根K线之后市场跌破其低点,造成这些多头被套。这根多头趋势K线之所以造成多头被套、空头踏空,是因为交易者认为它是一个强势信号,预示市场将会试图回补缺口,甚至可能成为上升趋势交易日。这根阳线尝试反转开盘跌破前一天交易区间和趋势通道线的走势。</strong></font><strong>然而在开盘的时候,你必须保持高度灵活,必须假定市场可能出现与你一分钟之前判断完全相反的走势。你必须在其发生之时立即发现它,以尽早入场。</strong><font color="green"><strong>市场试图返回趋势通道线上方,但这一努力归于失败,成为一个突破回踩做空形态。这一双K线突破回踩可能带来某种等距下跌。如果交易日成为趋势交易日,而你错过了最初的入场点,不要焦虑,全天都会有机会入场。</strong></font><br><font color="green"><strong>K线10提供了一个非常好的做空机会,卖点在K线9多头趋势K线低点下方1单位,因为大部分被套的多头都会在这里卖出,从而推动市场下跌。</strong></font><font color="black"><strong>而且,任何潜在的买家都会等待进一步的价格信号,使得市场上只剩下卖家,使之成为高概率的做空机会。空头还会一路在熊旗中加仓,让那些过早入场抄底的被套多头帮助推动市场进一步下跌。</strong></font><br><font color="green"><strong>截至K线11收盘(确认了向下突破走势),交易者确信市场已经彻底转空。许多交易者在K线11前面那根空头突破K线收盘时相信"始终入场"的方向巳转为向下。</strong></font><strong>随后市场出现大量反转尝试,但依然收于最低点。这个例子很好地说明。</strong><font color="green"><strong>当你看到市场走出始于开盘的强劲趋势,至少应该试图让一部分头寸参与摆动。如果你还同时做多,那么在退出多头之后,你必须强迫自己重新回到空头阵营,抓住一个小的做多机会而错过大的做空机会是不划算的。</strong></font></p><p>本图的深入探讨</p><p>在图23.5中,<font color="black"><strong>K线12是一根强多头趋势K线,但它与前面两根K线大致重卺,因此是一个小型交易区间的一部分而非真正的反转K线。</strong></font><strong>反转K线必须放到整体环境下来进行判断,当其与前面的K线重叠度过高,就属于小型交易区间的一部分</strong>,<font color="green"><strong>而在下跌趋势中,在交易区间上方买入是错误的。聪明交易者反其道而行之,在前一根K线(即便其为实体较长的阳线)高点及其上方挂限价空单。</strong></font><br><font color="green"><strong>K线13是一个低2做空形态,但信号K线为小十字星。</strong></font><font color="orange"><strong>十字星属于弱信号K线,而弱建仓形态通常意味着市场尚未准备好突破。不过,在这种强劲下跌趋势中,你可以以任何理由做空,只需要把止损设宽一点。</strong></font><font color="green"><strong>你也可以在K线12或K线11低点下方做空。</strong></font><font color="orange"><strong>在强劲下跌趋势中,你可以在K线低点以及摆动低点下方做空</strong></font>,依然能够获利。<br><font color="black"><strong>K线14是低2失败之后市场向上反转的尝试,因此是第三波向上推动。</strong></font><strong>K线11后面那根十字星是第一波,K线12是第二波。</strong><font color="green"><strong>熊旗中的第三波向上推动构成个楔形熊旗,因此在其低点下方做空是合理的。</strong></font><br><font color="orange">K线14低2失败买入形态告诉我们,<strong>交易者最糟糕的操作之一就是在熊旗中根弱K线上方买入,试图获取刮头皮利润。这种做法不仅造成这笔刮头皮交易亏损,而且会让你陷入多头思维,无法在心理上准备好在市场突破熊旗时做空</strong>,而后者成功率要高得多,而且可能带来一个摆动交易机会而非仅仅是刮头皮。</font><br><font color="black"><strong>K线15突破K线是一根强空头趋势K线,表明空头控制着市场。</strong></font><font color="orange"><strong>当市场出现如此强势的向下突破,通常至少还会出现两波下跌,形成一个下降通道,而这另外的两波下跌往往构成一个楔形牛旗。接下来通常会进入两段式调整</strong></font>,<strong>图中即为K线22回踩均线的反弹走势。</strong><br><font color="orange"><strong>K线22是一根均线处的空头反转K线,以及一个低2卖点。它还是一个20根均线缺口K线做空形态以及楔形熊旗</strong></font><strong>(截至K线19的向上推动是楔形中的第一波上涨)。</strong><br><font color="black"><strong>随后市场继续下跌并创出新低</strong></font>,<font color="orange"><strong>在K线25出现双K线反转。K线25还是对一个单K线末端旗形的向上反转,以及一个形成中交易区间底部的高2买入信号。</strong></font><br><font color="black"><strong>K线27是一根强多头趋势K线,试图构成一次向上突破,但最终与K线22构成双顶熊旗。</strong></font><br><font color="green"><strong>K线28双内包(ii)形态成为一个末端旗形,市场从K线29小型下降高点以及均线缺口K线做空形态向下反转。</strong></font><br><font color="black"><strong>K线30是对下跌行情低点的两段式低点抬升方式的测试。</strong></font><br><font color="green"><strong>跌势反弹在K线35的楔形熊旗结束(K线27和K线33是前两波向上推动)这个高点抬升造成多头被套、空头踏空,也提醒交易者市场可能恢复下跌。交易者注意到K线35未能扫掉K线11下方空头的盈亏平衡止损</strong></font>,<font color="black"><strong>意味着最强势的空头在发力。这些强势空头在K线15强势突破中接管市场,然后在一旁观望,等待市场测试突破位。收盘前他们突然杀将出来,将市场打压至新低。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第5个案例（图 23.5）<br>第348-350页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.04.第一次突破趋势线通常会失败</title>
+      <link href="/2023/07/06/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-04-di-yi-ci-tu-po-qu-shi-xian-tong-chang-hui-shi-bai/"/>
+      <url>/2023/07/06/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-04-di-yi-ci-tu-po-qu-shi-xian-tong-chang-hui-shi-bai/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc23%2FSlide4.JPG" alt="图 23.4 第一次突破趋势线通常会失败"></p><blockquote><p><font color="red"><strong>在强劲趋势中,判断哪次回调将会成为第一次重大回撤是非常困难的。在这种情况下,你的顺势交易获利的概率非常高,因为回撤很不清晰恰恰说明逆势交易者力量极弱。</strong></font>在图23.4中,<strong>K线2和K线3都是极其微小的回撤,并未突破任何重要趋势线。第一次突破趋势线的回撤是K线4。</strong><font color="red"><strong>首次突破趋势线往往会跟随新一轮趋势行情,因此是极佳的入场点</strong></font><font color="green"><strong>(比如在K线4空头趋势K线下方做空)</strong></font>。例中<strong>当天行情属于始于开盘下跌趋势中的小幅回撤类型趋势。</strong></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第4个案例（图 23.4）<br>第347-348页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.03.小幅回撤交易日是最强劲的趋势类型</title>
+      <link href="/2023/07/06/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-03-xiao-fu-hui-che-jiao-yi-ri-shi-zui-qiang-jing-de-qu-shi-lei-xing/"/>
+      <url>/2023/07/06/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-03-xiao-fu-hui-che-jiao-yi-ri-shi-zui-qiang-jing-de-qu-shi-lei-xing/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc23%2FSlide3.JPG" alt="图 23.3 小幅回撤交易日是最强劲的趋势类型"></p><blockquote><p><font color="red"><strong>当市场走出始于开盘的趋势,所有回撤幅度都低于近期日均波幅的20%~30%,那么当天就属于小幅回撤交易日,属于最强劲的趋势类型。在这种交易日中,尾盘通常会出现幅度约为当天此前回撤150%~200%的回调</strong></font>,图23.3中OIH的走势就是如此。<font color="orange"><strong>所有横盘都属于走势暂停(回调的一种),属于买入形态。</strong></font><font color="green"><strong>K线1的双内包(i)突破是一个不错的入场点,K线3对两段式调整的突破也是一个买点。最后,K线4为窄幅交易区间突破。</strong></font><font color="green"><strong>所有这些入场点都应该被视为第一波上涨的一部分,而非第一次回调(第一次回调发生在第一波上涨之后,为第二波上涨埋下伏笔)。</strong></font><font color="orange"><strong>在少数交易日,市场几乎不回调,迫使交易者在市场突破哪怕非常短暂的横向暂停走势时入场。</strong></font><font color="green"><strong>实际上,在这种强劲趋势交易日中,你可以在任何价位以市价买入,相信即便入场后行情立即反转,市场在大幅回撤之前创出新高的概率也相当高。许多交易者会在多头趋势K线和空头趋势K线收盘时买入,或在前一根K线低点及其下方买入。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第3个案例（图 23.3）<br>第346-347页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.02.小幅回撤上升趋势交易日</title>
+      <link href="/2023/07/02/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-02-xiao-fu-hui-che-shang-sheng-qu-shi-jiao-yi-ri/"/>
+      <url>/2023/07/02/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-02-xiao-fu-hui-che-shang-sheng-qu-shi-jiao-yi-ri/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts/trends/c23/Slide2.JPG" alt="图 23.2 小幅回撤上升趋势交易日"></p><blockquote><p><font color="red"><strong>始于开盘的趋势是最强劲的趋势交易日类型,而小幅回撤交易日又是最强劲的始于开盘趋势类型。始于开盘的趋势每周出现1~2天,但小幅回撤交易日(见图23.2)每个月仅出现1~2次。</strong></font><strong>Emini近期日均波幅大约为12点,截至K线9当天最大回撤仅为9个最小报价单位。截至K线11的回撤仅为11单位。<strong>聪明多头看到了这种情况,于是<font color="green">在最近高点下方6~10个单位处挂限价买单。他们的初始止损可能是2~3个点。</font><strong>在截至K线17的回调中,市场试图制造一波较大调整,但最终都无法将市场推低14个单位以上。</strong><font color="black"><strong>多头将K线14前面的拉升视为买入高潮,不少多头在这里获利了结。</strong></font><font color="green"><strong>当市场突然拉升,而且急速拉升发生在市场可能发生回调的位置,此时往往是获利了结的良机</strong></font>,可以卖在一个非常好的位置,而这样的机会</strong>稍纵即逝</strong>。<font color="green"><strong>其他交易老手会在K线14收盘及其前一根K线或后一根K线收盘卖空。</strong></font><strong>K线14及其后一根K线均收出上影线,属于卖压信号。</strong><font color="black"><strong>空头预计市场将进入持续大约10根K线的两段式回调,而且几乎肯定会测试均线,因为市场已经在K线9和K线11两次测试均线。</strong></font><font color="green"><strong>在小幅回撤趋势交易日,市场往往会在上午11点(PST时间)之后某个时间出现幅度约为当天前面最大回撤幅度两倍的回调。</strong></font></p><p><font color="green"><strong>K线9上方是一个20根均线缺口K线做多机会,多头在K线8、9、11、13、17和19测试均线时买入。</strong></font><font color="black"><strong>全天都没有出现强劲的卖出信号,但激进空头可能会在K线14后面那根内包K线下方入场做刮头皮空头交易。</strong></font><font color="green"><strong>不过在这种强劲多头趋势交易日中,大部分交易者都会寻求在回调中买入,而非在新高位置做空。</strong></font></p><p><font color="green"><strong>市场从K线2开始出现一轮强劲的急速拉升,然后在交易日剩余时间里走出上升通道。交易者在K线2或后面那根强多头趋势K线感到市场"始终入场"的方向已转为多头。</strong></font><font color="orange"><strong>整个通道大部分都属于一个略微上倾的窄幅交易区间,价格涨幅很小。这种情况在小幅回撤交易日十分普遍。当天最高点仅高于上午8点25分(PST时间)K线5的高点4个点。</strong></font></p><p><font color="green"><strong>与所有强劲趋势一样,例中大部分买入信号K线看起来都很糟糕。</strong></font><strong>这使得多头不敢买入,不断踏空行情,最后不得不追高买进。同时,这也使得空头迟迟不愿回补,直希望出现更好的退出价位,结果造成亏损不断扩大。</strong><font color="black"><strong>市场还出现许多空头趋势K线和急速下跌走势。这种抛压诱使新手不断寻找反转形态,一再错过买入信号。</strong></font>相反,老练的、非情绪化的交易者明白,<font color="red"><strong>在小幅回撤趋势交易日,糟糕的买入信号K线和空头趋势K线恰恰说明上升趋势非常强劲。</strong></font>所以尽管形态很弱,他们依然会买入。<font color="green"><strong>他们将会在K线2突破那根十字星高1信号K线时买入。在K线4向上反转为外包K线时买入(K线4还与7根K线前的多头反转K线构成双底)。他们还在K线8以及后面那根阳线上方的高2买点买入(K线8与后一根K线构成双K线反转)。</strong></font></p><p><font color="green"><strong>K线9是上升趋势交易日中的一个三角形态(K线6和K线8是头两波向下推动),因此属于牛旗买入形态。交易者在收于均线下方的阴线K线11上方买入,因为它是对K线8和K线9双底的1个单位的假突破,同时也是对截至K线10的三角形突破走势的回撤。</strong></font><font color="black"><strong>此时市场处于交易区间,大部分多头都不会在市场向下突破时退出。</strong></font><font color="orange"><strong>他们知道大部分突破尝试都会失败,而上升趋势中大部分交易区间都是牛旗,最终会向上突破。</strong></font><font color="green"><strong>大部分多头要么在K线10后面那根阴线中退出,要么将止损设在最近急速拉升K线的下方。比如说,他们可能将止损设在K线4下方1单位,或者在3根K线后的那根外包阳线下方。</strong></font></p><p><font color="orange"><strong>通常情况下,当市场出现微型下跌通道(比如从K线10到K线11的走势),最好是等突破之后在回踩时买入,但在强劲趋势中,交易者有一种迫切感</strong></font>,<font color="black"><strong>聪明交易者不愿等待那个完美的买点,因为他们不想错过行情。</strong></font><font color="green"><strong>他们还会在K线13后面那根阴线上方买入,尽管阴线属于较弱的做多信号K线。这是一个高2买入形态(K线12后面那根阳线是高1),是对突破从K线10开始的微型下降通道回踩的二次入场点(那个高1是首次入场点)。聪明交易者还会在K线17拉升为外包阳线时再次买入,尽管它前面是一根小十字星和一根长阴线。均线继续成为所有回调走势的支撑。他们在K线17十字星阳线上方买入,以及后面那根阳线上方买入。他们还在K线19后面那根阴线上方买入,因为这也是均线附近的一个小型高2买点。它是一根阴线,第一波下跌由K线18后面那两根阴线所构成。其他交易者将会在K线19上方买入,因为它是强劲上升趋势中回踩均线的一根阳线。</strong></font></p><p><font color="orange"><strong>交易日大部分时间,市场一直试图向下反转,扫掉多头的止损,诱使交易新手做空,但最终顽强地一路走高,形成高点拾升和低点拾升,开在当天最低点附近、收在最高点附近。</strong></font><font color="black"><strong>在本例中,所有买入形态看起来都属于低概率机会,让经验不足的交易者踏空行情。</strong></font><font color="green"><strong>然而老练的交易者知道市场在发生什么,他们将所有急速下挫都视为买入机会。他们知道,做多形态糟糕恰恰说明趋势强劲,因此成功率远远高于其表象。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第2个案例（图 23.2）<br>第344-346页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.01.在强趋势中第一次回调中买入</title>
+      <link href="/2023/07/02/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-01-zai-qiang-qu-shi-zhong-di-yi-ci-hui-diao-zhong-mai-ru/"/>
+      <url>/2023/07/02/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-01-zai-qiang-qu-shi-zhong-di-yi-ci-hui-diao-zhong-mai-ru/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts/trends/c23/Slide1.JPG" alt="图 23.1 在强趋势中第一次回调中买入"></p><blockquote><p>如图23.1所示,<font color="red"><strong>市场走出始于开盘的上升趋势,K线2跌破趋势线,属于首次回调。</strong></font><font color="green"><strong>虽然它是一根弱信号K线(收出阴线,不过至少收在了中位之上),交易者将会在其高点上方1个最小报价单位挂止损单买人。激进多头可能在K线2前一根K线低点挂限价买单,期待市场出现微型通道假突破然后进一步走高。</strong></font></p><p><strong>在当天第一根K线下方做空是合理的,因为这是一根空头趋势K线,而且当天市场跳空高开,入场点距离均线及前一天收盘有一点空间。</strong><font color="black"><strong>不过这一交易仍略显激进,因为前天最后个小时走出数根强多头趋势K线,属于买压信号。</strong></font><font color="green"><strong>当我们犹豫不定之时,尤其是在刚开盘的时候,最好等待更多信息,或者发现某一方被套之后再入场。这笔做空交易的问题在于,对于大部分交易者而言,可能无法快速转变思路、在K线2上方反手做多。</strong></font><strong>这可能导致交易者错过多头行情,而大部分交易者可能原本等待在第一次回调上方买入,较晚的入场可能使他们错失几个点的利润。</strong></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>第1个案例（图 23.1）<br>第343-344页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.00.02.始于开盘的趋势与小幅回撤的趋势</title>
+      <link href="/2023/07/02/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-00-02-shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/"/>
+      <url>/2023/07/02/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-00-02-shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p><font color="orange"><strong>由于几乎所有小幅回撤交易日都属于始于开盘的趋势,它们应该被视为后者的强势变体。</strong></font><font color="red"><strong>始于开盘的趋势交易日通常是最强劲的趋势类型,但只发生在大约20%的交易日中。</strong></font><font color="orange"><strong>这意味着在开盘第一根K线上方做多或下方做空,期待其成为一轮强劲趋势的起点,属于低概率的交易。市场在第一个小时行情中反转要常见得多</strong></font>(我们将在第三本书讨论这个问题)。<font color="red"><strong>在开盘大幅跳空的情况下,如果第一根K线是大阳线或者大阴线,那么这根K线成为当天行情最高点或者最低点的概率可以达到50%或更高。在大约50%的交易日中,一天的最高点或最低点出现在头5根K线。然而这根K线90%情况下形成于开盘区间之内,而区间行情可以持续几个小时。</strong></font><font color="orange"><strong>任何类型的趋势交易日都可以从开盘走出趋势。</strong></font><font color="red"><strong>在始于开盘的趋势交易日中,市场在第一根K线或头几根K线形成最高点或最低点,然后全天作趋势性运动,往往收于最低点或最高点附近。</strong></font><font color="red"><strong>市场在头30分钟左右可能形成一个小型交易区间,然后发生突破</strong></font>,<font color="orange"><strong>但当天开盘通常非常接近交易日最高点(下降趋势)或最低点(上升趋势)。这些交易日往往开盘大幅跳空,然后市场朝任何一个方向作趋势运动。</strong></font>换句话说,<font color="red"><strong>大幅跳空低开既可以造成始于开盘的上升趋势交易日,也可以导致始于开盘的下跌趋势交易日。</strong></font>在两种情况下,<font color="red"><strong>建仓形态的可靠性将会更高:一是当其形成于像趋势通道线这样的强磁力位(比如形成楔形反转形态),二是属于一个反转形态的一部分(比如从昨天收盘前的末端旗形反转)。</strong></font></p><p><font color="red"><strong>这种类型的趋势可以非常强劲,一直持续到第二天头1~2个小时的行情中</strong></font>,<font color="green"><strong>因此交易者在第二天开盘后应该寻求在回调中顺势人场。</strong></font><font color="red"><strong>很多时候回调力度很强,让交易者怀疑市场是否正在反转,然而通常情况下表面上的强势回调在较高时间级别上只是正常的两段式调整</strong></font>,比如回调到15分钟图上的均线。不过对于大部分交易者来讲,交易时只看一张图会更简单一点,当回调结束后,5分钟图上肯定会出现恰当的建仓形态。</p><p><font color="red"><strong>在始于开盘的趋势交易日展开过程中,通常全天回撤幅度都非常小。这种情况就属于小幅回撤趋势交易日。这是最强劲的趋势交易日类型,每个月只有1~2天。这种交易日大约2/3情况下都会在上午11点(PST时间)之后出现较大回撤。这一回撤幅度往往大约是趋势从头一个小时开始之后所发生的最大回撤的两倍。在其发生之前,通常会出现1~2根朝趋势方向的相对较长的强劲趋势K线,代表动能耗竭。</strong></font>比如说,市场处于一轮小幅回撤上升趋势,整个交易日一直呈通道性上涨,最大回撤为9个最小报价单位。然后在上午11点和中午之间某个时间,市场连续出现两根相对较长的多头趋势K线,突破至盘中新高。那么这种走势更可能属于耗竭性买入高潮,而非新一轮上涨的起点。高潮走势在第三本书将有详细讲解,但简单来讲,<font color="orange"><strong>当一轮趋势已经持续很长时间,此时行情突然加速,通常意味着行情暂时告一段落,开始进人至少持续10根K线左右的两段式回调。</strong></font><font color="green"><strong>经验丰富的交易者预计市场将出现3~5个点的调整,因此退出多头锁定利润。部分交易者甚至会在第二根多头趋势K线收盘时做空,或者可能在其高点上方1~2个单位处做空。他们也可能耐心等待下一根K线收盘,如果这根K线收于振幅中位附近,他们将会在其收盘时做空;如果它是一根空头反转K线,他们可能在其低点下方做空。如果他们在一根空头反转K线下方人场,保护性止损将设在其高点上方,如果在急速拉升K线收盘时以市价入场,可能会使用3-4个点的止损,并且在其上方1~2个点加空。即便判断失误,市场并未能出现数点的跌幅,也有可能进入交易区间,让他们可以在最后一个小时锁定小幅利润出场。</strong></font></p><p><font color="red"><strong>在趋势开始之前,市场在第一个小时可能出现幅度稍大的回调,但只有趋势开始之后的回调才是重要的。观察回调的幅度,如果回调都非常小,后面每一次都与第一次幅度相当或更小,就说明交易日处于强劲趋势之中。</strong></font>举例而言,某交易日Emini处于上升趋势,近期日均波幅大约为12点,当天所有回撤可能仅2~3个点。<strong>在这种行情中,多头希望市场出现较大幅度的回调,让他们以较低风险人场。然而期待中的回调一直没有出现,于是他们开始分批小仓位以市价以及在小幅回撤中买入。这些全天持续的小规模买盘推动市场不断走高。同时,空头一直没有发现好的做空点,于是决定以较小仓位在一些弱势形态做空。这些形态未能造成持续跌势,于是他们被迫买入回补。他们的买盘也成为推动市场走高的力量。动能交易者看到市场处于明确上升趋势,于是他们也持续买人。这种趋势往往会持续一整天,中间只有很小的回撤。</strong><font color="black"><strong>由于多头全天都在小规模买入,所以不会出现恐慌性追高买盘;同样,空头仓位也很低,不会出现强劲的空头回补。其结果就是,虽然当天为趋势交易日,但涨幅不会特别大,多头虽然做对了方向,但很难获得暴利。</strong></font></p><p><font color="red"><strong>上午7点(PST时间)公布的经济数据通常会造成市场出现一根反转K线、突破K线或者长外包K线,成为一轮强劲趋势的起点并可能持续整个交易日。</strong></font>在经济数据方面,计算机享有巨大优势。它们能够以可解读的格式立即获得数据,并据之做出决策和形成交易指令。所有这一切都是在一秒钟以内完成,相比交易者而言它们享有巨大优势。<font color="green"><strong>当计算机占据巨大先机,交易者就处于不利地位,因此交易者应该避免在数据公布时人场。计算机程序往往会在1~2根K线内指示市场的明确方向,或者造成强势反转。此时交易者将获得较有利的概率,可以朝恰当的方向入场。</strong></font><strong>作为趋势起点的强势K线并非总是出现在数据公布时,也可能形成于公布时间之前或之后数根K线,不过出现在数据公布时的概率比较大</strong>,所以交易者应该提前做好准备,一旦市场方向变得明确,就可以立即入场。</p><p><font color="red"><strong>有时候,市场经过大约30分钟的小幅震荡之后,会在上午7点左右(PST时间)测试开盘点位,往往恰好对应经济数据的公布时间。虽然这造成一个小规模交易区间,但突破区间之后的趋势行情比我们在趋势性交易区间交易日看到的要强劲得多,而是与始于开盘的趋势相当,应视为后者的变体。</strong></font></p><p><font color="red"><strong>即便最佳的形态也会有大约40%的概率不按你的预期运行。如果开盘之后的走势在第三根或第四根K线都没有出现休整,说明行情可能运行过快过远,那么接下来市场反转的概率将大于趋势延续的概率。</strong></font></p><p><font color="orange"><strong>所有交易日都会在开盘头几根K线形成始于开盘的趋势。一旦一根K线站上前根K线的高点,交易日就属于始于开盘的上升趋势交易日,至少暂时如此。如果反而跌破第一根K线的低点,就属于始于开盘的下跌趋势交易日。</strong></font><font color="red"><strong>在大部分交易日行情并不会持续性上涨或下跌,而是发生反转,从而演变成其他类型的交易日。不过,如果对前一根K线的突破发展为更大幅度的急速运动,形成始于开盘的强劲趋势交易日的概率将大幅上升,此时交易者应该开始将其作为强趋势交易日来对待。</strong></font></p><p><font color="red"><strong>如果市场连续四根或以上K线做趋势运动而没有出现回撤,甚至只是两根长趋势K线,那么走势应该被视为强劲急速运动。</strong></font><strong>急速运动意味着多头和空头都同意市场不应在当前位置停留太久,需要迅速移动到另一个价位</strong>。<font color="red"><strong>当急速运动发生在头几根K线,交易日为始于开盘的趋势交易日。</strong></font><font color="orange"><strong>这种状态可能在交易日剩下的时间里持续下去,但有时候市场也可能很快发生反转并朝另一个方向突破。这可能导致朝相反方向的趋势,比如急速与通道趋势,或趋势性交易区间交易日,或者简单的交易区间交易日。</strong></font><strong>与任何急速运动一样,较早买入的多头将会在某个时点锁定部分利润。从而造成小幅回撤</strong>(见前面关于趋势的章节)。<strong>其他错过行情的多头将会在回撤中强力买进,还有一些多头利用回撤加仓。部分多头将以限价单的方式在前一根K线低点及其下方挂买单,希望当前K线能够跌破前一根K线,让他们买在略低的位置。其他多头则会在回撤K线的高点上方挂止损单买入(高1买人信号)。</strong></p><p><font color="red"><strong>急速运动通常会有三种后续发展。</strong></font>第一种情况,<font color="red"><strong>市场可能已经运行过快过远,属于耗竭性高潮走势。</strong></font>比如说,<font color="black"><strong>如果市场在急速运动之后出现休整或回撤(比如形成一根内包K线或小楔形旗),这可能成为一个末端旗形并在小幅突破之后发生反转,反转走势可以持续数小时。</strong></font>第二种情况,<font color="red"><strong>市场可能在一个窄幅交易区间横盘数小时,然后趋势恢复直到收盘,构成一个趋势恢复交易日。在持续长达5~10根K线的急速行情之后,这种窄幅震荡走势是十分常见的。</strong></font>第三种也是<font color="red"><strong>最常见的情况是,当急速运动幅度不足以构成动能耗竭,市场会形成趋势通道,交易日成为急速与通道趋势交易日。</strong></font></p><p><font color="red"><strong>在第一波强劲走势的首次回撤中入场,属于利用强劲走势具有测试极端位置倾向性这一特点。大部分强劲行情都至少有两波走势,因此在第一次回撤时人场获利概率很高。</strong></font><font color="green"><strong>尤其在始于开盘的趋势交易日,如果你错过了初始入场点,这一入场点就显得尤其重要。不过,在强劲趋势中,所谓"首次回撤"并非总是那么一目了然,因为趋势中经常会出现2~3根横向运行的K线,并未突破某根重要的趋势线,因此其力度似乎不足以构成一次"回撤"。然而,即便并未真正出现对价格的回撤,走势暂停属于横向调整,也是是回撤的一种。</strong></font></p><p><font color="red"><strong>在这些极强趋势交易日,交易的困难之处主要在于,趋势在形成过程中看起来并不是特别强劲。通常市场并不会出现可观的急速运动,或者回踩均线的高概率入场点。相反,市场往往每隔几根K线就出现回撤,而且出现大量朝相反方向的趋势K线。市场往往处于一个看起来很弱的通道之中。</strong></font>交易新手所没有看到的是,<font color="black"><strong>市场回撤幅度都很小,价格完全没有向均线靠拢的意思,而是缓慢地不断远离开盘价位。</strong></font>交易老手知道<font color="black"><strong>这些都是表明上升趋势非常强劲的信号,所以有把握进行摆动交易。</strong></font>他们明白,<font color="green"><strong>虽然这些K线看起来处于弱势通道(表面上属于低概率建仓形态),然而当它们发生在小幅回撤上升趋势交易日,所构成的却是高概率的摆动交易建仓形态。在始于开盘的趋势交易日,所有回撤都是极佳的顺势人场点,哪怕建仓形态看起来几乎总是很弱。即便在回撤最终突破一根重要趋势线之后,交易者仍可继续顺势人场。在强劲上升趋势中,买点包括前一个K线的低点,或其下方1~2个最小报价单位,或高1和高2形态上方1个单位。</strong></font><font color="red"><strong>注意趋势开始之后所有回撤的幅度。</strong></font>比如说,<font color="green"><strong>在一轮小幅回撤上升趋势中,如果过去几个小时行情最大幅度的回撤仅为8个单位,可以在盘中高点下方5~7个单位处挂限价买单。在强劲下跌趋势中则刚好相反,可以在前一根K线高点或其上方1~2个单位处做空,或者在低1和低2信号K线下方1单位做空,以及在任何相对于近期K线平均长度的反弹中做空。</strong></font></p><p><font color="red"><strong>市场存在惰性,第一次终结趋势的尝试通常会失败。当市场突破趋势线,意味着发生重大回撤,趋势的第一波行情可能已经结束。然而即便如此,第一次突破趋势线也很可能仅仅构成顺势人场点,从而引发第二波趋势行情,并创出新高或者新低。</strong></font></p><p><font color="red"><strong>回撤走势通常会出现很弱的信号K线,以及很多反方向的趋势K线。</strong></font>比如说,<font color="green"><strong>在强劲上升趋势中,大部分做多的信号K线可能是小阴线或十字星,部分入场K线可能是实体很短的外包阳线。它们往往出现在2~3根连续空头趋势K线或微型下跌通道之后。</strong></font><font color="black"><strong>这种持续的抛压让很多交易者上当,过早卖出多头头寸,转而寻找做空信号。虽然卖出信号看起来也不是太强,但部分交易者还是会卖出,因为它们比买入信号还是要强一点,而且他们有交易的欲望。他们看到,几乎在每个买人信号之后,市场都会出现回撤并打到盈亏平衡止损,认为这说明多头趋势很弱。</strong></font><strong>当然他们也看到市场处于上升趋势,想要人场做多,无奈却不知道怎么做,因为他们认为所有买人信号看起来都很糟糕。回撤幅度太小,建仓形态又太弱。而且,由于这种交易日每个月只发生几次,他们习惯了那种卖压往往带来可交易的做空机会的市况,所以不断地在一些不太恰当的做空点卖出。</strong><font color="black"><strong>这些卖点之所以不太恰当,是因为它们是牛旗的起点,而非反转的开始。</strong></font><font color="orange"><strong>交易老手的视角却有所不同。他们看到上升趋势仅出现小幅回撤,未能跌破均线,同时出现许多空头趋势K线和弱买入信号</strong></font>,明白市场正在发生什么。<font color="orange"><strong>他们看到交易者被震出多头仓位,不停地在高位做空,知道这种情况属于非常强劲的上升趋势。交易老手知道大批交易者将会被迫回补亏损的空头,接下来将追高买入,从而给市场造成持续的向上的张力。</strong></font>这就造成一种鲜明的对照,一边是大量交易者想买但未买,一边是交易老手持续买入并获得丰厚利润。</p><p><font color="red"><strong>此类交易日通常处于较窄的通道,如果交易者打算让交易参与摆动,不应过早将止损收紧到盈亏平衡点。</strong></font><font color="red"><strong>当趋势处于窄幅上升通道,市场在创出新高之前往往会回测入场点</strong></font>,缺乏经验的交易者往往感到害怕,错误地过早止损,从而错过一轮强劲趋势。举例而言,<font color="red"><strong>在强劲上升趋势中,市场往往会在5~10根K线内回到信号K线高点的入场点,甚至探破这一位置1~2个最小报价单位。</strong></font>这会让交易新手感到紧张。他们原本已获得足够的刮头皮利润,但由于当天为趋势交易日,他们打算做摆动交易,让利润奔跑。现在,一个小时之后,市场回到他们的入场点。这一个小时他们直处于焦虑之中,因为市场并未涨到入场点上方太高的位置。现在他们则由焦虑变成恐慌,因为一笔赚钱的交易即将变成亏损交易。于是他们忍无可忍,以小幅盈利或亏损出局。几根K线后,他们方才后悔不迭市场已经创出新高,而他们只能眼睁睁看着,错失大好机会,只好等待下次回调之后再次买人。<font color="green"><strong>只有当市场回撤到信号K线高点区域然后创出新高之后,交易者才应该将保护性止损上移到最近摆动低点下方。趋势倾向于出现趋势性高点和低点,因此一旦多头趋势创出新高,交易者应该将保护性止损上移到最近摆动低点下方。</strong></font><strong>由于预期市场低点呈趋势性上移,他们希望下一次回撤在最近低点上方止步。</strong><font color="black"><strong>当市场开始进入交易区间,回撤将会跌破上一个抬升低点,此时交易者需要调整为适用于交易区间的交易方法</strong></font>(将在第二本书讨论).</p><p><font color="red"><strong>如果市场大幅跳空开盘,而且第一根K线为强趋势K线(影线较短、实体较长),做朝两个方向的突破往往是不错的交易。</strong></font><font color="black"><strong>每天第一根K线都可能是一个始于开盘的上升趋势交易日或始于开盘的下跌趋势交易日的信号K线,具体要看市场朝哪个方向突破这根K线。</strong></font><font color="red"><strong>如果入场后保护性止损在下一根K线被扫掉,可以考虑反手做笔摆动交易,因为接下来的行情幅度通常会超过你第一次入场所亏损的点数,而且总存在演变成始于开盘趋势的可能性。</strong></font></p><p><font color="red"><strong>即便开盘没有跳空,如果第一根K线为趋势K线,也是不错的建仓形态。只不过,在跳空的情况下,交易的成功率更高一些,因为市场状态更为过度,任何走势都倾向于更加强劲。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>始于开盘趋势交易日的主要特征<br>第337-343页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>23.00.01.始于开盘趋势交易日的主要特征</title>
+      <link href="/2023/07/01/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-00-01-shi-yu-kai-pan-qu-shi-jiao-yi-ri-de-zhu-yao-te-zheng/"/>
+      <url>/2023/07/01/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/23.shi-yu-kai-pan-de-qu-shi-yu-xiao-fu-hui-che-de-qu-shi/23-00-01-shi-yu-kai-pan-qu-shi-jiao-yi-ri-de-zhu-yao-te-zheng/</url>
+      
+        <content type="html"><![CDATA[<p>始于开盘趋势交易日的主要特征:</p><blockquote><ul><li><font color="red"><strong>上升</strong>趋势交易日的<strong>低点</strong>或<strong>下跌</strong>趋势交易日的<strong>高点</strong>出现在当天<strong>头几根K线</strong>。</font></li><li><font color="red">如果交易日开盘区间低于近期日均波幅的<strong>25%</strong>,在<strong>上升</strong>趋势交易日可能出现<strong>双底</strong>,在<strong>下跌</strong>趋势交易日可能出现<strong>双顶</strong></font><font color="orange">(如果开盘区间大约为日均波幅的<strong>50%</strong>,则突破更可能造成<strong>趋势性交易区间交易日</strong>)</font></li><li><font color="red">交易日可能始于一轮持续多根K线的<strong>急速行情</strong>,也可能始于<strong>窄幅开盘区间</strong>。</font></li><li><font color="red">如果市场从<strong>第一根K线左右就走出趋势</strong>,而且<strong>最初的急速行情持续3根或以上K线</strong>,那么在<strong>首次回撤时入场</strong>通常至少是不错的刮头皮机会。</font></li><li><font color="red">如果一开盘就出现一波<strong>持续多根K线、幅度较大的强劲急速行情</strong>,交易日通常会成为<strong>急速与通道趋势交易日</strong>。</font></li><li><font color="red"><strong>开盘大幅跳空</strong>通常会造成始于开盘的趋势交易日,而趋势的<strong>方向可以是任意的</strong>。当市场大幅跳空高开、形成始于开盘的趋势交易日,那么交易日大约有 <strong>60%</strong> 的概率为上升趋势交易日、 <strong>40%</strong> 概率为下跌趋势。</font>跳空低开的情况则刚好相反。<font color="red"><strong>缺口越大,交易日越有可能成为趋势交易日,而且趋势越有可能与缺口同向。</strong></font></li><li><font color="red">始于开盘的趋势交易日从一开始就具有一种迫切性和确定性,通常<strong>属于最强劲的趋势,回撤幅度最小</strong>。</font></li><li><font color="red">在趋势后期往往会出现<strong>20根均线缺口K线建仓形态</strong>。</font></li><li><font color="red">无论对于始于开盘的趋势交易日,还是所有的趋势交易日,<strong>最强劲类型的趋势都属于开盘区间很窄,然后整个交易日伴随小幅回撤持续做趋势性运动</strong>的行情。我们将这种行情称之为<strong>小幅回撤趋势交易日</strong>。</font>比如说,<font color="orange">Emini回撤幅度可能仅为10~12个最小报价单位(日均波幅的10%~30%)</font>。在这种情况下,<font color="red"><strong>市场通常会在最后两个小时出现幅度约为前期回撤150%~200%的回撤,然后恢复原有趋势直到收盘。</strong></font></li><li>对于老练交易者而言,<font color="red"><strong>摆动交易建仓形态具有70%或更高的成功率</strong></font>,不过初学者完全感觉不到有这么高的确定性。<font color="red"><strong>许多信号K线看起来很糟糕,就像所有强劲趋势中那样。大部分建仓形态看起来似乎都只有50%甚至更低的成功率。这就使得交易者不敢入场,从而迫使他们在后面追涨杀跌或彻底错过趋势。</strong></font></li><li><font color="red"><strong>往往出现许多相反方向的趋势K线。这是逆势压力的信号,诱使交易新手不停地寻找逆势入场点,而错过顺势机会。比如说,在上升趋势中,市场可能出现许多空头趋势K线,甚至不少于2~3根K线的急速下跌。</strong></font>新手反复入场做空,并反复亏钱。急速下跌演变成牛旗,但形态看起来非常弱,新手不敢买入。他们只是退出亏损空头,却不敢做多。因为他们害怕再次亏损,尤其是在建仓形态看起来很弱的情况下。<font color="red"><strong>所有难看的牛旗都成功了,然后跟着再出现一个很漂亮的但失败的做空形态。</strong></font></li><li><font color="red"><strong>趋势通常处于一个相对较窄的通道,回撤走势往往会扫掉盈亏平衡止损,将交易者震仓出局。在上升趋势中,交易者应该将止损跟踪移动到最近摆动低点下方;在下降趋势中,则是摆动高点上方。如果过于急切地将止损收紧到盈亏平衡点,将会被扫掉止损。</strong></font></li></ul></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第23章 始于开盘的趋势与小幅回撤趋势<br>始于开盘趋势交易日的主要特征<br>第336-337页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 始于开盘的趋势与小幅回撤趋势 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.00.02.趋势性交易区间交易日</title>
+      <link href="/2023/07/01/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-00-02-qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/"/>
+      <url>/2023/07/01/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-00-02-qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p><font color="red"><strong>所有趋势都会发生回撤，回撤属于小型交易区间，因此在所有趋势交易日都会出现某种形式的趋势性交易区间。</strong></font><font color="green"><strong>在每周的行情中，至少有2~3个交易日的主要特征为趋势性交易区间行情。如果交易日开盘区间大约为近期日均波幅的1/3到1/2,我们可以期待市场发生突破，使得当天振幅扩大为开盘区间的两倍左右。</strong></font><font color="red"><strong>这些趋势交易日由一系列交易区间所构成，通常是两个，偶尔达到两个以上，中间被短暂的突破所分隔。有时候这些形态并不能一眼看出属于交易区间。</strong></font><font color="black"><strong>在日线图上，交易日为明确的趋势交易日，开盘和收盘分别位于日K线的两端。当市场形成趋势性摆动，看起来又不像明确的趋势交易日，那么就可能属于趋势性交易区间交易日。</strong></font>另外，<font color="green"><strong>如果交易日头1~2个小时的区间只有近期日均波幅的1/3到1/2,我们可以期待市场发生突破并出现等距运动，在交易日剩下的时间里形成第二个交易区间。市场每周都会有几天出现某种形式的此类趋势，但通常情况下最好将其归为其他趋势类型或宽幅交易区间。</strong></font></p><p><font color="red"><strong>依据力度强弱，我们可以将许多交易日归为两类，要么是急速与通道交易日，要么是趋势性交易区间交易日。</strong></font><font color="orange"><strong>趋势力度越强，交易日越有可能表现为急速与通道趋势交易日。</strong></font><strong>我们之所以对二者做出区分，是因为这两种行情的交易方法不同。</strong><font color="orange"><strong>在急速与通道趋势交易日中，由于市场处于强劲趋势，交易者应该只关注顺势机会和摆动交易。除非市场明确转入交易区间或相反趋势，交易者应该避免做逆势交易。</strong></font>相反，<font color="red"><strong>当交易日更接近趋势性交易区间，交易者通常可以进行双向交易，寻找更多刮头皮机会。</strong></font>在行情展开过程中，<strong>有一些信号可以告诉交易者突破走势更可能造成强劲趋势交易日（比如急速与通道趋势交易日，甚至小幅回撤趋势交易日），还是趋势性交易区间交易日。</strong><font color="red"><strong>交易区间比强劲趋势更为常见</strong></font>，相应地，<font color="green"><strong>趋势性交易区间交易日的数量也差不多是急速与通道趋势交易日的两倍（虽然每天盘中都至少会出现一波急速与通道摆动）。</strong></font><font color="orange"><strong>急速与通道趋势交易日的急速行情部分往往出现在早盘，甚至往往是开盘第一根K线或由开盘大幅跳空所构成。而且，市场往往要么大幅突破前一天收盘前的一组K线，要么突破之后强劲反转（比如大幅跳空低开之后第一根K线强劲拉升）</strong></font>。<font color="red"><strong>趋势性交易区间交易日则不同，其急速行情部分是对交易区间的突破，但突破之后市场往往仍处于前一天的交易区间之内。</strong></font></p><p><font color="red"><strong>在趋势性交易区间交易日，开盘交易区间往往持续l~3个小时，可以达到日均波幅的一半左右。这是行情缺乏迫切性的表现，说明交易日不太可能成为一个强劲趋势交易日。</strong></font>而且，<font color="black"><strong>与任何交易区间一样，开盘区间有一种牵引力，使得突破走势很难运行太远，而是进入回调并形成另一个交易区间。</strong></font><font color="orange"><strong>在急速与通道趋势交易日，突破走势往往幅度很大、速度很快。急速行情可以出现3根或以上很长的趋势K线、影线很短、重叠度很低。</strong></font><font color="red"><strong>然而在趋势性交易区间交易日，急速行情往往只有l~3根K线，K线实体较短、影线较长、重叠度较高。</strong></font><font color="orange"><strong>如果回撤走势只有一根K线，而且对回撤走势的突破也是急速运动，即便幅度更小、只有一根K线，那么交易日往往更符合急速与通道趋势交易日的特征。</strong></font>相反，<font color="red"><strong>如果回撤走势为5~10根K线的横盘，或者对回撤走势的突破为一个弱势通道（大批重叠K线和方向相反的趋势K线），那么交易日更接近于趋势性交易区间交易日。</strong></font><font color="green"><strong>如果急速运动之后的回撤非常强劲，让交易者无法确定“始终入场”的方向，那么市场更可能处于交易区间而非趋势通道，应该做刮头皮而不是摆动交易。</strong></font></p><p><font color="green"><strong>除非特殊情况下，一般在突破交易区间时入场属于低概率交易</strong></font>（我们将在第二本书详细讨论交易区间）。<font color="green"><strong>通常更好的方法是在突破回踩时入场，或者在之前市场从交易区间另一端反转时入场。但如果交易者有把握交易日可能演变成趋势性交易区间交易日，而且突破力度很强，那么可以考虑在突破K线形成过程中入场，或者在突破K线收盘价附近或第二根K线收盘（如果依然很强）入场。</strong></font><font color="red"><strong>急速突破走势通常会跟随一个通道，但行情往往在等距运动目标区域结束，接下来市场将进入交易区间。市场突破一个交易区间，然后形成第二个交易区间。</strong></font><font color="orange"><strong>极少数情况下，一个交易日会出现3~4个小型交易区间。不过这种交易日最好将其视为较强的趋势类型，比如急速与通道趋势交易日或小幅回撤趋势交易日，交易者应该主要甚至完全关注顺势建仓形态。</strong></font><font color="red"><strong>如果市场随后回撤到上一个区间之内，通常会一路撤退到该区间的另一端，也就是说，市场突破之后进入区间盘整。这意味着接下来市场将会出现双向交易、同时测试新区间的上轨和下轨，在某个时点可能朝任何一个方向突破。</strong></font><font color="green"><strong>一旦市场到达等距运动目标区域，就有可能转入第二个交易区间。此时交易者的思维方式也应该从趋势交易风格转为交易区间交易。</strong></font>举例来说，<font color="green"><strong>在多头趋势性交易区间交易日中，如果趋势力度减弱，交易者应该在等距运动目标区域（依据下方交易区间的高度）锁定利润，因为接下来市场很可能向下测试突破区域，然后进入新的交易区间。</strong></font></p><p><font color="green"><strong>如果交易者认为市场处于多头趋势性交易区间，不应该将保护性止损收紧到最近摆动低点下方，因为通常情况下都会被扫掉。更合理的做法是在区间上轨处逢高卖出，而不要在低位出场。记住，在交易区间中，交易者应该低买高卖。激进的交易者将会在等距运动目标区域逆势交易长趋势K线。</strong></font>举例而言，<strong>在一个多头趋势性交易区间交易日，当市场接近等距运动目标，空头将等待市场出现一根大阳线。一旦大阳线现身，他们将会在其收盘或高点上方卖空，如果市场继续走高，他们还会分批加空。</strong><font color="black"><strong>因为他们预计这根长多头趋势K线属于耗竭性买入高潮，接下来最终会向下测试缺口（指构成对下方交易区间突破的2~3根多头趋势K线），可能下探下方交易区间的上轨。由于他们预计市场将形成一个上方的交易区间，在急速拉升走势的高点卖出是一个非常好的入场点（因为该区域可能构成这个上方交易区间的上轨）。</strong></font>这一内容我们将在第二本书关千交易区间交易的章节详细讨论。<font color="black"><strong>即便市场继续上涨，最终再次回到他们入场点下方的概率也很高。</strong></font><strong>如果交易者逢高分批加空，可能会在盈亏平衡点退出最早建仓的头寸，然后将后面加仓部分的止损收紧到盈亏平衡点，一直持有到市场向下测试缺口。</strong></p><p><font color="red"><strong>由于全天都处于双向交易模式，市场在收盘前最后1~2个小时通常会至少反转其中一个交易区间（返回区间之内）。</strong></font><strong>交易区间属于双向交易模式，多头和空头都感到这里具有交易价值</strong>，<font color="black"><strong>因此它具有一种牵引力，倾向于将突破走势拉回区间之内。</strong></font></p><p><font color="red"><strong>辨识这种类型交易日的重要性在于，这种反转属于可靠的逆势交易机会，因为市场通常会出现突破回踩。</strong></font>因此，<font color="green"><strong>一旦突破走势大约到达等距运动目标，趋势交易者将会锁定利润，逆势交易者将进行反方向的交易，寻求在市场发生突破回踩时出场。当市场以一根长趋势K线运行到等距运动目标，交易老手会逆向开仓，期待市场回撤并测试突破缺口。</strong></font>举例来说，<strong>当Emini日均波动区间约为10个点，如果某个交易日头两个小时形成一个交易区间，然后向上突破，强势空头将会开始在下方交易区间上方4~6个点分批建空。他们期待市场回撤到突破区域，甚至一路跌至下方交易区间上轨。</strong><font color="red"><strong>如果市场反转进入前期区间，有可能测试前期区间中的逆势信号K线。</strong></font>比如说，<font color="black"><strong>如果一轮下跌趋势向上反转，它将会试图上探之前失败的多头信号K线的高点。</strong></font><strong>如果市场反弹至或突破上方交易区间的上轨，并收于这一位置，那么交易日在日线上将显示为反转交易日。</strong><font color="red"><strong>大部分反转交易日都始于趋势性交易区间行情</strong></font>（第三本书关于反转交易日的章节有实例），<font color="green"><strong>因此当交易者发现交易日属于趋势性交易区间交易日，应随时准备好迎接尾盘的反转波段交易。这种反转可能走出很大的趋势行情，可以跨越整个交易日的区间。</strong></font></p><p><strong>趋势性交易区间交易日往往会出现一些微妙的信号</strong>，<font color="black"><strong>告诉我们是否应该期待突破。</strong></font><font color="red"><strong>如果你看到一个交易区间交易日正在形成，但每一个摆动高点都略微高于前一个，每一个摆动低点也高于前一个，那么市场可能已经处于趋势之中，尽管它仍为交易区间。</strong></font><font color="orange"><strong>一旦足够多参与者意识到这一点，市场将会突破并迅速上涨到更高位置，然后再次进入双向运动并形成另一个交易区间。</strong></font></p><p><font color="red"><strong>当市场发生初始突破、试图扩展到日均波幅，不要认定必然会发生等距运动。在大约1/3情况下，市场朝一个方向突破区间之后使区间略微扩大，然后反转并朝相反方向突破，使区间再次略微扩大，从而形成一个非常平静的交易区间交易日。</strong></font></p><p><font color="red"><strong>有时候市场会处于一个高度只有近期日均波幅大约一半的交易区间，一直持续到收盘前最后一个小时。</strong></font>举例而言，如果Emini的近期日均波幅为12个点，某个交易日在最后一个小时之前振幅只有5个点，而且在过去12个月中只有两个交易日最终区间为5个点或更小，<font color="red"><strong>那么我们就要警惕尾盘可能发生突破。</strong></font>毫无疑问，每个交易日都会有某个时点区间高度为5个点，但在大部分趋势性交易区间交易日中，当初始区间高度只有5个点，<font color="red"><strong>通常会在头2~3个小时发生突破。然而每年都会有那么几天，交易日一直在窄幅区间运行，直到收盘前1~2个小时。</strong></font>当出现这种情况，<font color="orange"><strong>大部分时候都会有一次突破将区间扩大，不过往往难以扩大到近期日均波幅的程度。</strong></font>不要过早放弃，以为今天的行情就只有5个点的振幅．<font color="red"><strong>在90％的情况下，区间都会在收盘前扩大</strong></font>，让我们从快速突破走势中获利。<font color="orange"><strong>由于突破发生在尾盘，交易日通常没有足够的时间再形成一个完整的交易区间</strong></font>，但既然整个交易日看起来都可能成为一个趋势性交易区间交易日，所有必要在这里稍微讲一下。</p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>趋势性交易区间交易日<br>第317-321页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.00.01.趋势性交易区间交易日的主要特征</title>
+      <link href="/2023/07/01/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-00-01-qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri-de-zhu-yao-te-zheng/"/>
+      <url>/2023/07/01/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-00-01-qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri-de-zhu-yao-te-zheng/</url>
+      
+        <content type="html"><![CDATA[<blockquote><ul><li>开盘区间大约为近期日均波动区间的<font color="red"><strong>1/3</strong></font>到<font color="red"><strong>1/2</strong></font>。</li><li>开盘<font color="red"><strong>一两个小时</strong></font>后发生突破，然后市场形成另一个交易区间。</li><li>由于存在交易区间，通常出现朝<font color="red"><strong>两个方向的交易机会</strong></font>。</li><li><font color="red"><strong>有时候会有多次突破和多个交易区间</strong></font>，但在这种情况下，最好将交易日视为一种较强势的趋势交易日，<font color="red"><strong>只做顺势交易</strong></font>。</li><li>在第二个交易区间开始形成之后，往往会出现回撤，<font color="red"><strong>测试上一个交易区间</strong></font>。</li><li><font color="red"><strong>测试通常会突破进入上一个交易区间</strong></font>。<strong>如果只是接近而未能返回前期区间，说明趋势略微强势一些</strong>。</li><li><font color="red"><strong>有时候市场会完全穿越前期区间</strong></font>，从而交易日成为一个反转交易日。</li><li><font color="red"><strong>大部分反转交易日都是从趋势性交易区间交易日开始的</strong></font>。</li><li><font color="red"><strong>当突破非常强势</strong></font>，交易日更可能走出<font color="red"><strong>较弱的急速与通道趋势</strong></font>。</li></ul></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>趋势性交易区间交易日的主要特征<br>第317页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.01.趋势性交易区间交易日</title>
+      <link href="/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-01-qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/"/>
+      <url>/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-01-qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts/trends/c22/Slide1.JPG" alt="图22.1趋势性交易区间交易日"></p><blockquote><p><font color="red"><strong>趋势性交易区间交易日的两个区间之间通常会出现一根长趋势K线。</strong></font>在图22.l中，市场前一天最后两个小时从K线1到K线3处于一个交易区间，并持续到当天前两个小时的行情当中。<font color="black"><strong>K线10是一根长多头趋势K线，突破了交易区间并向上突破K线5、7、9所构成的楔形顶部。下一根K线也是多头趋势K线，确认了突破走势（大幅增加了价格继续上涨和出现某种类型等距上涨的概率）。</strong></font>随后市场立即进入一个小型交易区间并持续到收盘。</p><p>区间走势持续到第三天。<font color="red"><strong>所有交易区间对价格走势都有一种牵引力，使得大部分突破尝试归于失败。</strong></font><font color="black"><strong>从K线11到K线19的交易区间是上涨行情中的末端旗形，截至K线21的突破以失败告终。接下来市场以K线22长空头趋势K线向下突破这个上方交易区间。下跌走势测试了前一天交易区间的顶部，然后形成另一个交易区间。K线29是对下方区间上轨的假突破，也是第三波向上推动。由于下方区间的拉力大于上方区间，随后市场返回下方区间，在K线32测试了区间下轨，最后收于下方交易区间的上轨附近。</strong></font></p><p><font color="green"><strong>从K线8到K线13的急速上涨幅度很大，而从K线12到K线17的延续性通道上涨部分显得过小。相比上方区间的高度，下方交易区间上轨K线9与上方交易区间下轨K线12之间的突破缺口比较大。这就增加了市场向下测试缺口支撑力度的概率。从K线23到K线33的交易区间基本处于从K线9到K线12的突破缺口范围之内。这种情况是很常见的。</strong></font></p><p><font color="red"><strong>从K线4到K线9的初始区间约为日均波幅的一半，因此交易者预计振幅还将扩大大约一倍。当市场出现约为日均波幅一半的交易区间，区间扩大最常见的方式就是突破并形成一个趋势性交易区间交易日。</strong></font></p><p><font color="green"><strong>第三天从K线19到K线21的开盘区间大约为日均波幅的1/3,交易者预计将会发生突破。由于他们也预计市场将测试前一天的缺口，因此向下突破概率更大。只不过在此之前，市场先对区间上轨发生一次假突破。持续到K线23的下跌动能很强，使得当天有可能成为一个急速与通道下跌趋势交易日。但K线23受到了前一天交易区间上轨的支撑（K线3、5、7的高点）。这里大致是等距下跌的目标区域，而且市场测试了一根持续3天的趋势线（没画出来）。这意味着下跌可能仅仅是卖出真空所造成的</strong></font>，即强势多头和空头在市场跌至支撑位之前袖手旁观，造成市场突然失去买盘支撑。<font color="black"><strong>从K线23、25和26开始的急速拉升、K线25和26之间急速拉升所造成的双底牛旗以及K线28的双底回撤都代表买压上升，市场甚至在截至K线29的急速上涨行情中转为明确的多头态势。这与一般情况下急速与通道下跌趋势交易日中急速下跌之后的回撤大相径庭，因此市场更可能形成趋势性交易区间。</strong></font><strong>假如这是一个急速与通道下跌趋势交易日，那么K线23急速下跌之后的回撤相对于急速下跌的力度通常不应表现出太大的买压。</strong><font color="black"><strong>买压所造成的不确定性增加了进入交易区间的概率，而非短暂同调之后走出延续性下跌通道。不确定性标志着交易区间，而不是熊旗（市场进入下跌通道之前的回撤）。</strong></font></p><p><font color="red"><strong>急速与通道趋势交易日与趋势性交易区间交易日的区别并非总是泾渭分明，有时候甚至没必要严格区分。</strong></font>**虽然从K线12开始的交易区间使当天成为一个趋势性交易区间交易日，但它同样也出现了几个低点抬升和高点抬升，因此屈于弱势上升通道。**记住，<font color="red"><strong>通道只是倾斜的交易区间，二者都属于双向交易区域。斜率越低，行情表现得更像交易区间，交易者同时朝两个方向交易就越安全。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第1个案例（图22.1）<br>第321-322页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.02.初始交易区间约为日均波幅一半</title>
+      <link href="/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-02-chu-shi-jiao-yi-qu-jian-yue-wei-ri-jun-bo-fu-yi-ban/"/>
+      <url>/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-02-chu-shi-jiao-yi-qu-jian-yue-wei-ri-jun-bo-fu-yi-ban/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts/trends/c22/Slide2.JPG" alt="图22.2初始交易区间约为日均波幅一半"></p><blockquote><p>如图22.2所示，两个<font color="red"><strong>交易日头两个小时，震荡区间都大约为近期日均波幅一半。这就提醒交易者，市场可能朝任何一个方向突破。由于开盘区间缺乏明确方向、幅度大约为日均波幅一半，当市场盘中发生突破之时，通常不会造成强劲和持续的行情，比如急速与通道趋势。相反，市场通常会发生回撤，然后形成一个下方交易区间。形成下方区间之后，市场可能会或也可能不会向上突破并返回上方区间之内，有时候可能会再次向下突破，然后形成第三个或第四个交易区间。由于市场更可能形成一个下方区间而非走出一轮强劲跌势，交易应该是双向的，市场往往会回测突破区域。一旦突破走势持续运行到突破点下方大约日均区间的1/3，交易者将会寻求买入，期待市场出现一轮向上摆动，测试上方区间的底部。</strong></font><font color="green"><strong>他们可能会在市场第二次尝试向上反转时买入，比如K线11和K线28上方。交易者还可能在K线15的双底和K线29的抬升低点买入。</strong></font></p><p><font color="red"><strong>一旦市场向上突破、返回上方区间之内并停留在那里，通常悄况下都会进一步测试上方区间顶部区域。</strong></font>本例第二天的行情即是如此。<strong>如果交易日收于上方区间顶部附近或其上方，就成为反转交易日。</strong><font color="green"><strong>激进多头可能会在K线27前面那根长空头趋势K线收盘时买入，预计它可能属于耗竭性卖出高潮并将引发向上测试上方交易区间底部的行情。部分交易者可能会在与上方交易区间高度相当的等距下跌目标处挂限价买单。</strong></font>他们计算从K线22上轨到K线21或25下轨之间的点数，再用K线21或25的低点减去这一幅度，<strong>然后在这一价位附近开始分批建仓</strong>，可能从这一位置上方1~2个点开始，持续买入到其下方数点。<font color="green"><strong>其他交易者则在第一个双向交易信号出现时买入，比如K线27收盘时，或者当K线27从其低点反转走高时。假如市场日均波动区间大约为10个点，部分多头将会在上方区间底部K线25下方4~6个点分批入场，期待市场回踩突破缺口（K线25下方的数根空头趋势K线），以获取3~6个点的利润。</strong></font></p><p><font color="red"><strong>虽然从K线19到K线21的下跌非常迅速，截至K线22的上涨力度也不小。这就在开盘区间造成极大的方向不确定性，降低了市场出现急速与通道趋势的概率，提高了形成趋势性交易区间交易日的概率。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第2个案例（图22.2）<br>第323-324页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.03.趋势性交易区间构成明确趋势</title>
+      <link href="/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-03-qu-shi-xing-jiao-yi-qu-jian-gou-cheng-ming-que-qu-shi/"/>
+      <url>/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-03-qu-shi-xing-jiao-yi-qu-jian-gou-cheng-ming-que-qu-shi/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts/trends/c22/Slide3.JPG" alt="图22.03趋势性交易区间构成明确趋势"></p><blockquote><p><font color="red"><strong>有时候交易日大部分时间都处于交易区间，但仍属于趋势交易日。</strong></font>如图22.3所示，当天可能看起来不像是一个趋势交易日，但事实上是，从嵌图的日线图就可以看出来(K线1)。<font color="red"><strong>这轮趋势行情由一系列小的趋势性交易区间所构成。这种交易日往往会在尾盘反转，至少彻底逆转最后一个交易区间。</strong></font></p><p>本图的深入探讨</p><p><strong>有些交易日开盘后一个小时或以上都未能出现可靠的建仓形态</strong>。在图22.3中，<strong>当天市场开盘位于走平的均线处，并被前一天最后一根K线所囊括。前一天市场收盘前一直处于窄幅交易区间，并持续到当天开盘后的头两根K线。相对于区间的高度，这两根K线比较长，不适合作为信号K线。虽然在第二根K线下方做空是可以接受的，因为它是一个双K线反转，又属于均线下方的楔形熊旗做空形态，但这个入场点可能处于交易区间底部附近，风险较大。</strong><font color="black"><strong>比较保险的做法是等市场突破之后在回踩时做空。市场在数根K线后发生突破回踩，可惜回踩走势为一个小型窄幅区间，而且K线上下影线很长，使得交易的可靠性较低。</strong></font><font color="green"><strong>最佳入场点在上午8点（PST时间）的双K线反转下方。市场刚刚测试了均线，属于一个低2卖点。</strong></font></p><p><font color="green"><strong>市场在11点45分（PST时间）出现一个均线缺口K线做空形态，对下跌行情低点的测试形成低点抬升。我们也可以恰当地将其称之为双底牛旗。</strong></font></p><p><font color="black"><strong>这是一个趋势性交易区间交易日，因此当市场开始在185美元附近盘整，交易者可能会在这一区域买入，期待市场测试略高于186美元的上方区间下轨。</strong></font><font color="green"><strong>市场以两段式调整的方式跌至185美元附近，第二段大致为等距运动。</strong></font>上午的交易区间中位大约低于当天高点2美元，10点15分的双K线反转又是大约再往下2美元，<font color="green"><strong>因此交易者将会开始买入。</strong></font><strong>空头回补部分空头头寸，多头预期市场测试上方交易区间下轨而买入。</strong><font color="black"><strong>随后市场进入窄幅交易区间，在11点05分长空头趋势K线之前走出3波小型向下推动。11点30分出现一个低点抬升，信号K线为阳线。这个抬升低点也是一个高2,因为其前一根K线以及再往前两根K线均为阴线实体。</strong></font><strong>这种属于显微镜式的分析</strong>，大部分交易者在实盘中都不会信任这些信号，但老练的交易者总在寻找市场可能转向的信号，而<strong>这些微妙之处可以增强他们做多的信心</strong>。如果他们在11点30分的低点上方买入，设在低点下方的止损可能为50美分，期待市场测试交易区间上轨，利润目标大约为1美元。</p><p><font color="red"><strong>虽然你永远不可能确切地知道市场出现与止损同等幅度运动的方向概率，但如果你感到市场处于非均衡状态，就可以假定概率至少为60%。</strong></font>就本例而言，如果你在185美元附近买入，可以合理假定市场至少有60％的概率测试186美元。换句话说，如果你在入场点下方设置与利润目标同等幅度的止损，市场在扫掉你的止损之前，将会先到达利润目标（有60％概率在亏损l块钱之前先赚1块钱）。<font color="green"><strong>你可以在11点40分急速拉升K线后面那根十字星内包K线锁定部分利润，然后在市场突破失败时在盈亏平衡点退出剩余头寸。当市场在12点25分形成双底，你可以尝试再次做多</strong></font>，而且将会成功。<strong>市场本来有可能从双底出现等距上涨，达到2美元的利润目标，但由于交易日即将结束，因此已经没有这种可能。</strong></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第3个案例（图22.3）<br>第324-326页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.04.第一个交易区间可以在前一天形成</title>
+      <link href="/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-04-di-yi-ge-jiao-yi-qu-jian-ke-yi-zai-qian-yi-tian-xing-cheng/"/>
+      <url>/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-04-di-yi-ge-jiao-yi-qu-jian-ke-yi-zai-qian-yi-tian-xing-cheng/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc22%2FSlide4.JPG" alt="图22.4第一个交易区间可以在前一天形成"></p><blockquote><p>如图22.4所示，当天也是一个趋势性交易区间交易日，<font color="red"><strong>第一个交易区间形成于前一天尾盘。</strong></font>嵌图日线图显示这是一个下跌趋势交易日(K线1)。</p><p><font color="red"><strong>最后一个交易区间向上反转，市场测试了上一个交易区间顶部附近的位置。这种情况很常见，因为双向交易意味着趋势性力量弱于其他类型的趋势交易日。当行情力度较弱，收于最低点的概率就比较小。交易者了解这一点，所以会在收盘前寻找反转机会。</strong></font></p><p>在图22.4中，<strong>市场当天基本平开，而且开在走平的均线附近。开盘后3根K线的急速下挫使得市场可能出现下跌趋势交易日。</strong><font color="black"><strong>急速下跌走势突破了前一天最后一个小时形成的交易区间。这个交易区间也是一波两段式上涨，从而是一个熊旗，因此突破走势可以看成突破了熊旗下方的趋势线。</strong></font><font color="green"><strong>交易者可以在第一次回踩的那根K线下方做空，然后在那根测试均线的K线下方再次做空。后者也是一次朝向均线的两段式横向调整，大致构成一个双顶熊旗做空形态。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第4个案例（图22.4）<br>第326页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.05.被突破所分隔的交易区间</title>
+      <link href="/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-05-bei-tu-po-suo-fen-ge-de-jiao-yi-qu-jian/"/>
+      <url>/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-05-bei-tu-po-suo-fen-ge-de-jiao-yi-qu-jian/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc22%2FSlide5.JPG" alt="图22.5被突破所分隔的交易区间"></p><blockquote><p>如图22.5所示，<strong>交易日第一个小时在一个7个点的区间震荡，但近期日均波幅大约为20点，因此交易者预计当日振幅还将扩大大约一倍。</strong><font color="red"><strong>当趋势在交易日运行一个小时之后才开始，当天往往会成为趋势性交易区间交易日。</strong></font>按照上述前提，第一个小时的行情很显然是一个交易区间。<font color="red"><strong>在交易日后期，市场通常会反转进入，有时候穿越一个或以上的下方交易区间</strong></font>，本例即是如此。</p><p>本图的深入探讨</p><p>当交易日出现图22.5这种<strong>多个趋势性交易区间，交易者应该将主要精力放在寻找顺势交易机会上面</strong>。<font color="black"><strong>在K线2双K线反转到K线9高2买点（也屈于20根均线缺口K线形态）之间，交易者应该只考虑做多，同时应该只考虑在K线10末端旗形反转形态做空。</strong></font></p><p><strong>在K线10前一根多头趋势K线的收盘及其高点上方，许多多头会在这里锁定利润，激进空头开始做空。截至K线3,市场出现一轮急速拉升，然后进入一个通道，由一系列小型交易区间所构成。</strong><font color="black"><strong>但从K线8开始的区间相对较窄，呈水平方向。这属于强劲双向交易的区域，因此具有一种磁力，能够在市场发生突破之时将其拉回来，造成突破失败。</strong></font><font color="red"><strong>另外，市场通常会在尾盘返回前期交易区间，而上午11点半（PST时间）又是最容易发生反转的时间</strong></font>，<font color="green"><strong>因此市场突破失败、走出末端旗形反转的概率很高。回调走势有可能测试通道起点K线4,因此空头很乐意在一根长多头趋势K线突破前期摆动高点并可能构成末端旗形时在其高点做空。许多交易者还会愿意逄高加空，因为他们相信市场在收盘前有70％甚至更高的概率至少测试他们最初的卖空点。一旦来到这一位置，他们就可以在盈亏平衡点退出最早的空头头寸，然后决定是同时锁定上方空单的利润，还是将保护性止损移到盈亏平衡点</strong></font>，让头寸参与摆动。</p><p><font color="green"><strong>K线2是一个双K线反转的第一根K线，市场可能构成一个低2失败形态，形成双重底或三重底，成为一轮上升趋势的起点</strong></font>。交易者此时已意识到市场可能发生突破并大幅走高。发生突破之后，市场从K线4到K线6形成一个上方区间，由两个较小的窄幅区间所构成。<font color="green"><strong>K线5上方的高2买点是一个合理的突破回踩入场点，虽然市场走出纠缠的铁丝网形态。这一突破既是对从K线3到K线4的小型牛旗的突破，也是对从K线3到K线5的整个交易区间的突破。</strong></font><font color="black"><strong>从K线3到K线5的区间是对市场突破K线1高点的两段式横向回踩。</strong></font></p><p>市场突破进入第三个区间（从K线8到K线9）。当其再次向上突破，走势在K线10失败（末端旗形反转），随后回撤穿越第三个区间的底部并最终跌至第二个区间的底部。<font color="black"><strong>在急速下跌之后，K线11下方是一个突破回踩做空点，但铁丝网形态使其风险较高。在截至K线12的两根阴线急速下挫之后，K线13下方出现第二个突破回踩做空点。</strong></font></p><p><font color="black"><strong>“区间”一词隐含的意思是市场将会在某个时点测试区间的下轨，即便接下来可能继续走高。</strong></font><font color="red"><strong>当市场对一轮强劲行情发生回撤，第一个目标永远是之前的逆势入场点。</strong></font>就本例而言，<font color="green"><strong>在市场突破最上方区间之后，最近的做空入场点是K线6的低点，</strong></font><font color="red"><strong>即最近一根空头信号K线。</strong></font><font color="green"><strong>市场向下突破最上方区间之后，进入紧邻的下方区间范围，并在K线12跌破那根空头信号K线的低点。</strong></font></p><p><font color="black"><strong>截至收盘，市场已经测试了第二个区间中K线3的低点，即位置最低的一根空头信号K线。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第5个案例（图22.5）<br>第327-328页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.06.趋势交易日中的双向交易</title>
+      <link href="/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-06-qu-shi-jiao-yi-ri-zhong-de-shuang-xiang-jiao-yi/"/>
+      <url>/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-06-qu-shi-jiao-yi-ri-zhong-de-shuang-xiang-jiao-yi/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc22%2FSlide6.JPG" alt="图22.6趋势交易日中的双向交易"></p><blockquote><p>如图22.6所示，<strong>虽然当天市场几乎开在最高点、收在最低点，属于始于开盘的下跌趋势交易日，但头两个小时行情震荡剧烈，很难像始于开盘的趋势那样去交易。</strong><font color="red"><strong>通常，始于开盘的趋势交易日不会出现太多大幅逆势摆动，但趋势性交易区间行情存在这种情况</strong></font>，所以趋势性交易区间屈于较弱的、更难预测的趋势类型。<strong>初始交易区间在K线4向下突破，进入一个下方区间，从而确立趋势性交易区间交易日</strong>。</p><p><font color="black"><strong>直到K线3,当天振幅只有近期日均振幅的一半左右，因此交易者明白市场有可能形成一个下方交易区间。</strong></font><br><font color="green"><strong>K线6既是对均线的回踩，也是突破上方区间下轨K线2之后的回踩，因此是合理的做空入场点。</strong></font><br><font color="green"><strong>K线9是对上方区间的突破回踩，同时也是对这个较低区间顶部的假突破，也构成一个卖点。</strong></font><br><strong>K线12向下突破进入第三个区间，但交易日已经没有足够的时间向上测试k线13区间顶部。</strong></p><p>本图的深入探讨</p><p>在图22.6中，市场前一天收于均线下方，而当天开盘是一次多头突破，同时突破了前一天的收盘和均线。<strong>当天第一根K线为十字星，因此并非可靠的做空信号K线</strong>。<font color="green"><strong>K线1强空头趋势K线是一根合理的信号K线，交易者可以在其低点下方1个最小报价单位卖出，预期市场测试均线，甚至昨天的收盘。</strong></font><font color="black"><strong>由于开盘大幅跳空往往造成趋势性交易日，而这根阴线说明空头做空意愿很强，因此当天可能成为下跌趋势交易日。交易者可以较早入场做空，将部分头寸参与摆动，直到市场出现强势向上反转或时间接近收盘。</strong></font></p><p><font color="black"><strong>在两根K线的急速下跌之后，交易者预计市场将进入下跌通道，开始在回撤中做空。</strong></font><font color="green"><strong>第一个回撤做空点是由上午7点整（PST时间）之后那根外包大阴线所触发的低2卖点。下一个做空点在K线3空头反转K线下方。这是一个双重做空形态，既与前面的回撤构成双顶，也是是楔形熊旗</strong></font>（第一波向上推动是K线2往前数两根K线）。</p><p><font color="green"><strong>K线14</strong></font><strong>是一根多头反转K线，但与前面两根K线重叠度太高，使其可靠性下降。而且，它处于K线12急速下跌之后一个相对较窄的通道之内，</strong><font color="black"><strong>因此最好等待出现市场发生突破回踩、形成低点抬升后再去做多。</strong></font><font color="green"><strong>由于它是下跌趋势中的一个弱势买入形态，因此其失败可能反而构成不错的做空形态。K线15是一个失败的高2</strong></font>,<font color="orange"><strong>而在下跌趋势中，均线附近空头反转K线所构成的低2往往是高概率的做空形态，因为那些在高1和高2趋势反转尝试中买入的交易者通常会在低2退出。</strong></font><strong>市场从当天新低做出两次反转尝试，而这第二次在K线15做多入场点失败后失败。</strong><font color="orange"><strong>如果市场某种尝试失败两次，通常就会朝相反方向运行。</strong></font></p><blockquote></blockquote></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第6个案例（图22.6）<br>第328-330页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.07.第一个小时后开始的趋势往往很弱</title>
+      <link href="/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-07-di-yi-ge-xiao-shi-hou-kai-shi-de-qu-shi-wang-wang-hen-ruo/"/>
+      <url>/2023/06/30/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-07-di-yi-ge-xiao-shi-hou-kai-shi-de-qu-shi-wang-wang-hen-ruo/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc22%2FSlide7.JPG" alt="图22.7第一个小时后开始的趋势往往很弱"></p><blockquote><p><font color="red"><strong>当市场在第一个小时后开始进入某种趋势，我们可以假定它会成为趋势性交易区间交易日，或者表现出类似特征，因此可以朝两个方向做刮头皮交易。</strong></font>在图22.7中，<strong>虽然市场走出始于开盘的上升趋势，但升势在K线5急速拉升和高潮走势之后结束，然后反转进人趋势性交易区间下跌趋势。</strong><font color="black"><strong>我们也可以将其视为急速与通道下跌趋势，从K线5到K线6的下跌为急速下跌阶段，从K线7到K线8的下跌以及截至K线10的3根K线向下突破走势也属于急速行情。由于下跌通道较宽，两次突破之后的回撤与前期摆动低点重叠，因此整轮下跌行情也属于楼梯形态下跌趋势。</strong></font></p><p>本图的深入探讨</p><p>在图22.7中，<strong>市场当天跳空低开，与上一交易日的低点构成一个低点抬升，有可能走出始千开盘的上升趋势。它是市场前一天收盘前急速拉升之后对均线的回踩，以及对陡峭上升通道的一次假突破。</strong><br><strong>两段式上涨走势在K线5末端旗形卖点结束。随后市场出现4根K线的急速下跌，并发展成一波更大规模的急速下跌（截至K线6）。</strong><font color="black"><strong>下跌走势跌破了开盘后强劲上涨的上升趋势线，因此接下来出现的高点下降可能引发趋势向下反转。</strong></font><br><font color="green"><strong>K线7是一波两段式调整之后形成的高点下降，提醒交易者市场可能继续下跌。K线7是一个双重卖点，它与截至K线6的楔形下跌通道的顶部构成一个双顶</strong></font>（这个楔形始于K线5下方4根K线急速下跌之后的那个小型下降低点），<font color="green"><strong>还是一个楔形熊旗</strong></font>（第一波向上推动结束于K线6前一根K线，K线7是第三波向上推动）。<br>在交易日剩下的时间里，市场表现得像一轮趋势性交易区间下跌行情。<font color="green"><strong>截至k线1和截至K线5的两波强劲上涨属于急速行情，因此有可能在第二天或者第三天跟随一个上升通道。K线6、8、10构成一个大的楔形牛旗，市场有可能测试K线5高点。</strong></font>K线4也可以看成下跌通道的一部分。第二天（图上未显示）市场的确跳空高开至K线7高点附近，然后走出始于开盘的强劲上升趋势。</p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第7个案例（图 22.7）<br>第330-331页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.08.初始交易区间往往预示着出现下一个交易区间</title>
+      <link href="/2023/06/29/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-08-chu-shi-jiao-yi-qu-jian-wang-wang-yu-shi-zhao-chu-xian-xia-yi-ge-jiao-yi-qu-jian/"/>
+      <url>/2023/06/29/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-08-chu-shi-jiao-yi-qu-jian-wang-wang-yu-shi-zhao-chu-xian-xia-yi-ge-jiao-yi-qu-jian/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc22%2FSlide8.JPG" alt="图22.8初始交易区间往往预示着出现下一个交易区间"></p><blockquote><p>在图22.8中，<font color="red"><strong>市场头两个小时的区间大约为日均波幅的一半，从而提醒交易者市场有可能发生突破并形成一个上方或下方的交易区间，构成趋势性交易区间交易日</strong></font>。在K线9突破之前，上升趋势已经较为明显。我们注意到，K线5摆动低点高于K线2低点，K线6低点高于K线5低点，K线8低点又高于K线6低点。K线3、4、7这些摆动高点的情况也是一样的。<strong>虽然市场前两个半小时处于交易区间，但无论摆动高点还是摆动低点都呈趋势性上移，意味着在交易区间内可能已经形成一轮上升趋势。此时交易者要提防市场向上突破</strong>(发生在K线9)。上方交易区间一直持续到K线13向上反转之后的突破。<font color="black"><strong>K线11和K线13都属于突破回踩。K线11微型双底跌入下方交易区间之内，但K线13的低点刚好测试了下方交易区间顶部K线7的高点</strong></font>，丝毫不差。<font color="red"><strong>当回踩走势无法跌破突破点，说明多头力量较强。</strong></font></p><p>本图的深入探讨</p><p>在图22.8中，<strong>市场跳空低开，第一根K线为阴线，因此交易日可能成为始于开盘的下跌趋势交易日。</strong><font color="green"><strong>然而K线1上方和下方都有影线，增加了市场形成初始交易区间的概率。在这种情况下，交易者应该耐心等待</strong></font>。<font color="black"><strong>K线2是一个微型双底，但两根K线均为十字星，并非可能引发强劲趋势的建仓形态。连K线4这个形成于均线附近的楔形熊旗都是弱势形态，因为它属于一个6根K线窄幅交易区间的一部分，所有这些K线都有影线。这说明市场存在不确定性（交易区间的主要特征）</strong></font>。<font color="green"><strong>交易者可能会在K线5后面那根内包阳线上方买入</strong></font>，<font color="green"><strong>但在K线4楔形熊旗之后，市场应该会有第二次向下测试。测试发生在K线6并与K线5构成双底</strong></font>（也是对当天低点K线2与后面第三根K线所构成双底的一次双底回踩）。<font color="green"><strong>稳妥的做法是等市场出现进一步的强势信号，比如截至K线7的4根K线急速拉升。</strong></font><strong>不过K线2之后市场已经出现数根强多头趋势K线，这一强势信号足以让我们开始在回调中寻找做多机会。这些长多头趋势K线是买压迹象，而买压是累积性的，最终多头将掌握控制权，市场开始上涨。</strong><font color="green"><strong>在截至K线7的急速拉升之后，市场在K线8后面那根内包阳线上方出现一个突破回踩买入建仓形态，也是一个低2失败买入信号。4根K线后市场出现高2买点，引发K线9强势多头突破。</strong></font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第8个案例（图 22.8）<br>第331-333页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.09.初始交易区间可以造成交易区间交易日</title>
+      <link href="/2023/06/29/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-09-chu-shi-jiao-yi-qu-jian-ke-yi-zao-cheng-jiao-yi-qu-jian-jiao-yi-ri/"/>
+      <url>/2023/06/29/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-09-chu-shi-jiao-yi-qu-jian-ke-yi-zao-cheng-jiao-yi-qu-jian-jiao-yi-ri/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc22%2FSlide9.JPG" alt="图 22.9 初始交易区间可以造成交易区间交易日"></p><blockquote><p><font color="red"><strong>仅仅因为头两个小时区间约为日均波幅的一半，并不意味着一定会发生突破并走出趋势性交易区间交易日。在大约1/3的情况下，市场会同时向上和向下突破，造成区间扩大。</strong></font>图22.9就是如此。市场在K线4和K线6从盘中新低位置向上反转，在K线3、10、12、19、21从盘中新高位置向下反转。<strong>开盘区间可能在从K线5开始的向下反转走势结束，此时区间高度大约为近期日均波幅的一半</strong>。<font color="green"><strong>这提醒交易者市场有可能向上或者向下突破，然后出现等距运动，导致当天振幅大约扩大一倍。然而，简单地在市场突破区间时人场是一种失败的策略，因为市场具有惰性</strong></font>，大部分从趋势转为交易区间、或从交易区间转为趋势的尝试都会失败。<font color="green"><strong>K线6突破至当天新低后并未出现好的做空形态，相反，三连推下跌（K线2、4、6）之后的K线7抬升低点和K线8突破回踩都属于合理的买入信号，可以预期市场测试当天高点。</strong></font></p><p><strong>K线10突破至盘中新高之后向下反转，但市场处于一个窄幅上升通道，因此这里并不是好的卖点。同时，由于上升动能并不是特别强，K线11突破回踩也顶多是一个刮头皮买点。市场从K线12双K线反转形态再次转跌。</strong><font color="green"><strong>在交易区间交易日，反转交易的二次入场点通常是可靠的，至少可以做刮头皮。</strong></font></p><p><strong>在K线16形成楔形牛旗之后，市场创出当天新高，但上攻走势在K线19和K线21再次失败。</strong><font color="green"><strong>由于向上突破已经明显无法获得成功，市场再次尝试向下突破当天低点，最后收于区间中位，这在交易区间交易日是十分常见的。</strong></font></p><p><strong>当开盘区间的上轨和下轨存在几种可能性，通常情况下如何选择并不重要</strong>，因为每个人的看法都不一样。<font color="green"><strong>如果你想设定一个等距运动目标作为锁定利润的位置，刚开始可以使用最窄的情况作为开盘区间，比如从K线2到K线3。如果市场到达这一区域后并未止步，再考虑更宽的可能性</strong></font>，比如从K线3到K线4，或者从K线3到K线6。<strong>由于本例中当天最终形成交易区间交易日，而非趋势性交易区间交易日，因此连最低的等距运动目标都未达到</strong>。不过，<font color="red"><strong>所有反转走势都是程序化交易依据某种等距算法所造成的，它们的交易等式中几乎一定会有某种类型的等距目标，尽管有时候并不明显。</strong></font></p></blockquote><p>注意：本例由初始交易区间演变为交易区间的扩大，而非趋势性交易区间，放在此处以增加对趋势性交易区间解读的更多视角。</p><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第9个案例（图 22.9）<br>第333-334页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>22.10.尾盘突破</title>
+      <link href="/2023/06/28/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-10-wei-pan-tu-po/"/>
+      <url>/2023/06/28/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/22.qu-shi-xing-jiao-yi-qu-jian-jiao-yi-ri/22-10-wei-pan-tu-po/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc22%2FSlide10.JPG" alt="图 22.10 尾盘突破"></p><blockquote><p><font color="red"><strong>有时候市场初始交易区间约为日均波幅的一半，但直到交易日最后一个小时才发生突破</strong></font>。在图22.10中，虽然已经没有足够时间形成一个真正的上方交易区间，但<font color="orange"><strong>市场全天都处于可能突破并形成趋势性交易区间交易日的状态之中</strong></font>。在突破之前，交易区间高度只有5.25点，而过去11个月中只有两天最终振幅只有5.25点或更低。也就是说，在过去11个月其他交易日，当交易日大部分时间振幅只有5.25点或更低，收盘时都发生了振幅扩大的现象。这使得本例在尾盘向上或向下突破的概率较高。<strong>由于市场在K线7三重底和三角形态之后一直处于上升态势，K线9到K线12之间阳线数量较多，说明市场存在买压，因此向上突破可能性更大。</strong><font color="green"><strong>交易者可能在K线14突破当天高点K线4时买入，或者在K线14这根强突破K线收盘时及其高点上方买入</strong></font>。<br><strong>当天最高点刚好位于从K线3到K线4初始急速拉升走势的</strong><font color="green"><strong>等距运动目标</strong></font>。当然，交易者不可能能知道多头将会在哪个等距运动目标锁定利润，但意识到这些可能性的存在是有帮助的。这样你也可以在市场快速上涨过程中锁定利润，而不是在下跌之后低几个点的位置。除了这种可能性，<strong>市场也可能在从K线1低点到K线2高点或从K线5低点到K线4、6、10、12高点幅度的等距运动目标见顶</strong>。</p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第22章 趋势性交易区间交易日<br>第10个案例（图 22.10）<br>第334-335页</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 案例-趋势分析-常见趋势形态 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 案例-趋势性交易区间交易日 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>日记-20230625-集权社会的运行逻辑</title>
       <link href="/2023/06/25/ri-ji/ri-ji-20230625-ji-quan-she-hui-de-yun-xing-luo-ji/"/>
       <url>/2023/06/25/ri-ji/ri-ji-20230625-ji-quan-she-hui-de-yun-xing-luo-ji/</url>
