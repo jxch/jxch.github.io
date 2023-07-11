@@ -409,6 +409,62 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2023/04/23/coding/hbase-you-hua/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/46.jpg" class="responsive-img" alt="HBase-优化">
+                            
+                            <span class="card-title">HBase-优化</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+
+HBase-rowkey设计优化
+
+代码优化
+
+创建表的时候，可以通过 HColumnDescriptor.setInMemory(true) 将表放到 RegionServer 的缓存中，保证在读取的时候被 cache 命中
+创建表的
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/HBase/">
+                            <span class="chip bg-color">HBase</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2023/04/23/coding/hbase-rowkey-she-ji-you-hua/">
                         <div class="card-image">
                             
@@ -997,61 +1053,6 @@ Hive 是属于 Hadoop 的数据仓库工具，可以让使用者将结构化数�
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/22/coding/hive-fen-tong/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/51.jpg" class="responsive-img" alt="Hive-分桶">
-                            
-                            <span class="card-title">Hive-分桶</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                创建桶表
-set hive.enforce.bucketing=true;
-set mapreduce.job.reduces=4;
-
-drop table person_buck;
-
-create table person_buck(si
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hive/">
-                            <span class="chip bg-color">Hive</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1158,7 +1159,7 @@ create table person_buck(si
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">305.8k</span>
+                        class="white-color">319.4k</span>
             
             
             
