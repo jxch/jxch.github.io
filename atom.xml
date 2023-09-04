@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-07-12T01:04:38.831Z</updated>
+  <updated>2023-09-04T12:36:02.559Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,63 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>诗词-无题四</title>
+    <link href="https://jxch.github.io/2023/09/04/zuo-pin/shi-ci-wu-ti-si/"/>
+    <id>https://jxch.github.io/2023/09/04/zuo-pin/shi-ci-wu-ti-si/</id>
+    <published>2023-09-04T12:35:28.000Z</published>
+    <updated>2023-09-04T12:36:02.559Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>世间从来多才俊，黄泉路上少英雄。<br>多情桥下无情水，只解曾经芍药红。</p></blockquote>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;世间从来多才俊，黄泉路上少英雄。&lt;br&gt;
+多情桥下无情水，只解曾经芍药红。&lt;/p&gt;
+&lt;/blockquote&gt;
+</summary>
+      
+    
+    
+    
+    <category term="作品" scheme="https://jxch.github.io/categories/%E4%BD%9C%E5%93%81/"/>
+    
+    
+    <category term="诗词" scheme="https://jxch.github.io/tags/%E8%AF%97%E8%AF%8D/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>诗词-乌夜啼·吹香院落飞红</title>
+    <link href="https://jxch.github.io/2023/09/04/zuo-pin/shi-ci-wu-ye-ti-chui-xiang-yuan-luo-fei-hong/"/>
+    <id>https://jxch.github.io/2023/09/04/zuo-pin/shi-ci-wu-ye-ti-chui-xiang-yuan-luo-fei-hong/</id>
+    <published>2023-09-04T12:32:12.000Z</published>
+    <updated>2023-09-04T12:32:42.860Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>乌夜啼</p><p>吹香院落飞红，飘渺疏雨轻烟。短岗孤酒立残阳，寒鸦桑树晚。<br>雨打花开寂寞，半昏半暗鸣蝉。梧桐声里忆生年，倚杖月影寒。</p></blockquote>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;乌夜啼&lt;/p&gt;
+&lt;p&gt;吹香院落飞红，飘渺疏雨轻烟。短岗孤酒立残阳，寒鸦桑树晚。&lt;br&gt;
+雨打花开寂寞，半昏半暗鸣蝉。梧桐声里忆生年，倚杖月影寒。&lt;/p&gt;
+&lt;/blockquote&gt;
+</summary>
+      
+    
+    
+    
+    <category term="作品" scheme="https://jxch.github.io/categories/%E4%BD%9C%E5%93%81/"/>
+    
+    
+    <category term="诗词" scheme="https://jxch.github.io/tags/%E8%AF%97%E8%AF%8D/"/>
+    
+  </entry>
   
   <entry>
     <title>darknet-ocr web ui 优化</title>
@@ -511,57 +568,6 @@
     
     
     <category term="数据源" scheme="https://jxch.github.io/tags/%E6%95%B0%E6%8D%AE%E6%BA%90/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>01.单体VS微服务</title>
-    <link href="https://jxch.github.io/2023/07/08/architect/06.dian-shang-xi-tong/01-dan-ti-vs-wei-fu-wu/"/>
-    <id>https://jxch.github.io/2023/07/08/architect/06.dian-shang-xi-tong/01-dan-ti-vs-wei-fu-wu/</id>
-    <published>2023-07-08T03:22:57.000Z</published>
-    <updated>2023-07-11T22:12:41.697Z</updated>
-    
-    <content type="html"><![CDATA[<h1>单体服务的优点</h1><ul><li><strong>应用的开发很简单</strong>，IDE 和其他开发工具只需要构建这一个单独的应用程序</li><li><strong>易于对应用程序进行大规模的更改</strong>:可以更改代码和数据库模式，然后构建和部署测试相对简单。</li><li><strong>开发测试简单</strong>:开发者只需要写几个端到端的测试,启动应用程序，调用 RESTAPI，然后使用 Selenium 这样的工具测试用户界面。</li><li><strong>部署简单</strong>明了:开发者唯一需要做的,就是把 WAR 文件复制到安装了 Tomcat 的服务器上。</li><li><strong>横向扩展简单</strong>:运行多个实例，由一个负载均衡器进行调度。</li></ul><h1>单体服务的缺点</h1><p>单体架构存在着巨大的局限性。<strong>随着业务的复杂和用户的增多</strong>，小巧的、简单的、由一个小团队开发维护的应用程序就会演变成一个由大团队开发的巨无霸单体应用程序。此时应用就变成了单体地狱。开发变得缓慢和痛苦。</p><h2 id="font-color-red-过度的复杂性-font"><font color="red">过度的复杂性</font></h2><p>大型单体应用程序的首要问题就是它的过度复杂性，系统本身过于庞大和复杂导致任何一个开发者都很难理解它的全部。因此，修复软件中的问题和正确地实现新功能就变得困难且耗时。各种交付截止时间都可能被错过。这种极度的复杂性正在形成一个恶性循环:由于代码库太难于理解，因此开发人员在更改时更容易出错，每一次更改都会让代码库变得更复杂、更难懂。就演变成为了我们常说的“<strong>代码屎山</strong>”。</p><h2 id="font-color-red-开发速度缓慢-font"><font color="red">开发速度缓慢</font></h2><p>巨大的项目<strong>从编辑到构建、运行再到测试这个周期花费的时间越来越长</strong>,这严重地影响了团队的工作效率。</p><h2 id="font-color-red-部署周期长-易出问题-font"><font color="red">部署周期长,易出问题</font></h2><p>巨大的项目从代码完成到运行在生产环境是一个漫长且费力的过程。一个问题是，<font color="red"><strong>众多开发人员都向同一个代码库提交代码更改，这常常使得这个代码库的构建结果处于无法交付的状态。采用功能分支来解决这个问题时，带来的是漫长且痛苦的合并过程。</strong></font>紧接着，一旦团队完成一个冲刺任务，随后迎接他们的将是一个漫长的测试和代码稳定周期。把更改推向生产环境的另一个挑战是运行测试需要很长时间。因为代码库如此复杂,以至于一个更改可能引起的影响是未知的，为了避免<font color="red"><strong>牵一发而动全身</strong></font>的后果，即使是一个微小的更改，开发人员也必须在持续集成服务器上运行所有的测试套件。系统的某些部分甚至还需要手工测试。如果测试失败，诊断和修复也需要更多的时间。因此，<font color="red"><strong>完成这样的测试往往需要数天甚至更长时间</strong></font>。</p><h2 id="font-color-red-难以扩展和可靠性不佳-font"><font color="red">难以扩展和可靠性不佳</font></h2><p>在很多的时候，<font color="red"><strong>应用的不同功能和模块对资源的需求是相互冲突的</strong></font>。例如，有些模块需要将数据保存在一个大型的内存数据库中，理想情况下运行这个应用的服务器应该有较大容量的内存；另外，有些模块存在大量的计算又需要比较快的CPU，这需要项目部署在具有多个高性能 CPU 和大内存的服务器之上。因为这些模块都是在一个应用程序内，因此在选用服务器时必须满足所有模块的需要。<font color="red"><strong>应用程序缺乏故障隔离</strong></font>，因为所有模块都在同一个进程中运行。每隔一段时间，在一个模块中的代码错误，例如内存泄漏，将会导致应用程序的所有实例都崩溃。</p><h1>单体应用的适用场景</h1><p><font color="green"><strong>小、少、短、快、雏</strong></font><br>公司规模较小，开发团队人数较少、产品上线周期短、产品在快速迭代期，核心功能尚未稳定时；或者用户规模和用户群体较少时。</p><h1>微服务架构的特点</h1><p>今天,针对大型复杂应用的开发,越来越多的共识趋向于考虑使用微服务架构。但微服务到底是什么？针对微服务架构有多种定义。有些仅仅是在字面意义上做了定义:服务应该是微小的不超过 100 行代码,等等。另外有些定义要求服务的开发周期必须被限制在两周之内。<br>曾在 Netflix 工作的著名架构师Adrian Cockcroft 把<strong>微服务架构定义为面向服务的架构，它们由松耦合和具有边界上下文的元素组成</strong>。由这个定义可以看到，微服务其实<strong>和 DDD 是天生一对</strong>。</p><h2 id="微服务是模块化的">微服务是模块化的</h2><p>模块化是开发大型、复杂应用程序的基础。现代互联网应用程序为了让不同的人开发和理解，大型应用需要拆分为模块。在单体应用中，模块通常由一组编程语言所提供的结构（例如Java 的包）,或者Java JAR 文件这样的构建制品来定义。但是，即使这样，随着时间的推移和反复的开发迭代,单体应用依然会变成我们前面所说的单体地狱。<br>微服务架构使用服务作为模块化的单元。服务的 API 为它自身构筑了一个不可逾越的边界,你无法越过 API 去访问服务内部的类，这与采用 Java 包的单体应用完全不同。因此模块化的服务更容易随着时间推移而不断演化。微服务架构也带来其他的好处,例如服务可以独立进行部署和扩展。</p><h2 id="每个服务都拥有自己的数据库">每个服务都拥有自己的数据库</h2><p>微服务架构的一个关键特性是每一个服务之间都是<strong>松耦合</strong>的，它们仅通过 API 进行通信。实现这种松耦合的方式之一，是每个服务都拥有自己的私有数据库。对于我们的项目来说，订单服务拥有一个包括 oms_order 等表的数据库，用户服务拥有一个包含 ums_member 等表的数据库。在开发阶段就可以修改自己服务的数据库模式，而不必同其他服务的开发者协调。在运行时，服务实现了相互之间的独立。服务不会因为其他的服务锁住了数据库而进入堵塞的状态。</p><h1>微服务架构的好处</h1><ul><li>使大型的复杂应用程序可以<strong>持续交付和持续部署</strong>。</li><li>每个服务都相对较小并<strong>容易维护</strong>。</li><li>服务可以<strong>独立部署</strong>。</li><li>服务可以<strong>独立扩展</strong>。</li><li>微服务架构可以实现团队的自主和松散耦合。</li><li>更容易实验和采纳新的技术。</li><li>更好的<strong>容错性</strong>，比如更好的故障隔离。</li></ul><h1>微服务架构的弊端</h1><h2 id="font-color-red-服务的拆分和定义是一项挑战-font"><font color="red">服务的拆分和定义是一项挑战</font></h2><p>采用微服务架构首当其冲的问题，就是根本没有一个具体的、良好定义的算法可以完成服务的拆分工作。与软件开发一样，服务的拆分和定义更像是一门艺术。更糟糕的是，如果对系统的服务拆分出现了偏差，你很有可能会构建出一个<font color="red"><strong>分布式的单体应用</strong></font>: <strong>一个包含了一大堆互相之间紧耦合的服务，却又必须部署在一起的所谓分布式系统。<strong>这将会把单体架构和微服务架构</strong>两者的弊端集于一身</strong>。</p><h2 id="font-color-red-分布式系统带来的各种复杂性-font-使开发、测试和部署变得更困难"><font color="red">分布式系统带来的各种复杂性</font>,使开发、测试和部署变得更困难</h2><p>使用微服务架构的另一个问题是开发人员必须处理创建分布式系统的额外复杂性。服务必须使用进程间通信机制。这比简单的方法调用更复杂。此外，<font color="red"><strong>必须设计服务来处理局部故障,并处理远程服务不可用或出现高延迟的各种情况。</strong></font>实现跨多个服务的用例需要使用不熟悉的技术。每个服务都有自己的数据库,这使得实现<font color="red"><strong>跨服务的事务和查询</strong></font>成为一项挑战。基于微服务的应用程序必须使用所谓的 Saga 来维护服务之间的<font color="red"><strong>数据一致性</strong></font>。基于微服务的应用程序**无法使用简单查询从多个服务中检索数据。**相反，它必须使用 API 组合或 CQRS 视图实现查询。</p><p>IDE 等开发工具都是为单体应用设计的，它们并不具备开发分布式应用所需要的特定功能支持。编写<strong>包含多项服务在内的自动化测试</strong>也是很令人头疼的工作。这些都是跟微服务架构直接相关的问题。因此,团队中的开发人员必须具备先进的软件开发和交付技能才能成功使用微服务。</p><p>微服务架构还引入了显著的<strong>运维复杂性</strong>。必须在生产环境中管理更多活动组件:不同类型服务的多个实例。要成功部署微服务，需要高度自动化的基础设施,比如自动化部署等等。</p><h2 id="font-color-red-当部署跨越多个服务的功能时需要谨慎地协调-font"><font color="red">当部署跨越多个服务的功能时需要谨慎地协调</font></h2><p>使用微服务架构的另外一项挑战在于当部署跨越多个服务的功能时需要谨慎地协调更多开发团队。必须制定一个发布计划，<font color="red"><strong>把服务按照依赖关系进行排序</strong></font>，这就是我们常说的服务编排。这跟单体架构下批量部署多个组件的方式截然不同。</p><h1>总结梳理</h1><p>单体服务的优点</p><ul><li><p>开发简单</p></li><li><p>大规模更改简单</p></li><li><p>测试简单</p></li><li><p>部署简单</p></li><li><p>横向扩展简单</p></li></ul><p>单体服务的缺点</p><ul><li><p>过度的复杂性（代码屎山）</p></li><li><p>开发速度缓慢（构建 - 运行 - 测试）</p></li><li><p>部署周期长,易出问题（代码合并，牵一发而动全身，测试太慢）</p></li><li><p>难以扩展和可靠性不佳（不同模块的资源需求不同，缺乏故障隔离）</p></li></ul><p>单体应用的适用场景（小、少、短、快、雏）</p><p>微服务架构的特点</p><ul><li><p>微服务是模块化的</p></li><li><p>每个服务都拥有自己的数据库</p></li></ul><p>微服务架构的好处</p><ul><li><p>持续交付和持续部署</p></li><li><p>容易维护</p></li><li><p>独立部署和独立扩展</p></li><li><p>容错性（故障隔离）</p></li></ul><p>微服务架构的弊端</p><ul><li><p>服务的拆分和定义（分布式单体应用，集两者弊端于一身）</p></li><li><p>分布式系统复杂性（可用可靠，事务，数据一致性，多服务查询，跨服务测试，运维复杂性）</p></li><li><p>服务的依赖关系（当部署跨越多个服务的功能时需要谨慎地协调，协调团队，发布计划）</p></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1&gt;单体服务的优点&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;应用的开发很简单&lt;/strong&gt;，IDE 和其他开发工具只需要构建这一个单独的应用程序&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;易于对应用程序进行大规模的更改&lt;/strong&gt;:可以更改代码和数据库模式，然后构建和部</summary>
-      
-    
-    
-    
-    <category term="电商系统" scheme="https://jxch.github.io/categories/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/"/>
-    
-    
-    <category term="微服务" scheme="https://jxch.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>26.03.缩梯</title>
-    <link href="https://jxch.github.io/2023/07/08/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-03-suo-ti/"/>
-    <id>https://jxch.github.io/2023/07/08/pa/qu-shi-fen-xi/04.chang-jian-qu-shi-xing-tai/26.lou-ti-xing-tai-kuan-fu-qu-shi-tong-dao/26-03-suo-ti/</id>
-    <published>2023-07-07T17:18:39.000Z</published>
-    <updated>2023-07-07T17:31:54.438Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc26%2FSlide3.JPG" alt="图 26.3 缩梯"></p><blockquote><p><font color="red"><strong>市场每一次突破幅度都小于上一次,说明动能在减弱,可能很快出现较深的回撤甚至反转。</strong></font>如图26.3所示,<strong>市场走出楼梯形态上升趋势,形成3个或以上趋势性上移的高点和低点,大致处于一个通道之中。</strong><font color="green"><strong>K线4、6、8形成缩梯,代表上升动能减弱,预示行情可能反转。</strong></font><font color="black"><strong>上升通道相当于一个大的熊旗,在K线9向下突破。</strong></font><br><font color="green"><strong>在K线9突破之后,市场出现突破回踩</strong></font>,<font color="black"><strong>并在K线10形成高点下降,进入一段楼梯形态的下降趋势。</strong></font><font color="green">K线10与截至K线9下跌走势中第一次反弹的高点大致构成一个双顶熊旗。K线11对下降通道下轨构成过靶,引发一轮两段式的小规模反转并向上超越通道上轨。</font><br><font color="green"><strong>当市场开始形成楼梯形下跌趋势,通常你可以在每一根强趋势K线向下突破时逆势刮头皮。在每一根空头趋势K线收盘跌破前一个摆动低点时刮头皮做多。</strong></font><font color="green">同样在楼梯形上涨行情中,你可以在每一根趋势K线超越上一个摆动高点时刮头皮做空。</font>不过一般来讲,<font color="green">**更安全的做法是在市场反转时挂止损单入场。**比如说,如果市场从通道底部向上反转,可以在前一根K线高点上方挂单入场。</font></p></blockquote><hr><p>详见：<br>《高级趋势技术分析 价格行为交易系统之趋势分析》<br>第四篇 常见趋势形态<br>第26章 楼梯形态：宽幅趋势通道<br>第3个案例（图 26.3）<br>第378-379页</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://objectstorage.us-phoenix-1.oraclecloud.com/n/axdikqaqm3dc/b/bucket1/o/pa-price-charts%2Ftrends%2Fc26%2FSlide3.JPG&quot; alt=</summary>
-      
-    
-    
-    
-    <category term="案例-趋势分析-常见趋势形态" scheme="https://jxch.github.io/categories/%E6%A1%88%E4%BE%8B-%E8%B6%8B%E5%8A%BF%E5%88%86%E6%9E%90-%E5%B8%B8%E8%A7%81%E8%B6%8B%E5%8A%BF%E5%BD%A2%E6%80%81/"/>
-    
-    
-    <category term="案例-楼梯形态" scheme="https://jxch.github.io/tags/%E6%A1%88%E4%BE%8B-%E6%A5%BC%E6%A2%AF%E5%BD%A2%E6%80%81/"/>
     
   </entry>
   
