@@ -9,8 +9,7 @@
 set ws=WScript.CreateObject(&#34;WScript.Shell&#34;)
 ws.Run &#34;E:\bin\xxx.bat&#34;,0
 
-&#39; 如果使用的是powershell脚本
-ws.Run &#34;E:\bin\xxx.">
+&#39; 如果使用的是powershell脚本，true代表阻塞执行，false是批量">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -414,7 +413,7 @@ ws.Run &#34;E:\bin\xxx.">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    78
+                    91
                 </div>
                 
 
@@ -448,12 +447,12 @@ ws.Run &#34;E:\bin\xxx.">
 <pre class="line-numbers language-visual-basic" data-language="visual-basic"><code class="language-visual-basic"><span class="token keyword">set</span> ws<span class="token operator">=</span>WScript<span class="token punctuation">.</span>CreateObject<span class="token punctuation">(</span><span class="token string">"WScript.Shell"</span><span class="token punctuation">)</span>
 ws<span class="token punctuation">.</span>Run <span class="token string">"E:\bin\xxx.bat"</span><span class="token punctuation">,</span><span class="token number">0</span>
 
-<span class="token comment">' 如果使用的是powershell脚本</span>
+<span class="token comment">' 如果使用的是powershell脚本，true代表阻塞执行，false是批量执行</span>
 ws<span class="token punctuation">.</span>Run <span class="token string">"E:\bin\xxx.ps1"</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token boolean">true</span>
 
 <span class="token comment">' 修改工作目录</span>
 ws<span class="token punctuation">.</span>currentdirectory <span class="token operator">=</span> <span class="token string">"D:\\path\\to"</span>
-ws<span class="token punctuation">.</span>Run <span class="token string">"hexo s -p 4000"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ws<span class="token punctuation">.</span>Run <span class="token string">"hexo s -p 4000"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="开机自启">开机自启</h2>
 <p>创建vbs文件的快捷方式，放到启动目录</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># win+r</span>
