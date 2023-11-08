@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>iptables-关闭防火墙</title>
+      <link href="/2023/11/08/coding/iptables-guan-bi-fang-huo-qiang/"/>
+      <url>/2023/11/08/coding/iptables-guan-bi-fang-huo-qiang/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">iptables <span class="token parameter variable">-P</span> FORWARD ACCEPT iptables <span class="token parameter variable">-P</span> OUTPUT ACCEPT iptables <span class="token parameter variable">-P</span> INPUT ACCEPTiptables <span class="token parameter variable">-F</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 使用手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> iptables </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>诗词-无题四</title>
       <link href="/2023/09/04/zuo-pin/shi-ci-wu-ti-si/"/>
       <url>/2023/09/04/zuo-pin/shi-ci-wu-ti-si/</url>
