@@ -57,9 +57,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
+
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
 </head>
 
 
@@ -405,6 +405,170 @@
     <!-- 所有文章卡片 -->
     <article id="articles" class="container articles">
         <div class="row article-row">
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/21/coding/nfs-rocky-an-zhuang-nfs/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="NFS-Rocky安装NFS">
+                            
+                            <span class="card-title">NFS-Rocky安装NFS</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 服务端和客户端都需安装
+dnf install nfs-utils
+
+# 启动服务端
+systemctl enable nfs-server
+systemctl start nfs-server
+systemctl status nfs
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/NFS/">
+                            <span class="chip bg-color">NFS</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/21/coding/nfs-linux-pei-zhi-nfs-fu-wu/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="NFS-Linux配置NFS服务">
+                            
+                            <span class="card-title">NFS-Linux配置NFS服务</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                服务端
+创建服务端共享目录
+配置NFSv4服务器时，一个好的做法是使用全局NFS根目录，并将实际目录绑定到共享挂载点。
+一般使用/srv/nfs4目录作为NFS根目录。
+sudo mount --bind /var/www /srv/nfs
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/NFS/">
+                            <span class="chip bg-color">NFS</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/21/yun-wei/dockerswarm-chu-shi-hua/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/45.jpg" class="responsive-img" alt="DockerSwarm-初始化">
+                            
+                            <span class="card-title">DockerSwarm-初始化</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 初始化 swarm
+docker swarm init
+
+# 查看如何加入本机 swarm 的命令
+docker swarm join-token manager
+docker swarm join-token worker
+
+# 查看
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Docker/">
+                            <span class="chip bg-color">Docker</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
             
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
@@ -885,163 +1049,6 @@ mapreduce.input.fileinputformat.s
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/20/coding/hadoop-dan-ci-fen-zu-pai-xu-tong-ji-demo/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Hadoop-单词分组排序统计Demo">
-                            
-                            <span class="card-title">Hadoop-单词分组排序统计Demo</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                先进行单词统计: Hadoop-单词统计Demo
-排序
-利用对Mapper输出的Key的自动排序进行排序
-public class WCSortMapper extends Mapper&lt;LongWritable, Text, Des
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/20/hadoop/hadoop-6-ti-jiao-ren-wu-liu-cheng-yu-shuffle-liu-cheng/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Hadoop-6.提交任务流程与Shuffle流程">
-                            
-                            <span class="card-title">Hadoop-6.提交任务流程与Shuffle流程</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                shuffle 并不是个组件，而是 mr 处理流程中的一个子过程，它过程开始于 maptask 把数据写入环形缓存一直到数据到 reduce 之间的整个过程
-
-
-maptask 收集我们的 map() 方法输出的 kv 对，放到内存缓冲区中
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/20/hadoop/hadoop-5-mapreduce-gong-zuo-ji-zhi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Hadoop-5.mapreduce工作机制">
-                            
-                            <span class="card-title">Hadoop-5.mapreduce工作机制</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                一个完整的 mapreduce 程序在分布式运行时有三类实例进程：
-
-MRAppMaster：负责整个程序的过程调度及状态协调
-MapTask：负责 map 阶段的整个数据处理流程
-ReduceTask：负责 reduce 阶段的整个数据处
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1148,7 +1155,7 @@ ReduceTask：负责 reduce 阶段的整个数据处
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">359.2k</span>
+                        class="white-color">359.7k</span>
             
             
             
