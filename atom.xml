@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2023-11-08T17:42:35.130Z</updated>
+  <updated>2023-12-18T19:14:41.097Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,61 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>市场分析-20231215-Emini</title>
+    <link href="https://jxch.github.io/2023/12/19/shi-chang-fen-xi/shi-chang-fen-xi-20231215-emini/"/>
+    <id>https://jxch.github.io/2023/12/19/shi-chang-fen-xi/shi-chang-fen-xi-20231215-emini/</id>
+    <published>2023-12-18T19:01:28.000Z</published>
+    <updated>2023-12-18T19:14:41.097Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="日线分析">日线分析</h2><p><img src="/static/trade/Brooks-%E8%BD%AC%E8%BD%BD/20231215-SP500-Emini-1-D.png" alt="Emini - 5 Min"></p><ul><li>Emini在周三形成了强势的牛市突破。然而，他们未能获得强劲的后续购买。</li><li>牛市正在变得高潮，这增加了获利回吐和横盘交易几个K线的可能性。</li><li>市场已经离开移动平均线超过29个K线，由于周三的牛市突破，市场离移动平均线很远。移动平均线是平均价格的度量。</li><li>最终，牛市将不愿意在离平均价格很远的地方购买，只愿意在平均价格处购买。这意味着市场在接下来的一两周内测试移动平均线的赔率较大。</li><li>12月是今年的最后一个月，牛市正在尽力使年度收盘在其高点，作为实力的象征。</li><li>熊市将试图为今年创造尽可能大的尾巴。然而，相比今年的反弹，熊市最好的期望是小幅抛售。</li><li>交易者应该预期那些在周三收盘时购买的买入收盘的牛市在昨天的后续行动后会感到失望。这些牛市可能会很快寻找退出机会或部分获利，预期回调。</li></ul><h2 id="Emini-5-Min">Emini - 5 Min</h2><p><img src="/static/trade/Brooks-%E8%BD%AC%E8%BD%BD/20231215-SP500-Emini-5-MIN.jpg" alt="Emini - 5 Min"></p><ul><li>Emini在全球电子交易会议的夜间环节下跌了6点。</li><li>在太平洋时间上午8:30的报告期间，全球电子市场出售。</li><li>牛市正在试图消除熊市突破造成的损失，而熊市则希望报告后的任何反弹都将导致第二腿下跌。</li><li>交易者应该预期今天开盘时会有很多交易区间的价格行动。这意味着交易者应该考虑在放置交易之前等待6 - 12个K线，除非他们对宽松的止损和限价订单感到舒适。</li><li>大多数交易者应该等待开盘摆动的发展，这通常在第二个小时结束之前开始。开盘摆动在形成双顶/底或楔形顶/底后开始是常见的。</li><li>今天是星期五，所以周支持和阻力很重要。交易者应该为可能在一天结束时出现的突然突破做好准备，因为交易者正在决定周线图的收盘价。</li><li>总的来说，交易者在开盘时应该谨慎。开盘时常常会有几次反转尝试，然后才决定开盘摆动的方向。通过在开盘时保持耐心，交易者有更好的机会抓住当天的最高点或最低点，从而提高他们的交易方程式。</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;日线分析&quot;&gt;日线分析&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/static/trade/Brooks-%E8%BD%AC%E8%BD%BD/20231215-SP500-Emini-1-D.png&quot; alt=&quot;Emini - 5 Min&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li</summary>
+      
+    
+    
+    
+    <category term="交易笔记" scheme="https://jxch.github.io/categories/%E4%BA%A4%E6%98%93%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="市场分析" scheme="https://jxch.github.io/tags/%E5%B8%82%E5%9C%BA%E5%88%86%E6%9E%90/"/>
+    
+    <category term="Brooks-转载" scheme="https://jxch.github.io/tags/Brooks-%E8%BD%AC%E8%BD%BD/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ai-copilot提示词</title>
+    <link href="https://jxch.github.io/2023/12/17/template/ai-copilot-ti-shi-ci/"/>
+    <id>https://jxch.github.io/2023/12/17/template/ai-copilot-ti-shi-ci/</id>
+    <published>2023-12-17T08:57:32.000Z</published>
+    <updated>2023-12-17T09:05:10.374Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>–系统指令：如果一定要联网搜索，请不要使用中文搜索，先理解用户问题，再思考最有可能帮助到用户获取该信息的关键词。输出结果应该是结构清晰，层次分明，完整专业且详尽，如果输出结果不是中文的话，请将结果专业翻译为中文。</p></blockquote><hr><p>据我观察：</p><ul><li>更富创造力使用了GPT4模型</li><li>更精确则重度依赖搜索结果的质量</li><li>平衡模式不好用</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;–系统指令：如果一定要联网搜索，请不要使用中文搜索，先理解用户问题，再思考最有可能帮助到用户获取该信息的关键词。输出结果应该是结构清晰，层次分明，完整专业且详尽，如果输出结果不是中文的话，请将结果专业翻译为中文。&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+      
+    
+    
+    
+    <category term="ai-template" scheme="https://jxch.github.io/categories/ai-template/"/>
+    
+    
+    <category term="ai" scheme="https://jxch.github.io/tags/ai/"/>
+    
+  </entry>
   
   <entry>
     <title>Optional</title>
@@ -503,66 +558,6 @@
     
     
     <category term="支付超时" scheme="https://jxch.github.io/tags/%E6%94%AF%E4%BB%98%E8%B6%85%E6%97%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>07.订单系统设计</title>
-    <link href="https://jxch.github.io/2023/07/09/architect/06.dian-shang-xi-tong/07-ding-dan-xi-tong-she-ji/"/>
-    <id>https://jxch.github.io/2023/07/09/architect/06.dian-shang-xi-tong/07-ding-dan-xi-tong-she-ji/</id>
-    <published>2023-07-08T21:57:56.000Z</published>
-    <updated>2023-07-11T22:16:32.792Z</updated>
-    
-    <content type="html"><![CDATA[<h1>重复下单问题（幂等）</h1><ol><li>用户在点击“提交订单”的按钮时，不小心点了两下</li><li>网络错误也有可能会导致重传，很多RPC框架和网关都拥有自动重试机制</li></ol><h2 id="font-color-green-主键唯一约束-font"><font color="green">主键唯一约束</font></h2><p>为订单系统增加一个“生成订单号”的服务,这个服务没有参数,返回值就是一个新的、全局唯一的订单号。在用户进入创建订单的页面时，<font color="green"><strong>前端页面会先调用这个生成订单号的服务得到一个订单号，在用户提交订单的时候，在创建订单的请求中带着这个订单号。</strong></font>这个订单号就是订单表的主键，这样，无论是用户原因,还是网络原因等各种情况导致的重试,这些重复请求中的订单号都是相同的。订单服务在订单表中插入数据的时候，<strong>这些重复的INSERT语句中的主键，都是同一个订单号</strong>。数据库的主键唯一约束特性就可以保证，只有一次INSERT 语句的执行是成功的,这样就实现了创建订单服务的幂等性。</p><p>还有一点需要注意的是，在具体实现时，如果是因为重复订单导致插入订单表的语句失败，那么订单服务就不要再把这个错误返回给前端页面了。否则，就有可能会出现用户点击创建订单按钮后，页面提示创建订单失败，而实际上订单已经创建成功了。正确的做法是,遇到这种情况,订单服务直接返回“订单创建成功”的响应即可。要做到这一点，可以捕获 <code>java.sql.SQLIntegrityConstraintViolationException</code> 或者 <code>org.springframework.dao.DuplicateKeyException</code> 来实现。</p><h1>订单ABA问题（幂等）</h1><p>比如连续两次更新订单信息，第一次的更新由于网络问题发生重试，又覆盖了第二次的更新，导致ABA问题</p><h2 id="font-color-green-版本戳-font"><font color="green">版本戳</font></h2><p>数据库表添加<strong>version字段</strong>，每次查询订单的时候，版本号需要随着订单数据返回给页面。<font color="green"><strong>页面在更新数据的请求时,需要把该版本号作为更新请求的参数再带回给订单更新服务</strong></font>。订单服务在更新数据的时候需要<strong>比较订单当前数据的版本号与消息中的版本号是否一致</strong>，如果不一致就拒绝更新数据。如果版本号一致，则还需要在更新数据的同时，把版本号<strong>加1</strong>。当然需要特别注意的是，“比较版本号、更新数据和把版本号加1”这个过程必须在同一个事务里面执行，只有这一系列操作具备<strong>原子性</strong>，才能真正保证并发操作的安全性。<code>UPDATE orders set tracking_number = 666,version = version + 1 WHERE version = ?;</code></p><h1>读写分离</h1><p>使用Redis 作为MySQL 的前置缓存，可以帮助MySQL 挡住绝大部分的查询请求。但是与用户相关的系统,即使同一个功能界面，用户看到的数据也是不一样的。使用缓存的效果就没有那么好了.随着系统的用户数量越来越多,穿透到MySQL 数据库中的读写请求也会越来越多</p><p>读写分离是提升 MySQL 并发能力的<strong>首选方案</strong>，当单个MySQL 无法满足要求的时候，只能用多个MySQL 实例来承担大量的读写请求。MySQL 与大部分常用的关系型数据库一样,都是典型的单机数据库,不支持分布式部署。用一个单机数据库的多个实例组成一个集群,提供分布式数据库服务,是一件非常困难的事情。一个简单且非常有效的是用多个具有相同数据的MySOL 实例来分担大量查询请求，也就是“读写分离”。很多系统，特别是互联网系统，数据的读写比例严重不均衡，<strong>读写比例一般在9:1</strong>到几十比1，即平均每发生几十次查询请求，才会有一次更新请求，那就是说数据库需要应对的绝大部分请求都是只读查询请求。</p><p><font color="gray">分布式存储系统支持分布式写是非常困难的，因为很难解决好数据一致性的问题。但分布式读相对来说就简单得多，能够把数据尽可能实时同步到只读实例上，它们就可以分担大量的查询请求了。读写分离的另一个好处是，实施起来相对比较简单。把使用单机MySQL 的系统升级为读写分离的多实例架构非常容易，一般不需要修改系统的业务逻辑，只需要简单修改DAO (Data Access Object,一般指应用程序中负责访问数据库的抽象层)层的代码,把对数据库的读写请求分开，请求不同的MySQL 实例就可以了。通过读写分离这样一个简单的存储架构升级，数据库支持的并发数量就可以增加几倍到十几倍。所以，当系统的用户数越来越多时，读写分离应该是首要考虑的扩容方案。</font></p><h2 id="数据不一致问题">数据不一致问题</h2><p>读写分离的一个副作用是，可能会存在数据不一致的问题。原因是数据库中的数据在主库完成更新后，是异步同步到每个从库上的，这个过程会有一个微小的时间差。正常情况下，主从延迟非常小，以几毫秒计。但即使是这样小的延迟，也会导致在某个时刻主库和从库上数据不一致的问题。应用程序需要能够接受并克服这种主从不一致的情况，否则就会引发一些由于主从延迟而导致的数据错误。</p><p>回顾我们的订单系统业务，用户对购物车发起商品结算创建订单，进入订单页，打开支付页面进行支付，支付完成后，按道理应该再返回到支付之前的订单页。但如果这时马上自动返回到订单页，就很有可能会出现订单状态还是显示“未支付”的问题。因为支付完成后，订单库的主库中订单状态已经更新了，但订单页查询的从库中这条订单记录的状态可能还未更新，如何解决这种问题呢？其实这个问题并没有特别好的技术手段来解决，所以可以看到，稍微上点规模的电商网站并不会支付完成后自动跳到到订单页，而是<font color="green"><strong>增加了一个支付完成页面</strong></font>，这个页面其实没有任何新的有效信息，就是告诉你支付成功的信息。如果想再查看一下刚刚支付完成的订单，需要手动选择，这样就能很好地规避主从同步延迟的问题。</p><p><strong>如果是那些数据更新后需要立刻查询的业务，这两个步骤可以放到一个数据库事务中，同一个事务中的查询操作也会被路由到主库</strong>，这样就可以规避主从不一致的问题了，还有一种解决方式则是<strong>对查询部分单独指定进行主库查询</strong>。总的来说，对于这种因为主从延迟而带来的数据不一致问题，并没有一种简单方便且通用的技术方案可以解决，对此，我们需要重新设计业务逻辑，<font color="green"><strong>尽量规避更新数据后立即去从库查询刚刚更新的数据</strong></font>。</p><h1>分库分表</h1><p>绝大部分电商企业的在线交易类业务，比如订单、支付相关的系统，还是无法离开MySQL的。原因是只有MySOL之类的关系型数据库，才能提供金融级的事务保证。目前的分布式事务的各种解法方案多少都有些不够完善。</p><h2 id="如何规划分库分表">如何规划分库分表</h2><p>以订单表为例，首先,我们需要思考的问题是，选择分库还是分表，或者两者都有，分库就是把数据拆分到不同的MySQL 数据库实例中，分表就是把数据拆分到一个数据库的多张表里面。在考虑到底是选择分厍还是分表之前,我们需要首先明确一个原则，那就是<strong>能小拆就小拆</strong>. 原因很简单，数据拆得越分散,并发和维护就越麻烦，系统出问题的概率也就越大。</p><p>遵循上面这个原则，还需要进一步了解，哪种情况适合分表，哪种情况适合分库。选择分厍或是分表的目的是解决如下两个问题。</p><ol><li>是为了解决因数据量太大而导致查询慢的问题。这里所说的“查询”，其实主要是事务中的查询和更新操作，因为只读的查询可以通过缓存和主从分离来解决。分表主要用于解决因数据量大而导致的查询慢的问题。</li><li>是为了应对高并发的问题。如果一个数据库实例撑不住，就把并发请求分散到多个实例中，所以分库可用于解决高并发的问题。</li></ol><p>简单地说，<strong>如果数据量太大，就分表；如果并发请求量高，就分库</strong>。一般情况下,我们的解决方案大都需要同时做分库分表,我们可以根据预估的并发量和数据量，分别计算应该拆分成多少个库以及多少张表。</p><h2 id="分库分表案例">分库分表案例</h2><h3 id="数据量">数据量</h3><p>在设计系统，我们预估订单的数量每个月订单2000W，一年的订单数可达2.4 亿。而每条订单的大小大致为1KB，按照我们在MySQL 中学习到的知识，为了让B+树的高度控制在一定范围，保证查询的性能，<strong>每个表中的数据不宜超过2000W</strong>。在这种情况下，为了存下2.4 亿的订单，我们似乎应该将订单表分为16（12 往上取最近的2 的幂）张表。</p><p>但是这样设计，有个问题，我们只考虑了订单表，没有考虑<strong>订单详情表</strong>。我们预估一张订单下的商品平均为10 个，那既是一年的订单详情数可以达到24亿，同样以每表2000W 记录计算，应该订单详情表为128（120 往上取最近的2的幂）张，而订单表和订单详情表虽然记录数上是一对一的关系，但是表之间还是一对一，也就是说订单表也要为128 张。经过再三分析，我们最终将订单表和订单详情表的张数定为32 张。这会导致订单详情表单表的数据量达到8000W（但是我们会对历史数据进行数据迁移，比如迁移到Mongodb或es）</p><h3 id="选择分片键">选择分片键</h3><p>选择分片链有一个最重要的参考因素是我们的业务是如何访问数据的？</p><p>比如我们把订单ID 作为分片键来诉分订单表。那么拆分之后,如果按照订单ID 来查询订单,就需要先根据订单ID 和分片算法,计算所要查的这个订单具体在哪个分片上，也就是哪个库的哪张表中，然后再去那个分片执行查询操作即可。但是当用户打开“我的订单”这个页面的时候，它的查询条件是用户ID，由于这里没有订单ID，因此我们无法知道所要查询的订单具体在哪个分片上，也就没法查了。如果要强行查询的话，那就只能把所有的分片都查询一遍，再合并查询结果，这个过程比较麻烦，而且性能很差，对分页也很不友好。</p><p>这个问题的解决办法是，在生成订单ID的时候，<font color="green"><strong>把用户ID的后几位作为订单ID的一部分。这样按订单ID查询的时候，就可以根据订单ID中的用户ID找到分片。</strong></font><strong>所以在我们的系统中订单ID从唯一ID服务获取ID后，还会将用户ID的后两位拼接，形成最终的订单ID。</strong></p><p>然而，系统对订单的查询万式，肯定不只是按订单ID 或按用户ID 查询两种方式。比如如果有商家希望查询自家家店的订单，有与订单相关的各种报表。对订单做了分库分表，就没法解决了。这个问题又该怎么解决呢？</p><p>一般的做法是，<font color="green"><strong>把订单里数据同步到其他存储系统中</strong></font>，然后在其他存储系统里解决该问题。比如可以再<strong>构建一个以店铺ID作为分片键的只读订单库，专供商家使用</strong>。或者数据同步到Hadoop分布式文件系统（HDFS）中，然后通过一些大数据技术生成与订单相关的报表。</p><p>在分片算法上，我们知道常用的有按范围，比如时间范围分片，哈希分片，查表法分片。一旦做了分库分表，就会极大地限制数据库的查询能力，原本很简单的查询，分库分表之后，可能就没法实现了。分库分表一定是在数据量和并发请求量大到所有招数都无效的情况下，我们才会采用的<strong>最后一招</strong>。</p><h3 id="具体实现">具体实现</h3><ol><li>纯手工方式：修改应用程序的DAO 层代码，定义多个数据源，在代码中需要访问数据库的每个地方指定每个数据库请求的数据源。</li><li>组件方式：使用像<font color="green"><strong>Sharding-JDBC</strong></font>这些组件集成在应用程序内，用于代理应用程序的所有数据库请求，并把请求自动路由到对应的数据库实例上。</li><li>代理方式: 在应用程序和数据库实例之间部署一组数据库代理实例,比如Atlas 或Sharding-Proxy。对于应用程序来说,数据库代理把自己伪装成一个单节点的MySQL 实例,应用程序的所有数据库请求都将发送给代理，代理分离请求，然后将分离后的请求转发给对应的数据库实例。</li></ol><p>在这三种方式中一般推荐第二种，使用分离组件的方式。采用这种方式,<strong>代码侵入非常少</strong>,同时还能兼顾性能和稳定性。<br>如果应用程序是一个逻辑非常简单的微服务,简单到只有几个SQL,或者应用程序使用的编程语言没有合适的读写分离组件,那么也可以考虑通过纯手工的方式。<br>不推荐使用代理方式（第三种方式），原因是代理方式加长了系统运行时数据库请求的调用链路,会造成一定的性能损失，而且代理服务本身也可能会出现故障和性能瓶颈等问题。代理方式有一个好处，对应用程序完全透明。</p><h1>归档历史数据</h1><p>所谓归档，也是一种拆分数据的策略。简单地说，就是把大量的历史订单移到另外一张历史订单表或数据存储中。为什这么做呢？订单数据有个特点：具备时间属性的，并且随着系统的运行，数据累计增长越来越多。但其实订单数据在使用上有个特点，最近的数据使用最频繁，超过一定时间的数据很少使用，这被称之为<font color="green"><strong>热尾效应</strong></font>。</p><p>因为新数据只占数据息量中很少的一部分，所以把新老数据分开之后，新数据的数据量就少很多，查询速度也会因此快很多。虽然与之前的总量相比，老数据没有减少太多，但是因为老数据很少会被访问到，所以即使慢一点儿也不会有太大的问题，而且还可以使用其他的存储系统提升查询速度。</p><p>这样拆分数据的另外一个好处是，拆分订单时，<strong>系统需要改动的代码非常少</strong>。对订单表的大部分操作都是在订单完成之前执行的，这些业务逻辑都是完全不用修改的。即使是像退货退款这类订单完成之后的操作，也是有时限的，这些业务逻辑也不需要修改,还是按照之前那样操作订单即可。</p><p><strong>基本上只有查询统计类的功能会查到历史订单</strong>，这些都需要稍微做些调整。按照查询条件中的时间范围，选择去订单表还是历史订单中查询就可以了。很多大型互联网电商在逐步发展壮大的过程中，长达数年的时间采用的都是这种订单拆分的方案，正如我们前面看到的京东就是如此。</p><h2 id="分布式事务">分布式事务</h2><p>考察迁移的过程，我们是逐表批次删除，对于每张订单表，先从MySQL 从获得指定批量的数据，写入MongoDB，再从MySQL 中删除已写入MongoDB 的部分，这里存在着一个多源的数据操作，为了保证数据的一致性，看起来似乎需要分布式事务。<font color="green"><strong>但是其实这里并不需要分布式事务，解决的关键在于写入订单数据到MongoDB 时，我们要记住同时写入当前迁入数据的最大订单ID，让这两个操作执行在同一个事务之中。这样，在MySQL 执行数据迁移时，总是去MongoDB 中获得上次处理的最大OrderId，作为本次迁移的查询起始ID。当然数据写入MongoDB 后，还要记得删除MySQL 中对应的数据。</strong></font></p><p>在这个过程中，我们需要注意的问题是，<strong>尽量不要影响线上的业务</strong>。迁移如此大量的数据，或多或少都会影响数据库的性能，因此应该尽量选择在<strong>闲时迁移</strong>而且每次数据库操作的记录数不宜太多。按照一般的经验，对MySQL 的操作的记录条数<strong>每次控制在10000以下是比较合适</strong>，在我们的系统中缺省是2000 条。更重要的是，迁<strong>移之前一定要做好备份</strong>，这样的话，即使不小心误操作了，也能用备份来恢复。</p><h2 id="如何批量删除大量数据">如何批量删除大量数据</h2><p>虽然我们是按时间迁出订单表中的数据，<font color="green"><strong>但是删除最好还是按ID来删除，并且同样要控制住每次删除的记录条数</strong></font>，太大的数量容易遇到错误。</p><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">delete</span> <span class="token keyword">from</span> ${orderTableName} o <span class="token keyword">WHERE</span> o<span class="token punctuation">.</span>id <span class="token operator">&gt;=</span> <span class="token comment">#{minOrder!d} and o.id &lt;= #{maxOrderId} </span><span class="token keyword">order</span> <span class="token keyword">by</span> id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>这样每次删除的时候，由于条件变成了主键比较，而在MySQL 的InnoDB 存储引擎中，表数据结构就是按照主键组织的一棵B+树，同时B+树本身就是有序的，因此优化后不仅查找变得非常快,而且也不需要再进行额外的排序操作了。</p><p>为什么要加一个排序的操作呢？因为<font color="green"><strong>按ID排序后，每批删除的记录基本上都是ID连续的一批记录</strong></font>，由于B+树的有序性，这些ID 相近的记录，在磁盘的物理文件上，大致也是存放在一起的，这样删除效率会比较高，也便于MySQL 回收页。</p><p>关于大批量删除数据，还有一个点需要注意一下，<font color="green"><strong>执行删除语句后，最好能停顿一小会，因为删除后肯定会牵涉到大量的B+树页面分裂和合并</strong></font>，这个时候MySQL的本身的负载就不小了，停顿一小会，可以让MySQL的负载更加均衡。</p><h1>总结梳理</h1><h2 id="重复下单问题-主键唯一约束">重复下单问题: 主键唯一约束</h2><ul><li><strong>前端页面会先调用这个生成订单号的服务得到一个订单号，在用户提交订单的时候，在创建订单的请求中带着这个订单号。</strong></li></ul><h2 id="订单ABA问题-版本戳-verison-字段">订单ABA问题: 版本戳 (verison 字段)</h2><ul><li><strong>页面在更新数据的请求时,需要把该版本号作为更新请求的参数再带回给订单更新服务</strong></li></ul><h2 id="读写分离（提升DB并发能力的首选方案）-读写比例一般在9-1">读写分离（提升DB并发能力的<strong>首选方案</strong>）: <strong>读写比例一般在9:1</strong></h2><ul><li><p>数据不一致问题: <strong>增加一个支付完成页面</strong></p><ul><li><p>如果数据更新后需要立刻查询，这俩步骤可以放到一个事务中，或单独指定主库查询</p></li><li><p><strong>尽量规避更新数据后立即去从库查询刚刚更新的数据</strong></p></li></ul></li></ul><h2 id="分库分表（能小拆就小拆，最后一招）">分库分表（<strong>能小拆就小拆，最后一招</strong>）</h2><ul><li><p><strong>如果数据量太大，就分表；如果并发请求量高，就分库</strong></p></li><li><p>MySQL<strong>每个表中的数据不宜超过2000W</strong></p></li><li><p><strong>选择分片键</strong></p><ul><li><p><strong>把用户ID的后几位作为订单ID的一部分。这样按订单ID查询的时候，就可以根据订单ID中的用户ID找到分片（便于用户查询）</strong></p></li><li><p><strong>把订单里数据同步到其他存储系统中（比如以店铺ID分片供商家查询使用）</strong></p></li></ul></li><li><p>实现方式</p><ul><li><p>手工（简单业务推荐）</p></li><li><p><strong>Sharding-JDBC（推荐，代码侵入少）</strong></p></li><li><p>代理：Atlas Sharding-Proxy Mycat（不推荐，多了一层代理且代理层也可能出现故障）</p></li></ul></li></ul><h2 id="归档历史数据：热尾效应">归档历史数据：<strong>热尾效应</strong></h2><ul><li><p><strong>系统需要改动的代码非常少</strong></p></li><li><p><strong>基本上只有查询统计类的功能会查到历史订单</strong></p></li><li><p><strong>不需要分布式事务</strong></p><ul><li><p><strong>写入订单数据到MongoDB时，同时写入当前迁入数据的最大订单ID，让这两个操作执行在同一个事务之中</strong></p></li><li><p><strong>在MySQL执行数据迁移时，先去MongoDB中获得上次处理的最大OrderId，作为本次迁移的查询起始ID</strong></p></li><li><p><strong>写入后，删除MySQL中对应的数据（批量删除大量数据）</strong></p><ul><li><p><strong>按ID来删除，并且同样要控制住每次删除的记录条数</strong></p></li><li><p><strong>删除语句按ID排序，每批删除的记录基本上都是ID连续的</strong></p></li><li><p><strong>执行删除语句后，最好能停顿一小会，因为删除后会牵涉到大量的B+树页面分裂和合并</strong></p></li></ul></li></ul></li><li><p><strong>尽量不要影响线上的业务：闲时迁移</strong></p></li><li><p><strong>每次控制在10000以下是比较合适</strong></p></li><li><p><strong>移之前一定要做好备份</strong></p></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1&gt;重复下单问题（幂等）&lt;/h1&gt;
-&lt;ol&gt;
-&lt;li&gt;用户在点击“提交订单”的按钮时，不小心点了两下&lt;/li&gt;
-&lt;li&gt;网络错误也有可能会导致重传，很多RPC框架和网关都拥有自动重试机制&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;font-color-green-主键唯一约束-f</summary>
-      
-    
-    
-    
-    <category term="电商系统" scheme="https://jxch.github.io/categories/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/"/>
-    
-    
-    <category term="订单系统" scheme="https://jxch.github.io/tags/%E8%AE%A2%E5%8D%95%E7%B3%BB%E7%BB%9F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>06.微服务网关整合OAuth2.0授权中心</title>
-    <link href="https://jxch.github.io/2023/07/09/architect/06.dian-shang-xi-tong/06-wei-fu-wu-wang-guan-zheng-he-oauth2-0-shou-quan-zhong-xin/"/>
-    <id>https://jxch.github.io/2023/07/09/architect/06.dian-shang-xi-tong/06-wei-fu-wu-wang-guan-zheng-he-oauth2-0-shou-quan-zhong-xin/</id>
-    <published>2023-07-08T19:07:10.000Z</published>
-    <updated>2023-07-08T19:37:12.576Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li>配置授权服务器（AuthorizationServerConfigurerAdapte - 授权码/密码）<ol><li>DB模式</li><li>内存模式</li></ol></li><li>SpringSecurity（WebSecurityConfigurerAdapter）</li><li>JWT：头部（header）、载荷（payload）与签名（signature 加盐）<ol><li>一次性验证、无状态认证</li><li>注销续约复杂，不适合会话管理</li></ol></li><li>JWT非对称加密（公钥私钥）</li><li>扩展JWT中的存储内容（TokenEnhancer）</li><li>接入网关服务（GlobalFilter）<ol><li>过滤不需要认证的url</li><li>校验token（需要从授权服务获取公钥）<ul><li>不能直接通过@LoadBalancer配置RestTemplate去获取公钥，因为Spring容器启动过程中@LoadBalancer还未生效</li></ul></li><li>校验通过后，从token中获取的用户登录信息存储到请求头中</li></ol></li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ol&gt;
-&lt;li&gt;配置授权服务器（AuthorizationServerConfigurerAdapte - 授权码/密码）
-&lt;ol&gt;
-&lt;li&gt;DB模式&lt;/li&gt;
-&lt;li&gt;内存模式&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;SpringSecurity（WebSecurityCo</summary>
-      
-    
-    
-    
-    <category term="电商系统" scheme="https://jxch.github.io/categories/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F/"/>
-    
-    
-    <category term="授权中心" scheme="https://jxch.github.io/tags/%E6%8E%88%E6%9D%83%E4%B8%AD%E5%BF%83/"/>
     
   </entry>
   

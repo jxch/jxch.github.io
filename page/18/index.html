@@ -57,9 +57,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
-
+<meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
 </head>
 
 
@@ -409,45 +409,38 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/27/jiao-yi-xue-xi-bi-ji/fan-zhuan-xing-tai-2b-2-breakout/">
+                    <a href="/2023/04/17/yun-wei/hadoop2-ji-qun-bu-shu-dockercompose/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="反转形态-2B(2 Breakout)">
+                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="Hadoop2-集群部署[DockerCompose]">
                             
-                            <span class="card-title">反转形态-2B(2 Breakout)</span>
+                            <span class="card-title">Hadoop2-集群部署[DockerCompose]</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                2B(2 Breakout) 意思是两次突破（假突破），标志着趋势的衰竭:
-上升趋势中:
+                                docker-compose.yml
+version: "3.8"
 
-突破前高
-迅速跌破前高
-
-下降趋势中:
-
-跌破前低
-迅速突破前低
-
-2B 形态可以作为激进的逆势入场点
-
-可以结合123法则提高胜率(反转形态-12
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-17
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E4%BA%A4%E6%98%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    交易学习笔记
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
                                 </a>
                                 
                                 
@@ -458,8 +451,12 @@
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E5%8F%8D%E8%BD%AC%E5%BD%A2%E6%80%81/">
-                            <span class="chip bg-color">反转形态</span>
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                        <a href="/tags/docker-compose-yml/">
+                            <span class="chip bg-color">docker-compose.yml</span>
                         </a>
                         
                     </div>
@@ -471,49 +468,43 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/27/jiao-yi-xue-xi-bi-ji/fan-zhuan-xing-tai-123-fa-ze/">
+                    <a href="/2023/04/17/hadoop/hadoop-1-sheng-tai/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/39.jpg" class="responsive-img" alt="反转形态-123法则">
+                            <img src="/medias/featureimages/39.jpg" class="responsive-img" alt="Hadoop-1.生态">
                             
-                            <span class="card-title">反转形态-123法则</span>
+                            <span class="card-title">Hadoop-1.生态</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                可以预警一段趋势的终结
+                                Hadoop 背景
+其实最先被这些问题困惑的并不是电商，而是 google，他需面对的挑战一点也不会比电商小
 
-上升趋势中:
+大量的网页怎么存储
+面对的数据和计算难题
 
-突破趋势线
-回测前高无法创出新高
-跌破前低
+2003，2004 年 Google
 
-下降趋势中:
+GFS
+MapReduce
 
-突破趋势线
-回测前低无法创出新低
-突破前高
-
-
-123的顺序不重要，都能出现就可作为逆势入场点
-注意：尽量顺大逆小
-
+为了解决上面的
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-17
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E4%BA%A4%E6%98%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    交易学习笔记
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
                                 </a>
                                 
                                 
@@ -524,8 +515,8 @@
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E5%8F%8D%E8%BD%AC%E5%BD%A2%E6%80%81/">
-                            <span class="chip bg-color">反转形态</span>
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
                         </a>
                         
                     </div>
@@ -537,249 +528,29 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/27/jiao-yi-xue-xi-bi-ji/jun-xian-xi-tong-gu-bi-jun-xian-gmma-guppy-multiple-moving-average/">
+                    <a href="/2023/04/17/shi-chang-fen-xi/shi-chang-fen-xi-20230413-brooks-s-p-emini/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/61.jpg" class="responsive-img" alt="均线系统-顾比均线-GMMA(Guppy Multiple Moving Average)">
+                            <img src="/medias/featureimages/63.jpg" class="responsive-img" alt="市场分析-20230413-Brooks-S&amp;P Emini">
                             
-                            <span class="card-title">均线系统-顾比均线-GMMA(Guppy Multiple Moving Average)</span>
+                            <span class="card-title">市场分析-20230413-Brooks-S&amp;P Emini</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                算法原理
-短期均线组: EMA 3 5 8 10 12 15
-中期均线组: EMA 30 35 40 45 50 60
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BA%A4%E6%98%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    交易学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E5%9D%87%E7%BA%BF%E7%B3%BB%E7%BB%9F/">
-                            <span class="chip bg-color">均线系统</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/27/jiao-yi-xue-xi-bi-ji/jun-xian-xi-tong-vegas-shuang-sui-dao/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/63.jpg" class="responsive-img" alt="均线系统-Vegas双隧道">
-                            
-                            <span class="card-title">均线系统-Vegas双隧道</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                算法原理
-引导均线: EMA12
-中期均线组: EMA144, EMA169
-长期均线组: EMA576, EMA676
-144 是 12 的整数平方根，同时也是斐波那契数
-长期均线是中期均线的4倍
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BA%A4%E6%98%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    交易学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E5%9D%87%E7%BA%BF%E7%B3%BB%E7%BB%9F/">
-                            <span class="chip bg-color">均线系统</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/27/jiao-yi-xue-xi-bi-ji/neng-liang-zhi-biao-obv-on-balance-volume/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="能量指标-OBV(On Balance Volume)">
-                            
-                            <span class="card-title">能量指标-OBV(On Balance Volume)</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                算法流程
-
-如果今天涨了，就加上今天的成交量
-如果今天跌了，就减去今天的成交量
-将此值累加
-
-pine 源码
-indicator(title="On Balance Volume", shorttitle="OBV", format=for
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BA%A4%E6%98%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    交易学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%83%BD%E9%87%8F%E6%8C%87%E6%A0%87/">
-                            <span class="chip bg-color">能量指标</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/27/jiao-yi-xue-xi-bi-ji/dong-liang-zhi-biao-smi-squeeze-momentum-indicator/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="动量指标-SMI(Squeeze Momentum Indicator)">
-                            
-                            <span class="card-title">动量指标-SMI(Squeeze Momentum Indicator)</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                算法流程
-
-动量：对连续几日的最高最低值取平均值，然后与 sma 取平均值
-取离合程度：用 close 减去这个值
-拟合这个值：取线性回归（或ma）
-
-pine 源码
-最后取线性回归
-study(shorttitle = "SQZMOM_L
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BA%A4%E6%98%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    交易学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E5%8A%A8%E9%87%8F%E6%8C%87%E6%A0%87/">
-                            <span class="chip bg-color">动量指标</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/27/shi-chang-fen-xi/shi-chang-fen-xi-20230426-brooks-s-p-emini/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/31.jpg" class="responsive-img" alt="市场分析-20230426-Brooks-S&amp;P Emini">
-                            
-                            <span class="card-title">市场分析-20230426-Brooks-S&amp;P Emini</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Trading Update: Thursday April 26, 2023
+                                Trading Update: Thursday April 13, 2023
 S&amp;P Emini pre-open market analysis
 Emini daily chart
 
-The Emini sold off yes
+The Emini gapped up ye
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-17
                             </span>
                             <span class="publish-author">
                                 
@@ -814,37 +585,34 @@ The Emini sold off yes
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/27/yun-wei/jupyter-an-zhuang-docker/">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-mac/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/34.jpg" class="responsive-img" alt="Jupyter-安装[Docker]">
+                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="计算机网络-MAC">
                             
-                            <span class="card-title">Jupyter-安装[Docker]</span>
+                            <span class="card-title">计算机网络-MAC</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                docker-compose.yml
-version: '3.8'
-services:
-  base-notebook:
-    image: jupyter/base-notebook
-    restart: unless-stoppe
+                                MAC 地址
+在局域网中，硬件地址又称为物理地址，或 MAC 地址。 802 标准所说的“地址”严格地讲应当是每一个站的“名字”或标识符。  将48位的“名字”称为“地址”仅仅是一种习惯。
+IEEE 的注册管理机构 RA 负责向厂家分配地址
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
-                                    运维手册
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
                                 </a>
                                 
                                 
@@ -855,12 +623,8 @@ services:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/docker-compose-yml/">
-                            <span class="chip bg-color">docker-compose.yml</span>
-                        </a>
-                        
-                        <a href="/tags/Jupyter/">
-                            <span class="chip bg-color">Jupyter</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
                         </a>
                         
                     </div>
@@ -872,37 +636,33 @@ services:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/27/yun-wei/activemq-dan-ji-bu-shu/">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ji-xian-qi-wang-qiao/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/50.jpg" class="responsive-img" alt="ActiveMQ-单机部署">
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="计算机网络-集线器/网桥">
                             
-                            <span class="card-title">ActiveMQ-单机部署</span>
+                            <span class="card-title">计算机网络-集线器/网桥</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                docker-compose.yml
-version: '3.8'
-services:
-  activemq-master:
-    image: webcenter/activemq
-    restart: unless-stopped
+                                集线器
+集线器 ： 是使用电子器件来模拟实际电缆线的工作，因此整个系统仍然像一个传统的以太网那样运行。  使用集线器的以太网在逻辑上仍是一个总线网，各工作站使用的还是 CSMA/CD 协议，并共享逻辑上的总线。  集线器很像一个多接口的转发
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
-                                    运维手册
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
                                 </a>
                                 
                                 
@@ -913,12 +673,8 @@ services:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/docker-compose-yml/">
-                            <span class="chip bg-color">docker-compose.yml</span>
-                        </a>
-                        
-                        <a href="/tags/ActiveMQ/">
-                            <span class="chip bg-color">ActiveMQ</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
                         </a>
                         
                     </div>
@@ -930,39 +686,33 @@ services:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/27/yun-wei/nextcloud-dan-ji-bu-shu/">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-icmp/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/58.jpg" class="responsive-img" alt="Nextcloud-单机部署">
+                            <img src="/medias/featureimages/59.jpg" class="responsive-img" alt="计算机网络-ICMP">
                             
-                            <span class="card-title">Nextcloud-单机部署</span>
+                            <span class="card-title">计算机网络-ICMP</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                docker-compose.yml
-version: '3.8'
-services: 
-  mariadb:
-    image: mariadb
-    restart: unless-stopped
-    ports:
-      
+                                网际控制报文协议 ICMP
+为了提高 IP 数据报交付成功的机会,在网际层使用了网际控制报文协议 ICMP (InternetControl Message Protocol)。 ICMP 允许主机或路由器报告差错情况和提供有关异常情况的报
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
-                                    运维手册
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
                                 </a>
                                 
                                 
@@ -973,12 +723,8 @@ services:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/docker-compose-yml/">
-                            <span class="chip bg-color">docker-compose.yml</span>
-                        </a>
-                        
-                        <a href="/tags/Nextcloud/">
-                            <span class="chip bg-color">Nextcloud</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
                         </a>
                         
                     </div>
@@ -990,39 +736,36 @@ services:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/27/yun-wei/mariadb-dan-ji-bu-shu/">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ospf/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/40.jpg" class="responsive-img" alt="MariaDB-单机部署">
+                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="计算机网络-OSPF">
                             
-                            <span class="card-title">MariaDB-单机部署</span>
+                            <span class="card-title">计算机网络-OSPF</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                docker-compose.yml
-version: '3.8'
-services: 
-  mariadb:
-    image: mariadb
-    restart: unless-stopped
-    ports:
-      
+                                基本特点
+内部网关协议 OSPF (Open Shortest Path First) 的基本特点 ：
+
+“开放”表明 OSPF 协议不是受某一家厂商控制,而是公开发表的。
+“最短路径优先”是因为使用了 Dijkstra 提出的最短路径算法
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
-                                    运维手册
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
                                 </a>
                                 
                                 
@@ -1033,12 +776,8 @@ services:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/docker-compose-yml/">
-                            <span class="chip bg-color">docker-compose.yml</span>
-                        </a>
-                        
-                        <a href="/tags/MariaDB/">
-                            <span class="chip bg-color">MariaDB</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
                         </a>
                         
                     </div>
@@ -1050,38 +789,33 @@ services:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/27/yun-wei/nacos-dan-ji-bu-shu/">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-arp-rarp/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Nacos-单机部署">
+                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="计算机网络-ARP/RARP">
                             
-                            <span class="card-title">Nacos-单机部署</span>
+                            <span class="card-title">计算机网络-ARP/RARP</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                docker-compose.yml
-version: "3.8"
-services:
-  nacos:
-    image: nacos/nacos-server
-    restart: unless-stopped
-    envir
+                                
+不管网络层使用的是什么协议，在实际网络的链路上传送数据帧时，最终还是必须使用硬件地址。 每一个主机都设有一个 ARP 高速缓存(ARP cache)，里面有所在的局域网上的各主机和路由器的 IP 地址到硬件地址的映射表。 当主机 A 欲向
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
-                                    运维手册
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
                                 </a>
                                 
                                 
@@ -1092,12 +826,560 @@ services:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/docker-compose-yml/">
-                            <span class="chip bg-color">docker-compose.yml</span>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
                         </a>
                         
-                        <a href="/tags/Nacos/">
-                            <span class="chip bg-color">Nacos</span>
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ip/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="计算机网络-IP">
+                            
+                            <span class="card-title">计算机网络-IP</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                网际层的 IP 协议及配套协议
+
+网络互连
+互连在一起的网络要进行通信，会遇到许多问题需要解决，如：
+
+不同的寻址方案
+不同的最大分组长度
+不同的网络接入机制
+不同的超时控制
+不同的差错恢复方法
+不同的状态报告方法
+不同的路由选择技术
+不同
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-rip/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="计算机网络-RIP">
+                            
+                            <span class="card-title">计算机网络-RIP</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                路由信息协议 RIP(Routing Information Protocol) 是内部网关协议 IGP中最先得到广泛使用的协议。RIP 是一种分布式的基于距离向量的路由选择协议。
+RIP 协议要求网络中的每一个路由器都要维护从它自己到其他
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-udp/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="计算机网络-UDP">
+                            
+                            <span class="card-title">计算机网络-UDP</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                UDP 只在 IP 的数据报服务之上增加了很少一点的功能，即端口的功能和差错检测的功能。UDP 用户数据报只能提供不可靠的交付。
+UDP 的主要特点
+
+UDP 是无连接的，即发送数据之前不需要建立连接。
+UDP 使用尽最大努力交付，即不保证
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ppp-mac-ip-udp-tcp-de-shu-ju-bao-ge-shi/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="计算机网络-PPP/MAC/IP/UDP/TCP的数据报格式">
+                            
+                            <span class="card-title">计算机网络-PPP/MAC/IP/UDP/TCP的数据报格式</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                PPP 协议的帧格式：
+PPP 是面向字节的，所有的 PPP 帧的长度都是整数字节。
+
+
+PPP 有一个 2 个字节的协议字段
+当协议字段为 0x0021 时，PPP 帧的信息字段就是IP 数据报。
+若为 0xC021, 则信息字段是 PP
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-icmp-rip-ospf-shu-ju-bao-ge-shi/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="计算机网络-ICMP/RIP/OSPF数据报格式">
+                            
+                            <span class="card-title">计算机网络-ICMP/RIP/OSPF数据报格式</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+
+ICMP 报文的格式
+ICMP报文装在IP数据报中，但是它不是高层协议，而是IP层协议。
+
+
+类型
+3 终点不可达
+11 时间超过
+12 参数问题
+5 改变路由
+8或0 回送请求或回答
+13或14 时间戳请求或回答
+代码 ： 进一步区分
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-xing-neng-zhi-biao/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/44.jpg" class="responsive-img" alt="计算机网络-性能指标">
+                            
+                            <span class="card-title">计算机网络-性能指标</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                计算机网络的性能指标：
+
+速率
+带宽
+吞吐量
+时延
+
+
+速率：
+速率即数据率(data rate)或比特率(bit rate)是计算机网络中最重要的一个性能指标。速率的单位是 b/s，或kb/s, Mb/s, Gb/s等。速率往往是指额定速
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">计算机网络</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/coding/python-hu-lue-jing-gao/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="python-忽略警告">
+                            
+                            <span class="card-title">python-忽略警告</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                import warnings
+
+warnings.filterwarnings('ignore')
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/python/">
+                            <span class="chip bg-color">python</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/coding/pandas-dataframe-cha-xun-di-yi-ge-fu-he-tiao-jian-de-index/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="pandas-dataframe查询第一个符合条件的index">
+                            
+                            <span class="card-title">pandas-dataframe查询第一个符合条件的index</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # A 列第一个大于 2 的 index
+df['A'].gt(2).idxmax()
+
+# A 列最后一个小于 2 的 index
+# 技巧: 使用 [::-1] 进行反转
+df['A'][::-1].lt(2).idxmax()
+
+# 
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/pandas/">
+                            <span class="chip bg-color">pandas</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/coding/python-zhi-xing-sql-yu-ju/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="python-执行sql语句">
+                            
+                            <span class="card-title">python-执行sql语句</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 比如 pgsql 
+# 开源数据库都差不多, 导入对应的包就可以了
+import psycopg2
+
+conn = psycopg2.connect(database=self.db_database, user=self.db_use
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/python/">
+                            <span class="chip bg-color">python</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/coding/pandas-dataframe-zhi-jie-du-xie-shu-ju-ku/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="pandas-dataframe直接读写数据库">
+                            
+                            <span class="card-title">pandas-dataframe直接读写数据库</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                import pandas as pd
+from sqlalchemy import create_engine
+
+conn = create_engine(f'{self.db_engine}://{self.db_user}:{self
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/pandas/">
+                            <span class="chip bg-color">pandas</span>
                         </a>
                         
                     </div>
@@ -1123,7 +1405,7 @@ services:
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">18 / 42</div>
+            <div class="center-align b-text-gray">18 / 28</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1212,7 +1494,7 @@ services:
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">359.7k</span>
+                        class="white-color">360.4k</span>
             
             
             

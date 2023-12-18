@@ -57,9 +57,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
-
+<meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
 </head>
 
 
@@ -409,31 +409,30 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/21/coding/nfs-rocky-an-zhuang-nfs/">
+                    <a href="/2023/03/24/coding/hexo-xia-zai-nei-bu-wen-jian/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="NFS-Rocky安装NFS">
+                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="hexo-下载内部文件">
                             
-                            <span class="card-title">NFS-Rocky安装NFS</span>
+                            <span class="card-title">hexo-下载内部文件</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                # 服务端和客户端都需安装
-dnf install nfs-utils
+                                
+_config.yml 文件内修改属性 post_asset_folder: true
+在 source 文件夹内创建下载目录 download
+下载链接：[xxxxxx](/download/xxxxxx)
 
-# 启动服务端
-systemctl enable nfs-server
-systemctl start nfs-server
-systemctl status nfs
+
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-24
                             </span>
                             <span class="publish-author">
                                 
@@ -451,8 +450,8 @@ systemctl status nfs
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/NFS/">
-                            <span class="chip bg-color">NFS</span>
+                        <a href="/tags/hexo/">
+                            <span class="chip bg-color">hexo</span>
                         </a>
                         
                     </div>
@@ -464,29 +463,34 @@ systemctl status nfs
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/21/coding/nfs-linux-pei-zhi-nfs-fu-wu/">
+                    <a href="/2023/03/24/coding/po-jie-matlab-de-an-zhuang-yu-po-jie/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="NFS-Linux配置NFS服务">
+                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="破解-MATLAB的安装与破解">
                             
-                            <span class="card-title">NFS-Linux配置NFS服务</span>
+                            <span class="card-title">破解-MATLAB的安装与破解</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                服务端
-创建服务端共享目录
-配置NFSv4服务器时，一个好的做法是使用全局NFS根目录，并将实际目录绑定到共享挂载点。
-一般使用/srv/nfs4目录作为NFS根目录。
-sudo mount --bind /var/www /srv/nfs
+                                
+下载所需版本Matlab的ISO完整版
+装载ISO
+将虚拟DVD驱动器暂时加入杀软的排除项（安装后可以取消掉这个排除项）
+setup.exe
+
+2022+
+
+选择 “高级选项-&gt;我有文件安装密钥”
+文件密钥： 05322-36228
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-24
                             </span>
                             <span class="publish-author">
                                 
@@ -504,8 +508,12 @@ sudo mount --bind /var/www /srv/nfs
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/NFS/">
-                            <span class="chip bg-color">NFS</span>
+                        <a href="/tags/%E7%A0%B4%E8%A7%A3/">
+                            <span class="chip bg-color">破解</span>
+                        </a>
+                        
+                        <a href="/tags/MATLAB/">
+                            <span class="chip bg-color">MATLAB</span>
                         </a>
                         
                     </div>
@@ -517,32 +525,376 @@ sudo mount --bind /var/www /srv/nfs
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/21/yun-wei/dockerswarm-chu-shi-hua/">
+                    <a href="/2023/03/23/coding/po-jie-po-jie-adobe-quan-jia-tong/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/45.jpg" class="responsive-img" alt="DockerSwarm-初始化">
+                            <img src="/medias/featureimages/58.jpg" class="responsive-img" alt="破解-破解Adobe全家桶">
                             
-                            <span class="card-title">DockerSwarm-初始化</span>
+                            <span class="card-title">破解-破解Adobe全家桶</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                # 初始化 swarm
-docker swarm init
+                                
+下载 Adobe-GenP
+参考文档进行破解
 
-# 查看如何加入本机 swarm 的命令
-docker swarm join-token manager
-docker swarm join-token worker
+先选择 Custom Path 按钮，指定需要破解的软件的目录
+再选择 Search Files 按钮，自动扫描需要破解的文件
+最后点击药丸💊图标按钮，进行自动破解
 
-# 查看
+
+
+
+最好把Adob
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E7%A0%B4%E8%A7%A3/">
+                            <span class="chip bg-color">破解</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/23/coding/pi-shu-mei-pai-raspberry-pi-sheng-ji-gu-jian/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="PI-树莓派(raspberry pi)升级固件">
+                            
+                            <span class="card-title">PI-树莓派(raspberry pi)升级固件</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                在官方树莓派镜像烧录器中：
+
+选择 Misc utility images -&gt; Bootloader -&gt; SD Card Boot(或 USB Boot)
+将烧录好的SD Card或USB插入树莓派
+启动电源，直至绿灯规律闪
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/PI/">
+                            <span class="chip bg-color">PI</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/23/coding/vbs-shi-yong-vbs-jing-mo-yun-xing-jiao-ben-kai-ji-zi-qi/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="VBS-使用VBS静默运行脚本(开机自启)">
+                            
+                            <span class="card-title">VBS-使用VBS静默运行脚本(开机自启)</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                创建vbs文件
+set ws=WScript.CreateObject("WScript.Shell")
+ws.Run "E:\bin\xxx.bat",0
+
+' 如果使用的是powershell脚本，true代表阻塞执行，false是批量
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/VBS/">
+                            <span class="chip bg-color">VBS</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/19/coding/powershell-zhi-xing-ce-lue/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/42.jpg" class="responsive-img" alt="powershell-执行策略">
+                            
+                            <span class="card-title">powershell-执行策略</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                执行策略
+"Restricted"是默认策略。
+
+    Restricted
+        - 默认执行策略。
+
+        - 允许单个命令运行，但不能运行脚本。
+
+        - 阻止所有脚本文件的运行，包括格式和配置文件 
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-19
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/powershell/">
+                            <span class="chip bg-color">powershell</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/17/coding/powershell-sha-si-zhan-yong-duan-kou-de-jin-cheng/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="powershell-杀死占用端口的进程">
+                            
+                            <span class="card-title">powershell-杀死占用端口的进程</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 查找端口占用的PID
+netstat -ano | findstr $port
+
+# 查看PID对应的进程信息
+tasklist | findstr $pid
+
+# 通过进程名称结束进程
+taskkill /f /t /im $name
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/powershell/">
+                            <span class="chip bg-color">powershell</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+              <!-- 隐藏某个文章 -->
+            
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/17/coding/powershell-hou-tai-ming-ling/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="powershell-后台命令">
+                            
+                            <span class="card-title">powershell-后台命令</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 后台运行
+Start-Job -ScriptBlock {ping 8.8.8.8}
+
+# 查看后台任务
+Get-Job
+
+# 停止运行ID为1的后台任务
+Stop-Job -Id 1
+
+# 将ID为1的后台任务从后台移除
+Remove
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/powershell/">
+                            <span class="chip bg-color">powershell</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/17/yun-wei/aria2-aria2c-ariang-an-zhuang/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Aria2-Aria2c+AriaNG安装">
+                            
+                            <span class="card-title">Aria2-Aria2c+AriaNG安装</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+下载 aria2c
+下载 AriaNG-AllInOne
+运行 powersehll 命令开启RPC服务
+
+aria2c --enable-rpc --rpc-allow-origin-all
+
+浏览器打开 AriaNG 里的 index
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-17
                             </span>
                             <span class="publish-author">
                                 
@@ -560,8 +912,67 @@ docker swarm join-token worker
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Docker/">
-                            <span class="chip bg-color">Docker</span>
+                        <a href="/tags/Aria2/">
+                            <span class="chip bg-color">Aria2</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+              <!-- 隐藏某个文章 -->
+            
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/03/08/jie-ge-xing-wei-jiao-yi-xi-tong/pa-0.yin-yan-shu-k-xian/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="PA-0.引言-数K线">
+                            
+                            <span class="card-title">PA-0.引言-数K线</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                数K线
+
+有一个可靠的信号来判断上升趋势中或交易区间内的回撤走势已经结束，那就是当前K线的高点至少高于前一根K线的高点1个最小报价单位。数出此类现象发生的次数，就是“数K线”
+
+高1高2&amp;低1低2
+
+在上升行情或交易区间的横向或向下
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-08
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BA%A4%E6%98%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    交易学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/PA/">
+                            <span class="chip bg-color">PA</span>
                         </a>
                         
                     </div>
@@ -573,34 +984,38 @@ docker swarm join-token worker
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/21/coding/linux-rocky-an-zhuang-docker/">
+                    <a href="/2023/03/07/jie-ge-xing-wei-jiao-yi-xi-tong/pa-0.yin-yan-qiang-shi-xin-hao/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Linux-Rocky安装Docker">
+                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="PA-0.引言-强势信号">
                             
-                            <span class="card-title">Linux-Rocky安装Docker</span>
+                            <span class="card-title">PA-0.引言-强势信号</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-dnf update
-dnf install -y docker-c
+                                强劲趋势
+下面是强劲趋势通常具备的一些特征：
+
+当天开盘大幅跳空
+出现趋势性高点和低点（即趋势性摆动）
+大部分K线都是沿着趋势方向的趋势K线
+连续数根K线的实体部分重叠度很低。比如说，在急速拉升行情中，许多K线的低点都处于或仅略微低于前一根
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-07
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
+                                <a href="/categories/%E4%BA%A4%E6%98%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    交易学习笔记
                                 </a>
                                 
                                 
@@ -611,12 +1026,8 @@ dnf install -y docker-c
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Linux/">
-                            <span class="chip bg-color">Linux</span>
-                        </a>
-                        
-                        <a href="/tags/Docker/">
-                            <span class="chip bg-color">Docker</span>
+                        <a href="/tags/PA/">
+                            <span class="chip bg-color">PA</span>
                         </a>
                         
                     </div>
@@ -628,35 +1039,34 @@ dnf install -y docker-c
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/04/21/hadoop/hadoop-11-you-hua/">
+                    <a href="/2023/03/07/jie-ge-xing-wei-jiao-yi-xi-tong/pa-0.yin-yan/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/60.jpg" class="responsive-img" alt="Hadoop-11.优化">
+                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="PA-0.引言">
                             
-                            <span class="card-title">Hadoop-11.优化</span>
+                            <span class="card-title">PA-0.引言</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                参数调优
-以下参数是在用户自己的 mr 应用程序中配置就可以生效
+                                标色：特征（加粗），规律（红色），推理（橙色），计划（绿色），心法（蓝色）
 
-mapreduce.map.memory.mb: 一个 Map Task 可使用的资源上限（单位:MB），默认为 1024。如果 Map Task 实际使用的资源量超过该值
+如果市场在上涨，机构就会不停地买进，即便在那些你认为如果换做你肯定会将多头头寸止损的位置。你的任务就是跟随他们的步伐，亦步亦趋，而不是用各种逻辑来否认你眼前所发生
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-07
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                                <a href="/categories/%E4%BA%A4%E6%98%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    交易学习笔记
                                 </a>
                                 
                                 
@@ -667,8 +1077,8 @@ mapreduce.map.memory.mb: 一个 Map Task 可使用的资源上限（单位:MB）
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
+                        <a href="/tags/PA/">
+                            <span class="chip bg-color">PA</span>
                         </a>
                         
                     </div>
@@ -677,376 +1087,6 @@ mapreduce.map.memory.mb: 一个 Map Task 可使用的资源上限（单位:MB）
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/21/hadoop/hadoop-10-yarn-zi-yuan-diao-du-qi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Hadoop-10.YARN资源调度器">
-                            
-                            <span class="card-title">Hadoop-10.YARN资源调度器</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                配置 (官方文档):
-yarn.resourcemanager.scheduler.class 默认: org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.Cap
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/21/hadoop/hadoop-9-mapreduce-yarn-liu-cheng/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/54.jpg" class="responsive-img" alt="Hadoop-9.mapreduce-YARN流程">
-                            
-                            <span class="card-title">Hadoop-9.mapreduce-YARN流程</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-
-应用申请运行RM的JOB
-RM返回JOBID以及提交资源的目录
-应用提交相关文件到资源目录
-通知RM, JOB资源提交完毕
-RM初始任务TASK, 加入调度队列
-空闲NM领取任务
-NM根据任务信息创建Container (并且从资源目录
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/21/hadoop/hadoop-8-yarn-liu-cheng/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Hadoop-8.YARN流程">
-                            
-                            <span class="card-title">Hadoop-8.YARN流程</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                YARN 是运算资源调度系统，他只做运算资源的分配和调度，不参与用户程序内部的具体工作，所以 YARN 可以作为一个通用的资源调度平台
-在 Hadoop1.x 的时候其实是没有 YRAN，当初的 MapReduce 由两个组件组成
-
-Job
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/21/coding/hadoop-shu-ju-ya-suo/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Hadoop-数据压缩">
-                            
-                            <span class="card-title">Hadoop-数据压缩</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                原则
-MapReduce 支持压缩，通过压缩算法对 mapper 或者 reducer 的最终数据结果进行压缩
-
-好处：减少了磁盘 io，提高了 MR 获取数据的速度，节省了磁盘空间
-坏处：压缩需要增加 cpu 的运算负担
-
-原则:
-
-运算
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/21/coding/hadoop-zi-ding-yi-outputfileformat-demo/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Hadoop-自定义OutputFileFormat-Demo">
-                            
-                            <span class="card-title">Hadoop-自定义OutputFileFormat-Demo</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                如果单词是老师人名，放到一个目录，否则放到另外一个目录
-TeacherOutPutFormat.java
-public class TeacherOutPutFormat extends FileOutputFormat&lt;Text,N
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/21/coding/hadoop-zi-ding-yi-inputfileformat-demo/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Hadoop-自定义InputFileFormat-Demo">
-                            
-                            <span class="card-title">Hadoop-自定义InputFileFormat-Demo</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                以 excel 的文件举例
-pom.xml
-&lt;dependency&gt;
-    &lt;groupId&gt;net.sourceforge.jexcelapi&lt;/groupId&gt;
-    &lt;artifactId
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/21/hadoop/hadoop-7-qie-pian-luo-ji/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Hadoop-7.切片逻辑">
-                            
-                            <span class="card-title">Hadoop-7.切片逻辑</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                默认切片的大小与 hdfs 的 block 的 size 相等
-切片大小: Math.max(minSize, Math.min(maxSize, blockSize))
-
-mapreduce.input.fileinputformat.s
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-21
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Hadoop/">
-                            <span class="chip bg-color">Hadoop</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
               <!-- 隐藏某个文章 -->
             
         </div>
@@ -1066,7 +1106,7 @@ mapreduce.input.fileinputformat.s
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">24 / 42</div>
+            <div class="center-align b-text-gray">24 / 28</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1155,7 +1195,7 @@ mapreduce.input.fileinputformat.s
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">359.7k</span>
+                        class="white-color">360.4k</span>
             
             
             

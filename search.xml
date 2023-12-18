@@ -4,6 +4,58 @@
   
     
     <entry>
+      <title>市场分析-20231215-Emini</title>
+      <link href="/2023/12/19/shi-chang-fen-xi/shi-chang-fen-xi-20231215-emini/"/>
+      <url>/2023/12/19/shi-chang-fen-xi/shi-chang-fen-xi-20231215-emini/</url>
+      
+        <content type="html"><![CDATA[<h2 id="日线分析">日线分析</h2><p><img src="/static/trade/Brooks-%E8%BD%AC%E8%BD%BD/20231215-SP500-Emini-1-D.png" alt="Emini - 5 Min"></p><ul><li>Emini在周三形成了强势的牛市突破。然而，他们未能获得强劲的后续购买。</li><li>牛市正在变得高潮，这增加了获利回吐和横盘交易几个K线的可能性。</li><li>市场已经离开移动平均线超过29个K线，由于周三的牛市突破，市场离移动平均线很远。移动平均线是平均价格的度量。</li><li>最终，牛市将不愿意在离平均价格很远的地方购买，只愿意在平均价格处购买。这意味着市场在接下来的一两周内测试移动平均线的赔率较大。</li><li>12月是今年的最后一个月，牛市正在尽力使年度收盘在其高点，作为实力的象征。</li><li>熊市将试图为今年创造尽可能大的尾巴。然而，相比今年的反弹，熊市最好的期望是小幅抛售。</li><li>交易者应该预期那些在周三收盘时购买的买入收盘的牛市在昨天的后续行动后会感到失望。这些牛市可能会很快寻找退出机会或部分获利，预期回调。</li></ul><h2 id="Emini-5-Min">Emini - 5 Min</h2><p><img src="/static/trade/Brooks-%E8%BD%AC%E8%BD%BD/20231215-SP500-Emini-5-MIN.jpg" alt="Emini - 5 Min"></p><ul><li>Emini在全球电子交易会议的夜间环节下跌了6点。</li><li>在太平洋时间上午8:30的报告期间，全球电子市场出售。</li><li>牛市正在试图消除熊市突破造成的损失，而熊市则希望报告后的任何反弹都将导致第二腿下跌。</li><li>交易者应该预期今天开盘时会有很多交易区间的价格行动。这意味着交易者应该考虑在放置交易之前等待6 - 12个K线，除非他们对宽松的止损和限价订单感到舒适。</li><li>大多数交易者应该等待开盘摆动的发展，这通常在第二个小时结束之前开始。开盘摆动在形成双顶/底或楔形顶/底后开始是常见的。</li><li>今天是星期五，所以周支持和阻力很重要。交易者应该为可能在一天结束时出现的突然突破做好准备，因为交易者正在决定周线图的收盘价。</li><li>总的来说，交易者在开盘时应该谨慎。开盘时常常会有几次反转尝试，然后才决定开盘摆动的方向。通过在开盘时保持耐心，交易者有更好的机会抓住当天的最高点或最低点，从而提高他们的交易方程式。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 交易笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 市场分析 </tag>
+            
+            <tag> Brooks-转载 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ai-copilot提示词</title>
+      <link href="/2023/12/17/template/ai-copilot-ti-shi-ci/"/>
+      <url>/2023/12/17/template/ai-copilot-ti-shi-ci/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>–系统指令：如果一定要联网搜索，请不要使用中文搜索，先理解用户问题，再思考最有可能帮助到用户获取该信息的关键词。输出结果应该是结构清晰，层次分明，完整专业且详尽，如果输出结果不是中文的话，请将结果专业翻译为中文。</p></blockquote><hr><p>据我观察：</p><ul><li>更富创造力使用了GPT4模型</li><li>更精确则重度依赖搜索结果的质量</li><li>平衡模式不好用</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> ai-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ai </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Optional</title>
       <link href="/2023/11/09/java-bian-cheng-can-kao/liu-ku/optional/"/>
       <url>/2023/11/09/java-bian-cheng-can-kao/liu-ku/optional/</url>
@@ -2150,9 +2202,9 @@
       
         <tags>
             
-            <tag> MinIO </tag>
-            
             <tag> SpringBoot </tag>
+            
+            <tag> MinIO </tag>
             
         </tags>
       
@@ -2381,9 +2433,9 @@
       
         <tags>
             
-            <tag> MongoDB </tag>
-            
             <tag> SpringBoot </tag>
+            
+            <tag> MongoDB </tag>
             
         </tags>
       
@@ -2516,9 +2568,9 @@
       
         <tags>
             
-            <tag> SpringCloud </tag>
-            
             <tag> Leaf </tag>
+            
+            <tag> SpringCloud </tag>
             
             <tag> 分布式ID </tag>
             
@@ -2678,9 +2730,9 @@
       
         <tags>
             
-            <tag> Nacos </tag>
-            
             <tag> SpringCloud </tag>
+            
+            <tag> Nacos </tag>
             
         </tags>
       
@@ -2705,9 +2757,9 @@
       
         <tags>
             
-            <tag> Nacos </tag>
-            
             <tag> SpringCloud </tag>
+            
+            <tag> Nacos </tag>
             
         </tags>
       
@@ -5841,9 +5893,9 @@
       
         <tags>
             
-            <tag> docker-compose.yml </tag>
-            
             <tag> Redis </tag>
+            
+            <tag> docker-compose.yml </tag>
             
         </tags>
       

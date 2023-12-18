@@ -57,9 +57,9 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
-
+<meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
 </head>
 
 
@@ -409,36 +409,38 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/09/template/springboot-ji-cheng-minio/">
+                    <a href="/2023/05/18/coding/win-kai-qi-chrome-liu-lan-qi-de-google-fan-yi/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="SpringBoot-集成MinIO">
+                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="WIN-开启Chrome浏览器的Google翻译">
                             
-                            <span class="card-title">SpringBoot-集成MinIO</span>
+                            <span class="card-title">WIN-开启Chrome浏览器的Google翻译</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                集成
-WEB界面创建 order-bucket 桶和 access-key（生成 secret-key）
-minio:
-  endpoint: http://localhost:9010
-  access-key: 6uajU1xXhYt1
+                                
+去设置里面开启Google翻译功能
+开启系统的全局代理，让浏览器走系统代理
+找到一个自动翻译的页面，让浏览器自动翻译
+关闭系统代理，切换回浏览器的自动代理
+
+
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-18
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/java-template/" class="post-category">
-                                    java-template
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
                                 </a>
                                 
                                 
@@ -449,12 +451,8 @@ minio:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/MinIO/">
-                            <span class="chip bg-color">MinIO</span>
-                        </a>
-                        
-                        <a href="/tags/SpringBoot/">
-                            <span class="chip bg-color">SpringBoot</span>
+                        <a href="/tags/WIN/">
+                            <span class="chip bg-color">WIN</span>
                         </a>
                         
                     </div>
@@ -466,32 +464,307 @@ minio:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/09/yun-wei/minio-fen-bu-shi-bu-shu/">
+                    <a href="/2023/05/17/yun-wei/caddy2-huo-qu-zheng-shu/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/57.jpg" class="responsive-img" alt="MinIO-分布式部署">
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Caddy2-获取证书">
                             
-                            <span class="card-title">MinIO-分布式部署</span>
+                            <span class="card-title">Caddy2-获取证书</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                密码和KEY至少8位数
-Docker Compose 伪分布式部署
+                                docker-compose.yml
 version: '3.8'
 services:
-  minio1:
-    image: minio/minio
+  caddy:
+    image: caddy
     ports:
-      - '9010:900
+      - "80:80"
+      - "443:443"
+     
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Caddy2/">
+                            <span class="chip bg-color">Caddy2</span>
+                        </a>
+                        
+                        <a href="/tags/TLS/">
+                            <span class="chip bg-color">TLS</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/05/16/coding/tensorflow-valueerror-logits-and-labels-must-have-the-same-shape-received-none-240-1-vs-none/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="tensorflow-ValueError logits and labels must have the same shape, received ((None, 240, 1) vs (None,)).">
+                            
+                            <span class="card-title">tensorflow-ValueError logits and labels must have the same shape, received ((None, 240, 1) vs (None,)).</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                如果输入的 shape 都没问题，那应该是没加 Flatten 的原因
+model = tf.keras.models.Sequential([
+    # input_shape 保持和数据集一致
+    tf.keras.layers.
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/tensorflow/">
+                            <span class="chip bg-color">tensorflow</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/05/15/yun-wei/jhipster-error-namespace-is-not-defined-by-exports-in-package-json/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/43.jpg" class="responsive-img" alt="jhipster-error &#39;./lib/util/namespace&#39; is not defined by exports in &#39;xxxx/package.json&#39;">
+                            
+                            <span class="card-title">jhipster-error &#39;./lib/util/namespace&#39; is not defined by exports in &#39;xxxx/package.json&#39;</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                package.json 中的 exports 中添加 "./lib/util/namespace": "./lib/util/namespace.js"
+"exports": {
+  ".": "./lib/environment.js"
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-15
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/jhipster/">
+                            <span class="chip bg-color">jhipster</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/05/15/template/gin-hello-world/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="gin-hello world">
+                            
+                            <span class="card-title">gin-hello world</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                package main
+
+import "github.com/gin-gonic/gin"
+
+func main() {
+	r := gin.Default()
+
+	r.GET("/", func(c *gin.Context) {
+	
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-15
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/go-template/" class="post-category">
+                                    go-template
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/gin/">
+                            <span class="chip bg-color">gin</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/05/15/coding/jwt-sheng-cheng-he-xiao-yan-token/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="JWT-生成和校验Token">
+                            
+                            <span class="card-title">JWT-生成和校验Token</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                JwtTokenService
+@Service
+@RequiredArgsConstructor
+public class JwtTokenService {
+    public static final long EXPIRATION
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-15
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/JWT/">
+                            <span class="chip bg-color">JWT</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/05/14/yun-wei/v2fly-caddy2-websocket-bu-shu/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="V2Fly-Caddy2-WebSocket-部署">
+                            
+                            <span class="card-title">V2Fly-Caddy2-WebSocket-部署</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                docker-compose.yml
+这里使用了 nfs 挂载数据卷，也可以直接挂到本地
+version: "3.8"
+
+services:
+  caddy:
+    image: caddy
+    ports:
+      - "80:
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-14
                             </span>
                             <span class="publish-author">
                                 
@@ -513,8 +786,8 @@ services:
                             <span class="chip bg-color">docker-compose.yml</span>
                         </a>
                         
-                        <a href="/tags/MinIO/">
-                            <span class="chip bg-color">MinIO</span>
+                        <a href="/tags/V2Ray/">
+                            <span class="chip bg-color">V2Ray</span>
                         </a>
                         
                     </div>
@@ -526,40 +799,34 @@ services:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/09/it/ddd-zhu-yao-gai-nian/">
+                    <a href="/2023/05/12/yun-wei/win-kai-qi-bbr/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="DDD-主要概念">
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="WIN-开启BBR">
                             
-                            <span class="card-title">DDD-主要概念</span>
+                            <span class="card-title">WIN-开启BBR</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
-软件的核心复杂性
-a. 技术主动理解业务（领域驱动）
-b. “刚刚好”解决问题（兼顾灵活性-分层抽象）
-领域设计
-a. 构建领域地图（边界）
-b. 使用四层架构
-c. 领域的内敛（业务上的限界，而非技术上的隔离）
-d. 单体优先 -&gt
+                                管理员模式打开 powershell
+netsh int tcp set supplemental Template=Internet CongestionProvider=bbr2
+netsh int tcp set supplement
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-12
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
                                 </a>
                                 
                                 
@@ -570,8 +837,12 @@ d. 单体优先 -&gt
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/DDD/">
-                            <span class="chip bg-color">DDD</span>
+                        <a href="/tags/WIN/">
+                            <span class="chip bg-color">WIN</span>
+                        </a>
+                        
+                        <a href="/tags/BBR/">
+                            <span class="chip bg-color">BBR</span>
                         </a>
                         
                     </div>
@@ -583,36 +854,33 @@ d. 单体优先 -&gt
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/09/it/ddd-tong-yong-xing-ling-yu/">
+                    <a href="/2023/05/12/yun-wei/linux-kai-qi-bbr/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="DDD-通用型领域">
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Linux-开启BBR">
                             
-                            <span class="card-title">DDD-通用型领域</span>
+                            <span class="card-title">Linux-开启BBR</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                可以构建领域仓库，实现领域复用：也可以用于优化中台战略，并且取缔大中台（中台拆分），因为一个中台组不可能同时满足所有其他项目组的需求
-通过消息契约层，不光保证逻辑边界清晰，同时也保证数据边界也很清晰
-
-
-
+                                echo "net.core.default_qdisc=fq" &gt;&gt; /etc/sysctl.conf
+echo "net.ipv4.tcp_congestion_control=bbr" &gt;&gt; /etc/sysc
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-12
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
                                 </a>
                                 
                                 
@@ -623,8 +891,12 @@ d. 单体优先 -&gt
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/DDD/">
-                            <span class="chip bg-color">DDD</span>
+                        <a href="/tags/Linux/">
+                            <span class="chip bg-color">Linux</span>
+                        </a>
+                        
+                        <a href="/tags/BBR/">
+                            <span class="chip bg-color">BBR</span>
                         </a>
                         
                     </div>
@@ -636,36 +908,35 @@ d. 单体优先 -&gt
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/09/it/ddd-ling-yu-hua-fen-she-ji/">
+                    <a href="/2023/05/12/coding/vue-echarts-geng-xin-tu-biao/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="DDD-领域划分设计">
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="vue-echarts-更新图表">
                             
-                            <span class="card-title">DDD-领域划分设计</span>
+                            <span class="card-title">vue-echarts-更新图表</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                高内聚，低耦合：单一职责原则、依赖反转原则、开放封闭原则
-
-构建领域地图（边界）
-a. 在DDD中推荐了事件风暴会议这样的具体形式，也强调了统一语言的理论模型。
-b. 针对各个核心环节，优先构建单元测试案例，从而形成一些TDD测试驱动设计的
+                                &lt;template&gt;
+    &lt;v-chart ref="line-chart" class="line-chart" :option="chartOptions"/&gt;
+&lt;/template&gt;
+expor
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-12
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
                                 </a>
                                 
                                 
@@ -676,8 +947,12 @@ b. 针对各个核心环节，优先构建单元测试案例，从而形成一�
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/DDD/">
-                            <span class="chip bg-color">DDD</span>
+                        <a href="/tags/vue/">
+                            <span class="chip bg-color">vue</span>
+                        </a>
+                        
+                        <a href="/tags/echarts/">
+                            <span class="chip bg-color">echarts</span>
                         </a>
                         
                     </div>
@@ -689,36 +964,36 @@ b. 针对各个核心环节，优先构建单元测试案例，从而形成一�
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/09/it/ddd-mvc-yu-ddd-si-ceng-jia-gou/">
+                    <a href="/2023/05/11/shi-chang-fen-xi/shi-chang-fen-xi-20230510-brooks-s-p-emini/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/60.jpg" class="responsive-img" alt="DDD-MVC与DDD四层架构">
+                            <img src="/medias/featureimages/61.jpg" class="responsive-img" alt="市场分析-20230510-Brooks-S&amp;P Emini">
                             
-                            <span class="card-title">DDD-MVC与DDD四层架构</span>
+                            <span class="card-title">市场分析-20230510-Brooks-S&amp;P Emini</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                一个需求非常确定的项目，不管多复杂，都没有必要非转型成DDD，短平快的设计方式更为快捷。
-如果项目中有很多不确定性，以往的设计模式会遇到非常多的变数，这时DDD就是一个很好的选项了。
-DDD 重构
+                                Trading Update: Wednesday May 10, 2023
+S&amp;P Emini pre-open market analysis
+Emini daily chart
 
-抽象数据持久层 - 建立仓库（让业务逻辑
+The Emini has had two c
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-11
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                                <a href="/categories/%E4%BA%A4%E6%98%93%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    交易笔记
                                 </a>
                                 
                                 
@@ -729,8 +1004,12 @@ DDD 重构
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/DDD/">
-                            <span class="chip bg-color">DDD</span>
+                        <a href="/tags/%E5%B8%82%E5%9C%BA%E5%88%86%E6%9E%90/">
+                            <span class="chip bg-color">市场分析</span>
+                        </a>
+                        
+                        <a href="/tags/Brooks-%E8%BD%AC%E8%BD%BD/">
+                            <span class="chip bg-color">Brooks-转载</span>
                         </a>
                         
                     </div>
@@ -742,32 +1021,42 @@ DDD 重构
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/09/it/ddd-ruan-jian-de-he-xin-fu-za-xing/">
+                    <a href="/2023/05/11/leetcode/leetcode-14-zui-chang-gong-gong-qian-zhui/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/45.jpg" class="responsive-img" alt="DDD-软件的核心复杂性">
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="LeetCode-14.最长公共前缀">
                             
-                            <span class="card-title">DDD-软件的核心复杂性</span>
+                            <span class="card-title">LeetCode-14.最长公共前缀</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                很多软件设计上的不足，表面上看，似乎是技术架构的问题。因为如果架构师经验足够丰富，就能提前考虑到这些问题。如果开发团队技术足够过硬，就可以最快速度解决这些问题。但是，如果你将视野放开，放到到整个项目团队。你就会发现，一味的要求技术人员能够未
+                                题干
+编写一个函数来查找字符串数组中的最长公共前缀。
+如果不存在公共前缀，返回空字符串 “”。
+
+示例 1：
+输入：strs = [“flower”,“flow”,“flight”]
+输出：“fl”
+
+
+示例 2：
+输入：strs = [“
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-11
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
+                                <a href="/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    算法笔记
                                 </a>
                                 
                                 
@@ -778,8 +1067,8 @@ DDD 重构
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/DDD/">
-                            <span class="chip bg-color">DDD</span>
+                        <a href="/tags/LeetCode/">
+                            <span class="chip bg-color">LeetCode</span>
                         </a>
                         
                     </div>
@@ -791,33 +1080,39 @@ DDD 重构
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/08/template/ffmpeg-shi-yong-shi-li/">
+                    <a href="/2023/05/11/leetcode/leetcode-13-luo-ma-shu-zi-zhuan-zheng-shu/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="FFmpeg-使用示例">
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="LeetCode-13.罗马数字转整数">
                             
-                            <span class="card-title">FFmpeg-使用示例</span>
+                            <span class="card-title">LeetCode-13.罗马数字转整数</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                # 将三个视频完整的拼接成一个视频
-ffmpeg -i input1.mp4 -i input2.mp4 -i input3.mp4 -filter_complex "[0:v] [0:a] [1:v] [1:a] [2:v] [2:a] 
+                                题干
+罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C 
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-08
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-11
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/shell-template/" class="post-category">
-                                    shell-template
+                                <a href="/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    算法笔记
                                 </a>
                                 
                                 
@@ -828,8 +1123,8 @@ ffmpeg -i input1.mp4 -i input2.mp4 -i input3.mp4 -filter_complex "[0:v] [0:a] [1
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/FFmpeg/">
-                            <span class="chip bg-color">FFmpeg</span>
+                        <a href="/tags/LeetCode/">
+                            <span class="chip bg-color">LeetCode</span>
                         </a>
                         
                     </div>
@@ -841,41 +1136,39 @@ ffmpeg -i input1.mp4 -i input2.mp4 -i input3.mp4 -filter_complex "[0:v] [0:a] [1
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/07/template/springboot-ji-cheng-leaf-snowflake-mo-shi/">
+                    <a href="/2023/05/11/leetcode/leetcode-12-zheng-shu-zhuan-luo-ma-shu-zi/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/55.jpg" class="responsive-img" alt="SpringBoot-集成Leaf-Snowflake模式">
+                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="LeetCode-12.整数转罗马数字">
                             
-                            <span class="card-title">SpringBoot-集成Leaf-Snowflake模式</span>
+                            <span class="card-title">LeetCode-12.整数转罗马数字</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                集成
-
-依赖 leaf-boot-starter
-设置 zookeeper 地址
-开启 @EnableLeafServer
-使用 SnowflakeService 获取分布式唯一ID
-
-leaf:
-  snowflake:
-    enab
+                                题干
+罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C 
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-11
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/java-template/" class="post-category">
-                                    java-template
+                                <a href="/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    算法笔记
                                 </a>
                                 
                                 
@@ -886,12 +1179,8 @@ leaf:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/SpringBoot/">
-                            <span class="chip bg-color">SpringBoot</span>
-                        </a>
-                        
-                        <a href="/tags/Leaf/">
-                            <span class="chip bg-color">Leaf</span>
+                        <a href="/tags/LeetCode/">
+                            <span class="chip bg-color">LeetCode</span>
                         </a>
                         
                     </div>
@@ -903,41 +1192,35 @@ leaf:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/07/template/springboot-ji-cheng-mongodb/">
+                    <a href="/2023/05/11/leetcode/leetcode-11-sheng-zui-duo-shui-de-rong-qi/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/58.jpg" class="responsive-img" alt="SpringBoot-集成MongoDB">
+                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="LeetCode-11.盛最多水的容器">
                             
-                            <span class="card-title">SpringBoot-集成MongoDB</span>
+                            <span class="card-title">LeetCode-11.盛最多水的容器</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                集成
-
-依赖 spring-boot-starter-data-mongodb
-设置 uri
-创建 @Document(collection = "table")
-创建 MongoRepository
-
-spring:
-  data:
-  
+                                题干
+给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
+找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+返回容器可以储存的最大
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-11
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/java-template/" class="post-category">
-                                    java-template
+                                <a href="/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    算法笔记
                                 </a>
                                 
                                 
@@ -948,12 +1231,8 @@ spring:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/MongoDB/">
-                            <span class="chip bg-color">MongoDB</span>
-                        </a>
-                        
-                        <a href="/tags/SpringBoot/">
-                            <span class="chip bg-color">SpringBoot</span>
+                        <a href="/tags/LeetCode/">
+                            <span class="chip bg-color">LeetCode</span>
                         </a>
                         
                     </div>
@@ -965,39 +1244,38 @@ spring:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/07/template/springboot-ji-cheng-rocksdb/">
+                    <a href="/2023/05/11/coding/powershell-dao-chu-bi-zhi-huan-cun-tu-pian/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/52.jpg" class="responsive-img" alt="SpringBoot-集成RocksDB">
+                            <img src="/medias/featureimages/59.jpg" class="responsive-img" alt="powershell-导出壁纸缓存图片">
                             
-                            <span class="card-title">SpringBoot-集成RocksDB</span>
+                            <span class="card-title">powershell-导出壁纸缓存图片</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                集成
+                                export_wallper.ps1
+[CmdletBinding()]
+Param(
+    [bool] $init
+)
 
-依赖 rocksdbjni
-设置数据库的本地存储路径
-配置 RocksDB 的 Bean
-
-rocksdb:
-  path: E:\work\jxch-study\study-springcloud\study-springclou
+$link_target = 'C:\Users\xiche\AppData\Local\Packages\Mi
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-11
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/java-template/" class="post-category">
-                                    java-template
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
                                 </a>
                                 
                                 
@@ -1008,12 +1286,8 @@ rocksdb:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/SpringBoot/">
-                            <span class="chip bg-color">SpringBoot</span>
-                        </a>
-                        
-                        <a href="/tags/RocksDB/">
-                            <span class="chip bg-color">RocksDB</span>
+                        <a href="/tags/powershell/">
+                            <span class="chip bg-color">powershell</span>
                         </a>
                         
                     </div>
@@ -1025,33 +1299,39 @@ rocksdb:
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/06/05/jia-gou/jia-gou-ding-dan-zhi-fu-xi-tong-she-ji/">
+                    <a href="/2023/05/10/yun-wei/win-ming-ling-xing-mo-shi-shi-yong-tian-yi-yun-pan/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/62.jpg" class="responsive-img" alt="架构-订单支付系统设计">
+                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="WIN-命令行模式使用天翼云盘">
                             
-                            <span class="card-title">架构-订单支付系统设计</span>
+                            <span class="card-title">WIN-命令行模式使用天翼云盘</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
+                                安装
+winget install tickstep.cloudpan189-go -l D:\Programs\cloudpan189-go --accept-package-agreements
+使用
+help
+
+# 登录
+login
 
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-10
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E6%9E%B6%E6%9E%84/" class="post-category">
-                                    架构
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
                                 </a>
                                 
                                 
@@ -1062,8 +1342,64 @@ rocksdb:
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%94%AF%E4%BB%98%E7%B3%BB%E7%BB%9F/">
-                            <span class="chip bg-color">支付系统</span>
+                        <a href="/tags/WIN/">
+                            <span class="chip bg-color">WIN</span>
+                        </a>
+                        
+                        <a href="/tags/cloudpan189-go/">
+                            <span class="chip bg-color">cloudpan189-go</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/05/10/coding/python-xian-cheng-chi/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="python-线程池">
+                            
+                            <span class="card-title">python-线程池</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
+
+pool = ThreadPoolExecutor(max_workers=30)
+tasks 
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/python/">
+                            <span class="chip bg-color">python</span>
                         </a>
                         
                     </div>
@@ -1089,7 +1425,7 @@ rocksdb:
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">8 / 42</div>
+            <div class="center-align b-text-gray">8 / 28</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1178,7 +1514,7 @@ rocksdb:
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">359.7k</span>
+                        class="white-color">360.4k</span>
             
             
             
