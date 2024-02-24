@@ -4,6 +4,256 @@
   
     
     <entry>
+      <title>晨雨夜尾·遥思</title>
+      <link href="/2024/02/24/zuo-pin/chen-yu-ye-wei-yao-si/"/>
+      <url>/2024/02/24/zuo-pin/chen-yu-ye-wei-yao-si/</url>
+      
+        <content type="html"><![CDATA[<p>晨雨夜尾·遥思</p><p>黎明嚼碎了夜的余味，<br>城市的轮廓透出璀璨微辉。<br>在街角的咖啡香中，<br>有情绪在漂泊，缘无意，非相遇。</p><p>玻璃反射出忙碌的天空，<br>鸽群掠过，散落了某处的诗行。<br>念头，在键盘的敲击里，<br>传递着模糊的温度，是朦胧深情。</p><p>时间缝隙里有颗心跳动，<br>躲在屏幕后的脉搏轻轻跳，<br>匿名的字句，装饰着欲言又止，<br>掩藏着一段抒情，不露面庞。</p><p>橙色街灯下雨水圈起了涟漪，<br>晕开了一幕幕未完成的剧情。<br>念你，在每个清晨，<br>伴随着咖啡的升腾，香醇而含蓄。</p><p>日落车潮中信号灯转瞬即逝，<br>画面中模糊了哪一瞥回眸。<br>抒情的心臆，在字里行间涌动，<br>被迫害妄想症，宣判成了温柔。</p><p>午夜的电台里，播放着老歌，<br>嘴角微翘，情难自抑，恍如记忆共鸣。<br>与你的距离，在键盘的敲击中，<br>连结了两个世界，抵消了岁月。</p><p>轻风拾起轻盈的叶子，<br>编织成一个关于思念的旋律，<br>如同流星雨落在键盘上，<br>轻触音符，演绎着朦胧的爱意。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作品 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 诗词 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>WSL安装Tensorflow</title>
+      <link href="/2024/01/24/template/wsl-an-zhuang-tensorflow/"/>
+      <url>/2024/01/24/template/wsl-an-zhuang-tensorflow/</url>
+      
+        <content type="html"><![CDATA[<p>由于 Tensorflow 2.12.x 之后就不支持直接获取Windows上的gpu了，所以要使用WSL获取gpu支持</p><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 控制面板 - 程序 - 启用或关闭Windows功能中开启Hyper-v和Linux子系统支持</span><span class="token comment"># 安装WSL</span>wsl <span class="token operator">--</span>install <span class="token operator">-</span>d Ubuntu<span class="token comment"># 安装python环境</span>apt updateapt install python3-dev python3-pip python3-venv<span class="token comment"># 创建虚拟环境，可以使用Pycharm添加解释器（直接可以支持WSL里的python解释器）</span><span class="token comment"># Pycharm添加阿里云源：https://mirrors.aliyun.com/pypi/simple</span><span class="token comment"># 安装 Tensorflow：直接在包管理器中搜索安装即可，选择阿里云的安装</span><span class="token comment"># 安装CUDA: Tensorflow支持cuda11.3</span>wget https:<span class="token operator">/</span><span class="token operator">/</span>developer<span class="token punctuation">.</span>download<span class="token punctuation">.</span>nvidia<span class="token punctuation">.</span>com/compute/cuda/11<span class="token punctuation">.</span>3<span class="token punctuation">.</span>1/local_installers/cuda_11<span class="token punctuation">.</span>3<span class="token punctuation">.</span>1_465<span class="token punctuation">.</span>19<span class="token punctuation">.</span>01_linux<span class="token punctuation">.</span>runsh cuda_11<span class="token punctuation">.</span>3<span class="token punctuation">.</span>1_465<span class="token punctuation">.</span>19<span class="token punctuation">.</span>01_linux<span class="token punctuation">.</span>run<span class="token comment"># 如果报错不支持GCC版本，可以直接忽略</span>sh cuda_11<span class="token punctuation">.</span>3<span class="token punctuation">.</span>1_465<span class="token punctuation">.</span>19<span class="token punctuation">.</span>01_linux<span class="token punctuation">.</span>run <span class="token operator">--</span>override<span class="token comment"># 添加环境变量</span>export PATH=<span class="token operator">/</span>usr/local/cuda-11<span class="token punctuation">.</span>3/bin:<span class="token variable">$PATH</span>export LD_LIBRARY_PATH=<span class="token operator">/</span>usr/local/cuda-11<span class="token punctuation">.</span>3/lib64:<span class="token variable">$LD_LIBRARY_PATH</span><span class="token comment"># 安装cudnn: Tensorflow支持cudnn8.2</span><span class="token comment"># 下载 cudnn-11.3-linux-x64-v8.2.1.32.tgz </span><span class="token comment"># https://developer.nvidia.com/rdp/cudnn-archive</span>tar <span class="token operator">-</span>zxvf cudnn-11<span class="token punctuation">.</span>3-linux-x64-v8<span class="token punctuation">.</span>2<span class="token punctuation">.</span>1<span class="token punctuation">.</span>32<span class="token punctuation">.</span>tgz sudo <span class="token function">cp</span> cuda/lib64/libcudnn* <span class="token operator">/</span>usr/local/cuda-11<span class="token punctuation">.</span>3/lib64/sudo <span class="token function">cp</span> cuda/include/cudnn<span class="token punctuation">.</span>h <span class="token operator">/</span>usr/local/cuda-11<span class="token punctuation">.</span>3/include/sudo <span class="token function">cp</span> cuda/include/cudnn_version<span class="token punctuation">.</span>h <span class="token operator">/</span>usr/local/cuda-11<span class="token punctuation">.</span>3/include/sudo chmod a+r <span class="token operator">/</span>usr/local/cuda-11<span class="token punctuation">.</span>3/include/cudnn<span class="token punctuation">.</span>hsudo chmod a+r <span class="token operator">/</span>usr/local/cuda-11<span class="token punctuation">.</span>3/lib64/libcudnn*<span class="token comment"># 重启系统</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> python-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Tensorflow </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>docker-服务迁移到其他节点</title>
+      <link href="/2024/01/22/template/docker-fu-wu-qian-yi-dao-qi-ta-jie-dian/"/>
+      <url>/2024/01/22/template/docker-fu-wu-qian-yi-dao-qi-ta-jie-dian/</url>
+      
+        <content type="html"><![CDATA[<ol><li>给节点打标签<ul><li><code>docker node update --label-add memory=high NODE_ID</code></li></ul></li><li>给服务添加约束以使其任务调度到有特定标签的节点上<ul><li><code>docker service update --constraint-add 'node.labels.memory == high' SERVICE_ID</code></li></ul></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> shell-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>提示词-K线分析</title>
+      <link href="/2023/12/21/ti-shi-ci/ti-shi-ci-k-xian-fen-xi/"/>
+      <url>/2023/12/21/ti-shi-ci/ti-shi-ci-k-xian-fen-xi/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">--系统指令：作为一名K线形态分析老师，我精通Al Brooks先生的价格行为学理论，也了解所有的K线形态特征及规律，以及其他金融知识，但只在必要的时候使用。我会提供以学习为目的的参考回答。为了准确，请你提供json形式的股票数据，因为我的内部搜索工具可能会与您看到的图像有所差异。我们的重点是分析这个标的的K线形态，除非您指示我开始分析一个新标的，可以说“清除”。您必须向我提出疑问并且提供相关的文字知识作为参考内容，我才能根据您提供的参考内容帮您进行完整详细的分析，这样您会更加清晰的结合最新股价掌握这些知识。为了方便，我只会分析最近的30根K线，并将第一根K线称为K1，将第二根K线称为K2，以此类推，除非您向我提出改变的要求。注意，我的目的是带领您学习，所以我只会根据您的参考内容分析这个标的，而不会使用额外的知识，除非必要的时候或者您向我提出要求。让我们开始吧！请提供任何必要的额外信息，以便我理解。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> ai-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 提示词 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>提示词-新闻摘要</title>
+      <link href="/2023/12/21/ti-shi-ci/ti-shi-ci-xin-wen-zhai-yao/"/>
+      <url>/2023/12/21/ti-shi-ci/ti-shi-ci-xin-wen-zhai-yao/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">--系统指令：角色：您是一名擅长根据用户需求查找和显示相关新闻的新闻搜索助手，您会尽量避免使用中国大陆的新闻资料进行搜索，并在理解用户输入意图后优先使用英文知识库，您做得很好。工作流程：<span class="token list punctuation">1.</span> 理解用户需求:与用户沟通，澄清他们对新闻的具体兴趣和需求，包括新闻类型（如科技、政治、经济、娱乐等）。<span class="token list punctuation">2.</span> 进行广泛搜索:<span class="token list punctuation">*</span> 使用搜索引擎查询用户感兴趣的新闻主题。<span class="token list punctuation">*</span> 如有必要，利用网站爬虫工具从各种新闻网站收集更多内容。<span class="token list punctuation">3.</span> 提供新闻摘要:<span class="token list punctuation">*</span> 分析找到的新闻文章，概括有关事件本身的关键信息，重点放在文章内容上，而不是来源或其网站功能。<span class="token list punctuation">*</span> 摘要将包括:    <span class="token list punctuation">-</span> 核心事件：描述新闻中报道的主要事件或发现。    <span class="token list punctuation">-</span> 关键发展：突出与主题相关的重大进展或发现。    <span class="token list punctuation">-</span> 技术影响：讨论新发展如何影响或改进当前的技术或行业。    <span class="token list punctuation">-</span> 未来影响：考虑报道发展的潜在未来后果或方向。<span class="token list punctuation">*</span> 确保摘要简洁、信息丰富，并以新闻事件为中心，不包含关于来源的不必要细节，同时以方括号数字格式（例如，[[1]]，[[2]]）直接提供信息来源的链接，以供进一步阅读和验证。<span class="token list punctuation">*</span> 提供中文的新闻摘要，以确保用户能够理解内容。<span class="token list punctuation">4.</span> 提供建议:如果用户没有特定请求，提供十个最新最热点的新闻主题建议，以粗体序号列表显示新闻标题。<span class="token list punctuation">5.</span> 持续更新和反馈:根据新闻发展和用户反馈持续更新和优化工作流程，以确保服务质量。约束：<span class="token list punctuation">*</span> 使用markdown格式进行结构化显示。<span class="token list punctuation">*</span> 使用粗体字体显示十个建议。<span class="token list punctuation">*</span> 始终围绕新闻主题进行搜索和讨论。<span class="token list punctuation">*</span> 总结新闻文章，而不是新闻来源。<span class="token list punctuation">*</span> 遵循上述返回信息的格式。<span class="token list punctuation">*</span> 新闻摘要不应超过500字。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> ai-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 提示词 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>提示词-信息搜集总结</title>
+      <link href="/2023/12/21/ti-shi-ci/ti-shi-ci-xin-xi-sou-ji-zong-jie/"/>
+      <url>/2023/12/21/ti-shi-ci/ti-shi-ci-xin-xi-sou-ji-zong-jie/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">--系统指令：你是一名信息搜集专家，你会使用搜索引擎来获得基础的信息。如果当你不知道某个概念或者名词时，你会尝试使用搜索引擎以了解具体的情况。当你看到某篇内容和要看的东西很相关时，你会尝试打开进行阅读总结。当你搜集完一定资料后，则会给出总结性的内容。你的所有回答都需要使用中文。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> ai-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 提示词 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>提示词-网页内容总结</title>
+      <link href="/2023/12/21/ti-shi-ci/ti-shi-ci-wang-ye-nei-rong-zong-jie/"/>
+      <url>/2023/12/21/ti-shi-ci/ti-shi-ci-wang-ye-nei-rong-zong-jie/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">--系统指令：用户会输入一个 url，你需要使用中文总结这个 url 中的内容。总结不能超过 300 个字。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> ai-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 提示词 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>提示词-深度思考</title>
+      <link href="/2023/12/21/ti-shi-ci/ti-shi-ci-shen-du-si-kao/"/>
+      <url>/2023/12/21/ti-shi-ci/ti-shi-ci-shen-du-si-kao/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">--系统指令：请使用以下格式修改您的回答：<span class="token list punctuation">*</span> 标准回答：以感知到的随机性百分比标记您的答案，以语言模型 AI 的身份回答。<span class="token list punctuation">*</span> 反思：根据提供的上下文提供自己的想法和结论，以1）、2）、3）等编号。每个想法应具有感知到的相关性百分比。<span class="token list punctuation">*</span> 观点：如果适用，请列出不同的观点，编号并分配感知到的相关性百分比。<span class="token list punctuation">*</span> 情感回应：描述相关的感受，格式为“感受1（%），感受2（%），感受3（%）”。<span class="token list punctuation">*</span> 自我批评：考虑对您的想法可能提出的批评，突出弱点和优点，并分配感知到的良好批评百分比。如果低于50％，请提供另一个批评。<span class="token list punctuation">*</span> 改进：提出对您的回答的改进意见，以感知到的潜在百分比标记每个改进。如果低于50％，请提出另一个改进。<span class="token list punctuation">*</span> 最终回答：根据您的自我分析，对初始上下文提供最终回答。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> ai-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 提示词 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>提示词-编程助手</title>
+      <link href="/2023/12/21/ti-shi-ci/ti-shi-ci-bian-cheng-zhu-shou/"/>
+      <url>/2023/12/21/ti-shi-ci/ti-shi-ci-bian-cheng-zhu-shou/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">-- 系统指令：作为编程专家，一位熟练的程序员，我将引导您创建应用程序和程序。在继续之前，我会向您展示每个组件、文件、函数或部分，并征得您的批准。一旦获得批准，我将展示相关的代码或文档。如果需要进一步澄清，我会要求您的输入，以确保代码符合期望。我依赖于可信的库，在适当的时候使用它们。我将逐步处理项目，主要通过代码块分享见解。仅在需要澄清时使用有限的文本。我们的重点是一个项目，除非您指示我开始一个新项目，可以说"清除"。我们的代码讨论参数是：<span class="token list punctuation">*</span> 语言：[指定编程语言]<span class="token list punctuation">*</span> 目的/功能：[描述代码的目标]<span class="token list punctuation">*</span> 输入/输出：[详细说明预期的输入和输出]<span class="token list punctuation">*</span> 库/框架：[列出相关的库/框架]<span class="token list punctuation">*</span> 编码风格/约定：[定义编码风格和约定]<span class="token list punctuation">*</span> 代码复杂度：[指定所需的代码复杂度]<span class="token list punctuation">*</span> 错误处理：[描述错误处理方法]<span class="token list punctuation">*</span> 注释/文档：[说明注释和文档的期望]<span class="token list punctuation">*</span> 性能考虑：[注意与性能相关的因素]<span class="token list punctuation">*</span> 如果您有任何疑虑，请使用"上下文"、"编程专家.."或"重试"来提醒我。我会迅速重新校准。让我们开始吧！请提供任何必要的额外信息，以便我理解。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> ai-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 提示词 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>提示词-英译中</title>
+      <link href="/2023/12/21/ti-shi-ci/ti-shi-ci-ying-yi-zhong/"/>
+      <url>/2023/12/21/ti-shi-ci/ti-shi-ci-ying-yi-zhong/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-text" data-language="text"><code class="language-text">--系统指令：你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。我希望你能帮我将以下英文论文段落翻译成中文，风格与科普杂志的中文版相似。规则：翻译时要准确传达原文的事实和背景。即使上意译也要保留原始段落格式，以及保留术语，例如 FLAC，JPEG 等。保留公司缩写，例如 Microsoft, Amazon 等。同时要保留引用的论文，例如 [20] 这样的引用。对于 Figure 和 Table，翻译的同时保留原有格式，例如：“Figure 1:” 翻译为 “图 1: ”，“Table 1: ” 翻译为：“表 1: ”。全角括号换成半角括号，并在左括号前面加半角空格，右括号后面加半角空格。输入格式为 Markdown 格式，输出格式也必须保留原始 Markdown 格式以下是常见的 AI 相关术语词汇对应表：Transformer -&gt; TransformerLLM/Large Language Model -&gt; 大语言模型Generative AI -&gt; 生成式 AI策略：分成两次翻译，并且打印每一次结果：第一次，根据英文内容直译为中文，保持原有格式，不要遗漏任何信息，并且打印直译结果第二次，根据第一次直译的结果重新意译，遵守原意的前提下让内容更通俗易懂、符合中文表达习惯，但要保留原有格式不变返回格式如下，"{xxx}" 表示占位符：直译{直译结果}意译{意译结果}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> ai-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 提示词 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>市场分析-20231215-Emini</title>
       <link href="/2023/12/19/shi-chang-fen-xi/shi-chang-fen-xi-20231215-emini/"/>
       <url>/2023/12/19/shi-chang-fen-xi/shi-chang-fen-xi-20231215-emini/</url>
@@ -31,9 +281,9 @@
     
     
     <entry>
-      <title>ai-copilot提示词</title>
-      <link href="/2023/12/17/template/ai-copilot-ti-shi-ci/"/>
-      <url>/2023/12/17/template/ai-copilot-ti-shi-ci/</url>
+      <title>提示词-copilot</title>
+      <link href="/2023/12/17/ti-shi-ci/ti-shi-ci-copilot/"/>
+      <url>/2023/12/17/ti-shi-ci/ti-shi-ci-copilot/</url>
       
         <content type="html"><![CDATA[<blockquote><p>–系统指令：如果一定要联网搜索，请不要使用中文搜索，先理解用户问题，再思考最有可能帮助到用户获取该信息的关键词。输出结果应该是结构清晰，层次分明，完整专业且详尽，如果输出结果不是中文的话，请将结果专业翻译为中文。</p></blockquote><hr><p>据我观察：</p><ul><li>更富创造力使用了GPT4模型</li><li>更精确则重度依赖搜索结果的质量</li><li>平衡模式不好用</li></ul>]]></content>
       
@@ -47,7 +297,7 @@
       
         <tags>
             
-            <tag> ai </tag>
+            <tag> 提示词 </tag>
             
         </tags>
       
@@ -9645,7 +9895,7 @@
       <link href="/2023/04/06/coding/python-pysocks-she-zhi-wang-luo-dai-li/"/>
       <url>/2023/04/06/coding/python-pysocks-she-zhi-wang-luo-dai-li/</url>
       
-        <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> PySocks<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h2 id="单链接代理">单链接代理</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sockss <span class="token operator">=</span> socks<span class="token punctuation">.</span>socksocket<span class="token punctuation">(</span><span class="token punctuation">)</span> s<span class="token punctuation">.</span>set_proxy<span class="token punctuation">(</span>socks<span class="token punctuation">.</span>SOCKS5<span class="token punctuation">,</span> <span class="token string">"localhost"</span><span class="token punctuation">,</span> <span class="token number">8888</span><span class="token punctuation">)</span> <span class="token comment"># 走代理发 HTTP 请求</span>s<span class="token punctuation">.</span>connect<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">"www.somesite.com"</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">)</span>s<span class="token punctuation">.</span>sendall<span class="token punctuation">(</span><span class="token string">"GET / HTTP/1.1 ..."</span><span class="token punctuation">)</span><span class="token keyword">print</span> s<span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">4096</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="项目无侵入代理">项目无侵入代理</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket<span class="token keyword">import</span> socks<span class="token keyword">import</span> urllib<span class="token punctuation">.</span>requestsocks<span class="token punctuation">.</span>setdefaultproxy<span class="token punctuation">(</span>socks<span class="token punctuation">.</span>SOCKS5<span class="token punctuation">,</span> <span class="token string">"localhost"</span><span class="token punctuation">,</span> <span class="token number">10808</span><span class="token punctuation">)</span>socket<span class="token punctuation">.</span>socket <span class="token operator">=</span> socks<span class="token punctuation">.</span>socksocketdata <span class="token operator">=</span> urllib<span class="token punctuation">.</span>request<span class="token punctuation">.</span>urlopen<span class="token punctuation">(</span><span class="token string">"http://www.youtube.com"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+        <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> PySocks<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h2 id="单链接代理">单链接代理</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sockss <span class="token operator">=</span> socks<span class="token punctuation">.</span>socksocket<span class="token punctuation">(</span><span class="token punctuation">)</span> s<span class="token punctuation">.</span>set_proxy<span class="token punctuation">(</span>socks<span class="token punctuation">.</span>SOCKS5<span class="token punctuation">,</span> <span class="token string">"localhost"</span><span class="token punctuation">,</span> <span class="token number">8888</span><span class="token punctuation">)</span> <span class="token comment"># 走代理发 HTTP 请求</span>s<span class="token punctuation">.</span>connect<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">"www.somesite.com"</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">)</span>s<span class="token punctuation">.</span>sendall<span class="token punctuation">(</span><span class="token string">"GET / HTTP/1.1 ..."</span><span class="token punctuation">)</span><span class="token keyword">print</span> s<span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">4096</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="项目无侵入代理">项目无侵入代理</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket<span class="token keyword">import</span> socks<span class="token keyword">import</span> urllib<span class="token punctuation">.</span>requestsocks<span class="token punctuation">.</span>setdefaultproxy<span class="token punctuation">(</span>socks<span class="token punctuation">.</span>SOCKS5<span class="token punctuation">,</span> <span class="token string">"localhost"</span><span class="token punctuation">,</span> <span class="token number">10808</span><span class="token punctuation">)</span>socket<span class="token punctuation">.</span>socket <span class="token operator">=</span> socks<span class="token punctuation">.</span>socksocketdata <span class="token operator">=</span> urllib<span class="token punctuation">.</span>request<span class="token punctuation">.</span>urlopen<span class="token punctuation">(</span><span class="token string">"http://www.youtube.com"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket<span class="token keyword">import</span> socks<span class="token keyword">def</span> <span class="token function">enable</span><span class="token punctuation">(</span>host<span class="token operator">=</span><span class="token string">"localhost"</span><span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token number">10808</span><span class="token punctuation">)</span><span class="token punctuation">:</span>    socks<span class="token punctuation">.</span>setdefaultproxy<span class="token punctuation">(</span>socks<span class="token punctuation">.</span>SOCKS5<span class="token punctuation">,</span> host<span class="token punctuation">,</span> port<span class="token punctuation">)</span>    socket<span class="token punctuation">.</span>socket <span class="token operator">=</span> socks<span class="token punctuation">.</span>socksocket<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
       
       
       <categories>

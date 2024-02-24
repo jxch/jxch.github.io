@@ -416,7 +416,7 @@ s.set_proxy(socks.SOCKS5, &#34;localhost&#34;, 8888)
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    77
+                    97
                 </div>
                 
 
@@ -467,6 +467,13 @@ socket<span class="token punctuation">.</span>socket <span class="token operator
 
 data <span class="token operator">=</span> urllib<span class="token punctuation">.</span>request<span class="token punctuation">.</span>urlopen<span class="token punctuation">(</span><span class="token string">"http://www.youtube.com"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
+<span class="token keyword">import</span> socks
+
+
+<span class="token keyword">def</span> <span class="token function">enable</span><span class="token punctuation">(</span>host<span class="token operator">=</span><span class="token string">"localhost"</span><span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token number">10808</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    socks<span class="token punctuation">.</span>setdefaultproxy<span class="token punctuation">(</span>socks<span class="token punctuation">.</span>SOCKS5<span class="token punctuation">,</span> host<span class="token punctuation">,</span> port<span class="token punctuation">)</span>
+    socket<span class="token punctuation">.</span>socket <span class="token operator">=</span> socks<span class="token punctuation">.</span>socksocket<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -887,7 +894,7 @@ data <span class="token operator">=</span> urllib<span class="token punctuation"
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2022-2023</span>
+                <span id="year">2022-2024</span>
             
             <a href="/about" target="_blank">钱不寒</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -898,7 +905,7 @@ data <span class="token operator">=</span> urllib<span class="token punctuation"
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">360.4k</span>
+                        class="white-color">363.3k</span>
             
             
             
