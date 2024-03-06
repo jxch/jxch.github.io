@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>Java面试-集合-基础</title>
+      <link href="/2024/03/07/java-mian-shi/java-mian-shi-ji-he-ji-chu/"/>
+      <url>/2024/03/07/java-mian-shi/java-mian-shi-ji-he-ji-chu/</url>
+      
+        <content type="html"><![CDATA[<ul><li><code>ArrayList</code> 扩容：默认长度为 10，每次至少扩容 1.5 倍</li><li><code>LinkedList</code> 根据 <code>index</code> 查找元素时，会自动判断从左还是从右查找比较快：<code>if (index &lt; (size &gt;&gt; 1)) 即 index 小于长度的一半，从左 else 从右</code></li><li><code>LinkedList</code> 添加元素：<ol><li><code>a ⇆ b(last)</code></li><li><code>a ⇆ b(last, l) ← c</code></li><li><code>a ⇆ b(l) ← c(last)</code></li><li><code>a ⇆ b(l) ⇆ c(last)</code></li></ol></li><li><code>transient</code> 关键字：属性变量不被序列化<ul><li><code>ArrayList</code> 里的 <code>elementData</code> <strong>不总是满的</strong>，每次都序列化，会浪费时间和空间，并且重写了&nbsp;<code>writeObject</code>，保证存在的元素都会被序列化</li><li><code>LinkedList</code>中将<code>first</code>和<code>last</code>修饰成 <code>transient</code>，是为了避免递归的进行序列化导致栈溢出</li></ul></li><li><code>HashMap</code> 为什么使用红黑树，而不是其他的树？<ul><li>二叉排序树在添加元素的时候，极端情况下会出现线性结构</li><li>红黑树不追求”完全平衡“。它能保证在最坏的情况下，基本动态集合操作时间为<code>O(logn)</code>，所以不使用平衡二叉树</li></ul></li><li><code>HashMap#put(k,v)</code><ol><li><code>Node(k,v)</code></li><li><code>index = k.hashCode()</code>, 如果没有元素，就把<code>Node</code>添加到这个位置上</li><li>如果有链表，就将<code>k</code>和链表上每个节点的<code>k</code>进行<code>equals</code>：如果都返回 <code>false</code>，则新节点添加到链表的末尾；否则节点的 <code>value</code> 将被覆盖</li></ol></li><li><code>HashMap#get(k)</code><ol><li><code>index = k.hashCode()</code>，什么都没有，则返回<code>null</code></li><li>如果有链表，就将<code>K</code>和链表上每一个节点的<code>K</code>进行<code>equals</code>：如果都返回<code>false</code>，则返回<code>null</code>；否则返回对应的 <code>value</code></li></ol></li><li><code>HashMap</code> 扩容：默认容量为 16，默认加载因子为 0.75，请将初始化容量设为 2 的倍数<ul><li><code>JDK8</code>之后，如果哈希表单向链表中元素超过<code>8</code>个，那么单向链表这种数据结构会变成<strong>红黑树</strong>数据结构。当红黑树上的节点数量小于<code>6</code>个，会重新把红黑树变成<strong>单向链表</strong>数据结构<ul><li>首先和<code>hashcode</code>碰撞次数的泊松分布有关，主要是为了寻找一种<strong>时间和空间的平衡</strong>。在负载因子<code>0.75</code>（<code>HashMap</code>默认）的情况下，<strong>单个<code>hash</code>槽内元素个数为<code>8</code>的概率小于百万分之一</strong>。</li><li>红黑树转链表的阈值为<code>6</code>，主要是因为，如果也将该阈值设置于<code>8</code>，那么当<code>hash</code>碰撞在<code>8</code>时，会发生<strong>链表和红黑树的不停相互转换</strong>，白白浪费资源。</li></ul></li><li><code>HashMap</code>扩容大小为什么是<code>2</code>的幂?<ul><li>2的幂可以保证数组的长度是一个偶数，这样可以避免一些奇偶性的问题。</li><li>2的幂可以让<code>HashMap</code>的散列函数更简单高效，只需要用<code>hash</code>值和数组长度减一做按<strong>位与运算</strong>，就可以得到元素在数组中的位置。这样可以减少乘法和取模的开销，提高性能。</li><li>2的幂可以让<code>HashMap</code>的<strong>扩容更方便</strong>，只需要将数组长度乘以2，就可以得到新的容量。这样可以保证<strong>元素在扩容后的位置要么不变，要么在原来的基础上加上数组的旧长度</strong>。这样可以<strong>减少元素的重新散列</strong>，提高效率。</li></ul></li></ul></li><li><code>Hash</code>&nbsp;计算<ul><li>使高<code>16</code>位也参与到<code>hash</code>的运算能减少冲突：<code>(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</code></li></ul><ul><li>索引：<code>(n - 1) &amp; hash</code><ul><li><code>n</code>永远是<code>2</code>的次幂，所以&nbsp;<code>n-1</code>&nbsp;通过 二进制表示，永远都是<strong>尾端以连续<code>1</code>的形式</strong>表示</li><li>当<code>(n - 1)</code>&nbsp;和&nbsp;<code>hash</code>&nbsp;做与运算时，会保留<code>hash</code>中 后&nbsp;<code>x</code>&nbsp;位的&nbsp;<code>1</code></li></ul></li></ul></li><li><code>HashMap</code>在 <code>jdk1.7</code> 和 <code>jdk1.8</code> 的区别<ul><li>1.7采用数组+单链表，1.8在单链表超过一定长度后改成<strong>红黑树</strong>存储</li><li>1.7插入元素到单链表中采用头插入法，1.8采用的是<strong>尾插入法</strong>。<ul><li>在<code>jdk1.7</code>中采用头插入法，扩容时会改变链表中元素原本的顺序，以至于<strong>在并发场景下导致链表成环的问题</strong>。而在<code>jdk1.8</code>中采用尾插入法，在扩容时会保持链表元素原本的顺序，就不会出现链表成环的问题了。</li></ul></li><li>1.7<strong>扩容时</strong>需要重新计算哈希值和索引位置，消耗性能，而且多线程环境下会造成死锁。<strong>1.8并不重新计算哈希值，巧妙地采用<code>hash</code>和扩容后容量减一进行&amp;操作来计算新的索引位置</strong>。<ul><li>索引是&nbsp;<code>(n - 1) &amp; hash</code>, 当数组长度扩大一倍时，相当于在最高位加了一个<code>0</code>，那么原来的<code>hash</code>值和新的数组长度减一做按位与运算，<strong>结果要么和原来一样，要么多了一个旧容量的值</strong>。</li><li>比如旧容量：<code>n=0100</code>; 新容量：<code>n=1000</code>；则旧<code>(n - 1) = 0011</code>；新<code>(n - 1) = 0111</code><ul><li>如果<code>Key</code>的&nbsp;<code>hash</code>&nbsp;是&nbsp;<code>0011</code>, 则<code>0011 &amp; 0011 == 0011 &amp; 0111</code>, 位置不变</li><li>如果<code>Key</code>的&nbsp;<code>hash</code>&nbsp;是&nbsp;<code>1111</code>, 则<code>1111 &amp; 0011 != 1111 &amp; 0111</code><ul><li>新位置增加了<code>0100</code>,相当于旧数组的长度</li></ul></li></ul></li></ul></li></ul></li><li><code>HashMap</code> 多线程问题<ul><li>程序经常占了100%的CPU。CPU利用率过高，查看堆栈，你会发现程序都Hang在了<code>HashMap.get()</code>这个方法上了 （<code>jdk1.7</code>）<ul><li>因为多线程情况下，对同一个<code>HashMap</code>做<code>put</code>操作可能导致两个或以上线程同时做<code>rehash</code>动作，就可能导致循环链表出现，一旦出现线程将无法终止，持续占用CPU，导致CPU使用率居高不下</li><li><code>Hash</code>表这个容器当有数据要插入时，都会检查容量有没有超过设定的<code>thredhold</code>，如果超过，需要增大<code>Hash</code>表的尺寸，但是这样一来，整个<code>Hash</code>表里的元素都需要被重算一遍。这叫<code>rehash</code></li></ul></li><li>多线程<code>put</code>的时候可能导致元素丢失<ul><li>主要问题出在<code>addEntry</code>方法的<code>new Entry (hash, key, value, e)</code>，如果两个线程都同时取得了<code>e</code>,则他们下一个元素都是<code>e</code>，然后赋值给<code>table</code>元素的时候有一个成功有一个丢失。</li></ul></li><li>解决方案:<ol><li><code>Hashtable</code>替换<code>HashMap</code></li><li><code>Collections.synchronizedMap</code>将<code>HashMap</code>包装起来</li><li><code>ConcurrentHashMap</code>替换<code>HashMap</code></li></ol></li></ul></li><li><code>ConcurrentHashMap</code>：在默认理想状态下，可以支持 <code>16</code> 个线程执行并发写操作及任意数量线程的读操作<ul><li>底层数据结构<ul><li><code>&lt;jdk1.7&gt;</code> ：使用&nbsp;<code>Segment</code>数组 +&nbsp;<code>HashEntry</code>数组 + 链表</li></ul><ul><li><code>&lt;jdk1.8&gt;</code> ：使用&nbsp;<code>Node</code>数组 + 链表 + 红黑树</li></ul></li></ul><ul><li>效率<ul><li><code>&lt;jdk1.7&gt;</code>：<code>ConcurrentHashMap</code>&nbsp;使用的<strong>分段锁</strong>，如果一个线程占用一段，别的线程可以操作别的部分</li><li>&lt;<code>jdk1.8&gt;</code>：简化结构，<code>put</code>和<code>get</code>不用二次哈希，<strong>一把锁只锁住一个链表或者一棵树</strong>，并发效率更加提升</li></ul></li><li>线程安全<ul><li><code>&lt;JDK1.7&gt;</code>: 分段锁, 对整个桶数组进行了分割分段(<code>Segment</code>)，每一把锁只锁容器其中一部分数据，多线程访问容器里不同数据段的数据，就不会存在锁竞争，提高并发访问率</li><li><code>&lt;jdk1.8&gt;</code>:  使用的是&nbsp;<code>synchronized</code>&nbsp;关键字（优化后效率很高）同步代码块和&nbsp;<code>cas</code>(乐观锁)操作了维护并发</li></ul></li></ul></li><li><code>&lt;jdk1.7&gt; CouncurrentHashMap</code><ul><li>底层一个<code>Segments</code>数组，存储一个<code>Segments</code>对象，（其实就相当于一段一段的）一个<code>Segments</code>中储存一个<code>Entry</code>数组，存储的每个<code>Entry</code>对象又是一个链表头结点。</li><li>相当于<code>HashMap</code>嵌套<code>HashMap</code>，只不过第一层是加锁的，分段锁思想，所以需要两次Hash计算才能确定位置</li><li><code>Segment</code>内部类，继承<code>ReentrantLock</code></li><li><code>get</code><ol><li>第一次哈希找到对应的<code>Segment</code>段，调用<code>Segment</code>中的<code>get</code>方法</li><li>再次哈希找到对应的链表</li><li>最后在链表中查找</li></ol></li><li><code>put</code><ol><li>首先确定段的位置</li><li>调用<code>Segment</code>中的<code>put</code>方法<ol><li>加锁&nbsp;<code>lock()</code>;</li><li>检查当前<code>Segment</code>数组中包含的<code>HashEntry</code>节点的个数，如果超过阈值就重新<code>hash</code>(扩容)<ul><li>只是对&nbsp;<code>Segments</code>对象中的<code>Hashentry</code>数组进行重哈希</li></ul></li><li>然后再次<code>hash</code>确定放的链表。</li><li>在对应的链表中查找是否相同节点，如果有直接覆盖，如果没有将其放置链表尾部</li></ol></li></ol></li></ul></li><li><code>&lt;jdk1.8&gt; CouncurrentHashMap</code><ul><li><code>putVal</code><ol><li>如果数组”空”，进行数组初始化</li><li>找该&nbsp;<code>hash</code>&nbsp;值对应的数组下标，得到第一个节点&nbsp;<code>f</code><ul><li>如果数组该位置为空，用一次&nbsp;<code>CAS</code>&nbsp;操作将新<code>new</code>出来的&nbsp;<code>Node</code>节点放入数组<code>i</code>下标位置</li><li>如果不为空。用&nbsp;<code>synchronized</code>&nbsp;修饰</li></ul></li></ol></li></ul></li><li><code>Collections</code>工具类<ul><li><code>Collections.synchronizedXxx</code>: 同步集合</li><li><code>emptyXxx</code>: 空不可变</li><li><code>singletonXxx</code>: 单元素不可变</li><li><code>unmodifiableXxx</code>: 不可变</li><li><code>addAll</code>: 将所有指定元素添加到指定&nbsp;<code>collection</code>&nbsp;中</li><li><code>reverse</code>: 反转指定列表<code>List</code>中元素的顺序。</li><li><code>shuffle</code>: 集合元素进行随机排序，类似洗牌</li><li><code>replaceAll</code>: 使用新值替换&nbsp;<code>List</code>&nbsp;对象的所有旧值</li></ul></li><li>集合去重：需要重写比较对象的<code>HashCode</code>与<code>equal</code>方法<ul><li><code>Stream</code>流式去重:&nbsp;<code>distinct</code></li><li><code>HashSet</code>：通过调用元素内部的<code>hashCode</code>和<code>equals</code>方法实现去重<ul><li>首先调用<code>hashCode</code>方法，比较两个元素的哈希值，如果哈希值不同，直接认为是两个对象，停止比较。</li><li>如果哈希值相同，再去调用<code>equals</code>方法，返回<code>true</code>，认为是一个对象。返回<code>false</code>，认为是两个对象。</li></ul></li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java面试 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Obsidian 将编辑界面设为半透明</title>
+      <link href="/2024/02/25/template/obsidian-jiang-bian-ji-jie-mian-she-wei-ban-tou-ming/"/>
+      <url>/2024/02/25/template/obsidian-jiang-bian-ji-jie-mian-she-wei-ban-tou-ming/</url>
+      
+        <content type="html"><![CDATA[<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.workspace-leaf,.workspace-tab-header-container</span><span class="token punctuation">{</span>  <span class="token property">background</span><span class="token punctuation">:</span> transparent<span class="token important">!important</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token selector">.workspace-split.mod-root,.workspace-split.mod-root .view-content,.workspace-split.mod-root .view-header</span> <span class="token punctuation">{</span>  <span class="token property">background</span><span class="token punctuation">:</span> transparent<span class="token important">!important</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token selector">.view-header-title-container:not(.mod-at-end):after</span> <span class="token punctuation">{</span>  <span class="token property">background</span><span class="token punctuation">:</span> transparent<span class="token important">!important</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> config-template </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Obsidian </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>晨雨夜尾·遥思</title>
       <link href="/2024/02/24/zuo-pin/chen-yu-ye-wei-yao-si/"/>
       <url>/2024/02/24/zuo-pin/chen-yu-ye-wei-yao-si/</url>
