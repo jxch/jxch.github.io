@@ -409,6 +409,60 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2023/04/26/coding/linux-tian-jia-swap-jiao-huan-kong-jian/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Linux-添加Swap交换空间">
+                            
+                            <span class="card-title">Linux-添加Swap交换空间</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                mkdir /swap
+fallocate -l 2G /swap/swapfile1
+# 或者使用 dd 命令
+dd if=/dev/zero of=/swap/swapfile1 bs=1024 count=2097152
+
+chmod
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-26
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
+                                    使用手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Linux/">
+                            <span class="chip bg-color">Linux</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2023/04/26/yun-wei/jenkins-ubuntu-an-zhuang-jenkins/">
                         <div class="card-image">
                             
@@ -1336,55 +1390,6 @@ HBase-rowkey设计优化
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/23/coding/hbase-yu-fen-qu/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/36.jpg" class="responsive-img" alt="HBase-预分区">
-                            
-                            <span class="card-title">HBase-预分区</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                在默认情况下，在使用 hbase 创建表的时候会自动创建一个 region 分区，所有 hbase 的客户端的数据都写到这个 region 分区里面，一直到 region 足够大的时候才进行切分。每一个 region 维护着 startRo
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-23
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-category">
-                                    使用手册
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/HBase/">
-                            <span class="chip bg-color">HBase</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1491,7 +1496,7 @@ HBase-rowkey设计优化
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">365.6k</span>
+                        class="white-color">366.6k</span>
             
             
             
