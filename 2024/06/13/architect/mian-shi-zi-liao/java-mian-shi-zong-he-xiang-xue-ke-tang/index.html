@@ -1,0 +1,1781 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java面试-综合-享学课堂, PA &amp; CODING">
+    <meta name="description" content="大纲：
+
+Map
+JVM、GC、类加载
+线程池、高并发
+缓存
+HTTPS、单点登录
+幂等、限流
+一致性Hash算法
+事务
+动态代理
+SpringBoot启动机制
+SpringIOC容器启动流程
+简历
+
+
+Map
+
+HashMap: 数组，链">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java面试-综合-享学课堂 | PA &amp; CODING</title>
+    <link rel="icon" type="image/png" href="/favicon-kali.png">
+    
+    <style>
+        body{
+            background-image: url(/background.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
+</head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon-kali.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">PA &amp; CODING</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon-kali.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">PA &amp; CODING</div>
+        <div class="logo-desc">
+            
+            行到水穷处，坐看云起时
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/jxch" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/jxch" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/40.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java面试-综合-享学课堂</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java/">
+                                <span class="chip bg-color">Java</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Java%E9%9D%A2%E8%AF%95/" class="post-category">
+                                Java面试
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2024-06-13
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    5.4k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    19 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>大纲：</p>
+<ul>
+<li>Map</li>
+<li>JVM、GC、类加载</li>
+<li>线程池、高并发</li>
+<li>缓存</li>
+<li>HTTPS、单点登录</li>
+<li>幂等、限流</li>
+<li>一致性Hash算法</li>
+<li>事务</li>
+<li>动态代理</li>
+<li>SpringBoot启动机制</li>
+<li>SpringIOC容器启动流程</li>
+<li>简历</li>
+</ul>
+<hr>
+<h2 id="Map">Map</h2>
+<ul>
+<li><code>HashMap</code>: 数组，链表，红黑树（链表长度大于8之后）
+<ul>
+<li><code>hash</code>&nbsp;算法(确保足够随机)：<code>hash ^ (hash &gt;&gt;&gt; 16)</code></li>
+<li>数组下标：&nbsp;<code>hash &amp; (n-1)</code>&nbsp;等价于&nbsp;<code>hash % n</code></li>
+<li>扩容因子：0.75，变长2倍</li>
+</ul>
+</li>
+<li><code>Hashtable</code>: 读写都加了&nbsp;<code>synchronized</code>，高并发下效率低下</li>
+<li><code>ConcurrentHashMap</code>:
+<ul>
+<li>JDK1.7:&nbsp;<code>Segment</code>&nbsp;分段锁，需要进行两次<code>hash</code>计算。相当于嵌套的<code>HashMap</code>，只不过第一层是加锁的。</li>
+<li>JDK1.8: 分段锁粒度更小，并发度更高，每个数组<code>Node</code>都是一把锁, 取消了<code>Segment</code>, 只需要一次<code>hash</code>计算。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="JVM">JVM</h2>
+<ul>
+<li>JVM 运行时数据区
+<ul>
+<li>程序计数器</li>
+<li>虚拟机栈:&nbsp;==<strong>每个方法在被调用时会创建一个栈帧</strong>==，从调用到执行完成的过程，就是入栈出栈的过程。</li>
+<li>堆：最大的一块，所有线程共享，<strong>对象实例在堆里分配内存</strong>，是垃圾收集器（GC）管理的主要区域。</li>
+<li>方法区：存储已被虚拟机加载的==<strong>类信息、常量、静态变量、即时编译器编译后的代码</strong>==等数据</li>
+<li>直接内存：<strong>并不是虚拟机运行时数据区的一部分</strong>，也不是Java虚拟机规范中定义的内存区域。</li>
+<li>运行时常量池
+<ul>
+<li>JDK1.6: 方法去</li>
+<li>JDK1.7: 堆</li>
+<li>JDK1.8: 元空间（直接内存）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="GC">GC</h2>
+<ul>
+<li>垃圾回收 （GC）
+<ul>
+<li>标记-清除算法（Mark-Sweep）：内存碎片</li>
+<li>复制算法（Copying）: 空间浪费（用一半，回收时把数据复制到另一半）</li>
+<li>标记-整理算法（Mark-Compact）：性能影响（内存区域的移动），先标记可回收对象，回收时再顺序排列</li>
+<li>分代收集
+<ul>
+<li>新生代（复制算法）</li>
+<li>老年代（标记清除或标记整理算法）</li>
+</ul>
+</li>
+<li>回收器：串行，并行，G1
+<ul>
+<li>传统垃圾回收，在逻辑上分出了相对独立的两大块：新生代和老年代</li>
+<li>G1: 没有严格的新生代和老年代，而是把内存区域分成一个个小块，每一个小块即可能给新生代用也可能给老年代用。新生代依然是复制算法，老年代是标记清除算法。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="类加载">类加载</h2>
+<ul>
+<li>类加载机制：加载（类加载器），连接（验证，准备-<code>static</code>初始值，解析-常量值引用转实际值），初始化-<code>static</code>变量和语句块，使用，卸载
+<ul>
+<li>类加载器
+<ul>
+<li>启动类加载器（无法调用）：<code>Bootstrap - JAVA_HOME\lib</code></li>
+<li>扩展类加载器：<code>Extension JAVA_HOME\lib\ext</code></li>
+<li>应用程序加载器（程序中默认的加载器）：用户类路径上的类库</li>
+<li>自定义类加载器（部署热替换，类加密解密）</li>
+</ul>
+</li>
+<li>双亲委派：首先将加载任务委托给父加载器，依次递归，如果父类加载器可以完成加载任务，就成功返回；只有父类加载器无法完成加载任务时，才自己去加载。
+<ul>
+<li>具备了优先级的层次关系，保证Java程序稳定运行（比如启动类加载器的类无法擅自篡改）</li>
+<li>启动类加载器是用<code>C++</code>语言实现的，它负责加载<code>Java</code>核心类库，如<code>rt.jar</code>等。启动类加载器是虚拟机的一部分，它不是<code>java.lang.ClassLoader</code>的子类，也不受<code>Java</code>代码的控制。因此，启动类加载器里的类无法被用户篡改，除非修改虚拟机本身。</li>
+<li>双亲委派机制的作用是<strong>防止重复加载同一个类，以及保护核心类库不被恶意修改</strong>。如果用户自定义的类加载器不遵循双亲委派机制，那么可能会破坏类的唯一性，导致类型转换异常或安全漏洞。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="线程池">线程池</h2>
+<ul>
+<li>线程池：<code>corePoolSize, maximumPoolSize, keepAliveTime, workQueue, RejectedExecutionHandler</code>(拒绝策略)
+<ol>
+<li>当线程数小于<code>corePoolSize</code>, 会直接创建线程</li>
+<li>当线程数等于<code>corePoolSize</code>，会把任务提交到&nbsp;<code>workQueue</code></li>
+<li>==当<code>workQueue</code>满了，线程池又开始创建线程==
+<ul>
+<li>可以通过自定义队列的拒绝添加来提前开启线程，等线程满了可以继续往队列里放</li>
+</ul>
+</li>
+<li>当线程数等于<code>maximumPoolSize</code>, 开始启用拒绝策略&nbsp;<code>RejectedExecutionHandler</code>
+<ul>
+<li><code>AbortPolicy</code>: 抛出异常</li>
+<li><code>CallerRunsPolicy</code>: 谁提交的谁执行</li>
+<li><code>DiscardOldestPolicy</code>: 丢弃最老的任务，然后执行最新的任务</li>
+<li><code>DiscardPolicy</code>: 直接丢弃</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>线程池为什么这样设计：
+<ul>
+<li>线程的创建，需要获取全局锁，为了保证线程池的状态和线程数量的一致性。这也会影响线程池的效率，所以设计<code>corePoolSize</code>。
+<ul>
+<li><code>corePoolSize</code>&nbsp;是在不超时情况下，保持活跃的最少线程数。这里的超时指的是&nbsp;<code>ThreadPoolExecutor.allowCoreThreadTimeOut</code></li>
+</ul>
+</li>
+<li>线程是系统的稀缺资源，所以要尽量用最小的线程数干最多的事情。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="高并发">高并发</h2>
+<ul>
+<li>多线程下都概率远远大于写概率，如何解决并发问题
+<ul>
+<li>使用内置锁，会有性能问题</li>
+<li>一写多读：使用&nbsp;<code>volatile</code>&nbsp;关键字，不保证原子性，但是保证可见性</li>
+<li>多写多读：使用读写锁（<code>ReentrantReadWriteLock</code>）</li>
+<li>少写多读：写时复制容器（<code>CopyOnWriteXxx</code>），读写分离
+<ul>
+<li>缺陷：内存占用，数据一致性（只保证数据的最终一致性）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>高并发下，如何做到安全的修改同一行数据
+<ul>
+<li>JVM：内置锁<code>synchronized</code>；<code>Lock</code>（<code>finally</code>里释放锁）；</li>
+<li>分布式：分布式锁（DB 性能差，Redis 死锁，Zookeeper）
+<ul>
+<li>Zookeeper：存取数据，节点监听
+<ul>
+<li><code>PERSISTENT</code>: 持久化目录节点，断开连接后，节点依旧在</li>
+<li><code>PERSISTENT_SEQUENTIAL</code>: 持久化顺序编号目录节点，断开连接后，节点依旧在，给该节点名称进行顺序编号</li>
+<li><code>EPHEMERAL</code>: 临时目录节点，端口连接后，节点被删除</li>
+<li><code>EPHEMERAL_SEQUENTIAL</code>: 临时顺序编号目录节点，端口连接后，节点被删除，给该节点名称进行顺序编号</li>
+</ul>
+</li>
+<li>基于异常的（节点重名会报错）：使用临时节点
+<ul>
+<li>获得锁：创建临时目录节点成功（<code>ZkClien::createEphemeral</code>, 节点重名会报错）</li>
+<li>等待获取锁：监听锁的节点是否被删除（<code>IZkDataListener::handleDataDeleted; ZkClient::subscribDataChanges</code>）</li>
+<li>释放锁：删除锁节点（<code>ZkClient::delete; ZkClient::close</code>）</li>
+</ul>
+</li>
+<li>基于相互监听（性能高，占用资源，每个线程都会创建一个临时顺序编号节点）：==使用临时顺序编号节点==
+<ul>
+<li>获得锁：创建临时顺序编号节点，判断是不是排在最前面，是就获得锁</li>
+<li>等待获取锁：监听前一个节点是否被删除</li>
+<li>释放锁：删除自己的临时顺序编号节点</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="缓存">缓存</h2>
+<ul>
+<li>Redis 高性能的原因
+<ul>
+<li>数据存在内存中</li>
+<li>存储结构简单</li>
+<li>单线程，没有多线程的资源竞争</li>
+<li>多路复用，把多个请求的指令放到一个队列里，让单个Redis线程去队列拿指令</li>
+<li>resp协议，协议简单，人类可读：代表指令由几部分组成，$代表每部分有几个字符
+<ul>
+<li><code>set jxch value</code>&nbsp;-&gt;&nbsp;<code>*3 $3 set $4 jxch $5 value</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>怎么控制缓存的更新：使用&nbsp;<code>SpringCache - CacheManger(RedisTemplate); CacheService</code>
+<ul>
+<li>查询：
+<ol>
+<li>从缓存中加载数据</li>
+<li>如果缓存中有就直接返回给调用端</li>
+<li>如果缓存中没有数据，就从数据库中加载数据（如果要求强一致性的话，同一时间只允许一个请求访问数据库）</li>
+<li>数据库查询的结果不为空，就把数据放入缓存中</li>
+</ol>
+</li>
+<li>更新：
+<ul>
+<li>数据实时同步失效（增量/主动）：==强一致性，<strong>更新数据库之后淘汰缓存，读请求更新缓存</strong>，为避免缓存雪崩，<strong>更新缓存的过程需要进行同步控制，同一时间只允许一个请求访问数据库</strong>，为了保证数据的一致性还要<strong>加上缓存失效</strong>。==
+<ul>
+<li>不能先淘汰缓存再更新数据库，会导致并发问题，大量读请求访问到数据库。</li>
+<li>锁的粒度要细，避免阻塞太多线程；单体应用的话注意不要意外释放其他线程的锁。</li>
+<li>==<strong>缺点：如果更新业务暂时连不上缓存的话，其他业务就会出现脏读</strong>==</li>
+</ul>
+</li>
+<li>数据准实时更新（增量/被动）：准一致性，更新数据库后，==<strong>异步更新缓存</strong>==，使用多线程技术或者MQ实现。优点是和缓存解耦。
+<ol>
+<li>业务服务更新数据</li>
+<li>业务服务通过MQ向缓存服务发送消息</li>
+<li>缓存服务接收消息</li>
+<li>缓存服务读取数据</li>
+<li>缓存服务更新缓存</li>
+</ol>
+</li>
+<li>==任务调度更新（全量/被动）==：最终一致性，采用任务调度框架，按照一定频率更新。比如报表数据（年度，月度），在晚上3点同步一次。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="HTTPS">HTTPS</h2>
+<ul>
+<li>HTTP和HTTPS有什么区别
+<ul>
+<li>HTTP是不安全的：数据拦截、数据篡改、数据攻击</li>
+<li>HTTPS的安全需求：数据加密、身份验证、数据完整性</li>
+<li>对称加密：就是一个密钥可以加密也可以解密</li>
+<li>非对称加密：就是公钥加密的内容，必须用私钥才能解密，私钥加密的内容，必须用公钥才能解密</li>
+<li>HTTPS请求过程：
+<ol>
+<li>客户端向服务器发送HTTPS请求，==<strong>请求服务器的公钥证书</strong>==。</li>
+<li>服务器将公钥证书发送给客户端，公钥证书包含了服务器的公钥、证书持有者信息、数字签名等。</li>
+<li>客户端验证服务器的证书，主要是验证证书的有效期、颁发者、域名等，以及证书的数字签名是否合法。如果验证通过，客户端就信任了服务器的公钥。</li>
+<li><strong>客户端随机生成一个用于对称加密的密钥，称为==会话密钥，然后用服务器的公钥加密后发送给服务器==。</strong></li>
+<li><strong>服务器用自己的==私钥解密得到会话密钥，然后用会话密钥加密一个确认信息发送给客户端==。</strong></li>
+<li><strong>客户端==用会话密钥解密得到确认信息</strong>==，然后开始用会话密钥加密解密数据，进行安全的通信。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="单点登录">单点登录</h2>
+<ul>
+<li><code>Cookie/Session</code>&nbsp;机制：单点登录
+<ul>
+<li><code>Cookie</code>:&nbsp;<code>key:value</code>键值信息
+<ul>
+<li>==不可跨域名==（只能拿到当前域名下的cookie，包含父级域名）</li>
+<li>有效期限制</li>
+<li>path表示携带cookie的请求路径（/: 表示全部请求都要携带cookie）</li>
+</ul>
+</li>
+<li><code>Session</code>: 服务器端基于内存的缓存技术，用来保存针对每个用户的会话数据
+<ul>
+<li>通过<code>Session ID</code>来区分用户，用户只要连接到服务器，服务器就会为之分配一个唯一的<code>Session ID</code></li>
+<li>有失效时间（超时限为得到连接的<code>session</code>将被销毁）</li>
+<li><code>Session</code>用法：<code>HttpServletRequest::getSession</code>
+<ul>
+<li><code>HttpSession::setAttribute</code></li>
+<li><code>HttpSession::getAttribute</code></li>
+<li><code>HttpSession::removeAttribute</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>Cookie</code>和<code>Session</code>的交互
+<ol>
+<li>服务器新建一个<code>Session</code>，==把<code>SessionID</code>设置到<code>Cookie</code>中==</li>
+<li>服务器通过&nbsp;<code>HttpServletResponse::addCookie</code>&nbsp;向<code>Header</code>中设置<code>Cookie</code></li>
+<li>浏览器接收<code>Header</code>中的<code>Cookie</code>并保存，在下次请求的<code>Header</code>中，携带<code>Cookie</code>信息</li>
+<li>当程序请求<code>Session</code>时，首先根据<code>Cookie</code>中携带的<code>SessionID</code>检索<code>Session</code></li>
+<li>检索不到，就新建一个<code>Session</code>，重复第1步</li>
+</ol>
+</li>
+<li>使用场景：<code>Cookie</code>数据存放在客户的浏览器上，<code>Session</code>数据存放在服务器上
+<ul>
+<li><code>Cookie</code>&nbsp;很不安全，客户端可以分析并进行<code>Cookie</code>欺骗，所以如果考虑安全性的话，应该多用<code>Session</code></li>
+<li><code>Session</code>&nbsp;会在一定时间保存在服务器上。当访问增多，会占用服务器性能，所以如果考虑减轻服务器压力的话，应该多用<code>Cookie</code></li>
+<li>单个<code>Cookie</code>保存的数据不能超过<code>4K</code>，很多浏览器都限制一个站点最多保存<code>20</code>个<code>Cookie</code></li>
+<li>==若客户端禁止<code>Cookie</code>：一般使用<code>URL</code>重写，把<code>SessionID</code>直接附加到<code>URL</code>后面==</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="幂等、限流">幂等、限流</h2>
+<ul>
+<li>A服务调用B服务多接口，响应时间最短方案：改串行请求为并行请求</li>
+<li>A系统给B系统转100块钱，如何实现？
+<ul>
+<li><code>@Transactional</code>&nbsp;事务里有外调耗时接口占用DB连接怎么办？
+<ul>
+<li><strong>使用编程式事务</strong>&nbsp;<code>TransactionTemplate</code>:&nbsp;<code>template.execute</code></li>
+<li>为了防止第三方请求挂了，==<strong>先记录请求，标记为正在处理中</strong>==</li>
+</ul>
+</li>
+<li>如何保证==<strong>幂等性</strong>==
+<ul>
+<li>==基于状态机的<strong>乐观锁</strong>==（数据库version字段，确保只有一个线程操作数据库，比如能成功更新version为0再向下执行）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如何避免<code>MQ</code>重复消费（幂等性）：消息超时重传（生产者重传和<code>MQ</code>重传）
+<ul>
+<li>幂等性：不论操作重复多少次都不改变结果</li>
+<li>==乐观锁==：数据库版本号<code>Version</code>，&nbsp;<code>set version=version+1 where version=oldversion</code></li>
+<li>去重表：构建一个存储任务唯一ID的表，执行任务前先检查去重表里有没有执行过这个任务（为了加快速度可以放到缓存里）</li>
+</ul>
+</li>
+<li>如何做限流策略（==令牌桶和漏斗算法==）
+<ul>
+<li>漏桶：请求先进入漏桶里（请求队列），当请求量大的时候，超出队列的部分可以熔断</li>
+<li>令牌桶（用的最多）：令牌池不断地以一定的速度生成一定量的令牌，客户端调服务之前，先去令牌桶请求一个令牌才能调
+<ul>
+<li>优点，可以应对突发流量，比如秒杀1000个商品可以预制1000个令牌</li>
+<li>当令牌桶里没有令牌时，可以拒绝服务</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="一致性Hash算法">一致性Hash算法</h2>
+<ul>
+<li>一致性<code>Hash</code>算法（<code>Hash</code>环）：解决分布式扩容后需要重新计算<code>hash</code>的问题（代价太高）
+<ul>
+<li>==Hash环==：长度是2^32，确定服务器在此环上的位置</li>
+<li>数据存放：对2^32取模，确定数据在此环上的位置，然后存放在此环顺时针方向上最近的服务器上</li>
+<li>优点：服务器节点的增删只影响到少量的数据</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="事务">事务</h2>
+<ul>
+<li>事务
+<ul>
+<li>事务的七个传播属性
+<ul>
+<li><code>PROPAGAtiON_REQUIRED</code>: ==支持当前事务，如果当前没有事务，就新建一个事务==。这是默认的。</li>
+<li><code>PROPAGATION_SUPPORTS</code>: ==支持当前事务，如果当前没有事务，就以非事务方式执行==</li>
+<li><code>PROPAGATION_MANDATORY</code>: ==支持当前事务，如果当前没有事务，就抛出异常==</li>
+<li><code>PROPAGATION_REQUIRES_NEW</code>: ==新建事务，如果当前存在事务，把当前事务挂起==</li>
+<li><code>PROPAGATION_NOT_SUPPORTED</code>: ==以非事务方式执行操作，如果当前存在事务，就把当前事务挂起==</li>
+<li><code>PROPAGATION_NEVER</code>: ==以非事务方式执行，如果当前存在事务，就抛出异常==</li>
+<li><code>PROPAGATION_NESTED</code>: 如果当前存在事务，则在==嵌套事务==内执行（可以实现<strong>部分回滚</strong>）。如果当前没有事务，则与<code>PROPAGAtiON_REQUIRED</code>类似操作（新建一个事务）
+<ul>
+<li>==嵌套的事务可以<strong>独立于当前事务进行单独地提交或回滚</strong>==，如果外部事务提交，嵌套事务也会被提交，这个规则同样适用于回滚</li>
+<li>这是因为<code>PROPAGATION_NESTED</code>执行后并不是真正地提交了子事务，而是将子事务的状态保存在一个<strong>保存点</strong>上，等待外部事务的最终提交或回滚。<strong>如果外部事务提交，那么子事务也会提交，如果外部事务回滚，那么子事务也会回滚到保存点</strong>。</li>
+<li>这意味着<code>PROPAGATION_NESTED</code>可以实现部分回滚，而<code>PROPAGATION_REQUIRED</code>只能全部回滚或全部提交</li>
+<li>==比如<code>PROPAGATION_NESTED</code>失败了，但是外部事务成功了，则<strong>外部事务可以提交，只是嵌套事务部分回滚</strong>==</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>事物的五种隔离级别：指的是若干个并发事务之间的隔离程度
+<ul>
+<li><code>ISOLATION_DEFAULT</code>: 数据库默认的事务隔离级别
+<ul>
+<li><code>MySQL(ISOLATION_REPEATABLE_READ)</code>：<code>show variables like '%tx_isolation%'</code></li>
+</ul>
+</li>
+<li><code>ISOLATION_READ_UNCOMMITTED</code>（未提交读）: 最低隔离级别，<strong>允许另外一个事务可以看到这个事务未提交的数据</strong>，==<strong>会产生脏读，不可重复读和幻读==。</strong></li>
+<li><code>ISOLATION_READ_COMMITTED</code>（已提交读，不可重复读）: 保证事务修改的数据提交后才能被另外一个事务读取。<strong>另外一个事务不能读取该事务未提交的数据</strong>。==<strong>可以避免脏读出现，但是可能会出现不可重复读和幻读==。</strong></li>
+<li><code>ISOLATION_REPEATABLE_READ</code>（可重复读）:&nbsp;==<strong>可以防止脏读和不可重复读。但是可能出现幻读</strong>==。它除了保证一个事务不能读取另一个事务未提交的数据外，还保证了不可重复读的产生。</li>
+<li><code>ISOLATION_SERIALIZABLE</code>（可串行化）: 最高代价但是最可靠的事务隔离级别。事务被处理为<strong>顺序执行。防止脏读，不可重复读和幻读。</strong>&nbsp;工作中尽量不要用，因为它会<strong>锁表</strong>。</li>
+</ul>
+</li>
+<li>脏读：读取未提交的数据</li>
+<li>不可重复读：在同一个事务里面读取同一行数据，产生了不一样的结果（第二次读的时候，其他事务进行了提交）</li>
+<li>幻读：多次查询同一个范围的数据，但得到的结果集不一致。这是因为在这个过程中，其他事务可能已经新增或删除了符合该范围条件的数据行。幻读可能会导致数据查询结果不准确。</li>
+<li>事务隔离级别越高，越能保证数据的一致性和完整性，但是执行效率也越低。</li>
+<li>MySQL开启事务：<code>BEGIN</code>；回滚：<code>ROLLBACK</code></li>
+</ul>
+</li>
+<li><code>@Transaction</code>位置以及回滚策略
+<ul>
+<li>不建议写在接口上（会导致事务丢失且代理行为不一致者不可预测的代理行为）
+<ul>
+<li>如果用<code>CGLIB</code>的动态代理会导致事务丢失，因为<code>Spring</code>只会检测被代理类上的注解</li>
+<li>只有用<code>JDK</code>的动态代理才会生效，因为<code>Spring</code>会检测接口上的注解</li>
+</ul>
+</li>
+<li>==建议写在业务实现类上，只能写在<code>public</code>方法上，且方法只能被外部调用才生效==
+<ul>
+<li>如果用<code>JDK</code>的代理方式，很好理解，接口里都是<code>public</code>方法</li>
+<li>如果使用<code>CGLIB</code>代理方式，是不可以代理<code>final</code>和<code>private</code>的，<code>CGLIB</code>虽然可以代理<code>protected</code>方法，但是<code>Spring AOP</code>会先判断该方法是否是<code>public</code>的，如果不是，就会用反射调用原始方法，所以写在<code>protected</code>方法上也会失效</li>
+<li><code>Spring AOP</code>这样设计一方面也是为了保持和<code>JDK</code>代理行为的一致性，因为它默认使用&nbsp;<code>JDK</code>&nbsp;动态代理来实现，如果被代理的类没有实现接口，则会自动使用&nbsp;<code>CGLIB</code>&nbsp;来进行代理。</li>
+<li><code>AOP</code>代理是通过代理对象访问原方法，如果在原方法内直接调用内部方法，就不会走代理对象了，所以只能外部调用</li>
+</ul>
+</li>
+<li>事务回滚（按下列顺序处理）：
+<ol>
+<li><code>noRollbackFor</code>：不回滚，提交</li>
+<li><code>rollbackFor</code>：回滚</li>
+<li><code>RuntimeException</code>：回滚</li>
+<li>发生其他异常时：不回滚，提交</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="动态代理">动态代理</h2>
+<ul>
+<li>动态代理: 是使用反射和字节码技术，在运行期创建指定接口或类的子类（动态代理）以及其实例对象的技术，通过这个技术可以<strong>无侵入</strong>性的为代码进行增强
+<ul>
+<li>JDK：<code>Proxy::newProxyInstance</code>，<code>InvocationHandler::invoke</code>
+<ul>
+<li>被代理的类必须实现一个接口</li>
+</ul>
+</li>
+<li>CGLIB: 是一个基于ASM的字节码生成库，它允许我们在运行时对字节码进行修改和动态生成。CGLIB通过<strong>继承方式</strong>实现代理;
+<ul>
+<li><code>Enhancer</code>：来指定要代理的目标对象、实际处理代理逻辑的对象，最终通过调用<code>create()</code>方法得到代理对象，对这个对象所有非<code>final</code>方法的调用都会转发给<code>MethodInterceptor</code>;
+<ul>
+<li><code>Enhancer::setSuperclass</code></li>
+<li><code>Enhancer::setCallback</code></li>
+<li><code>Enhancer::create</code></li>
+</ul>
+</li>
+<li><code>MethodInterceptor</code>：动态代理对象的方法调用都会转发到<code>intercept</code>方法进行增强；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="SpringBoot启动机制">SpringBoot启动机制</h2>
+<ul>
+<li><code>SpringBoot</code>&nbsp;启动机制
+<ul>
+<li>整合三方依赖：<code>maven</code>父子继承</li>
+<li>无配置文件集成<code>SpringMvc</code>: 内置<code>Tomcat</code>，通过<code>@EnableWebMvc</code>启动<code>SpringMvc</code>
+<ul>
+<li><code>@SpringBootApplication -&gt; @SpringBootConfiguration; @EnableAutoConfiguration; @ComponentScan</code></li>
+<li><code>@EnableAutoConfiguration -&gt; @Import(AutoConfigurationImportSelector.class)</code></li>
+<li><code>class AutoConfigurationImportSelector implements DeferredImportSelector -&gt; selectImports()</code></li>
+<li><code>selectImports() -&gt; getCandidateConfigurations() -&gt; META-INF/spring.factories</code></li>
+<li><code>spring-boot-autoconfigure.jar -&gt; META-INF/spring.factories</code></li>
+<li><code>META-INF/spring.factories -&gt; xxx.xxx.WebMvcAutoConfiguration</code></li>
+</ul>
+</li>
+<li><code>Tomcat</code>&nbsp;是怎么启动的
+<ul>
+<li><code>TomcatWebServerFactoryCustomizer</code>&nbsp;注册
+<ul>
+<li><code>META-INF/spring.factories -&gt; xxx.xxx.EmbeddedWebServerFactoryCustomizerAutoConfiguration -&gt; @ConditionalOnClass({Tomcat.class, UpgradeProtocol.class})</code></li>
+<li><code>@Bean TomcatWebServerFactoryCustomizer -&gt; implements WebServerFactoryCustomizer</code></li>
+<li><code>WebServerFactoryCustomizerBeanPostProcessor -&gt; List&lt;WebServerFactoryCustomizer&lt;?&gt;&gt;</code></li>
+</ul>
+</li>
+<li><code>TomcatServletWebServerFactory</code>&nbsp;注册
+<ul>
+<li><code>META-INF/spring.factories -&gt; xxx.xxx.ServletWebServerFactoryAutoConfiguration -&gt; @Import(EmbeddedTomcat.class) @Bean@ConditionalOnClass(name= "org.apache.catalina.startup.Tomat")</code></li>
+<li><code>EmbeddedTomcat -&gt; @ConditionalOnClass({Servlet.class, Tomcat.class, UpgradeProtocol.class}) @Bean TomcatServletWebServerFactory</code></li>
+</ul>
+</li>
+<li><code>TomcatServletWebServerFactory::getWebServer</code>&nbsp;启动
+<ul>
+<li><code>TomcatServletWebServerFactory implements ServletWebServerFactory::getWebServer</code></li>
+<li><code>SpringApplicaiton::run -&gt; refreshContext() -&gt; AbstractApplicationContext:::refresh -&gt; ServletWebServerApplicationContext::onRefresh -&gt; createWebServer() -&gt; ServletWebServerFactory::getWebServer</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="SpringIOC容器启动流程">SpringIOC容器启动流程</h2>
+<ul>
+<li><code>Spring IOC</code>&nbsp;容器启动流程
+<ul>
+<li><code>IOC</code>&nbsp;容器，就是内存里的&nbsp;<code>Map&lt;beanname, bean&gt;</code></li>
+<li><code>ApplicationContext app = new AnnotationConfigApplicationContext(App.class)</code></li>
+<li><code>AbstractApplicationContext::refresh</code></li>
+<li><code>obtainFreshBeanFactory</code>&nbsp;获取<code>Bean</code>工厂</li>
+<li><code>prepareBeanFactory</code>&nbsp;准备上下文</li>
+<li><code>postProcessBeanFactory</code>&nbsp;beanFactory 后置处理器</li>
+<li><code>invokeBeanFactoryPostProcessors</code>&nbsp;调用 beanFactory 后置处理器</li>
+<li><code>registerBeanPostProcessors</code>&nbsp;注册 Bean 后置处理器</li>
+<li><code>initMessageSource</code>&nbsp;初始化上下文</li>
+<li><code>initApplicationEventMulticaster</code>&nbsp;初始化事件器</li>
+<li><code>onRefresh</code>&nbsp;初始化特殊 Bean</li>
+<li><code>registerListeners</code>&nbsp;监听器</li>
+<li><code>finishBeanFactoryInitialization</code>&nbsp;实例化非懒加载的bean
+<ul>
+<li><code>preInstantiateSingletons -&gt; getBean -&gt; doGetBean</code></li>
+<li><code>getSingleton -&gt; Map&lt;String, Object&gt; singletonObjects</code>&nbsp;先去缓存中拿</li>
+<li><code>createBean -&gt; doCreateBean</code>&nbsp;没有的话就创建Bean</li>
+<li><code>createBeanInstance</code>&nbsp;创建实例</li>
+<li><code>populateBean</code>&nbsp;属性赋值</li>
+<li><code>initializeBean</code>&nbsp;初始化Bean
+<ul>
+<li><code>invokeAwareMethods</code>&nbsp;Aware</li>
+<li><code>applyBeanPostProcessorsBeforeInitialization</code>&nbsp;前置处理器</li>
+<li><code>invokeInitMethods</code>&nbsp;初始化</li>
+<li><code>applyBeanPostProcessorsAfterInitialization</code>&nbsp;后置处理器</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>finishRefresh</code>&nbsp;发布完成事件</li>
+<li><code>close() -&gt; doClose()</code>&nbsp;关闭容器
+<ul>
+<li><code>destroyBeans</code>&nbsp;销毁Bean</li>
+<li><code>closeBeanFactory</code>&nbsp;关闭Bean工厂</li>
+<li><code>onClose</code>&nbsp;子类(<code>AbstractApplicationContext</code>)自定义清理工作</li>
+<li><code>resetCommonCaches</code>&nbsp;重置缓存，避免内存泄漏</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="简历">简历</h2>
+<ul>
+<li>简历：简洁
+<ul>
+<li>个人概况；教育背景；求职意向；职业技能；工作经验；项目经验；自我评价；证书</li>
+</ul>
+</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">钱不寒</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://jxch.github.io/2024/06/13/architect/mian-shi-zi-liao/java-mian-shi-zong-he-xiang-xue-ke-tang/">https://jxch.github.io/2024/06/13/architect/mian-shi-zi-liao/java-mian-shi-zong-he-xiang-xue-ke-tang/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">钱不寒</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java/">
+                                    <span class="chip bg-color">Java</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2024/06/13/architect/mian-shi-zi-liao/java-mian-shi-za-xiang-ji-chu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Java面试-杂项-基础">
+                        
+                        <span class="card-title">Java面试-杂项-基础</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java%E9%9D%A2%E8%AF%95/" class="post-category">
+                                    Java面试
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2024/06/13/architect/mian-shi-zi-liao/java-mian-shi-shu-ju-ku-ji-chu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/42.jpg" class="responsive-img" alt="Java面试-数据库-基础">
+                        
+                        <span class="card-title">Java面试-数据库-基础</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java%E9%9D%A2%E8%AF%95/" class="post-category">
+                                    Java面试
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java-%E6%95%B0%E6%8D%AE%E5%BA%93/">
+                        <span class="chip bg-color">Java-数据库</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2024</span>
+            
+            <a href="/about" target="_blank">钱不寒</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+                <span id="translate">|&nbsp;繁/简：</span><a id="translateLink" href="javascript:translatePage();">繁</a>
+            
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">456.3k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "11";
+                        var startDate = "1";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/jxch" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:qianbuhan@proton.me" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://www.facebook.com/profile.php?id=100073531534496" class="tooltipped" target="_blank" data-tooltip="关注我的Facebook: https://www.facebook.com/profile.php?id=100073531534496" data-position="top" data-delay="50">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+
+
+
+    <a href="https://twitter.com/chengbushang" class="tooltipped" target="_blank" data-tooltip="关注我的Twitter: https://twitter.com/chengbushang" data-position="top" data-delay="50">
+        <i class="fab fa-twitter"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2455930800" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2455930800" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+    <a href="https://weibo.com/u/7558713016" class="tooltipped" target="_blank" data-tooltip="关注我的微博: https://weibo.com/u/7558713016" data-position="top" data-delay="50">
+        <i class="fab fa-weibo"></i>
+    </a>
+
+
+
+    <a href="https://www.zhihu.com/people/qianbuhan" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/qianbuhan" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          if (window.mermaid) {
+            mermaid.initialize({theme: 'forest'});
+          }
+        </script>
+    
+
+    
+        <script type="text/javascript" src="/js/tw_cn.js"></script>
+        <script type="text/javascript">
+          var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+          var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+          var cookieDomain = "https://jxch.github.io"; //Cookie地址, 一定要设定, 通常为你的网址
+          var msgToTraditionalChinese = "繁"; //此处可以更改为你想要显示的文字
+          var msgToSimplifiedChinese = "简"; //同上，但两处均不建议更改
+          var translateButtonId = "translateLink"; //默认互换id
+          translateInitilization();
+        </script>
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

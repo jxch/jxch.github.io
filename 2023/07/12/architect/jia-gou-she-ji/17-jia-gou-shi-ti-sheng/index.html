@@ -1,0 +1,1723 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="17.架构师提升, PA &amp; CODING">
+    <meta name="description" content="作为一个架构师仅仅掌握这些“硬”知识、“硬”技能还不够，“业务驱动技术”，但是业务领域更多是很多“软”性的、抽象的技能。一旦一个东西呈“软”性的，大家虽然知道这类东西存在，但又难于表述。
+业务架构
+业务意识
+互联网时代有个岗位——产品经理。">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>17.架构师提升 | PA &amp; CODING</title>
+    <link rel="icon" type="image/png" href="/favicon-kali.png">
+    
+    <style>
+        body{
+            background-image: url(/background.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
+</head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon-kali.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">PA &amp; CODING</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon-kali.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">PA &amp; CODING</div>
+        <div class="logo-desc">
+            
+            行到水穷处，坐看云起时
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/jxch" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/jxch" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/41.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">17.架构师提升</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%9E%B6%E6%9E%84%E5%B8%88/">
+                                <span class="chip bg-color">架构师</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="post-category">
+                                架构设计
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-07-12
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    12.4k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    41 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>作为一个架构师仅仅掌握这些“硬”知识、“硬”技能还不够，“<strong>业务驱动技术</strong>”，但是业务领域更多是很多“软”性的、抽象的技能。一旦一个东西呈“软”性的，大家虽然知道这类东西存在，但又难于表述。</p>
+<h1>业务架构</h1>
+<h2 id="业务意识">业务意识</h2>
+<p>互联网时代有个岗位——产品经理。而在互联网大规模发展起来之前，软件行业通常称为“需求分析师”。技术不是无源之水，一旦离开业务纯粹地谈技术，就失去了驱动技术发展的根本要素。另一方面，研发部门的人力资源和时间资源是有限的，而业务需求是无限的，要用有限的资源应对无限的需求，必然存在需求的取舍问题，而这种取舍往往也会影响系统的架构设计。对于一个技术人员，不需要像产品经理或需求分析师一样对需求了如指掌，但具有良好的业务意识却是做业务架构的基本条件。</p>
+<ol>
+<li>需求来自何处？</li>
+<li>真需求还是伪需求
+<ol>
+<li>技术人员经常会听到要开发一个某某功能、一个某某系统，但“功能”和“系统”并不是需求。需求是要解决的“问题”，而问题一定是系统所要面对的用户问题或客户问题，功能或系统只是解决问题的一种答案而已。</li>
+<li>一个需求被用户或客户提出来，可能经过总监、组长、产品经理层层传导，等传到了技术人员，可能已经不是最初的需求，最后做出来的东西往往不是对方真正想要的。</li>
+<li>所以，作为一个技术人员，当从产品经理接到需求的时候，一定要回溯，明确需求是在什么背景下提出的，究竟要解决用户的什么问题。</li>
+</ol>
+</li>
+<li>产品手段vs技术手段: 通过产品的设计解决技术问题</li>
+<li>需求的优先级: 系统的架构是被需求驱动着一步步迭代、升级</li>
+</ol>
+<h2 id="什么是业务">什么是业务</h2>
+<p>个内容是否算作一个“业务”往往与公司的长期战略、盈利模式、发展阶段、组织架构密切相关，并没有一个标准的划分方式。但抛开这些差异性，一个内容能称为一个“业务”，往往具有一个特点，就是“<strong>闭环</strong>”。</p>
+<ul>
+<li>团队闭环：有自己的产品、技术、运营和销售，联合作战。</li>
+<li>产品闭环：从内容的生成到消费，整条链路把控。</li>
+<li>商业闭环：具备了自负盈亏的能力（即使短期没有，长期也是向这个发展方向）</li>
+<li>纵向闭环：某个垂直领域涵盖从前到后。</li>
+<li>横向闭环：平台模式，横向覆盖某个横切面。</li>
+</ul>
+<p>同时闭环可大可小。</p>
+<ul>
+<li>小闭环:：一个部门内部的某项内容有独立的产品、技术、运营团队，独立运作。</li>
+<li>大闭环：事业群、事业部级别，公司高层战略来决定的。</li>
+<li>更大的闭环：产业上下游，构建完整的生态体系。</li>
+</ul>
+<h2 id="“业务架构”的双重含义">“业务架构”的双重含义</h2>
+<p>前面的案例讨论的“业务”，其实对应的是“业务架构”一词的字面意思，也就是“业务的架构”。这通常关乎大的战略，主要是从商业角度去看，公司高层领导决定的。但对于技术人员来说，讨论业务架构的时候则是另外一个意思:“支撑业务的技术架构”。注意，这里的落脚点在技术上，是从技术的视角看业务应该如何划分。<strong>业务架构既关乎组织架构，也关乎技术架构</strong>，业务架构、组织架构和技术架构三者之间的关系是怎么样的呢？</p>
+<ol>
+<li>先说业务架构的第一重意思。从理论上讲，合理的团队的组织架构应该是根据业务的发展来决定的。不同的公司在不同的发展阶段会根据业务的发展情况，将壮大的业务拆分，萎缩的业务合并。拆分到一定的时候又合并，组织架构相应地跟着调整，相应的技术团队跟着整合，技术架构自然也会跟着变化。这种变化规律在半个世纪前就已经被提出，也就是 <strong>“康威定律”：一个组织产生的系统设计等同于组织之内、组织之间的沟通结构。这也意味着：如果组织架构不合理，则会约束业务架构，也约束技术架构的发展。而组织架构的调整涉及部门利益的重新分配，所以往往也只能由高层来推动。</strong></li>
+<li>业务架构的第二重意思。“支持业务的技术架构”,业务架构和技术架构会相互作用、相互影响。举个例子，对于广告业务，如果认为CPC（效果广告）、CPM（展示广告）、CPT（按时间段计费）是三个业务，可能会各自设计三套技术架构方案，并让三个团队去做；但如果认为是一个业务，会思考这三者之间哪些是共用的，哪些又是个性化的，尽可能把三者通过一个技术架构支撑，让一个团队去做。这种<strong>技术的思考会反过来影响业务，重新思考团队的组织方式，团队的组织方式又会变,接下来又会影响业务的发展方式。</strong></li>
+</ol>
+<h2 id="“业务架构”与“技术架构”的区分">“业务架构”与“技术架构”的区分</h2>
+<p>之所以要谈“分”，是因为经常遇到的情况是：<strong>明明是业务问题，却想用技术手段解决；明明是技术问题，由于技术无法实现，反过来将就业务；可能既不是业务问题，也不是技术问题,而是组织架构问题，是部门利益问题，是公司的盈利模式问题。</strong></p>
+<p>一般技术架构要关注的一系列问题:</p>
+<ol>
+<li>你的系统是在线系统还是离线系统？</li>
+<li>如果是在线系统，需要拆分成多少个服务？每个服务的QPS 是多少，需要部署多少台机器?</li>
+<li>运行方式是多线程，多进程？还是线程同步机制，进程同步机制？</li>
+<li>如果是离线系统？有多少个后台任务？任务是单机，还是集群调度？</li>
+<li>对应的数据库的表设计？是否有分库分表？</li>
+<li>数据库的高可用？</li>
+<li>服务接口的API 设计？</li>
+<li>是否用了缓存？缓存数据结构是怎样的？缓存数据更新机制？缓存的高可用？</li>
+<li>是否用了消息中间件？消息的消费策略？</li>
+<li>是否有限流、降级、熔断措施？</li>
+<li>监控、报警机制？</li>
+<li>服务之间的数据一致性如何保证？比如分布式事务。</li>
+</ol>
+<p>通过上面一系列问题可以看到，技术架构涉及的都是“系统"“服务”“接口”“表”“机器”“缓存”这样技术性很强的词语。这些是开发人员直接可以通过写代码实现的，很务实，没有虚的内容在里面。把上面这些内容梳理一下，归类后就变成了我们经常挂在嘴边的各种架构词汇：</p>
+<ol>
+<li>物理架构（物理部署图）;</li>
+<li>运行架构（多线程、多进程）；</li>
+<li>数据架构（存储系统的选择、数据库表的schema）；</li>
+<li>应用架构（系统的微服务划分）；</li>
+</ol>
+<p>从具体技术到抽象技术，再到业务，所用的词汇会越来越抽象，越来越偏向各自的领域，则在沟通和表达过程中，产生歧义的概率就越大。<strong>实践中只有时刻意识到我们面对的是业务问题，还是技术问题，或是其他的更高层次的问题，才可能在一个正确的层面上去解决。<strong>通过分析，我们知道了“技术架构”究竟代表什么，这也为我们提供了一个参照系。</strong>“业务架构”不是“技术架构”，是“技术架构”外面的东西</strong>。</p>
+<h2 id="业务架构思维">业务架构思维</h2>
+<h3 id="警惕“伪”分层">警惕“伪”分层</h3>
+<p>分层其实不光是一个技术词汇，而是一个通用的思维方式，比如架构图分层，实际的代码、系统是否能按分层架构严格执行呢？如果把所有系统之间的调用关系都梳理出来把依赖关系图画出来，不一定会是这样一个分层结构，很可能是一个网状结构了。产生了伪”分层。</p>
+<ol>
+<li><strong>底层调用上层</strong>。比如某个基础服务调用上层的业务服务，怎么解决呢？
+<ol>
+<li>要思考业务逻辑是否放错了地方? 或者业务逻辑是否需要<strong>一分为二</strong>，一部分放在业务服务，一部分放在基础服务。也就避免了底层调用上层。</li>
+<li><strong>DIP（依赖反转）</strong>。底层定义接口，上层实现，而不是底层直接调用上层。</li>
+</ol>
+</li>
+<li><strong>同层之间，服务之间各种双向调用</strong>。比如业务服务1、业务服务2、业务服务3 之间都是双向调用。这时就要思考，业务服务1、业务服务2、业务服务3 之间的职责分配是否有问题，出现了服务之间的紧耦合？是否应该有<strong>一个公共的服务</strong>，让公共服务和业务服务1、业务服务2、业务服务3 交互，而三个业务服务之间相互独立?</li>
+<li><strong>层之间没有隔离，参数层层透传，一直穿透到最底层，导致底层系统经常变动</strong>。例如，App 一直发版本，为了实现兼容，服务器端会根据不同的版本调用不同的函数。比如客户端要支撑各式各样的业务，因此肯定有类似 businessType 用于区分不同业务，或者说区分同一个业务的不同业务场景。businessType 字段一旦透传到最底层的基础服务，在基础服务里面都能看到if busessType = XXX 这样的代码，就是典型的上层业务多样性透传到了最底层。这种情况下，虽然是严格分了层，层层调用，但“底层服务”已经不是底层服务，因为<strong>每一次业务变动都会导致从上到下跟着一起改</strong>。</li>
+<li><strong>聚合层特别多，为了满足客户端需求，各种拼装</strong>。遇到这种情况，往往意味着<strong>业务服务层太薄，纯粹从技术角度拆分了业务。而不是从业务角度让服务成为一个完整的闭环，或者说一个领域。</strong></li>
+</ol>
+<p>一个优秀的分层架构应该具有的典型特征如下。</p>
+<ol>
+<li><strong>越底层的系统越单一、越简单、越固化；越上层的系统花样越多、越容易变化。要做到这一点，需要层与层之间有很好的隔离和抽象。</strong></li>
+<li>做到了上面一点，则要做到<strong>层与层之间严格地遵守上层调用下层的准则</strong>。</li>
+</ol>
+<h3 id="边界思维">边界思维</h3>
+<p>在所有的架构思维模式中，如果说最终只能留下一种思维模式，那就是边界思维。腾讯公司前CTO 张志东曾说过“<strong>优雅的接口，龌龊的实现</strong>”，可以说是边界思维最好的昵释。在技术领域,“封装”“面向接口的编程”等技术，也都是边界思维的体现。只要一个系统对外的接口是简洁、优雅的，即使系统内部混乱，也不会影响到外界其他系统。相当于<strong>把混乱的逻辑约束在一个小范围内，而不会扩散到所有系统</strong>。边界思维是一种通用的思维方式，从小到大来，边界思维在不同层面的均有体现。</p>
+<ol>
+<li>对象层面（SOLID 原则）：在面向对象的五大原则中，第一个原则S 就是<strong>单一职责原则</strong>（The Single ResponsibilityPrinciple）。通俗地讲，就是一个函数、一个类、一个模块只做一件事。不要把不同的职责杂糅在一起,这就是边界思维的一种体现。</li>
+<li>接口层面：对于开发人员来说，做一个系统往往先想到的是如何实现。而利用边界思维，首先想到的不是如何实现，而是把系统当作一个黑盒，看系统对外提供的接口是什么。接口也就是系统的边界。接口定义了系统可以支持什么、不支持什么。所以，<strong>接口的设计往往比接口的实现更重要</strong>！站在使用者的角度来看，并不在意接口如何实现，而更在意接口的定义是否清晰，使用是否方便。具体来说，就是：接口的输入、输出参数分别是什么？哪些参数可选，哪些必选？如果输入参数很多，为什么不是分成多个接口？设计策略是什么？接口是否幂等？各种异常场景接口的返回结果都是什么?</li>
+<li>产品层面：除了技术，产品同样需要有边界思维。对于产品，常说的一句话是:内部实现很复杂，用户界面很简单。<strong>把复杂留给自己，把简单留给用户</strong>！尤其现在的AI 产品，更是把这句话发挥到了极致。AI 算法本身很复杂，但对用户来说，使用却越来越“傻瓜化”，以前还有图形界面，现在直接对着系统说句话，它就明白了。</li>
+<li>组织架构层面：组织的各个部门之间如果没有非常清晰的边界，就会导致<strong>该自己做的事情不做，互相推诿、踢皮球；不该自己做的事情抢着做，你争我夺</strong>。最后整个体系权责不分，做事效率低下，还容易产生各种问题。</li>
+</ol>
+<p>回到系统，不管用哪种分析方法和设计方法，最终必须保证每个系统有清晰的边界，各自分工清晰。<strong>无论谁要了解这个系统，他不用看这个系统是怎么实现的，只要看系统的接口，就能知道系统支持什么，不支持什么</strong>。<strong>边界思维的重点在于“约束”，是一个“负方法”的思维方式</strong>。什么意思呢? 比如要看一个开源软件的功能，<strong>要看的不是它能做什么，而是它不能做什么</strong>！“不能做什么”决定了系统的边界，或者说它的“极限”。做架构尤其如此，<strong>架构强调的不是系统能支持什么，而是系统的“约束”是什么</strong>，不管是业务约束，还是技术约束。<strong>没有“约束”，就没有架构</strong>。一个设计或系统，<strong>如果“无所不能”，则意味着“一无所能”</strong>。</p>
+<h3 id="系统化思维">系统化思维</h3>
+<p>与边界思维相对应的是系统化思维。哲学中有一句话:事物之间的普遍联系。通俗的说法就是:不能头痛医头，脚痛医脚。头痛的时候，可能原因不在头上，而是身体其他部位出了问题引发的头痛。</p>
+<ol>
+<li>比如现在有一个系统A 和系统B，应用边界思维，在两个系统之间定义了接口。但随着业务的发展，发现每次来新的需求，两个系统都要跟着一起改，之间的接口也不够用，要么增加新接口，要么为之前的接口增加新参数。原因可能是在最初设计的时候，接口定义得不合理；也可能是这两个系统的逻辑本身就耦合得很紧。应该把系统A 和系统B 重新放在一起整体考虑，然后一致对外提供统一的接口，对内，系统A 和系统B 就是一个系统的两个联系紧密的部分。这就是系统化思维的一种体现，<strong>把不同的“东西”串在一起考虑，而不是割裂后分开来看。</strong></li>
+<li>系统化思维的另外一个体现，就是遇到事情要<strong>刨根问底</strong>。如果遇到了问题A，经过分析，是原因1 导致的;原因1 又是如何产生的，是原因2 导致的;原因2 又是如何产生的，是原因3 导致的……如此追到最后，直至事物的本质。这点在物理学中叫作“第一性原理”，在哲学上叫作“道”。无论是遇到技术问题，还是产品问题、业务问题，都可以利用这种思维方式。这个倒追的过程会让你探究到事物与事物之间的普遍联系。
+<ul>
+<li>比如一个电商系统中商品库存。站在C 端来看：用户下单，要减库存；用户发生客退，要加库存；站在B 端供应商角度来看：采购，要加库存；退供，要减库存；站在内部商务和物流人员角度来看：调拨，一个仓库减库存，另一个仓库加库存。无论C 端的下单、客退，还是B 端的采购、退供，还是内部的调拨，都是很复杂的业务流程，对应的是不同的团队开发的不同系统。<strong>单独去看每一个业务的每一个系统，都没有问题，但要系统性地把这五大类业务串在一起来看，可能库存的账目是对不齐的。</strong></li>
+<li>这就是为什么电商系统里<strong>库存往往是单独的微服务</strong>，库存不仅仅是一个数字<code>&lt;SKU,数量&gt;</code>，然后对这个数字进行加加减减，逻辑很简单。但<strong>实际问题在于库存不是一个简单的数字，而是一个复杂的数据模型，有自己单独的领域。</strong></li>
+</ul>
+</li>
+</ol>
+<h3 id="利益相关者分析">利益相关者分析</h3>
+<p>做一个系统与做一个产品一样，<strong>首先要了解用户是谁。在架构里面称为利益相关者</strong>。为什么谈业务架构，要先谈“利益相关者”呢?</p>
+<ol>
+<li>利益相关者其实是从“外部”来看系统。把系统当作一个<strong>黑盒子</strong>，看为哪几类人服务。这其实也就<strong>定义了整个系统的边界，定义了整个系统做什么和不做什么</strong>。</li>
+<li>前面说到一个词“业务”，业务具有“闭环”的特点。而<strong>利益相关者就是一个最好的看待业务的视角</strong>。</li>
+<li><strong>每个利益相关者代表了一个视角</strong>。站在C 端用户的视角和B 端商家的视角上，对系统有不同的看法。系统很复杂，无法从一个角度全面认识，每个视角都是盲人摸象，只看到系统的一部分。</li>
+<li>利益相关者往往也对应了一种业务划分、系统划分。<strong>根据不同的利益相关者,可以划分成不同的系统和业务</strong>。</li>
+</ol>
+<p>所以，当谈到系统的时候，<strong>首先要确定的是系统为哪几类人服务，同哪几个外部系统交互，也就确定了系统的边界</strong>。</p>
+<h3 id="非功能性需求">非功能性需求</h3>
+<p>软件有功能性需求和非功能性需求之分。其实软件的非功能性需求有很多，不同类型的软件的侧重点也有差别。互联网比较关注的有：</p>
+<ol>
+<li><strong>并发性</strong>。对于C 端的系统，大家首先关注的是系统能抵抗多大的流量。说通俗点，是可以承受多少人同时访问。常用的衡量指标是TPS 和QPS，平均响应时间/最大响应时间，并发数。</li>
+<li><strong>可用性</strong>。从服务角度来说，一个服务不可用有两层意思:
+<ul>
+<li>机器宕机，不能对外提供服务，直接抛错;</li>
+<li>机器虽然没有宕机,但是超时。这涉及“性能”问题。</li>
+</ul>
+</li>
+<li><strong>一致性</strong>。比如数据库的参照完整性、事务、缓存与数据库数据同步、多备份数据一致性问题。</li>
+<li><strong>稳定性和可靠性</strong>。“稳定性”指系统没有任何未定义的行为，体现在如下几方面:
+<ul>
+<li>所有的if-else 语句里面,没有不处理的分支;</li>
+<li>所有的 API 调用，每种异常返回值都有处理;</li>
+<li>考虑内存、磁盘的上限;</li>
+<li>系统不会时不时冒出一个问题出来;</li>
+<li>出了问题,有很好的日志监控,能快速修复;</li>
+<li>系统的QPS 不会有抖动（除非业务有变化，比如大促），是一条平滑的</li>
+<li>发布新版本,有回滚方案;</li>
+<li>新系统上线,灰度平滑切换;·</li>
+<li>通过压力测试;</li>
+</ul>
+</li>
+<li><strong>可维护性</strong>。与可维护性密切相关的是“可理解性”,或者说“<strong>代码可读性</strong>”。体现在如下几个方面:
+<ul>
+<li>系统架构设计简单，接口简洁，表数据关系清晰;</li>
+<li>老人离职,新人接手，无须很长时间就能厘清代码逻辑;</li>
+<li>系统功能不耦合,改一个地方不会牵动全身;</li>
+<li>系统某些模块即使时间久远,也有人能厘清内部逻辑;</li>
+</ul>
+</li>
+<li><strong>可扩展性</strong>。体现在如下几方面:
+<ul>
+<li>来了一个新需求，伴随一些新功能，可以在现有系统上灵活扩展</li>
+<li>没有地方写死，可以灵活配置;</li>
+<li>容易变化的逻辑没有散落在各个系统里面，不需要多个地方跟着一起改。</li>
+</ul>
+</li>
+<li><strong>可重用性</strong>: 开发新的需求，旧的功能模块拿过来可以直接用。</li>
+</ol>
+<p>通常来讲，<strong>对于C端应用，会更关注高并发和高可用，然后有的业务（比如支付）对一致性要求非常高；对于B端业务，会更关注系统的可维护性、可扩展性性</strong>，系统才能不拖业务的后腿，可以快速地支撑各种各样的复杂业务需求的开发。</p>
+<h3 id="抽象">抽象</h3>
+<p>抽象是人类思维认知的一个基本能力，在现实生活和各种学科中都会遇到。具体到计算机的软件架构里，就是<strong>分析和分解各种概念、实体、系统，然后又造出一些新的概念、框架的过程</strong>。</p>
+<ul>
+<li>计算机中的抽象
+<ul>
+<li>存<strong>储的抽象: 关系型数据库,表格</strong>。现实世界中的数据各式各样，但到了计算机中，有一种东西叫关系型数据库。通俗地讲，就是一张张的表格，然后表格之间通过主外键关联起来。这其实就是一种抽象，把现实世界中花样繁多的数据形式进行规整,最终变成了一张张的表格。</li>
+<li><strong>计算的抽象是顺序、选择、循环</strong>。再复杂的算法，逻辑计算到了计算机里面，最终都会变成顺序、选择、循环三种语句。现实的逻辑很复杂，但计算机里面的逻辑只有三种。</li>
+<li><strong>面向对象的方法学: 父类与子类、继承</strong>。在面向对象的方法学里面，提取共性形成父类，提高代码复用性，这是抽象。</li>
+<li><strong>面向接口的方法学</strong>。把面向对象的方法再往前推进一步，就是所谓的“面向接口的方法学”。<strong>接口是交互双方的一种协议，也是对交互细节的一种抽象</strong>。</li>
+</ul>
+</li>
+<li>怎么做抽象
+<ul>
+<li><strong>分解：找出差异和共性</strong>。要做抽象，首先要做的是分解。只有分解，才知道两个事物间的差异和共性。</li>
+<li><strong>归纳：造词</strong>。找到了共性和差异，把共性的部分总结成一个新的东西，造一个新词来表达“共性”，就是归纳，也是抽象。所以抽象的过程往往也是一个“造词”的过程。</li>
+</ul>
+</li>
+<li>抽象带来的问题: 抽象的好处就是找出共性、简化事物，但抽象也会造成问题
+<ul>
+<li><strong>抽象造成意义模糊</strong>。越抽象的东西往往越“虚”，最后就变成“空洞的大话”，华而不实。不同人对“虚”的东西理解都不一样，大家在沟通时往往不在同一个频道中，牛头不对马嘴。</li>
+<li><strong>抽象错误：地基不稳</strong>。没有做分解就分析，会把一个非原子性、容易变化的东西抽象出来，作为整个系统的基础。</li>
+<li><strong>抽象造成关键特征丢失</strong>。把事物的某个重要的关键特征抽象掉了，会导致对事物的认知偏差。</li>
+<li><strong>抽象过度</strong>。抽象是为了提供灵活性和扩展性。但如果业务在某一方面变化的可能性很小，则可能压根不需要抽象。</li>
+</ul>
+</li>
+</ul>
+<h1>技术管理</h1>
+<h2 id="能力模型">能力模型</h2>
+<ul>
+<li>格局
+<ul>
+<li>系统的定位是什么？它能创造哪些核心价值？</li>
+<li>开发这个系统的背景是什么？为什么以前不做，现在要做？是因为业务发展到了一定规模？还是开发资源现在有多余，没事可干?</li>
+<li>系统在整个组织架构中处于什么位置？与这个系统关联的其他系统目前处于什么状况？</li>
+<li>产品经理如何看待这个系统？技术负责人/CTO 如何看得这个系统？</li>
+<li>这个系统的需求处于比较确定清晰的状态，还是有很大的模棱两可的空间，核心点大家有没有想清楚?</li>
+<li>这个系统所用的技术体系是比较老，还是最新的?</li>
+<li>对于业界类似的系统，别的公司是如何做的?</li>
+<li>在做一件事情之前，会对所做的事情有一个“全局把握”，风险如何？挑战在哪？提前都有心理准备</li>
+<li>不同层次的人聚焦的范围不一样。如果能把自己的“范围”往外扩大一圈，这对自己做“本职工作”会很有益处。而这，就是“格局”</li>
+</ul>
+</li>
+<li>技术历史
+<ul>
+<li>“格局”是从空间的角度看待问题，那么“历史观”就是从时间的角度看待问题。</li>
+<li>任何一种技术，都不是凭空想象出来的，它一定是要解决某个特定问题而产生的。</li>
+<li>这个特定问题一定有它的历史背景：因为之前的技术在解决这个特定问题时不够好或有其他副作用，所以才发明了这个新技术。所以，看待一个技术或方法论，需要把它放到“历史长河”中去，看它在历史中处于什么位置。</li>
+</ul>
+</li>
+<li>抽象能力
+<ul>
+<li>“抽象能力”已经有所说明，这个词听起来很“虚”。可作为架构师，就是需要这种“务虚思维”。</li>
+<li>抽象也是一个“层次”结构，从最底层到最上层，在不同工作阶段需要在不同的抽象层级中思考。</li>
+<li>很多写代码的人都习惯“自底向上”的思维方式。当讨论需求的时候，他首先想到的是这个需求如何实现，而不是这个需求本身是否合理？这个需求与其他需求有何关联关系。</li>
+<li>这种过早考虑“实现细节”的思考方式会让我们“只见树木，不见森林”，最终淹没在错综复杂的各种细节之中，因层次混乱，往往把握不住重点。</li>
+<li>假如做一个新的系统，从“抽象”到“细节”，应该考虑:
+<ul>
+<li>每个需求的合理性?</li>
+<li>这个系统的领域模型是什么样的?</li>
+<li>这个系统应该在旧的上面改造?还是应该另起炉灶?</li>
+<li>这个系统可以分成几期，分期实施?</li>
+<li>这个系统要拆分成几个子系统?·每个子系统又要拆分出多少个模块?</li>
+<li>系统的表设计?API 接口设计?系统之间的消息传输如何实现?</li>
+</ul>
+</li>
+<li>从上到下，是一个逐级细化的过程，并目进入到下一级之后，上一级可能又会退回去修改。</li>
+</ul>
+</li>
+<li>深入思考的能力
+<ul>
+<li>深入思考能力主要指“技术”的深度。关于“广度”，在“格局”层面已经包含。</li>
+<li>“深度”并不是要在所有领域都很深。人一生的精力是有限的，我们不可能深入掌握所有技术领域，但至少需要对于一个领域非常精通。</li>
+<li>拥有这种深度并不代表要胜任当前的工作必须达到这种要求，而是要养成这种“深入思考的习惯”，当我们在思考其他问题时也会带着这种“习惯”。</li>
+<li>由于技术一直在更新换代，当面对一个新技术的时候，如果具有深入思考的能力和习惯,对新技术的理解往往也会更透彻。</li>
+<li>同时，“深度”会让你对“技术风险”有更加清醒的认知。在做一个项目的时候，可能会前发现里面潜在的“坑”，而不是等到实施了才发现问题，被动解决。</li>
+</ul>
+</li>
+<li>落地能力
+<ul>
+<li>落地能力就是通常所说的“执行力”,取决于很多因素。首先,架构方案必须是能够落地的而不是只能停留在PPT 上面。对于一个技术管理者，需要跟踪从架构设计到架构落地的完整过程，在落地过程中发现问题，实时修正，才可能真正做到“理论”与“实际”的统一。</li>
+<li>然后是项目管理的问题，需要对项目中任何可能存在的不确定因素、阻碍项目进度的因素进行把控。在这些不确定因素里面，很多是“人”的因素，而不是“技术”的因素。再复杂的系统,都是由“人”开发出来的。而人多了之后，与“人”相关的问题会自然产生:沟通不充分、组织混乱、职责不清。作为一个技术管理者，需要意识到这些问题的存在，然后在各种障碍之下找到一条路线,去达成业务和团队目标。</li>
+</ul>
+</li>
+</ul>
+<h2 id="影响力的塑造">影响力的塑造</h2>
+<ul>
+<li>关键时候能顶上
+<ul>
+<li>某个问题困扰了团队一个星期，也没有人能搞定;</li>
+<li>某个成员离职，他负责的模块没有人接手;</li>
+<li>某位用户反映的问题像牛皮癣一样，总是时不时发生,无法根治;</li>
+<li>某个需求发生工期延误，到了快上线的时候却上不了;</li>
+</ul>
+</li>
+<li>打工思维和老板思维
+<ul>
+<li>这个产品的价值究竟在哪?</li>
+<li>这个产品有什么问题，如何改进?</li>
+<li>团队的协作流程有什么问题，如何改进?</li>
+<li>技术架构有什么问题，如何改进?</li>
+<li>某些用户投诉一直没解决，如何处理?</li>
+</ul>
+</li>
+<li>空杯心态：术业有专攻。水平再高的人，也只是在某一个领域很强换一个其他的领域，可能什么都不懂。
+<ul>
+<li>任何时候，我们需要意识到自己的“无知”。只有意识到自己是有“局限的”，才可能不断去听取别人的意见，不断改进自己的工作方法,提升自己的专业能力和视野。否则就会一直待在自己的舒适区里,刚愎自用。</li>
+</ul>
+</li>
+<li>持续改进：世界上从来没有能做到100 分的事情，只要想“鸡蛋挑骨头”，总可以找出要改进的地方
+<ul>
+<li>所以要有“批判性思考”的习惯。不能觉得“差不多”就可以，要追求极致，其实有很多事情要做。</li>
+</ul>
+</li>
+<li>建言献策
+<ul>
+<li>接上面的问题，如果有“批判性思考”的能力，能看到一个组织存在的各种问题，并想出应对的解放办法。然后多和同事、领导沟通这些事情，无论对于个人成长还是组织，都是一个正向作用。</li>
+</ul>
+</li>
+</ul>
+<p>最后换位思考一下:如果我们看到公司某个同事在关键时候能顶上，做事追求极致，思考总是很全面，对业务的了解总是比其他技术人员要多，总是很虚心地接受意见，时不时地给公司提出自己的建议。是不是觉得这个人很靠谱，觉得这个人适合带团队。</p>
+<h2 id="团队能力提升">团队能力提升</h2>
+<ul>
+<li>不确定性与风险把控：技术管理的首要任务是项目管理。从人的认知来讲，做任何事情，思路都是从一个“朦胧”到逐步“清晰”的过程，项目的进展也是一个从思路、到方案、到落地的细化过程。在这个过程中，不可避免地存在各种“灰度”，或者说“不确定性”。而项目管理就是要提前防范各种“不确定性”，并采取相应措施，让整个团队、项目克服重重干扰，成功到达终点。
+<ul>
+<li>需求的不确定性：很可能项目在一个想法没有完全想清楚的情况下就开始了实施。遇到这种情况，作为技术负责人，需要和产品经理、相关业务方、上级领导等进行广泛的沟通，最终在这个事情上达成“共识”：到底哪些是东西清晰的，我们可以开始做,哪些还需要进一步思考和细化</li>
+<li>技术的不确定性：必须在项目早期做尽可能多的调研和测试。对于引入的技术框架，哪些特性可以支持、哪些不能支持;对于技术选型，不同方案的优缺点都是什么。尤其是一些关键的技术细节，如果在前期不调研，等到中后期才发现某个框架无法支持或有问题,可能对整个的技术架构和项目进度造成严重影响。</li>
+<li>人员的不确定性：不要把项目最核心的部分让一个人开发维护，导致别人无法插手。要分摊风险，在技术的架构设计层面，保证整个系统耦合性不能太高，根据团队成员的水平，每个人都可以承担一块东西。这样即便某个人离职，也有相应的人可以补上。</li>
+<li>组织的不确定性：公司越大，业务越复杂，部门越多。随便做一个项目，都可能与好几个业务部门打交道。这些部门可能还在异地，平时只能即时通信，或者远程电话沟通。对于这种情况，在项目前期必须要做尽可能多的沟通，调研对方提供的业务能力，哪些目前有,哪些还在开发中，哪些还没有开发。在充分沟通的基础上，和对方敲定排期表，不定期地同步进度，保证对方的进度和自己在一个节奏上。</li>
+<li>历史遗留问题：有些老项目的技术架构很清晰，文档清楚，业务清楚，还有对项目熟悉的其他同事;也有些遗留项目欠了很多技术债，之前的开发人员也走了，业务人员很多都熟悉。对于这种情况，需要对项目进行完整的梳理:从产品到技术，找各个接口人沟通，可能经过了两三个月，才对整个系统有了一个全局的把控。总之，要有“风险把控”的意识，在项目早期努力地想出各种各样的“不确定性”，未雨绸缪。</li>
+</ul>
+</li>
+<li>以价值为中心的管理
+<ul>
+<li>如何衡量这些项目的价值大小：有多少人使用了这个开源项目</li>
+<li>第一个层次：系统有多少个业务模块，功能多么强大，采用了多少新技术,采用了某个先进的算法</li>
+<li>第二个层次：在所做的所有工作中，最核心的是采取了哪种措施?最终可能会抽象出一到两个。再追问一下,这一到两个大的技术改进有什么价值，通常都会追问到软件的各个非功能性需求：
+<ul>
+<li>可重用性。做了某个Jar 包、组件、服务，别人不再需要重复造轮子。</li>
+<li>可扩展性。来了一个新的需求，只需要配置一下或做很简单的代码开发即可实现，不需要改动很多系统。</li>
+<li>可维护性。整个系统解耦做得很好，代码也很整洁。叠加功能或找人接手都比较容易。</li>
+<li>高性能。用户体验很好，所有请求都在100ms 内返回。</li>
+<li>高并发。能支持千万到亿级的用户并发访问。</li>
+<li>稳定性。系统时不时出问题、宕机，已经把这些问题都解决了，还增加了监控，出问题会立即报警。</li>
+<li>高可靠。做了灾备方案，即使某个机器宕机，系统也不受影响。</li>
+<li>一致性。做到了强一致性,极大地提高了业务体验。</li>
+</ul>
+</li>
+<li>第三个层次：所做的系统为公司带来了什么业务价值
+<ul>
+<li>极大提升了用户体验?因此促进了用户增长?提高了用户的活跃度?</li>
+<li>为公司增加了收入?</li>
+<li>降低了公司的研发成本?</li>
+<li>提升了公司的运维效率?</li>
+<li>为公司开辟了一个新的市场?</li>
+</ul>
+</li>
+<li>第四个层次：站在公司的角度来看，公司是一个在市场经济中追求利润最大化的组织。从这个角度来看，技术也好，产品也好，运营销售也好，最终目的都是要增加公司的利润，即使短期不盈利，长期也是要盈利的。而增加利润，要么“开源”，要么“节流”。所以做的任何东西的价值，基本都会被归结到从这个层次去评判。当然，还有一类是“战略性投入”的项目，虽然它本身不直接挣钱或挣钱很少，但是为了支撑其他盈利的核心业务而能发挥重要作用。</li>
+<li>在这四个层次之外，当然还可能会涉及研究性质的技术、技术的普惠性、技术对整个社会的促进作用等,这已经超出了某个业务的技术范畴。目前国内的互联网公司这个方面比较少，国外的Google 等做的比较好。</li>
+<li>以“价值”为中心的管理，会让人避免陷入“无效忙碌”的状态: 整个团队天天忙得不亦乐乎，做各种功能，解决各种问题，但回过头来想想，到底有多少东西是有“价值”的?</li>
+</ul>
+</li>
+<li>团队培养：有些技术团队的负责人水平很高，解决问题迅速，但团队成员技术平平，遇到问题都需要负责人亲自上阵解决、累个半死，团队整体非常低效，成员得不到成长，这是典型的缺乏团队培养的思维和意识的案例。
+<ul>
+<li>技术能力：要培养人，首先得“识人”。只有清楚地知道团队成员的技术能力层次，才能针对不同层次的人设置不同的培训内容。
+<ul>
+<li>初级：全部是“面条式”代码，超长类、超长函数，各种晦涩难懂的if-else。写出来的代码时常出问题，且长时间定位不到问题,对写的功能无法完全掌控
+<ul>
+<li>需要时常做代码评审，需要读《数据结构与算法》《代码整洁之道》之类的书籍，培养代码思维</li>
+</ul>
+</li>
+<li>中级：能熟练地完成各种功能开发，问题少，出现问题能快速解决，代码模块化程度比较高，系统稳定，有业务运维的意识功底深厚，能解决各种开发中的“疑难杂症”
+<ul>
+<li>要培养系统设计能力</li>
+</ul>
+</li>
+<li>高级：熟悉业务,能根据业务设计出合理的技术方案
+<ul>
+<li>虽然有系统设计能力，但不够深入,缺乏完善的方法论</li>
+</ul>
+</li>
+<li>资深：对技术和业务都有深刻的思考，能对大规模、跨团队的复杂系统进行很好的架构设计。
+<ul>
+<li>就解决问题来讲，技术已不是问题，需要发展的是业务能力，成为某个领域的技术领军人物</li>
+</ul>
+</li>
+<li>对于一个技术团队来说，绝大多数都处于前三个层次，在技术上还有很多的上升空间。在这种情况下，需要在完成业务需求的同时，让团队成员的技术水平不断提高。可以不定期地举行技术培训、技术分享，在整个团队中形成一个较好的技术的文化氛围,形成一个人带人、人帮人的协作氛围。</li>
+</ul>
+</li>
+<li>独立意识：独立非常的关键，无论对于任何级别的人，都需要独立。所谓独立，就是能掌控事情。交给一个功能开发，能独自把功能做得很好;交给一个模块，能把模块快速开发完，运行稳定;交给一个系统，能把系统从设计，到编码、上线，完整地接住;交给一个项目，能带领一个小团队从需求开始一直到上线完成整个项目，不需要上级操心,按时按质地交付。做到这一步，意味着团队的每个人在自己所处的层次都是可“托付”的，否则就会频繁出现“补位”。组长干组员的活，经理干组长的活，总监干经理的活，副总裁干总监的活……层层错位,最后整个组织缺乏“顶层设计”。</li>
+<li>思维能力：当团队成员遇到问题时，很多人的解决办法是，告诉他问题的解决办法，然后让他把这个问题解决好。如果只做到这一步，则没有起到培养的作用。对于一个团队来说，解决项目中遇到的问题只达到了及格分数。更需要在解决项目问题之上升华一层,也就是培养思维能力。
+<ul>
+<li>思维能力的培养只能靠平时，在面对一个个的问题时，通过一次次的讨论来言传身教。面对问题要刨根问底，深挖问题的背景，掌握解决问题的办法背后的技术原理，研究是否有更好的解决办法……如此一来，思维能力慢慢就会提高。</li>
+<li>每个人在职场上工作，都是要养家糊口的。站在团队成员的角度去想下:如果跟着你干，能力没什么提升，薪资待遇也没什么增长，公司业务前景也看不到，为什么会跟着干呢?</li>
+<li>所以，作为一个管理者，要多去赋能他人、成就他人，做项目只是一个过程，最终是要打造一个极具战斗力的团队。有了这样的团队，可以在公司发展的不同阶段自如地切换到不同的业务。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>总结梳理</h1>
+<p>**业务驱动技术：**需求来自何处？真需求还是伪需求？产品手段vs技术手段？需求的优先级？什么是业务：闭环</p>
+<p>明明是业务问题，却想用技术手段解决；明明是技术问题，由于技术无法实现，反过来将就业务；可能既不是业务问题，也不是技术问题,而是组织架构问题，是部门利益问题，是公司的盈利模式问题，实践中只有时刻意识到我们面对的是业务问题，还是技术问题，或是其他的更高层次的问题，才可能在一个正确的层面上去解决，<strong>“业务架构”不是“技术架构”，是“技术架构”外面的东西</strong></p>
+<h2 id="业务架构">业务架构</h2>
+<ul>
+<li>
+<p><strong>业务架构既关乎组织架构，也关乎技术架构</strong></p>
+<ul>
+<li>
+<p>**“康威定律”：一个组织产生的系统设计等同于组织之内、组织之间的沟通结构。**这也意味着：如果组织架构不合理，则会约束业务架构，也约束技术架构的发展。而组织架构的调整涉及部门利益的重新分配，所以往往也只能由高层来推动</p>
+</li>
+<li>
+<p>技术的思考会反过来影响业务，重新思考团队的组织方式，团队的组织方式又会变,接下来又会影响业务的发展方式</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>警惕“伪”分层：底层调用上层；同层之间，服务之间各种双向调用；层之间没有隔离，参数层层透传，一直穿透到最底层，导致底层系统经常变动；聚合层特别多，为了满足客户端需求，各种拼装</strong>（业务服务层太薄，纯粹从技术角度拆分了业务。而不是从业务角度让服务成为一个完整的闭环，或者说一个领域）</p>
+<ul>
+<li>
+<p>越底层的系统越单一、越简单、越固化；越上层的系统花样越多、越容易变化。要做到这一点，需要<strong>层与层之间有很好的隔离和抽象。</strong></p>
+</li>
+<li>
+<p><strong>层与层之间严格地遵守上层调用下层的准则</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>边界思维：优雅的接口，龌龊的实现；把混乱的逻辑约束在一个小范围内，而不会扩散到所有系统</strong></p>
+<ul>
+<li>
+<p>**单一职责原则；接口的设计往往比接口的实现更重要；把复杂留给自己，把简单留给用户；**组织的各个部门之间边界清晰</p>
+</li>
+<li>
+<p><strong>边界思维的重点在于“约束”，是一个“负方法”的思维方式：要看的不是它能做什么，而是它不能做什么</strong></p>
+<ul>
+<li>
+<p><strong>架构强调的不是系统能支持什么，而是系统的“约束”是什么</strong></p>
+</li>
+<li>
+<p><strong>没有“约束”，就没有架构；如果“无所不能”，则意味着“一无所能”</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>系统化思维</strong></p>
+<ul>
+<li>
+<p><strong>把不同的“东西”串在一起考虑，而不是割裂后分开来看</strong></p>
+</li>
+<li>
+<p>**刨根问底：**单独去看每一个业务的每一个系统，都没有问题，但要系统性地把这五大类业务串在一起来看，可能库存的账目是对不齐的。<strong>所以库存往往是单独的微服务，实际问题在于库存不是一个简单的数字，而是一个复杂的数据模型，有自己单独的领域</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>**利益相关者分析：**首先要确定的是系统为哪几类人服务，同哪几个外部系统交互，也就确定了系统的边界</p>
+<ul>
+<li>
+<p>把系统当作一个<strong>黑盒子</strong>，看为哪几类人服务。也就<strong>定义了整个系统的边界，定义了整个系统做什么和不做什么</strong>。</p>
+</li>
+<li>
+<p>业务具有“闭环”的特点。<strong>利益相关者就是一个最好的看待业务的视角</strong>。</p>
+</li>
+<li>
+<p><strong>每个利益相关者代表了一个视角</strong></p>
+</li>
+<li>
+<p><strong>根据不同的利益相关者, 可以划分成不同的系统和业务</strong>。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>非功能性需求：并发性；可用性；一致性；稳定性和可靠性；可维护性；可扩展性；可重用性；</strong></p>
+<ul>
+<li>
+<p>对于C端应用，会更关注高并发和高可用，然后有的业务（比如支付）对一致性要求非常高；</p>
+</li>
+<li>
+<p>对于B端业务，会更关注系统的可维护性、可扩展性性</p>
+</li>
+</ul>
+</li>
+<li>
+<p>**抽象：**分析和分解各种概念、实体、系统，然后又造出一些新的概念、框架的过程</p>
+<ul>
+<li>
+<p>计算机中的抽象：存储的抽象；计算的抽象是顺序、选择、循环；面向对象的方法学；面向接口的方法学；</p>
+</li>
+<li>
+<p>怎么做抽象：<strong>分解（找出差异和共性）；归纳（造词）；</strong></p>
+</li>
+<li>
+<p>抽象带来的问题：抽象的好处就是找出共性、简化事物</p>
+<ul>
+<li>抽象造成意义模糊；抽象错误；抽象造成关键特征丢失；抽象过度</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="技术管理">技术管理</h2>
+<ul>
+<li>
+<p>**能力模型：**格局；技术历史 ；抽象能力（从上到下）；深入思考能力；落地能力（执行力&amp;项目管理）；</p>
+</li>
+<li>
+<p>**影响力的塑造：**关键时候能顶上；老板思维；空杯心态；持续改进；建言献策；</p>
+</li>
+<li>
+<p><strong>团队能力提升</strong></p>
+<ul>
+<li>
+<p>不确定性与风险把控：需求；技术；人员；组织；历史遗留问题；</p>
+</li>
+<li>
+<p>以价值为中心的管理：技术；非功能性需求；业务价值；公司角度；“战略性投入”项目；研究性普惠性技术；避免陷入“无效忙碌”的状态</p>
+</li>
+<li>
+<p>团队培养</p>
+<ul>
+<li>
+<p>技术能力（识人与培养）：初级、中级、高级、资深</p>
+</li>
+<li>
+<p>独立意识：每个人在自己所处的层次都是可“托付”的</p>
+</li>
+<li>
+<p>思维能力</p>
+<ul>
+<li>
+<p>通过一次次的讨论来言传身教</p>
+</li>
+<li>
+<p>每个人在职场上工作，都是要养家糊口的，多去赋能他人、成就他人</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">钱不寒</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://jxch.github.io/2023/07/12/architect/jia-gou-she-ji/17-jia-gou-shi-ti-sheng/">https://jxch.github.io/2023/07/12/architect/jia-gou-she-ji/17-jia-gou-shi-ti-sheng/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">钱不寒</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%9E%B6%E6%9E%84%E5%B8%88/">
+                                    <span class="chip bg-color">架构师</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/07/12/architect/template/darknet-ocr-web-ui-you-hua/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="darknet-ocr web ui 优化">
+                        
+                        <span class="card-title">darknet-ocr web ui 优化</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JS-template/" class="post-category">
+                                    JS-template
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/darknet-ocr/">
+                        <span class="chip bg-color">darknet-ocr</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/07/11/architect/jia-gou-she-ji/16-es-shu-ju-qian-yi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/47.jpg" class="responsive-img" alt="16.ES数据迁移">
+                        
+                        <span class="card-title">16.ES数据迁移</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="post-category">
+                                    架构设计
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ES/">
+                        <span class="chip bg-color">ES</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2024</span>
+            
+            <a href="/about" target="_blank">钱不寒</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+                <span id="translate">|&nbsp;繁/简：</span><a id="translateLink" href="javascript:translatePage();">繁</a>
+            
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">456.3k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "11";
+                        var startDate = "1";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/jxch" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:qianbuhan@proton.me" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://www.facebook.com/profile.php?id=100073531534496" class="tooltipped" target="_blank" data-tooltip="关注我的Facebook: https://www.facebook.com/profile.php?id=100073531534496" data-position="top" data-delay="50">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+
+
+
+    <a href="https://twitter.com/chengbushang" class="tooltipped" target="_blank" data-tooltip="关注我的Twitter: https://twitter.com/chengbushang" data-position="top" data-delay="50">
+        <i class="fab fa-twitter"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2455930800" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2455930800" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+    <a href="https://weibo.com/u/7558713016" class="tooltipped" target="_blank" data-tooltip="关注我的微博: https://weibo.com/u/7558713016" data-position="top" data-delay="50">
+        <i class="fab fa-weibo"></i>
+    </a>
+
+
+
+    <a href="https://www.zhihu.com/people/qianbuhan" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/qianbuhan" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          if (window.mermaid) {
+            mermaid.initialize({theme: 'forest'});
+          }
+        </script>
+    
+
+    
+        <script type="text/javascript" src="/js/tw_cn.js"></script>
+        <script type="text/javascript">
+          var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+          var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+          var cookieDomain = "https://jxch.github.io"; //Cookie地址, 一定要设定, 通常为你的网址
+          var msgToTraditionalChinese = "繁"; //此处可以更改为你想要显示的文字
+          var msgToSimplifiedChinese = "简"; //同上，但两处均不建议更改
+          var translateButtonId = "translateLink"; //默认互换id
+          translateInitilization();
+        </script>
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

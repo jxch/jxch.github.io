@@ -14,7 +14,9 @@
 }
 
 /*大屏幕下(桌面类)的样式*/
-@media only screen and (min-width: 993px) {
+@media only screen and (min-width: 993px) 
+/* and (max-width: 2000px)  */
+{
     .container {
         width: 90%;
         max-width: 1125px;
@@ -32,6 +34,29 @@
         max-width: 1250px;
     }
 }
+
+/* @media only screen and (min-width: 2001px) {
+    .container {
+        width: 90%;
+        max-width: 2125px;
+    }
+
+    .head-container {
+        position: absolute;
+        padding: 0 30px;
+        width: 100%;
+    }
+
+    .post-container {
+        width: 90%;
+        margin: 0 auto;
+        max-width: 2250px;
+    }
+
+    .article {
+        width: 19%;
+    }
+} */
 
 body {
     background-color: #eaeaea;

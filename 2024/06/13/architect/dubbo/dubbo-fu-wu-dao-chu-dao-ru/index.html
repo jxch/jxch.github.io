@@ -1,0 +1,1618 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Dubbo-服务导出导入, PA &amp; CODING">
+    <meta name="description" content="
+
+服务导出
+
+接口级服务注册
+应用级服务注册
+
+
+
+服务引入
+
+接口级服务引入
+应用级服务引入
+MigrationInvoker的生成
+
+
+
+@EnableDubbo -&amp;gt; @DubboComponentScan -&amp;gt; Dub">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Dubbo-服务导出导入 | PA &amp; CODING</title>
+    <link rel="icon" type="image/png" href="/favicon-kali.png">
+    
+    <style>
+        body{
+            background-image: url(/background.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
+</head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon-kali.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">PA &amp; CODING</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon-kali.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">PA &amp; CODING</div>
+        <div class="logo-desc">
+            
+            行到水穷处，坐看云起时
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/jxch" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/jxch" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/42.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Dubbo-服务导出导入</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Dubbo/">
+                                <span class="chip bg-color">Dubbo</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Dubbo/" class="post-category">
+                                Dubbo
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2024-06-13
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    13 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <ul>
+<li>
+<p>服务导出</p>
+<ul>
+<li>接口级服务注册</li>
+<li>应用级服务注册</li>
+</ul>
+</li>
+<li>
+<p>服务引入</p>
+<ul>
+<li>接口级服务引入</li>
+<li>应用级服务引入</li>
+<li>MigrationInvoker的生成</li>
+</ul>
+</li>
+<li>
+<p><code>@EnableDubbo -&gt; @DubboComponentScan -&gt; DubboComponentScanRegistrar -&gt; DubboSpringInitializer#initialize -&gt; DubboDeployApplicationListener -&gt; ContextRefreshedEvent -&gt; DefaultModuleDeployer#start -&gt; 服务导出与导入</code></p>
+</li>
+<li>
+<p>在做完服务导出与服务引入后，还会做几件非常重要的事情</p>
+<ul>
+<li>导出一个应用元数据服务（就是一个MetadataService服务，这个服务也会注册到注册中心），或者将应用元数据注册到元数据中心</li>
+<li>生成当前应用的实例信息对象ServiceInstance，比如应用名、实例ip、实例port，并将实例信息注册到注册中心，也就是应用级注册</li>
+</ul>
+</li>
+</ul>
+<h2 id="服务导出">服务导出</h2>
+<ul>
+<li>只要扫描到了@DubboService，就会解析对应的类，得到服务相关的配置信息
+<ul>
+<li>把这些配置信息封装成为一个ServiceConfig对象，并调用其export()进行服务导出</li>
+<li>此时一个ServiceConfig对象就表示一个Dubbo服务</li>
+</ul>
+</li>
+<li>服务导出，主要就是完成三件事情
+<ul>
+<li>确定服务的最终参数配置</li>
+<li>按不同协议启动对应的Server（服务暴露）</li>
+<li>将服务注册到注册中心（服务注册）</li>
+</ul>
+</li>
+<li><code>dubbo.application.register-mode</code>
+<ul>
+<li>instance：表示只进行应用级注册</li>
+<li>interface：表示只进行接口级注册</li>
+<li>all：表示应用级注册和接口级注册都进行，默认</li>
+</ul>
+</li>
+</ul>
+<h3 id="接口级服务注册">接口级服务注册</h3>
+<ul>
+<li>当确定好了最终的服务配置后，Dubbo就会根据这些配置信息生成对应的服务URL
+<ul>
+<li><code>tri://192.168.65.221:20880/org.apache.dubbo.springboot.demo.DemoService?application=dubbo-springboot-demo-provider&amp;timeout=3000</code></li>
+<li>服务消费者只要能获得到这个服务URL，就知道了关于这个Dubbo服务的全部信息，包括服务名、支持的协议、ip、port、各种配置</li>
+</ul>
+</li>
+<li>在<code>RegistryProtocol#export</code>方法中，服务URL存在了Zookeeper的<code>/dubbo/接口名/providers</code>目录下</li>
+<li>如果利用动态配置功能修改了服务的参数，就要重新生成服务URL并重新注册到注册中心</li>
+<li>key是接口名，value就是服务URL</li>
+</ul>
+<h3 id="应用级服务注册">应用级服务注册</h3>
+<ul>
+<li>为了降低注册中心的压力，Dubbo3.0支持了应用级注册，同时也兼容接口级注册</li>
+<li>只记录应用所对应的实例信息（IP+绑定的端口），而不关心一个应用中到底有多少个Dubbo服务
+<ul>
+<li>注册中心存储的数据变少了，注册中心中数据的变化频率变小了</li>
+<li>使得 Dubbo3 能实现与异构微服务体系如Spring Cloud等在地址发现层面更容易互通</li>
+</ul>
+</li>
+<li>消费者根据接口名找到所对应的应用名
+<ul>
+<li>在进行服务导出的过程中，会在Zookeeper中存一个映射关系，在服务导出的最后一步(<code>ServiceConfig#exported</code>)会保存这个映射关系：<code>接口名：应用名</code></li>
+<li>这个映射关系存在Zookeeper的<code>/dubbo/mapping</code>目录下</li>
+</ul>
+</li>
+<li>消费者需要从服务提供者的元数据服务获取服务的配置信息
+<ul>
+<li>在应用启动过程中会进行服务导出和服务引入，然后就会暴露一个应用元数据服务</li>
+<li>这个应用元数据服务就是一个Dubbo服务（Dubbo框架内置的）</li>
+<li>消费者可以调用这个服务来获取某个应用中所提供的所有Dubbo服务以及服务配置信息</li>
+</ul>
+</li>
+<li>根据所配置的注册中心生成两个URL
+<ul>
+<li>registry 代表接口级服务注册</li>
+<li>service-discovery-registry 表应用级服务注册</li>
+</ul>
+</li>
+<li><code>ServiceDiscoveryRegistry</code>在注册一个服务URL时（应用级服务注册）
+<ul>
+<li>并不会往注册中心存数据，而只是把服务URL存到到一个MetadataInfo对象中</li>
+<li>MetadataInfo对象保存了当前应用中所有Dubbo服务信息（服务名、支持的协议、绑定的端口、timeout等）</li>
+</ul>
+</li>
+<li>在应用启动的最后，才会进行应用级注册
+<ul>
+<li>应用的名字</li>
+<li>获取应用元数据的方式</li>
+<li>当前实例的ip和port</li>
+<li>当前实例支持哪些协议以及对应的port</li>
+</ul>
+</li>
+<li>把实例信息存入注册中心的<code>/services/应用名</code>目录下</li>
+<li>如何确定实例的ip和端口：一个实例上可能支持多个协议以及多个端口
+<ul>
+<li>获取MetadataInfo对象中保存的所有服务URL，优先取dubbo协议对应ip和port</li>
+<li>没有dubbo协议则所有服务URL中的第一个URL的ip和port</li>
+</ul>
+</li>
+<li>一般一个协议一般只会对应一个端口
+<ul>
+<li>如果对应了多个：最终存入endpoint中的会保证一个协议只对应一个端口，另外那个将被忽略</li>
+</ul>
+</li>
+<li>元数据服务：<code>dubbo.metadata.storage-type</code> 默认 local
+<ul>
+<li>如果为local，那就会启用应用元数据服务，最终服务消费者就会调用元数据服务获取到应用元数据信息</li>
+<li>如果为remote，那就不会暴露应用元数据服务，那么服务消费者从元数据中心获取应用元数据
+<ul>
+<li>元数据中心可以用Zookeeper来实现，在暴露完元数据服务之后，在注册实例信息到注册中心之前，就会把MetadataInfo存入元数据中心</li>
+<li>记录了当前实例上提供了哪些服务以及对应的协议，注意并没有保存对应的端口
+<ul>
+<li>endpoint中记录了协议对应的端口</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>元数据中心是集中式的，元数据服务式分散在各个提供者实例中的</li>
+</ul>
+</li>
+<li>应用级服务注册的流程
+<ul>
+<li>在导出某个Dubbo服务URL时，会把服务URL存入MetadataInfo中</li>
+<li>导出完某个Dubbo服务后，就会把服务接口名:应用名存入元数据中心（可以用Zookeeper实现）</li>
+<li>导出所有服务后，完成服务引入后</li>
+<li>判断要不要启动元数据服务，如果要就进行导出，固定使用Dubbo协议</li>
+<li>将MetadataInfo存入元数据中心</li>
+<li>确定当前实例信息（应用名、ip、port、endpoint）</li>
+<li>将实例信息存入注册中心，完成应用注册</li>
+</ul>
+</li>
+<li>服务暴露：根据不同的协议启动不同的Server
+<ul>
+<li>比如dubbo和tri协议启动的都是Netty</li>
+<li>Dubbo2.7中的http协议启动的就是Tomcat</li>
+</ul>
+</li>
+</ul>
+<h2 id="服务引入">服务引入</h2>
+<ul>
+<li>利用@DubboReference注解来引入某一个Dubbo服务</li>
+<li>应用在启动过程中，进行完服务导出之后，就会进行服务引入</li>
+</ul>
+<h3 id="接口级服务引入">接口级服务引入</h3>
+<ul>
+<li>服务消费者会利用接口名从注册中心找到该服务接口所有的服务URL</li>
+<li>服务消费者会根据每个服务URL的protocol、ip、port生成对应的Invoker对象
+<ul>
+<li>比如生成TripleInvoker、DubboInvoker等</li>
+<li>调用这些Invoker的invoke()方法就会发送数据到对应的ip、port</li>
+</ul>
+</li>
+<li>生成好所有的Invoker对象之后，就会把这些Invoker对象进行封装并生成一个服务接口的代理对象</li>
+<li>代理对象调用某个方法时，会把所调用的方法信息生成一个Invocation对象
+<ul>
+<li>并最终通过某一个Invoker的invoke()方法把Invocation对象发送出去</li>
+</ul>
+</li>
+<li>所以代理对象中的Invoker对象是关键，服务引入最核心的就是要生成这些Invoker对象</li>
+<li>Invoker是非常核心的一个概念，也有非常多种类
+<ul>
+<li>TripleInvoker：表示利用tri协议把Invocation对象发送出去</li>
+<li>DubboInvoker：表示利用dubbo协议把Invocation对象发送出去</li>
+<li>ClusterInvoker：有负载均衡功能</li>
+<li>MigrationInvoker：迁移功能，Dubbo3.0新增的</li>
+</ul>
+</li>
+<li>像TripleInvoker和DubboInvoker对应的就是具体服务提供者，包含了服务提供者的ip地址和端口
+<ul>
+<li>会负责跟对应的ip和port建立Socket连接，后续就可以基于这个Socket连接并按协议格式发送Invocation对象</li>
+</ul>
+</li>
+<li>接口级服务引入核心就是要找到当前所引入的服务有哪些服务URL，然后根据每个服务URL生成对应的Invoker
+<ul>
+<li>根据当前引入的服务接口生成一个RegistryDirectory对象，表示动态服务目录
+<ul>
+<li>用来查询并缓存服务提供者信息</li>
+</ul>
+</li>
+<li>RegistryDirectory对象会根据服务接口名去注册中心查找所有的服务URL
+<ul>
+<li>比如Zookeeper中的<code>/dubbo/服务接口名/providers/</code>节点</li>
+</ul>
+</li>
+<li>根据每个服务URL生成对应的Invoker对象，并把Invoker对象存在RegistryDirectory对象的invokers属性中</li>
+<li>RegistryDirectory对象也会监听<code>/dubbo/服务接口名/providers/</code>节点的数据变化
+<ul>
+<li>一旦发生了变化就要进行相应的改变</li>
+</ul>
+</li>
+<li>最后将RegistryDirectory对象生成一个ClusterInvoker对象
+<ul>
+<li>到时候调用ClusterInvoker对象的invoke()方法就会进行负载均衡选出某一个Invoker进行调用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/static/architect/Dubbo-%E6%9C%8D%E5%8A%A1%E5%AF%BC%E5%87%BA%E5%AF%BC%E5%85%A5.png" alt=""></p>
+<h3 id="应用级服务引入">应用级服务引入</h3>
+<ul>
+<li>Dubbo中找到应用的实例地址还远远不够
+<ul>
+<li>因为直接使用的接口，所以在Dubbo中最终还是得找到服务接口有哪些服务提供者</li>
+</ul>
+</li>
+<li>在进行应用级注册时是按照一个协议对应一个port存的
+<ul>
+<li>但是接口级服务一个协议可以对应多个port</li>
+</ul>
+</li>
+<li>服务消费者端寻找服务URL的逻辑更复杂了
+<ul>
+<li>根据当前引入的服务接口生成一个ServiceDiscoveryRegistryDirectory对象，表示动态服务目录
+<ul>
+<li>用来查询并缓存服务提供者信息</li>
+</ul>
+</li>
+<li>根据接口名去获取<code>/dubbo/mapping/服务接口名</code>节点的内容，拿到的就是该接口所对应的应用名</li>
+<li>有了应用名之后，再去获取<code>/services/应用名</code>节点下的实例信息</li>
+<li>依次遍历每个实例，每个实例都有一个编号revision
+<ul>
+<li>根据metadata-type进行判断
+<ul>
+<li>如果是local：则调用实例上的元数据服务获取应用元数据（MetadataInfo）</li>
+<li>如果是remote：则根据应用名从元数据中心获取应用元数据（MetadataInfo）</li>
+</ul>
+</li>
+<li>获取到应用元数据之后就进行缓存，key为revision，MetadataInfo对象为value</li>
+<li>为什么要去每个实例上获取应用的元数据信息?
+<ul>
+<li>因为有可能不一样，虽然是同一个应用，但是在运行不同的实例的时候，可以指定不同的参数，比如不同的协议，不同的端口，虽然在生产上基本不会这么做，但是Dubbo还是支持了这种情况</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>根据从所有实例上获取到的MetadataInfo以及endpoint信息，就能知道所有实例上所有的服务URL
+<ul>
+<li><code>一个接口+一个协议+一个实例 : 对应一个服务URL</code></li>
+</ul>
+</li>
+<li>拿到了这些服务URL之后，就根据当前引入服务的信息进行过滤
+<ul>
+<li>会根据引入服务的接口名+协议名</li>
+<li>消费者可以在@DubboReference中指定协议，表示只使用这个协议调用当前服务</li>
+<li>如果没有指定协议，那么就会去获取tri、dubbo、rest这三个协议对应的服务URL
+<ul>
+<li>Dubbo3.0默认只支持这三个协议</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>经过过滤之后，就得到了当前所引入的服务对应的服务URL了</li>
+<li>根据每个服务URL生成对应的Invoker对象</li>
+<li>并把Invoker对象存在ServiceDiscoveryRegistryDirectory对象的invokers属性中</li>
+<li>最后将ServiceDiscoveryRegistryDirectory对象生成一个ClusterInvoker对象
+<ul>
+<li>到时候调用ClusterInvoker对象的invoke()方法就会进行负载均衡选出某一个Invoker进行调用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="MigrationInvoker的生成">MigrationInvoker的生成</h2>
+<ul>
+<li>接口级服务引入和应用级服务引入，最终都是得到某个服务对应的服务提供者Invoker</li>
+<li><code>dubbo.application.service-discovery.migration</code>
+<ul>
+<li>FORCE_INTERFACE，强制使用接口级服务引入</li>
+<li>FORCE_APPLICATION，强制使用应用级服务引入</li>
+<li>APPLICATION_FIRST，智能选择是接口级还是应用级，默认就是这个</li>
+</ul>
+</li>
+<li>在进行某个服务的服务引入时
+<ul>
+<li>会统一利用<code>InterfaceCompatibleRegistryProtocol#refer</code>来生成一个MigrationInvoker对象</li>
+</ul>
+</li>
+<li>MigrationInvoker中有三个属性
+<ul>
+<li>invoker 用来记录接口级 ClusterInvoker</li>
+<li>serviceDiscoveryInvoker 用来记录应用级的 ClusterInvoker</li>
+<li>currentAvailableInvoker 用来记录当前使用的 ClusterInvoker，要么是接口级，要么应用级</li>
+</ul>
+</li>
+<li>一开始构造出来的MigrationInvoker对象中三个属性都为空
+<ul>
+<li>接下来会利用MigrationRuleListener来处理MigrationInvoker对象，也就是给这三个属性赋值</li>
+</ul>
+</li>
+<li>在MigrationRuleListener的构造方法中，会从配置中心读取DUBBO_SERVICEDISCOVERY_MIGRATION组下面的"当前应用名+.migration"的配置项，配置项为yml格式，对应的对象为MigrationRule，也就是可以配置具体的迁移规则，比如某个接口或某个应用的MigrationStep（FORCE_INTERFACE、APPLICATION_FIRST、FORCE_APPLICATION）
+<ul>
+<li>如果没有配置迁移规则，则会看当前应用中是否配置了migration.step
+<ul>
+<li>如果没有，那就从全局配置中心读取dubbo.application.service-discovery.migration来获取MigrationStep</li>
+<li>如果也没有配置，那MigrationStep默认为APPLICATION_FIRST</li>
+</ul>
+</li>
+<li>如果没有配置迁移规则，则会看当前应用中是否配置了migration.threshold，如果没有配，则threshold默认为-1
+<ul>
+<li>表示一个阈值，比如配置为2，表示应用级Invoker数量是接口级Invoker数量的两倍时才使用应用级Invoker，不然就使用接口级数量</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">dubbo</span><span class="token punctuation">:</span>
+ <span class="token key atrule">application</span><span class="token punctuation">:</span>
+   <span class="token key atrule">name</span><span class="token punctuation">:</span> dubbo<span class="token punctuation">-</span>springboot<span class="token punctuation">-</span>demo<span class="token punctuation">-</span>consumer 
+   <span class="token key atrule">parameters</span><span class="token punctuation">:</span>
+     <span class="token key atrule">migration.step</span><span class="token punctuation">:</span> FORCE_APPLICATION 
+     <span class="token key atrule">migration.threshold</span><span class="token punctuation">:</span> <span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>确定了step和threshold之后，就要真正开始给MigrationInvoker对象中的三个属性赋值了，先根据step调用不同的方法</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">switch</span> <span class="token punctuation">(</span>step<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">case</span> <span class="token constant">APPLICATION_FIRST</span><span class="token operator">:</span>
+    <span class="token comment">// 先进行接口级服务引入得到对应的ClusterInvoker，并赋值给invoker属性</span>
+    <span class="token comment">// 再进行应用级服务引入得到对应的ClusterInvoker，并赋值给serviceDiscoveryInvoker属性</span>
+    <span class="token comment">// 再根据两者的数量判断到底用哪个，并且把确定的ClusterInvoker赋值给 currentAvailableInvoker属性</span>
+    migrationInvoker<span class="token punctuation">.</span><span class="token function">migrateToApplicationFirstInvoker</span><span class="token punctuation">(</span>newRule<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token keyword">break</span><span class="token punctuation">;</span>
+ <span class="token keyword">case</span> <span class="token constant">FORCE_APPLICATION</span><span class="token operator">:</span>
+    <span class="token comment">// 只进行应用级服务引入得到对应的ClusterInvoker</span>
+    <span class="token comment">// 并赋值给serviceDiscoveryInvoker和currentAvailableInvoker属性</span>
+    success <span class="token operator">=</span> migrationInvoker<span class="token punctuation">.</span><span class="token function">migrateToForceApplicationInvoker</span><span class="token punctuation">(</span>newRule<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">break</span><span class="token punctuation">;</span>
+ <span class="token keyword">case</span> <span class="token constant">FORCE_INTERFACE</span><span class="token operator">:</span> 
+ <span class="token keyword">default</span><span class="token operator">:</span>
+    <span class="token comment">// 只进行接口级服务引入得到对应的ClusterInvoker</span>
+    <span class="token comment">// 并赋值给invoker和 currentAvailableInvoker属性</span>
+    success <span class="token operator">=</span> migrationInvoker<span class="token punctuation">.</span><span class="token function">migrateToForceInterfaceInvoker</span><span class="token punctuation">(</span>newRule<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>得到了接口级ClusterInvoker和应用级ClusterInvoker之后，就会利用DefaultMigrationAddressComparator来进行判断
+<ul>
+<li>如果应用级ClusterInvoker中没有具体的Invoker，那就表示只能用接口级Invoker</li>
+<li>如果接口级ClusterInvoker中没有具体的Invoker，那就表示只能用应用级Invoker</li>
+<li>如果应用级ClusterInvoker和接口级ClusterInvoker中都有具体的Invoker，则获取对应的Invoker个数</li>
+<li>如果在迁移规则和应用参数中都没有配置threshold，那就读取全局配置中心的dubbo.application.migration.threshold参数，如果也没有配置，则threshold默认为0（不是-1了）</li>
+<li>用应用级Invoker数量 / 接口级Invoker数量，得到的结果如果大于等于threshold，那就用应用级ClusterInvoker，否则用接口级ClusterInvoker</li>
+</ul>
+</li>
+<li>threshold默认为0，那就表示在既有应用级Invoker又有接口级Invoker的情况下，就一定会用应用级Invoker
+<ul>
+<li>两个正数相除，结果肯定为正数</li>
+</ul>
+</li>
+<li>当然你自己可以控制threshold，如果既有既有应用级Invoker又有接口级Invoker的情况下
+<ul>
+<li>想在应用级Invoker的个数大于接口级Invoker的个数时采用应用级Invoker，那就可以把threshold设置为1，表示个数相等，或者个数相除之后的结果大于1时用应用级Invoker，否者用接口级Invoker</li>
+</ul>
+</li>
+<li>这样MigrationInvoker对象中的三个数据就能确定好值了，和在最终的接口代理对象执行某个方法时，就会调用MigrationInvoker对象的invoke
+<ul>
+<li>在这个invoke方法中会直接执行currentAvailableInvoker对应的invoker的invoker方法</li>
+<li>从而进入到了接口级ClusterInvoker或应用级ClusterInvoker中</li>
+<li>从而进行负载均衡，选择出具体的DubboInvoer或TripleInvoker</li>
+<li>完成真正的服务调用</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>导入导出流程图：<br>
+<a target="_blank" rel="noopener" href="https://www.processon.com/view/link/62c441e80791293dccaebded">https://www.processon.com/view/link/62c441e80791293dccaebded</a></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">钱不寒</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://jxch.github.io/2024/06/13/architect/dubbo/dubbo-fu-wu-dao-chu-dao-ru/">https://jxch.github.io/2024/06/13/architect/dubbo/dubbo-fu-wu-dao-chu-dao-ru/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">钱不寒</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Dubbo/">
+                                    <span class="chip bg-color">Dubbo</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2024/06/13/architect/dubbo/dubbo-hu-diao/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Dubbo-互调">
+                        
+                        <span class="card-title">Dubbo-互调</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Dubbo/" class="post-category">
+                                    Dubbo
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Dubbo/">
+                        <span class="chip bg-color">Dubbo</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2024/06/13/architect/dubbo/dubbo-3.0-xin-te-xing/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="Dubbo-3.0新特性">
+                        
+                        <span class="card-title">Dubbo-3.0新特性</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Dubbo/" class="post-category">
+                                    Dubbo
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Dubbo/">
+                        <span class="chip bg-color">Dubbo</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2024</span>
+            
+            <a href="/about" target="_blank">钱不寒</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+                <span id="translate">|&nbsp;繁/简：</span><a id="translateLink" href="javascript:translatePage();">繁</a>
+            
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">456.3k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "11";
+                        var startDate = "1";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/jxch" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:qianbuhan@proton.me" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://www.facebook.com/profile.php?id=100073531534496" class="tooltipped" target="_blank" data-tooltip="关注我的Facebook: https://www.facebook.com/profile.php?id=100073531534496" data-position="top" data-delay="50">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+
+
+
+    <a href="https://twitter.com/chengbushang" class="tooltipped" target="_blank" data-tooltip="关注我的Twitter: https://twitter.com/chengbushang" data-position="top" data-delay="50">
+        <i class="fab fa-twitter"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2455930800" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2455930800" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+    <a href="https://weibo.com/u/7558713016" class="tooltipped" target="_blank" data-tooltip="关注我的微博: https://weibo.com/u/7558713016" data-position="top" data-delay="50">
+        <i class="fab fa-weibo"></i>
+    </a>
+
+
+
+    <a href="https://www.zhihu.com/people/qianbuhan" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/qianbuhan" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          if (window.mermaid) {
+            mermaid.initialize({theme: 'forest'});
+          }
+        </script>
+    
+
+    
+        <script type="text/javascript" src="/js/tw_cn.js"></script>
+        <script type="text/javascript">
+          var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+          var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+          var cookieDomain = "https://jxch.github.io"; //Cookie地址, 一定要设定, 通常为你的网址
+          var msgToTraditionalChinese = "繁"; //此处可以更改为你想要显示的文字
+          var msgToSimplifiedChinese = "简"; //同上，但两处均不建议更改
+          var translateButtonId = "translateLink"; //默认互换id
+          translateInitilization();
+        </script>
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

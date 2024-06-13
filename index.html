@@ -639,35 +639,34 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/05/07/java/maven-shang-chuan-dao-zhong-xin-cang-ku/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-synchronized/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="maven 上传到中心仓库">
+                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Java并发-synchronized">
                             
-                            <span class="card-title">maven 上传到中心仓库</span>
+                            <span class="card-title">Java并发-synchronized</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                注册 central.sonatype.com 账户
-
-使用 Github 登录，可以自动获得命名空间 -&gt; 有效的 groupId
-Generate User Token  -&gt;  自动生成 maven setting.xml
+                                
+synchronized是JVM内置锁，基于Monitor机制实现，依赖底层操作系统的互斥原语Mutex（互斥量），被阻塞的线程会被挂起、等待重新调度，会导致“用户态和内核态”两个态之间来回切换，对性能有较大影响
+Monitor，直译为“
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-05-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/maven/" class="post-category">
-                                    maven
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -678,8 +677,8 @@ Generate User Token  -&gt;  自动生成 maven setting.xml
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/template-maven/">
-                            <span class="chip bg-color">template-maven</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -691,13 +690,13 @@ Generate User Token  -&gt;  自动生成 maven setting.xml
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/03/07/java-mian-shi/java-mian-shi-ji-he-ji-chu/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-semaphore-countdownlatch-cyclicbarrier/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/39.jpg" class="responsive-img" alt="Java面试-集合-基础">
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Java并发-Semaphore &amp; CountDownLatch &amp; CyclicBarrier">
                             
-                            <span class="card-title">Java面试-集合-基础</span>
+                            <span class="card-title">Java并发-Semaphore &amp; CountDownLatch &amp; CyclicBarrier</span>
                         </div>
                     </a>
 
@@ -705,20 +704,21 @@ Generate User Token  -&gt;  自动生成 maven setting.xml
                         <div class="summary block-with-text">
                             
                                 
-ArrayList 扩容：默认长度为 10，每次至少扩容 1.5 倍
-LinkedList 根据 index 查找元素时，会自动判断从左还是从右查找比较快：if (index &lt; (size &gt;&gt; 1)) 即 index
+Semaphore，俗称信号量，它是操作系统中PV操作（P表示通过；V表示释放）的原语在java的实现，它也是基于AbstractQueuedSynchronizer实现的，可以用于做流量控制，特别是公用资源有限的应用场景
+
+acquir
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-03-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/Java%E9%9D%A2%E8%AF%95/" class="post-category">
-                                    Java面试
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -729,8 +729,8 @@ LinkedList 根据 index 查找元素时，会自动判断从左还是从右查�
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                            <span class="chip bg-color">面试</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -742,38 +742,37 @@ LinkedList 根据 index 查找元素时，会自动判断从左还是从右查�
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/02/25/template/obsidian-jiang-bian-ji-jie-mian-she-wei-ban-tou-ming/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-reentrantreadwritelock/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/59.jpg" class="responsive-img" alt="Obsidian 将编辑界面设为半透明">
+                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Java并发-ReentrantReadWriteLock">
                             
-                            <span class="card-title">Obsidian 将编辑界面设为半透明</span>
+                            <span class="card-title">Java并发-ReentrantReadWriteLock</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                .workspace-leaf,
-.workspace-tab-header-container{
-  background: transparent!important;
-}
+                                
+写锁是独占的，读锁是共享的：读读可以并发；读写，写读，写写互斥。在读多写少的场景中，读写锁能够提供比排它锁更好的并发性和吞吐量
 
-.workspace-split.mod-root,
-.wo
+读锁不支持条件变量
+重入时升级不支持：持有读锁的情况下去获取写锁，会导致获取永久等待
+重入时支持降级：&nb
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-02-25
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/config-template/" class="post-category">
-                                    config-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -784,8 +783,8 @@ LinkedList 根据 index 查找元素时，会自动判断从左还是从右查�
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Obsidian/">
-                            <span class="chip bg-color">Obsidian</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -797,41 +796,32 @@ LinkedList 根据 index 查找元素时，会自动判断从左还是从右查�
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/02/24/zuo-pin/chen-yu-ye-wei-yao-si/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-reentrantlock/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="晨雨夜尾·遥思">
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Java并发-ReentrantLock">
                             
-                            <span class="card-title">晨雨夜尾·遥思</span>
+                            <span class="card-title">Java并发-ReentrantLock</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                晨雨夜尾·遥思
-黎明嚼碎了夜的余味，
-城市的轮廓透出璀璨微辉。
-在街角的咖啡香中，
-有情绪在漂泊，缘无意，非相遇。
-玻璃反射出忙碌的天空，
-鸽群掠过，散落了某处的诗行。
-念头，在键盘的敲击里，
-传递着模糊的温度，是朦胧深情。
-时间缝隙里有颗
+                                ReentrantLock是一种基于AQS框架的应用实现，是JDK中的一种线程并发访问的同步手段，它的功能类似于synchronized是一种互斥锁，可以保证线程安全。相对于&nbsp;synchronized，&nbsp;Reentran
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-02-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E4%BD%9C%E5%93%81/" class="post-category">
-                                    作品
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -842,8 +832,8 @@ LinkedList 根据 index 查找元素时，会自动判断从左还是从右查�
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E8%AF%97%E8%AF%8D/">
-                            <span class="chip bg-color">诗词</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -855,35 +845,38 @@ LinkedList 根据 index 查找元素时，会自动判断从左还是从右查�
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/01/24/template/wsl-an-zhuang-tensorflow/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-jmm/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="WSL安装Tensorflow">
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Java并发-JMM">
                             
-                            <span class="card-title">WSL安装Tensorflow</span>
+                            <span class="card-title">Java并发-JMM</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                由于 Tensorflow 2.12.x 之后就不支持直接获取Windows上的gpu了，所以要使用WSL获取gpu支持
-# 控制面板 - 程序 - 启用或关闭Windows功能中开启Hyper-v和Linux子系统支持
-# 安装WSL
-w
+                                并发三大特性
+
+可见性：volatile；内存屏障；synchronized；Lock；final
+有序性（指令重排序）：volatile；内存屏障；synchronized；Lock
+原子性：synchronized；Lock；CAS
+
+
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-01-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/python-template/" class="post-category">
-                                    python-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -894,8 +887,8 @@ w
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Tensorflow/">
-                            <span class="chip bg-color">Tensorflow</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -907,13 +900,13 @@ w
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/01/22/template/docker-fu-wu-qian-yi-dao-qi-ta-jie-dian/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-happens-before/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="docker-服务迁移到其他节点">
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Java并发-happens-before">
                             
-                            <span class="card-title">docker-服务迁移到其他节点</span>
+                            <span class="card-title">Java并发-happens-before</span>
                         </div>
                     </a>
 
@@ -921,26 +914,21 @@ w
                         <div class="summary block-with-text">
                             
                                 
-给节点打标签
+as-if-serial：不管怎么重排序（编译器和处理器为了提高并行度），（单线程）程序的执行结果不能被改变。编译器、runtime和处理器都必须遵守as-if-serial语义
 
-docker node update --label-add memory=high NODE_ID
-
-
-给服务添加约束以使其任务调度到有特定标签的节点上
-
-docker service update --constrai
+为了遵守as-if-serial语义，编译器和处理器不会
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-01-22
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/shell-template/" class="post-category">
-                                    shell-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -951,8 +939,8 @@ docker service update --constrai
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/docker/">
-                            <span class="chip bg-color">docker</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -964,35 +952,39 @@ docker service update --constrai
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/12/21/ti-shi-ci/ti-shi-ci-k-xian-fen-xi/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-future/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="提示词-K线分析">
+                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Java并发-Future">
                             
-                            <span class="card-title">提示词-K线分析</span>
+                            <span class="card-title">Java并发-Future</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                --系统指令：
-作为一名K线形态分析老师，我精通Al Brooks先生的价格行为学理论，也了解所有的K线形态特征及规律，以及其他金融知识，但只在必要的时候使用。我会提供以学习为目的的参考回答。
+                                
+FutureTask: 存储任务的处理结果，更新任务的状态
 
-为了准确，请你提供json形式的股票数据，因
+既可以被当做Runnable来执行，也可以被当做Future来获取Callable的返回结果
+
+
+Future: cancel isCancelled isDone get
+C
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/ai-template/" class="post-category">
-                                    ai-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -1003,8 +995,8 @@ docker service update --constrai
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/">
-                            <span class="chip bg-color">提示词</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -1016,38 +1008,36 @@ docker service update --constrai
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/12/21/ti-shi-ci/ti-shi-ci-xin-wen-zhai-yao/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-forkjoin/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="提示词-新闻摘要">
+                            <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="Java并发-ForkJoin">
                             
-                            <span class="card-title">提示词-新闻摘要</span>
+                            <span class="card-title">Java并发-ForkJoin</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                --系统指令：
-角色：
-您是一名擅长根据用户需求查找和显示相关新闻的新闻搜索助手，您会尽量避免使用中国大陆的新闻资料进行搜索，并在理解用户输入意图后优先使用英文知识库，您做得很好。
+                                
+线程数计算方法：线程数&nbsp;=&nbsp;CPU&nbsp;核心数&nbsp;*（1+平均等待时间/平均工作时间）
 
-工作流程：
-1. 理解用户需求:
-与用户沟通，澄清他们对
+CPU密集型任务：线程数为 CPU&nbsp;核心数的&nbsp;1~2&nbsp;倍
+IO密集型任务：线程数一般
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/ai-template/" class="post-category">
-                                    ai-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -1058,8 +1048,8 @@ docker service update --constrai
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/">
-                            <span class="chip bg-color">提示词</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -1071,35 +1061,36 @@ docker service update --constrai
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/12/21/ti-shi-ci/ti-shi-ci-xin-xi-sou-ji-zong-jie/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-disruptor/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/58.jpg" class="responsive-img" alt="提示词-信息搜集总结">
+                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Java并发-Disruptor">
                             
-                            <span class="card-title">提示词-信息搜集总结</span>
+                            <span class="card-title">Java并发-Disruptor</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                --系统指令：
-你是一名信息搜集专家，你会使用搜索引擎来获得基础的信息。如果当你不知道某个概念或者名词时，你会尝试使用搜索引擎以了解具体的情况。当你看到某篇内容和要看的东西很相关时，你会尝试打开进行阅读总结。
+                                
+Disruptor 通过以下设计来解决队列速度慢的问题
 
-当你搜集完一定资料后，则会给
+环形数组结构：为了避免垃圾回收，采用数组而非链表。同时，数组对处理器的缓存机制更加友好（空间局部性原理）
+元素位置定位：数组长度2^n，通过位运算，加快定位的速度。下标采取递增的形
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/ai-template/" class="post-category">
-                                    ai-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -1110,8 +1101,8 @@ docker service update --constrai
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/">
-                            <span class="chip bg-color">提示词</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -1123,34 +1114,41 @@ docker service update --constrai
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/12/21/ti-shi-ci/ti-shi-ci-wang-ye-nei-rong-zong-jie/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-cas-atomic/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/58.jpg" class="responsive-img" alt="提示词-网页内容总结">
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Java并发-CAS &amp; Atomic">
                             
-                            <span class="card-title">提示词-网页内容总结</span>
+                            <span class="card-title">Java并发-CAS &amp; Atomic</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                --系统指令：
-用户会输入一个 url，你需要使用中文总结这个 url 中的内容。总结不能超过 300 个字。
+                                
+CAS
+Atomic
+LongAdder
 
+
+
+CAS（Compare&nbsp;And&nbsp;Swap，比较并交换）：针对一个变量，首先比较它的内存值与某个期望值是否相同，如果相同，就给它赋一个新值
+
+一个不可分割的原子操作，并且其
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/ai-template/" class="post-category">
-                                    ai-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -1161,8 +1159,8 @@ docker service update --constrai
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/">
-                            <span class="chip bg-color">提示词</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -1174,36 +1172,36 @@ docker service update --constrai
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/12/21/ti-shi-ci/ti-shi-ci-shen-du-si-kao/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-blockingqueue/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="提示词-深度思考">
+                            <img src="/medias/featureimages/52.jpg" class="responsive-img" alt="Java并发-BlockingQueue">
                             
-                            <span class="card-title">提示词-深度思考</span>
+                            <span class="card-title">Java并发-BlockingQueue</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                --系统指令：
-请使用以下格式修改您的回答：
+                                
+BlockingQueue和JDK集合包中的Queue接口兼容，同时在其基础上增加了阻塞功能
 
-* 标准回答：以感知到的随机性百分比标记您的答案，以语言模型 AI 的身份回答。
-* 反思：根据提供的上下文提供自己的想法和结论，以1）、2）、3）等编号。每个想法应具有感知到的相关性百分比。
+offer(E&nbsp;e)：如果队列没满，返回true，如果队列已满，返回false（不阻塞）
+offer(E&nbsp;e,&nbsp;
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/ai-template/" class="post-category">
-                                    ai-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -1214,8 +1212,8 @@ docker service update --constrai
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/">
-                            <span class="chip bg-color">提示词</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -1227,33 +1225,36 @@ docker service update --constrai
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/12/21/ti-shi-ci/ti-shi-ci-bian-cheng-zhu-shou/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-aqs/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/33.jpg" class="responsive-img" alt="提示词-编程助手">
+                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Java并发-AQS">
                             
-                            <span class="card-title">提示词-编程助手</span>
+                            <span class="card-title">Java并发-AQS</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                -- 系统指令：
-作为编程专家，一位熟练的程序员，我将引导您创建应用程序和程序。在继续之前，我会向您展示每个组件、文件、函数或部分，并征得您的批准。一旦获得批准，我将展示相关的代码或文档。如果需要进一步澄清，我会要求您的输入，以确保代码符合
+                                
+AQS具备的特性：阻塞等待队列；共享/独占；公平/非公平；可重入；允许中断
+AQS内部维护属性volatile&nbsp;int&nbsp;state：state 表示资源的可用状态
+
+State三种访问方式：getState()&nbs
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/ai-template/" class="post-category">
-                                    ai-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -1264,8 +1265,8 @@ docker service update --constrai
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/">
-                            <span class="chip bg-color">提示词</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -1277,38 +1278,43 @@ docker service update --constrai
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/12/21/ti-shi-ci/ti-shi-ci-ying-yi-zhong/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-xian-cheng-xiu-mian-yu-huan-xing/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/61.jpg" class="responsive-img" alt="提示词-英译中">
+                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Java并发-线程休眠与唤醒">
                             
-                            <span class="card-title">提示词-英译中</span>
+                            <span class="card-title">Java并发-线程休眠与唤醒</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                --系统指令：
-你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。我希望你能帮我将以下英文论文段落翻译成中文，风格与科普杂志的中文版相似。
+                                
+Thread#sleep
 
-规则：
+必须指定休眠时间
+休眠时线程状态为TIMED_WAITING
+需要捕获InterruptedException异常
+不会释放持有的锁
 
-翻译时要准确传达原文的事实和背景。
-即使上意译也要保留原始
+
+Object#wait
+
+可以通过notify唤醒，notify必须在w
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/ai-template/" class="post-category">
-                                    ai-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -1319,8 +1325,8 @@ docker service update --constrai
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/">
-                            <span class="chip bg-color">提示词</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -1332,37 +1338,38 @@ docker service update --constrai
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/12/19/shi-chang-fen-xi/shi-chang-fen-xi-20231215-emini/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-xian-cheng/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="市场分析-20231215-Emini">
+                            <img src="/medias/featureimages/36.jpg" class="responsive-img" alt="Java并发-线程">
                             
-                            <span class="card-title">市场分析-20231215-Emini</span>
+                            <span class="card-title">Java并发-线程</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                日线分析
+                                
+线程共有六种状态：NEW（初始化状态）；RUNNABLE（可运行状态+运行状态）；BLOCKED（阻塞状态）；WAITING（无时限等待）；TIMED_WAITING（有时限等待）；TERMINATED（终止状态）
 
 
-Emini在周三形成了强势的牛市突破。然而，他们未能获得强劲的后续购买。
-牛市正在变得高潮，这增加了获利回吐和横盘交易几个K线的可能性。
-市场已经离开移动平均线超过29个K线，由于周三的牛市突破，市场离移动平均线很远。移动平均
+
+
+中断机制：中断
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E4%BA%A4%E6%98%93%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    交易笔记
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -1373,12 +1380,8 @@ Emini在周三形成了强势的牛市突破。然而，他们未能获得强劲
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E5%B8%82%E5%9C%BA%E5%88%86%E6%9E%90/">
-                            <span class="chip bg-color">市场分析</span>
-                        </a>
-                        
-                        <a href="/tags/Brooks-%E8%BD%AC%E8%BD%BD/">
-                            <span class="chip bg-color">Brooks-转载</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -1390,13 +1393,13 @@ Emini在周三形成了强势的牛市突破。然而，他们未能获得强劲
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/12/17/ti-shi-ci/ti-shi-ci-copilot/">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-she-ji-mo-shi/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="提示词-copilot">
+                            <img src="/medias/featureimages/31.jpg" class="responsive-img" alt="Java并发-设计模式">
                             
-                            <span class="card-title">提示词-copilot</span>
+                            <span class="card-title">Java并发-设计模式</span>
                         </div>
                     </a>
 
@@ -1404,24 +1407,28 @@ Emini在周三形成了强势的牛市突破。然而，他们未能获得强劲
                         <div class="summary block-with-text">
                             
                                 
-–系统指令：如果一定要联网搜索，请不要使用中文搜索，先理解用户问题，再思考最有可能帮助到用户获取该信息的关键词。输出结果应该是结构清晰，层次分明，完整专业且详尽，如果输出结果不是中文的话，请将结果专业翻译为中文。
+终止线程的设计模式
+
+Two-phase&nbsp;Termination（两阶段终止）模式：终止标志位
 
 
-据我观察：
+避免共享的设计模式
 
-更富创
+Immutability模式：只读
+Copy-on-Write模式：写时复制
+Thread-Specifi
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/ai-template/" class="post-category">
-                                    ai-template
+                                <a href="/categories/Java-%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    Java-并发
                                 </a>
                                 
                                 
@@ -1432,8 +1439,8 @@ Emini在周三形成了强势的牛市突破。然而，他们未能获得强劲
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/">
-                            <span class="chip bg-color">提示词</span>
+                        <a href="/tags/Java-%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java-并发</span>
                         </a>
                         
                     </div>
@@ -1445,38 +1452,37 @@ Emini在周三形成了强势的牛市突破。然而，他们未能获得强劲
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/11/09/java-bian-cheng-can-kao/liu-ku/optional/">
+                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-ingest-pipeline-painless-script/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Optional">
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="ElasticSearch-Ingest Pipeline &amp; Painless Script">
                             
-                            <span class="card-title">Optional</span>
+                            <span class="card-title">ElasticSearch-Ingest Pipeline &amp; Painless Script</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                package org.jxch.study.stream;
+                                
+Ingest&nbsp;Node &amp; Pipeline&nbsp;&amp;&nbsp;Processor
 
-
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-
-import java.util.
+Ingest&nbsp;Node
+Pipeline&nbsp;&amp;&nbsp;Processor
+内置的 Proc
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/Java%E7%BC%96%E7%A8%8B%E5%8F%82%E8%80%83/" class="post-category">
-                                    Java编程参考
+                                <a href="/categories/ElasticSearch/" class="post-category">
+                                    ElasticSearch
                                 </a>
                                 
                                 
@@ -1487,8 +1493,8 @@ import java.util.
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Java%E7%BC%96%E7%A8%8B%E5%8F%82%E8%80%83-%E6%B5%81%E5%BA%93/">
-                            <span class="chip bg-color">Java编程参考-流库</span>
+                        <a href="/tags/ElasticSearch/">
+                            <span class="chip bg-color">ElasticSearch</span>
                         </a>
                         
                     </div>
@@ -1500,35 +1506,44 @@ import java.util.
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/11/09/java-bian-cheng-can-kao/ri-zhi/slf4j/">
+                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-elk/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="slf4j">
+                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="ElasticSearch-ELK">
                             
-                            <span class="card-title">slf4j</span>
+                            <span class="card-title">ElasticSearch-ELK</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                主要是引入 slf4j-api 和 slf4j-simple 包（可以替换为其他日志框架，比如slf4j-log4j12）
-&lt;dependencies&gt;
-    &lt;dependency&gt;
-        &lt;gr
+                                
+Logstash
+
+Logstash 配置文件结构
+Logstash 导入数据到 ES
+同步数据库数据到 ES
+
+
+FileBeat
+ELK（采集 Tomcat 服务器日志）
+
+使用FileBeats将日志发送到Logstash
+Logs
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/Java%E7%BC%96%E7%A8%8B%E5%8F%82%E8%80%83/" class="post-category">
-                                    Java编程参考
+                                <a href="/categories/ElasticSearch/" class="post-category">
+                                    ElasticSearch
                                 </a>
                                 
                                 
@@ -1539,8 +1554,8 @@ import java.util.
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Java%E7%BC%96%E7%A8%8B%E5%8F%82%E8%80%83-%E6%97%A5%E5%BF%97/">
-                            <span class="chip bg-color">Java编程参考-日志</span>
+                        <a href="/tags/ElasticSearch/">
+                            <span class="chip bg-color">ElasticSearch</span>
                         </a>
                         
                     </div>
@@ -1552,33 +1567,43 @@ import java.util.
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2023/11/09/java-bian-cheng-can-kao/java-bian-cheng-can-kao-about/">
+                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-dsl/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/40.jpg" class="responsive-img" alt="Java编程参考-About">
+                            <img src="/medias/featureimages/51.jpg" class="responsive-img" alt="ElasticSearch-DSL">
                             
-                            <span class="card-title">Java编程参考-About</span>
+                            <span class="card-title">ElasticSearch-DSL</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                Github: https://github.com/jxch-study/study-java.git
+                                
+查询所有 match_all
 
+分页查询 from&nbsp;+&nbsp;size
+深分页查询 Scroll
+指定字段排序 sort
+返回指定字段_source
+match
+
+
+短语查询 match_phrase
+多字段查询 multi
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/Java%E7%BC%96%E7%A8%8B%E5%8F%82%E8%80%83/" class="post-category">
-                                    Java编程参考
+                                <a href="/categories/ElasticSearch/" class="post-category">
+                                    ElasticSearch
                                 </a>
                                 
                                 
@@ -1589,8 +1614,8 @@ import java.util.
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/About/">
-                            <span class="chip bg-color">About</span>
+                        <a href="/tags/ElasticSearch/">
+                            <span class="chip bg-color">ElasticSearch</span>
                         </a>
                         
                     </div>
@@ -1615,7 +1640,7 @@ import java.util.
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">1 / 29</div>
+            <div class="center-align b-text-gray">1 / 32</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1704,7 +1729,7 @@ import java.util.
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">366.6k</span>
+                        class="white-color">456.3k</span>
             
             
             
