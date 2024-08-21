@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2024-06-13T03:51:28.858Z</updated>
+  <updated>2024-08-21T01:33:32.170Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux (Ubuntu) 的流量监控与限制（月100G）</title>
+    <link href="https://jxch.github.io/2024/08/21/yun-wei/linux-ubuntu-de-liu-liang-jian-kong-yu-xian-zhi-yue-100g/"/>
+    <id>https://jxch.github.io/2024/08/21/yun-wei/linux-ubuntu-de-liu-liang-jian-kong-yu-xian-zhi-yue-100g/</id>
+    <published>2024-08-21T01:27:51.000Z</published>
+    <updated>2024-08-21T01:33:32.170Z</updated>
+    
+    <content type="html"><![CDATA[<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt</span> update<span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> iptables iproute2 iptables-persistent <span class="token parameter variable">-y</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><h2 id="iptables"><code>iptables</code></h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建一个新的iptables链来跟踪流量</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-N</span> TRAFFIC_TRACKING<span class="token comment"># 将所有流量传送到新链</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-A</span> INPUT <span class="token parameter variable">-j</span> TRAFFIC_TRACKING<span class="token function">sudo</span> iptables <span class="token parameter variable">-A</span> OUTPUT <span class="token parameter variable">-j</span> TRAFFIC_TRACKING<span class="token comment"># 跟踪下载流量（入站流量）</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-A</span> TRAFFIC_TRACKING <span class="token parameter variable">-m</span> conntrack <span class="token parameter variable">--ctstate</span> ESTABLISHED,RELATED <span class="token parameter variable">-j</span> RETURN<span class="token comment"># 确保SSH流量不被限制</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-A</span> TRAFFIC_TRACKING <span class="token parameter variable">-p</span> tcp <span class="token parameter variable">--dport</span> <span class="token number">22</span> <span class="token parameter variable">-j</span> RETURN  <span class="token comment"># 计数流量</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-A</span> TRAFFIC_TRACKING <span class="token parameter variable">-m</span> conntrack <span class="token parameter variable">--ctstate</span> NEW <span class="token parameter variable">-j</span> ACCEPT<span class="token function">sudo</span> iptables <span class="token parameter variable">-A</span> TRAFFIC_TRACKING <span class="token parameter variable">-m</span> conntrack <span class="token parameter variable">--ctstate</span> ESTABLISHED <span class="token parameter variable">-j</span> ACCEPT<span class="token comment"># 记录流量，104857600000字节等于100GB</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-A</span> TRAFFIC_TRACKING <span class="token parameter variable">-m</span> connbytes <span class="token parameter variable">--connbytes</span> <span class="token number">0</span>:104857600000 --connbytes-dir both --connbytes-mode bytes <span class="token parameter variable">-j</span> RETURN<span class="token comment"># 如果流量超过100GB，丢弃新的连接</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-A</span> TRAFFIC_TRACKING <span class="token parameter variable">-m</span> connbytes <span class="token parameter variable">--connbytes</span> <span class="token number">104857600000</span>: --connbytes-dir both --connbytes-mode bytes <span class="token parameter variable">-j</span> DROP<span class="token comment"># 保存并应用iptables规则，确保iptables规则在重启后依然生效</span><span class="token function">sudo</span> <span class="token function">mkdir</span> <span class="token parameter variable">-p</span> /etc/iptables<span class="token function">sudo</span> <span class="token function">sh</span> <span class="token parameter variable">-c</span> <span class="token string">"iptables-save &gt; /etc/iptables/rules.v4"</span><span class="token comment"># 验证流量限制，查看流量统计情况</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-L</span> <span class="token parameter variable">-v</span> <span class="token parameter variable">-n</span> <span class="token parameter variable">-t</span> filter<span class="token function">sudo</span> iptables <span class="token parameter variable">-L</span> TRAFFIC_TRACKING <span class="token parameter variable">-v</span> <span class="token parameter variable">-n</span><span class="token comment"># 定时任务设置每月重置流量计数</span><span class="token function">sudo</span> <span class="token function">crontab</span> <span class="token parameter variable">-e</span><span class="token comment"># 选择1，在文件最后加入一行，CTRL+O保存，Enter确认文件名，CTRL+X退出nano编辑器</span><span class="token number">0</span> <span class="token number">0</span> <span class="token number">1</span> * * /sbin/iptables <span class="token parameter variable">-Z</span> TRAFFIC_TRACKING<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="netfilter-persistent"><code>netfilter-persistent</code></h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 保存iptables规则</span><span class="token function">sudo</span> netfilter-persistent save<span class="token comment"># 重启服务</span><span class="token function">sudo</span> systemctl restart netfilter-persistent<span class="token comment"># 或者刚启动服务</span><span class="token function">sudo</span> systemctl start netfilter-persistent<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> netfilter-persistent<span class="token function">sudo</span> systemctl status netfilter-persistent<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="监控统计">监控统计</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 一行命令输出已经用了多少GB</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-L</span> TRAFFIC_TRACKING <span class="token parameter variable">-v</span> <span class="token parameter variable">-n</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'/0.0.0.0\/0/ {sum += $2} END {print "Used GB: ", sum / 1073741824}'</span><span class="token comment"># 或者</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-L</span> TRAFFIC_TRACKING <span class="token parameter variable">-v</span> <span class="token parameter variable">-n</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">'0.0.0.0/0'</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{sum += $2} END {print "Used GB: " sum/1073741824}'</span><span class="token comment"># 用了多少MB</span><span class="token function">sudo</span> iptables <span class="token parameter variable">-L</span> TRAFFIC_TRACKING <span class="token parameter variable">-v</span> <span class="token parameter variable">-n</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'/0.0.0.0\/0/ {sum += $2} END {print "Used MB: " sum/1048576}'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span clas</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://jxch.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="Linux" scheme="https://jxch.github.io/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>Java并发-synchronized</title>
@@ -556,35 +580,6 @@
 &lt;li&gt;布尔查询 bool&amp;nbsp;Query&lt;/li&gt;
 &lt;li&gt;Boosting&amp;nbsp;Query&lt;/li&gt;
 &lt;</summary>
-      
-    
-    
-    
-    <category term="ElasticSearch" scheme="https://jxch.github.io/categories/ElasticSearch/"/>
-    
-    
-    <category term="ElasticSearch" scheme="https://jxch.github.io/tags/ElasticSearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ElasticSearch-数据建模</title>
-    <link href="https://jxch.github.io/2024/06/13/architect/elasticsearch/elasticsearch-shu-ju-jian-mo/"/>
-    <id>https://jxch.github.io/2024/06/13/architect/elasticsearch/elasticsearch-shu-ju-jian-mo/</id>
-    <published>2024-06-13T03:13:49.000Z</published>
-    <updated>2024-06-13T03:13:51.334Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>处理关联关系<ul><li>Object:&nbsp;优先考虑反范式（Denormalization）</li><li>Nested:&nbsp;当数据包含多数值对象，同时有查询需求</li><li>Child/Parent：关联文档更新非常频繁时</li></ul></li><li>避免过多字段<ul><li>一个文档中，最好避免大量的字段<ul><li>过多的字段数不容易维护</li><li>Mapping&nbsp;信息保存在 Cluster&nbsp;State&nbsp;中，数据量过大，对集群性能会有影响</li><li>删除或者修改数据需要reindex</li></ul></li><li>默认最大字段数是1000，可以设置<code>index.mapping.total_fields.limit</code>限定最大字段数</li><li>生产环境中，尽量不要打开&nbsp;Dynamic，可以使用Strict控制新增字段的加入<ul><li>true&nbsp;：未知字段会被自动加入</li><li>false&nbsp;：新字段不会被索引，但是会保存在_source</li><li>strict&nbsp;：新增字段不会被索引，文档写入失败</li></ul></li><li>对于多属性的字段，比如cookie，商品属性，可以考虑使用Nested</li></ul></li><li>避免正则，通配符，前缀查询<ul><li>正则，通配符查询，前缀查询属于Term查询，但是性能不够好</li><li>特别是将通配符放在开头，会导致性能的灾难</li></ul></li><li>避免空值引起的聚合不准</li></ul><pre class="line-numbers language-rest" data-language="rest"><code class="language-rest">PUT /scores{"mappings":{"properties":{"score":{"type":"float","null_value":0}}}}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>为索引的 Mapping 加入 Meta&nbsp;信息<ul><li>Mappings设置非常重要，需要从两个维度进行考虑<ul><li>功能︰搜索，聚合，排序</li><li>性能︰存储的开销;&nbsp;内存的开销;&nbsp;搜索的性能</li></ul></li><li>Mappings设置是一个迭代的过程<ul><li>加入新的字段很容易（必要时需要update_by_query）</li><li>更新删除字段不允许（需要Reindex重建数据）</li><li>最好能对 Mappings&nbsp;加入 Meta&nbsp;信息，更好的进行版本管理</li><li>可以考虑将 Mapping 文件上传 git 进行管理</li></ul></li></ul></li></ul><pre class="line-numbers language-rest" data-language="rest"><code class="language-rest">PUT /my_index{"mappings":{"_meta":{"index_version_mapping":"1.1"}}}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;处理关联关系
-&lt;ul&gt;
-&lt;li&gt;Object:&amp;nbsp;优先考虑反范式（Denormalization）&lt;/li&gt;
-&lt;li&gt;Nested:&amp;nbsp;当数据包含多数值对象，同时有查询需求&lt;/li&gt;
-&lt;li&gt;Child/Parent：关联文档更新非常频繁时&lt;/l</summary>
       
     
     
