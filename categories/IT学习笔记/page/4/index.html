@@ -511,11 +511,11 @@
                 </a>
                 
                 
-                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 138">
+                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 142">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #F9E79F;">IT学习笔记
-                        <span class="tag-length">138</span>
+                        <span class="tag-length">142</span>
                     </span>
                 </a>
                 
@@ -566,6 +566,224 @@
 
     <article id="articles" class="container articles">
         <div class="row tags-posts">
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/07/11/architect/jia-gou-she-ji/14-gao-bing-fa-du-xie/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="14.高并发读写">
+                            
+                            <span class="card-title">14.高并发读写</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+侧重于“高并发读”的系统
+
+搜索引擎
+电商的商品搜索
+电商系统的商品描述、图片和价格
+
+
+侧重于“高并发写”的系统
+
+广告扣费系统
+
+
+同时有“高并发读”和“高并发写”的系统
+
+电商的库存系统和秒杀系统
+支付系统和微信红包
+IM、微博和朋
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">
+                            <span class="chip bg-color">架构设计</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/07/11/architect/jia-gou-she-ji/13-sentinel-xian-liu/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/63.jpg" class="responsive-img" alt="13.Sentinel限流">
+                            
+                            <span class="card-title">13.Sentinel限流</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                针对电商系统，在遇到大流量时，更多考虑的是运行阶段如何保障系统的稳定运行，常用的手段：限流，降级，拒绝服务。
+限流
+客户端限流
+
+好处：可以限制请求的发出，通过减少发出无用请求从而减少对系统的消耗。
+缺点：当客户端比较分散时，没法设置合理的
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">
+                            <span class="chip bg-color">架构设计</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/07/10/architect/jia-gou-she-ji/12-miao-sha-xi-tong/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/33.jpg" class="responsive-img" alt="12.秒杀系统">
+                            
+                            <span class="card-title">12.秒杀系统</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                秒杀系统的挑战:巨大的瞬时流量、热点数据问题、刷子流量
+
+CDN
+将Nginx 的职责放大，前置用来做Web 网关，承担部分业务逻辑校验，并且可能增加黑白名单、限流和流控的功能
+
+刷子:无效:正常请求 = 6:1:3
+
+
+
+秒杀业务流程梳理
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">
+                            <span class="chip bg-color">架构设计</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/07/10/architect/jia-gou-she-ji/11-shu-ju-gao-ke-yong/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/37.jpg" class="responsive-img" alt="11.数据高可用">
+                            
+                            <span class="card-title">11.数据高可用</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                缓存不命中：把全量数据都放在Redis 集群中，处理读请求的时候，只需要读取Redis，而不用访问数据库。很多大型互联网公司都在使用这种方法
+更新缓存：
+
+启动一个更新缓存的服务接收数据变更的消息队列中的消息，然后注意解决消息的可靠性问题即
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">
+                            <span class="chip bg-color">架构设计</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
@@ -1272,202 +1490,6 @@ d. 单体优先 -&gt
                 </div>
             </div>
             
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/06/09/architect/ddd/ddd-tong-yong-xing-ling-yu/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="DDD-通用型领域">
-                            
-                            <span class="card-title">DDD-通用型领域</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                可以构建领域仓库，实现领域复用：也可以用于优化中台战略，并且取缔大中台（中台拆分），因为一个中台组不可能同时满足所有其他项目组的需求
-通过消息契约层，不光保证逻辑边界清晰，同时也保证数据边界也很清晰
-
-
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/DDD/">
-                            <span class="chip bg-color">DDD</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/06/09/architect/ddd/ddd-ling-yu-hua-fen-she-ji/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="DDD-领域划分设计">
-                            
-                            <span class="card-title">DDD-领域划分设计</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                高内聚，低耦合：单一职责原则、依赖反转原则、开放封闭原则
-
-构建领域地图（边界）
-a. 在DDD中推荐了事件风暴会议这样的具体形式，也强调了统一语言的理论模型。
-b. 针对各个核心环节，优先构建单元测试案例，从而形成一些TDD测试驱动设计的
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/DDD/">
-                            <span class="chip bg-color">DDD</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/06/09/architect/ddd/ddd-mvc-yu-ddd-si-ceng-jia-gou/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/60.jpg" class="responsive-img" alt="DDD-MVC与DDD四层架构">
-                            
-                            <span class="card-title">DDD-MVC与DDD四层架构</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                一个需求非常确定的项目，不管多复杂，都没有必要非转型成DDD，短平快的设计方式更为快捷。
-如果项目中有很多不确定性，以往的设计模式会遇到非常多的变数，这时DDD就是一个很好的选项了。
-DDD 重构
-
-抽象数据持久层 - 建立仓库（让业务逻辑
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/DDD/">
-                            <span class="chip bg-color">DDD</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/06/09/architect/ddd/ddd-ruan-jian-de-he-xin-fu-za-xing/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/45.jpg" class="responsive-img" alt="DDD-软件的核心复杂性">
-                            
-                            <span class="card-title">DDD-软件的核心复杂性</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                很多软件设计上的不足，表面上看，似乎是技术架构的问题。因为如果架构师经验足够丰富，就能提前考虑到这些问题。如果开发团队技术足够过硬，就可以最快速度解决这些问题。但是，如果你将视野放开，放到到整个项目团队。你就会发现，一味的要求技术人员能够未
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/DDD/">
-                            <span class="chip bg-color">DDD</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
         </div>
     </article>
 </main>
@@ -1573,7 +1595,7 @@ DDD 重构
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">456.7k</span>
+                        class="white-color">467.9k</span>
             
             
             

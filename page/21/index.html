@@ -409,6 +409,248 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2023/04/20/architect/hadoop/hadoop-fs-chang-yong-ming-ling/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Hadoop-fs-常用命令">
+                            
+                            <span class="card-title">Hadoop-fs-常用命令</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+
+
+命令
+作用
+
+
+
+
+hadoop fs -help
+帮助命令
+
+
+hadoop fs -ls /
+显示目录信息
+
+
+hadoop fs -ls hdfs://hadoop01:9000/
+显示目录信息(使用Nn节点)
+
+
+hadoop
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-20
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/template/" class="post-category">
+                                    template
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/19/architect/hadoop/hadoop-classnotfoundexception/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Hadoop-ClassNotFoundException">
+                            
+                            <span class="card-title">Hadoop-ClassNotFoundException</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+输入命令 hadoop classpath, 将结果复制下来
+mapred-site.xml 中加入:
+
+&lt;property&gt;
+   &lt;name&gt;mapreduce.application.classpath&lt
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/19/architect/hadoop/hadoop-qi-dong-shi-mei-you-qi-dong-datanode/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/62.jpg" class="responsive-img" alt="Hadoop-启动时没有启动datanode">
+                            
+                            <span class="card-title">Hadoop-启动时没有启动datanode</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                原因:
+在第一次格式化dfs后，启动并使用了hadoop，后来又重新执行了格式化命令 hdfs namenode -format，这时namenode的clusterID会重新生成，而datanode的clusterID 保持不变。
+解决方
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/19/architect/yun-wei/hadoop-ji-qun-bu-shu/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/48.jpg" class="responsive-img" alt="Hadoop-集群部署">
+                            
+                            <span class="card-title">Hadoop-集群部署</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                示例:
+
+
+
+IP(Hostname)
+Server
+
+
+
+
+192.168.140.130 (hadoop01)
+Nn Dn Snn Nm
+
+
+192.168.140.131 (hadoop02)
+Dn Nm Rm
+
+
+192.168.1
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-19
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Hadoop/">
+                            <span class="chip bg-color">Hadoop</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2023/04/19/architect/yun-wei/hadoop-dan-ji-wei-fen-bu-shi-bu-shu/">
                         <div class="card-image">
                             
@@ -1166,234 +1408,6 @@ RIP 协议要求网络中的每一个路由器都要维护从它自己到其他
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/architect/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-udp/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="计算机网络-UDP">
-                            
-                            <span class="card-title">计算机网络-UDP</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                UDP 只在 IP 的数据报服务之上增加了很少一点的功能，即端口的功能和差错检测的功能。UDP 用户数据报只能提供不可靠的交付。
-UDP 的主要特点
-
-UDP 是无连接的，即发送数据之前不需要建立连接。
-UDP 使用尽最大努力交付，即不保证
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/architect/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-ppp-mac-ip-udp-tcp-de-shu-ju-bao-ge-shi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="计算机网络-PPP/MAC/IP/UDP/TCP的数据报格式">
-                            
-                            <span class="card-title">计算机网络-PPP/MAC/IP/UDP/TCP的数据报格式</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                PPP 协议的帧格式：
-PPP 是面向字节的，所有的 PPP 帧的长度都是整数字节。
-
-
-PPP 有一个 2 个字节的协议字段
-当协议字段为 0x0021 时，PPP 帧的信息字段就是IP 数据报。
-若为 0xC021, 则信息字段是 PP
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/architect/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-icmp-rip-ospf-shu-ju-bao-ge-shi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="计算机网络-ICMP/RIP/OSPF数据报格式">
-                            
-                            <span class="card-title">计算机网络-ICMP/RIP/OSPF数据报格式</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-
-ICMP 报文的格式
-ICMP报文装在IP数据报中，但是它不是高层协议，而是IP层协议。
-
-
-类型
-3 终点不可达
-11 时间超过
-12 参数问题
-5 改变路由
-8或0 回送请求或回答
-13或14 时间戳请求或回答
-代码 ： 进一步区分
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/16/architect/ji-suan-ji-wang-luo/ji-suan-ji-wang-luo-xing-neng-zhi-biao/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/44.jpg" class="responsive-img" alt="计算机网络-性能指标">
-                            
-                            <span class="card-title">计算机网络-性能指标</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                计算机网络的性能指标：
-
-速率
-带宽
-吞吐量
-时延
-
-
-速率：
-速率即数据率(data rate)或比特率(bit rate)是计算机网络中最重要的一个性能指标。速率的单位是 b/s，或kb/s, Mb/s, Gb/s等。速率往往是指额定速
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">计算机网络</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1500,7 +1514,7 @@ ICMP报文装在IP数据报中，但是它不是高层协议，而是IP层协议
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">456.7k</span>
+                        class="white-color">467.9k</span>
             
             
             
