@@ -1,0 +1,1529 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="MongoDB-聚合操作, PA &amp; CODING">
+    <meta name="description" content="
+单一作用聚合：提供了对常见聚合过程的简单访问，操作都从单个集合聚合文档
+聚合管道：是一个数据聚合的框架，模型基于数据处理流水线的概念。文档进入多级管道，将文档转换为聚合结果
+MapReduce 操作具有两个阶段（已被弃用，使用聚合管道代替">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>MongoDB-聚合操作 | PA &amp; CODING</title>
+    <link rel="icon" type="image/png" href="/favicon-kali.png">
+    
+    <style>
+        body{
+            background-image: url(/background.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
+</head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon-kali.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">PA &amp; CODING</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon-kali.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">PA &amp; CODING</div>
+        <div class="logo-desc">
+            
+            行到水穷处，坐看云起时
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/jxch" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/jxch" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/56.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">MongoDB-聚合操作</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/MongoDB/">
+                                <span class="chip bg-color">MongoDB</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                IT学习笔记
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2024-09-06
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.7k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    10 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <ul>
+<li>单一作用聚合：提供了对常见聚合过程的简单访问，操作都从单个集合聚合文档</li>
+<li>聚合管道：是一个数据聚合的框架，模型基于数据处理流水线的概念。文档进入多级管道，将文档转换为聚合结果</li>
+<li>MapReduce 操作具有两个阶段（已被弃用，使用聚合管道代替）
+<ul>
+<li>处理每个文档并向每个输入文档发射一个或多个对象的map阶段</li>
+<li>reduce组合map操作的输出阶段</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="单一作用聚合">单一作用聚合</h2>
+<p>聚合来自单个集合文档：</p>
+<ul>
+<li><code>db.collection.estimatedDocumentCount()</code> 返回集合或视图中所有文档的计数</li>
+<li><code>db.collection.count()</code> 返回与find()集合或视图的查询匹配的文档计数
+<ul>
+<li><code>db.books.count(query)</code> 等同于 <code>db.collection.find(query).count()</code></li>
+<li>在分片群集上，如果存在孤立文档或正在进行块迁移，则 <code>db.collection.count()</code> 没有查询谓词可能导致计数不准确
+<ul>
+<li>要避免这些情况，请在分片群集上使用 <code>db.collection.aggregate()</code> 方法</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>db.collection.distinct()</code>  在单个集合或视图中查找指定字段的不同值，并在数组中返回结果
+<ul>
+<li><code>db.books.distinct("type")</code></li>
+<li><code>db.books.distinct("type",{favCount:{$gt:90}})</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="聚合管道">聚合管道</h2>
+<ul>
+<li>MongoDB&nbsp;聚合框架（Aggregation&nbsp;Framework）是一个计算框架
+<ul>
+<li>作用在一个或几个集合上</li>
+<li>对集合中的数据进行的一系列运算</li>
+<li>将这些数据转化为期望的形式</li>
+</ul>
+</li>
+<li>从效果而言，聚合框架相当于&nbsp;SQL&nbsp;查询中的 GROUP&nbsp;BY、&nbsp;LEFT&nbsp;OUTER&nbsp;JOIN&nbsp;、&nbsp;AS等</li>
+<li>管道（Pipeline）和阶段（Stage）：整个聚合运算过程称为管道（Pipeline），它是由多个阶段（Stage）组成的
+<ul>
+<li><img src="/static/IT/MongoDB/MongoDB-%E8%81%9A%E5%90%88%E6%93%8D%E4%BD%9C-1.png" alt="Pipeline"></li>
+<li>每个管道
+<ul>
+<li>接受一系列文档（原始数据）</li>
+<li>每个阶段对这些文档进行一系列运算</li>
+<li>结果文档输出给下一个阶段</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>聚合管道操作语法：<code>db.collection.aggregate([$stage1,&nbsp;$stage2,&nbsp;...$stageN],&nbsp;{options})</code>
+<ul>
+<li>pipelines&nbsp;一组数据聚合阶段
+<ul>
+<li>除<code>$out</code>、<code>$Merge</code> 和 <code>$geonear</code> 阶段之外，每个阶段都可以在管道中出现多次</li>
+</ul>
+</li>
+<li>options&nbsp;可选，聚合操作的其他参数
+<ul>
+<li>查询计划、是否使用临时文件、&nbsp;游标、最大操作时间、读写策略、强制索引等</li>
+</ul>
+</li>
+<li><img src="/static/IT/MongoDB/MongoDB-%E8%81%9A%E5%90%88%E6%93%8D%E4%BD%9C-2.png" alt="聚合管道"></li>
+</ul>
+</li>
+<li>常用的管道聚合阶段
+<ul>
+<li><code>$match</code> 筛选条件</li>
+<li><code>$project</code> 投影</li>
+<li><code>$lookup</code> 左外连接</li>
+<li><code>$sort</code> 排序</li>
+<li><code>$group</code> 分组</li>
+<li><code>$skip/$limit</code> 分页</li>
+<li><code>$unwind</code> 展开数组</li>
+<li><code>$graphLookup</code> 图搜索</li>
+<li><code>$facet/$bucket</code> 分面搜索</li>
+</ul>
+</li>
+<li>聚合表达式
+<ul>
+<li>获取字段信息
+<ul>
+<li><code>$&lt;field&gt;</code>&nbsp;&nbsp;用&nbsp;<code>$</code>&nbsp;指示字段路径</li>
+<li><code>$&lt;field&gt;.&lt;sub&nbsp;field&gt;</code>&nbsp;使用&nbsp;<code>$</code>&nbsp;和 <code>.</code>&nbsp;来指示内嵌文档的路径</li>
+</ul>
+</li>
+<li>常量表达式
+<ul>
+<li><code>$literal:&lt;value&gt;</code> &nbsp;指示常量&nbsp;<code>&lt;value&gt;</code></li>
+</ul>
+</li>
+<li>系统变量表达式
+<ul>
+<li><code>$$&lt;variable&gt;</code> 使用&nbsp;<code>$$</code>&nbsp;指示系统变量</li>
+<li><code>$$CURRENT</code> 指示管道中当前操作的文档</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>$project</code>：投影操作，&nbsp;将原始字段投影成指定名称
+<ul>
+<li><code>db.books.aggregate([{$project:{name:"$title"}}])</code>
+<ul>
+<li>将集合中的&nbsp;title&nbsp;投影成&nbsp;name</li>
+</ul>
+</li>
+<li><code>db.books.aggregate([{$project:{name:"$title",_id:0,type:1,author:1}}])</code>
+<ul>
+<li>剔除不需要的字段</li>
+</ul>
+</li>
+<li>从嵌套文档中排除字段
+<ul>
+<li><code>db.books.aggregate([{$project:{name:"$title",_id:0,type:1,"author.name":1}}])</code></li>
+<li><code>db.books.aggregate([{$project:{name:"$title",_id:0,type:1,author:{name:1}}}])</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>$match</code> 用于对文档进行筛选，之后可以在得到的文档子集上做聚合，可以使用除了地理空间之外的所有常规查询操作符
+<ul>
+<li><code>db.books.aggregate([{$match:{type:"technology"}}])</code></li>
+<li>在实际应用中尽可能将<code>$match</code>放在管道的前面位置
+<ul>
+<li>可以减少后续管道操作符要操作的文档数，提升效率</li>
+<li>如果再投射和分组之前执行<code>$match</code>，查询可以使用索引</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>$count</code> 计数并返回与查询匹配的结果数
+<ul>
+<li><code>db.books.aggregate([{$match:{type:"technology"}},{$count:&nbsp;"type_count"}])</code>
+<ul>
+<li><code>$match</code>阶段筛选出type匹配technology的文档，并传到下一阶段</li>
+<li><code>$count</code>阶段返回聚合管道中剩余文档的计数，并将该值分配给<code>type_count</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>$group</code> 按指定的表达式对文档进行分组，并将每个不同分组的文档输出到下一个阶段
+<ul>
+<li>输出文档包含一个<code>_id</code>字段，该字段按键包含不同的组</li>
+<li>输出文档还可以包含计算字段，该字段保存由<code>$group</code>的<code>_id</code>字段分组的一些<code>accumulator</code>表达式的值</li>
+<li><code>$group</code>不会输出具体的文档而只是统计信息</li>
+<li><code>{$group:{_id:&lt;expression&gt;,&lt;field1&gt;:{&lt;accumulator1&gt;:&lt;expression1&gt;},...}}</code>
+<ul>
+<li><code>_id</code>字段是必填的;但是，可以指定<code>_id</code>值为<code>null</code>来为整个输入文档计算累计值</li>
+<li>剩余的计算字段是可选的，并使用<code>&lt;accumulator&gt;</code>运算符进行计算</li>
+<li><code>_id</code>和<code>&lt;accumulator&gt;</code>表达式可以接受任何有效的表达式</li>
+</ul>
+</li>
+<li><code>accumulator</code> 操作符
+<ul>
+<li><code>$avg</code> 计算均值</li>
+<li><code>$first</code> 返回每组第一个文档，如果有排序，按照排序，如果没有按照默认的存储的顺序的第一个文档</li>
+<li><code>$last</code> 返回每组最后一个文档，如果有排序，按照排序，如果没有按照默认的存储的顺序的最后个文档</li>
+<li><code>$max</code> 根据分组，获取集合中所有文档对应值得最大值</li>
+<li><code>$min</code> 根据分组，获取集合中所有文档对应值得最小值</li>
+<li><code>$push</code> 将指定的表达式的值添加到一个数组中</li>
+<li><code>$addToSet</code>&nbsp;将表达式的值添加到一个集合中（无重复值，无序）</li>
+<li><code>$sum</code> 计算总和</li>
+<li><code>$stdDevPop</code> 返回输入值的总体标准偏差（population&nbsp;standard&nbsp;deviation）</li>
+<li><code>$stdDevSamp</code> 返回输入值的样本标准偏差（the&nbsp;sample&nbsp;standard&nbsp;deviation）</li>
+</ul>
+</li>
+<li><code>$group</code> 阶段的内存限制为100M
+<ul>
+<li>默认情况下，如果stage超过此限制，<code>$group</code>将产生错误</li>
+<li>将 <code>allowDiskUse</code> 选项设置为 <code>true</code> 以启用<code>$group</code>操作写入临时文件来允许处理大型数据集</li>
+</ul>
+</li>
+<li><code>db.books.aggregate([{$group:{_id:null,count:{$sum:1},pop:{$sum:"$favCount"},avg:{$avg:"$favCount"}}}])</code>
+<ul>
+<li>book的数量，收藏总数和平均值</li>
+</ul>
+</li>
+<li><code>db.books.aggregate([{$group:{_id:"$author.name",pop:{$sum:"$favCount"}}}])</code>
+<ul>
+<li>统计每个作者的book收藏总数</li>
+</ul>
+</li>
+<li><code>db.books.aggregate([{$group:{_id:"$author.name",types:{$addToSet:"$type"}}}])</code>
+<ul>
+<li>每个作者的book的type合集</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>$merge</code> 用于将聚合结果写入到指定的集合中。可以将结果合并到现有集合中，或者创建一个新集合
+<ul>
+<li>into 输出集合的名称，如果目标集合不存在，MongoDB 将创建它</li>
+<li>on 用于查找匹配文档的字段或字段组合</li>
+<li>whenMatched 当文档匹配时执行的操作，可选值包括 “replace”, “merge”, “keepExisting”, “fail”, “pipeline”（自定义聚合阶段，用于更复杂的更新逻辑）</li>
+<li>whenNotMatched 当文档不匹配时执行的操作，可选值包括 “insert”, “discard”, “fail”</li>
+</ul>
+</li>
+<li><code>$unwind</code> 可以将数组拆分为单独的文档
+<ul>
+<li>path 要指定字段路径，在字段名称前加上<code>$</code>符并用引号括起来</li>
+<li>includeArrayIndex 可选，一个新字段的名称用于存放元素的数组索引。该名称不能以<code>$</code>开头</li>
+<li>preserveNullAndEmptyArrays 可选，<code>default&nbsp;:false</code>
+<ul>
+<li>若为true，如果路径为空，缺少或为空数组，则<code>$unwind</code>输出文档</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>$sort</code> 对所有输入文档进行排序，并按排序顺序将它们返回到管道
+<ul>
+<li><code>db.books.aggregate([{$sort&nbsp;:&nbsp;{favCount:‐1,title:1}}])</code></li>
+<li>要对字段进行排序，请将排序顺序设置为1或-1，以分别指定升序或降序排序</li>
+</ul>
+</li>
+<li><code>$limit</code> 限制传递到管道中下一阶段的文档数
+<ul>
+<li>当<code>$sort</code>在管道中的<code>$limit</code>之前立即出现时，<code>$sort</code>操作只会在过程中维持前n个结果，其中n是指定的限制，而MongoDB只需要将n个项存储在内存中</li>
+</ul>
+</li>
+<li><code>$skip</code> 跳过进入stage的指定数量的文档，并将其余文档传递到管道中的下一个阶段</li>
+<li><code>$bucket</code> 用于对输入文档进行分组，根据指定的边界（buckets）将文档分配到指定的组，类似于&nbsp;<code>GROUP BY</code>
+<ul>
+<li>groupBy（必需）：指定要分组的字段或表达式。文档将根据该字段的值来分配到不同的 bucket 中</li>
+<li>boundaries（必需）：一个数组，定义了 buckets 的分界点。数组元素是按升序排列的，表示不同的边界值
+<ul>
+<li>值必须是相同的数据类型</li>
+<li>例如，<code>[0, 10, 20, 30]</code>&nbsp;表示创建三个 buckets</li>
+</ul>
+</li>
+<li>default（可选）：指定一个 bucket，用于存储所有不在&nbsp;<code>boundaries</code>&nbsp;定义的范围内的文档。如果未指定，超出边界范围的文档将被丢弃</li>
+<li>output（可选）：一个文档，定义了每个 bucket 中需要包含的计算字段。每个字段是一个聚合表达式，该表达式操作落入该 bucket 中的文档
+<ul>
+<li>例如，可以计算每个 bucket 中的文档总数、最大值、最小值、平均值等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>$lookup</code> 主要用来实现多表关联查询
+<ul>
+<li>每个输入待处理的文档，经过 <code>$lookup</code>&nbsp;阶段的处理，输出的新文档中会包含一个新生成的数组（可根据需要命名新key&nbsp;）</li>
+<li>数组列存放的数据是来自被Join集合的适配文档，如果没有，集合为空（即&nbsp;为<code>[&nbsp;]</code>)</li>
+<li>参数
+<ul>
+<li>from 同一个数据库下等待被Join的集合</li>
+<li>localField 源集合中的match值，如果输入的集合中，某文档没有&nbsp;localField 这个Key（Field），在处理的过程中，会默认为此文档含有&nbsp;<code>localField:null</code> 的键值对
+<ul>
+<li>注意：<code>null&nbsp;=&nbsp;null</code>&nbsp;此为真</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span><span class="token function">aggregate</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">{</span>
+	<span class="token literal-property property">$lookup</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+		<span class="token literal-property property">from</span><span class="token operator">:</span> <span class="token string">"&lt;collection to join&gt;"</span><span class="token punctuation">,</span>
+		<span class="token literal-property property">localField</span><span class="token operator">:</span> <span class="token string">"&lt;field from the input documents&gt;"</span><span class="token punctuation">,</span>
+		<span class="token literal-property property">foreignField</span><span class="token operator">:</span> <span class="token string">"&lt;field from the documents of the from collection&gt;"</span><span class="token punctuation">,</span>
+		<span class="token keyword">as</span><span class="token operator">:</span> <span class="token string">"&lt;output array field&gt;"</span>
+	<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h2 id="MapReduce">MapReduce</h2>
+<ul>
+<li>从MongoDB&nbsp;5.0开始，map-reduce操作已被弃用
+<ul>
+<li>聚合管道比map-reduce操作提供更好的性能和可用性</li>
+<li>Map-reduce操作可以使用聚合管道操作符重写，例如<code>$group</code>、 <code>$merge</code>等</li>
+</ul>
+</li>
+<li>MapReduce操作将大量的数据处理工作拆分成多个线程并行处理，然后将结果合并在一起</li>
+<li>MapReduce具有两个阶段
+<ul>
+<li>将具有相同Key的文档数据整合在一起的map阶段</li>
+<li>组合map操作的结果进行统计输出的reduce阶段</li>
+</ul>
+</li>
+<li>MapReduce的基本语法
+<ul>
+<li><img src="/static/IT/MongoDB/MongoDB-%E8%81%9A%E5%90%88%E6%93%8D%E4%BD%9C-3.png" alt="MapReduce"></li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span><span class="token function">mapReduce</span><span class="token punctuation">(</span>
+	<span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token function">emit</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token comment">//map 函数，将数据拆分成键值对，交给reduce函数</span>
+	<span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">key<span class="token punctuation">,</span>values</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token keyword">return</span> reduceFunction<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token comment">//reduce 函数，根据键将值做统计运算</span>
+	<span class="token punctuation">{</span>
+		<span class="token literal-property property">out</span><span class="token operator">:</span> <span class="token operator">&lt;</span>collection<span class="token operator">&gt;</span><span class="token punctuation">,</span>   <span class="token comment">// 可选，将结果汇入指定表</span>
+		<span class="token literal-property property">query</span><span class="token operator">:</span> <span class="token operator">&lt;</span>document<span class="token operator">&gt;</span><span class="token punctuation">,</span>   <span class="token comment">// 可选，筛选数据的条件，筛选的数据送入map </span>
+		<span class="token literal-property property">sort</span><span class="token operator">:</span> <span class="token operator">&lt;</span>document<span class="token operator">&gt;</span><span class="token punctuation">,</span>    <span class="token comment">// 排序完后，送入map </span>
+		<span class="token literal-property property">limit</span><span class="token operator">:</span> <span class="token operator">&lt;</span>number<span class="token operator">&gt;</span><span class="token punctuation">,</span>     <span class="token comment">// 限制送入map的文档数 </span>
+		<span class="token literal-property property">finalize</span><span class="token operator">:</span> <span class="token operator">&lt;</span><span class="token keyword">function</span><span class="token operator">&gt;</span><span class="token punctuation">,</span><span class="token comment">// 可选，修改reduce的结果后进行输出</span>
+		<span class="token literal-property property">scope</span><span class="token operator">:</span> <span class="token operator">&lt;</span>document<span class="token operator">&gt;</span><span class="token punctuation">,</span>   <span class="token comment">// 可选，指定map、reduce、finalize的全局变量 </span>
+		<span class="token literal-property property">jsMode</span><span class="token operator">:</span> <span class="token operator">&lt;</span>boolean<span class="token operator">&gt;</span><span class="token punctuation">,</span>   <span class="token comment">// 可选，默认false。在mapreduce过程中是否将数据转换成bson格式</span>
+		<span class="token literal-property property">verbose</span><span class="token operator">:</span> <span class="token operator">&lt;</span>boolean<span class="token operator">&gt;</span><span class="token punctuation">,</span>  <span class="token comment">// 可选，是否在结果中显示时间，默认false </span>
+		<span class="token literal-property property">bypassDocumentValidation</span><span class="token operator">:</span> <span class="token operator">&lt;</span>boolean<span class="token operator">&gt;</span> <span class="token comment">// 可选，是否略过数据校验</span>
+	<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">钱不寒</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://jxch.github.io/2024/09/06/architect/mongodb/mongodb-ju-he-cao-zuo/">https://jxch.github.io/2024/09/06/architect/mongodb/mongodb-ju-he-cao-zuo/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">钱不寒</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/MongoDB/">
+                                    <span class="chip bg-color">MongoDB</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2024/09/06/architect/mongodb/mongodb-kai-fa-gui-fan/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/43.jpg" class="responsive-img" alt="MongoDB-开发规范">
+                        
+                        <span class="card-title">MongoDB-开发规范</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-09-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/MongoDB/">
+                        <span class="chip bg-color">MongoDB</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2024/09/06/architect/mongodb/mongodb-ji-chu-cao-zuo/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="MongoDB-基础操作">
+                        
+                        <span class="card-title">MongoDB-基础操作</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/MongoDB/">
+                        <span class="chip bg-color">MongoDB</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2024</span>
+            
+            <a href="/about" target="_blank">钱不寒</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+                <span id="translate">|&nbsp;繁/简：</span><a id="translateLink" href="javascript:translatePage();">繁</a>
+            
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">494.8k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "11";
+                        var startDate = "1";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/jxch" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:qianbuhan@proton.me" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://www.facebook.com/profile.php?id=100073531534496" class="tooltipped" target="_blank" data-tooltip="关注我的Facebook: https://www.facebook.com/profile.php?id=100073531534496" data-position="top" data-delay="50">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+
+
+
+    <a href="https://twitter.com/chengbushang" class="tooltipped" target="_blank" data-tooltip="关注我的Twitter: https://twitter.com/chengbushang" data-position="top" data-delay="50">
+        <i class="fab fa-twitter"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2455930800" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2455930800" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+    <a href="https://weibo.com/u/7558713016" class="tooltipped" target="_blank" data-tooltip="关注我的微博: https://weibo.com/u/7558713016" data-position="top" data-delay="50">
+        <i class="fab fa-weibo"></i>
+    </a>
+
+
+
+    <a href="https://www.zhihu.com/people/qianbuhan" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/qianbuhan" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          if (window.mermaid) {
+            mermaid.initialize({theme: 'forest'});
+          }
+        </script>
+    
+
+    
+        <script type="text/javascript" src="/js/tw_cn.js"></script>
+        <script type="text/javascript">
+          var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+          var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+          var cookieDomain = "https://jxch.github.io"; //Cookie地址, 一定要设定, 通常为你的网址
+          var msgToTraditionalChinese = "繁"; //此处可以更改为你想要显示的文字
+          var msgToSimplifiedChinese = "简"; //同上，但两处均不建议更改
+          var translateButtonId = "translateLink"; //默认互换id
+          translateInitilization();
+        </script>
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

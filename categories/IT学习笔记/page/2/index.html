@@ -511,11 +511,11 @@
                 </a>
                 
                 
-                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 142">
+                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 154">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #F9E79F;">IT学习笔记
-                        <span class="tag-length">142</span>
+                        <span class="tag-length">154</span>
                     </span>
                 </a>
                 
@@ -566,6 +566,621 @@
 
     <article id="articles" class="container articles">
         <div class="row tags-posts">
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-reentrantreadwritelock/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Java并发-ReentrantReadWriteLock">
+                            
+                            <span class="card-title">Java并发-ReentrantReadWriteLock</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+写锁是独占的，读锁是共享的：读读可以并发；读写，写读，写写互斥。在读多写少的场景中，读写锁能够提供比排它锁更好的并发性和吞吐量
+
+读锁不支持条件变量
+重入时升级不支持：持有读锁的情况下去获取写锁，会导致获取永久等待
+重入时支持降级：&nb
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-reentrantlock/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Java并发-ReentrantLock">
+                            
+                            <span class="card-title">Java并发-ReentrantLock</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                ReentrantLock是一种基于AQS框架的应用实现，是JDK中的一种线程并发访问的同步手段，它的功能类似于synchronized是一种互斥锁，可以保证线程安全。相对于&nbsp;synchronized，&nbsp;Reentran
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-jmm/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Java并发-JMM">
+                            
+                            <span class="card-title">Java并发-JMM</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                并发三大特性
+
+可见性：volatile；内存屏障；synchronized；Lock；final
+有序性（指令重排序）：volatile；内存屏障；synchronized；Lock
+原子性：synchronized；Lock；CAS
+
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-happens-before/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Java并发-happens-before">
+                            
+                            <span class="card-title">Java并发-happens-before</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+as-if-serial：不管怎么重排序（编译器和处理器为了提高并行度），（单线程）程序的执行结果不能被改变。编译器、runtime和处理器都必须遵守as-if-serial语义
+
+为了遵守as-if-serial语义，编译器和处理器不会
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-future/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Java并发-Future">
+                            
+                            <span class="card-title">Java并发-Future</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+FutureTask: 存储任务的处理结果，更新任务的状态
+
+既可以被当做Runnable来执行，也可以被当做Future来获取Callable的返回结果
+
+
+Future: cancel isCancelled isDone get
+C
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-forkjoin/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="Java并发-ForkJoin">
+                            
+                            <span class="card-title">Java并发-ForkJoin</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+线程数计算方法：线程数&nbsp;=&nbsp;CPU&nbsp;核心数&nbsp;*（1+平均等待时间/平均工作时间）
+
+CPU密集型任务：线程数为 CPU&nbsp;核心数的&nbsp;1~2&nbsp;倍
+IO密集型任务：线程数一般
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-disruptor/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Java并发-Disruptor">
+                            
+                            <span class="card-title">Java并发-Disruptor</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+Disruptor 通过以下设计来解决队列速度慢的问题
+
+环形数组结构：为了避免垃圾回收，采用数组而非链表。同时，数组对处理器的缓存机制更加友好（空间局部性原理）
+元素位置定位：数组长度2^n，通过位运算，加快定位的速度。下标采取递增的形
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-cas-atomic/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Java并发-CAS &amp; Atomic">
+                            
+                            <span class="card-title">Java并发-CAS &amp; Atomic</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+CAS
+Atomic
+LongAdder
+
+
+
+CAS（Compare&nbsp;And&nbsp;Swap，比较并交换）：针对一个变量，首先比较它的内存值与某个期望值是否相同，如果相同，就给它赋一个新值
+
+一个不可分割的原子操作，并且其
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-blockingqueue/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/52.jpg" class="responsive-img" alt="Java并发-BlockingQueue">
+                            
+                            <span class="card-title">Java并发-BlockingQueue</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+BlockingQueue和JDK集合包中的Queue接口兼容，同时在其基础上增加了阻塞功能
+
+offer(E&nbsp;e)：如果队列没满，返回true，如果队列已满，返回false（不阻塞）
+offer(E&nbsp;e,&nbsp;
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-aqs/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Java并发-AQS">
+                            
+                            <span class="card-title">Java并发-AQS</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+AQS具备的特性：阻塞等待队列；共享/独占；公平/非公平；可重入；允许中断
+AQS内部维护属性volatile&nbsp;int&nbsp;state：state 表示资源的可用状态
+
+State三种访问方式：getState()&nbs
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-xian-cheng-xiu-mian-yu-huan-xing/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Java并发-线程休眠与唤醒">
+                            
+                            <span class="card-title">Java并发-线程休眠与唤醒</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+Thread#sleep
+
+必须指定休眠时间
+休眠时线程状态为TIMED_WAITING
+需要捕获InterruptedException异常
+不会释放持有的锁
+
+
+Object#wait
+
+可以通过notify唤醒，notify必须在w
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/06/13/architect/java-bing-fa/java-bing-fa-xian-cheng/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/36.jpg" class="responsive-img" alt="Java并发-线程">
+                            
+                            <span class="card-title">Java并发-线程</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+线程共有六种状态：NEW（初始化状态）；RUNNABLE（可运行状态+运行状态）；BLOCKED（阻塞状态）；WAITING（无时限等待）；TIMED_WAITING（有时限等待）；TERMINATED（终止状态）
+
+
+
+
+中断机制：中断
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%B9%B6%E5%8F%91/">
+                            <span class="chip bg-color">Java并发</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
@@ -908,725 +1523,6 @@ Child/Parent：关联文档更新非常频繁时
                 </div>
             </div>
             
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-ju-he-cao-zuo/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/45.jpg" class="responsive-img" alt="ElasticSearch-聚合操作">
-                            
-                            <span class="card-title">ElasticSearch-聚合操作</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-聚合的分类 aggs
-Metric&nbsp;Aggregation
-
-min,&nbsp;max,&nbsp;avg,&nbsp;sum
-stats, cardinality
-
-
-Bucket&nbsp;Aggregation
-
-ter
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/ElasticSearch/">
-                            <span class="chip bg-color">ElasticSearch</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-ju-he-xing-neng-you-hua/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="ElasticSearch-聚合性能优化">
-                            
-                            <span class="card-title">ElasticSearch-聚合性能优化</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-启用&nbsp;eager&nbsp;global&nbsp;ordinals&nbsp;提升高基数聚合性能
-插入数据时对索引进行预排序
-使用节点查询缓存
-使用分片请求缓存
-拆分聚合，使聚合并行化
-
-
-
-启用&nbsp;eager&nbs
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/ElasticSearch/">
-                            <span class="chip bg-color">ElasticSearch</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-ji-qun-jia-gou/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="ElasticSearch-集群架构">
-                            
-                            <span class="card-title">ElasticSearch-集群架构</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-核心概念
-
-节点类型
-分片
-集群搭建
-
-
-ES安全认证
-
-集群内部安全通信
-
-
-生产环境常见集群部署方式
-
-单一角色
-增加节点水平扩展
-读写分离架构
-异地多活架构
-Hot&nbsp;&amp;&nbsp;Warm&nbsp;架构
-集群容量
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/ElasticSearch/">
-                            <span class="chip bg-color">ElasticSearch</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-ji-qun-du-xie/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="ElasticSearch-集群读写">
-                            
-                            <span class="card-title">ElasticSearch-集群读写</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-ES跨集群搜索（CCS）
-分片的设计和管理
-
-算分不准 dfs_query_then_fetch
-如何设计分片数
-
-
-ES底层读写工作原理
-
-ES写入数据的过程
-ES读取数据的过程
-写数据底层原理
-
-
-提升集群的读写性能
-
-提升集群读取性
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/ElasticSearch/">
-                            <span class="chip bg-color">ElasticSearch</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-ji-chu-cao-zuo/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="ElasticSearch-基础操作">
-                            
-                            <span class="card-title">ElasticSearch-基础操作</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-基本概念
-索引操作
-
-创建索引
-修改索引配置
-查询索引
-删除索引
-
-
-文档操作
-
-添加（索引）文档：POST和PUT
-修改文档
-
-全量更新
-增量修改
-
-使用_update部分更新
-使用_update_by_query&nbsp;更新文档
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/ElasticSearch/">
-                            <span class="chip bg-color">ElasticSearch</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-guan-lian-guan-xi/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/57.jpg" class="responsive-img" alt="ElasticSearch-关联关系">
-                            
-                            <span class="card-title">ElasticSearch-关联关系</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-Elasticsearch并不擅长处理关联关系，一般会采用以下四种方法处理关联
-
-对象类型
-嵌套对象 (Nested&nbsp;Object)
-父子关联关系 (Parent&nbsp;/&nbsp;Child)
-应用端关联
-
-
-
-
-对象类
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/ElasticSearch/">
-                            <span class="chip bg-color">ElasticSearch</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/elasticsearch/elasticsearch-dao-pai-suo-yin-wen-dang-ying-she/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="ElasticSearch-倒排索引 &amp; 文档映射">
-                            
-                            <span class="card-title">ElasticSearch-倒排索引 &amp; 文档映射</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-倒排索引
-文档映射
-
-已有字段的Mapping修改
-常用Mapping参数配置
-Index&nbsp;Template
-Dynamic&nbsp;Template
-
-
-
-
-倒排索引
-
-当数据写入&nbsp;ES&nbsp;时，数据将会通过
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/ElasticSearch/">
-                            <span class="chip bg-color">ElasticSearch</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/dubbo/dubbo-triple/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Dubbo-Triple">
-                            
-                            <span class="card-title">Dubbo-Triple</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-Triple的底层原理分析
-Triple请求调用和响应处理
-Triple请求处理和响应结果发送
-总结
-
-
-
-Dubbo协议相比较于Http1.1而言性能上是要更好的
-
-但是Dubbo协议自己的缺点就是不通用
-
-
-Triple协议是基于Ht
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Dubbo/">
-                            <span class="chip bg-color">Dubbo</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/dubbo/dubbo-http2/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Dubbo-HTTP2">
-                            
-                            <span class="card-title">Dubbo-HTTP2</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-HTTP1
-
-
-HTTP1协议的这种格式，缺点也是很明显的
-
-额外占用了很多字节，比如众多的回车符、换行符，它们都是字符，都需要一个字节
-通常一个HTTP1的请求，都会携带各种请求头，我们可以通过请求头来指定请求体的压缩方式
-
-但是我们没
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Dubbo/">
-                            <span class="chip bg-color">Dubbo</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/dubbo/dubbo-hu-diao/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Dubbo-互调">
-                            
-                            <span class="card-title">Dubbo-互调</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-Dubbo应用
-Triple协议的流式调用
-跨语言调用
-
-protobuf
-
-
-与gRPC互通
-与Spring Cloud互通
-
-Dubbo应用
-
-增加依赖
-
-dubbo-spring-boot-starter
-dubbo-rpc-dub
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Dubbo/">
-                            <span class="chip bg-color">Dubbo</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/dubbo/dubbo-fu-wu-dao-chu-dao-ru/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/42.jpg" class="responsive-img" alt="Dubbo-服务导出导入">
-                            
-                            <span class="card-title">Dubbo-服务导出导入</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-
-服务导出
-
-接口级服务注册
-应用级服务注册
-
-
-
-服务引入
-
-接口级服务引入
-应用级服务引入
-MigrationInvoker的生成
-
-
-
-@EnableDubbo -&gt; @DubboComponentScan -&gt; Dub
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Dubbo/">
-                            <span class="chip bg-color">Dubbo</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/06/13/architect/dubbo/dubbo-3.0-xin-te-xing/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="Dubbo-3.0新特性">
-                            
-                            <span class="card-title">Dubbo-3.0新特性</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-注册模型的改变
-Triple协议
-triple、dubbo、rest 的比较
-
-注册模型的改变
-
-在服务注册领域，市面上有两种模型，一种是应用级注册，一种是接口级注册
-
-在Spring Cloud中，一个应用是一个微服务
-
-把应用名以及应
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Dubbo/">
-                            <span class="chip bg-color">Dubbo</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
         </div>
     </article>
 </main>
@@ -1643,7 +1539,7 @@ triple、dubbo、rest 的比较
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">2 / 8</div>
+            <div class="center-align b-text-gray">2 / 9</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1732,7 +1628,7 @@ triple、dubbo、rest 的比较
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">467.9k</span>
+                        class="white-color">494.8k</span>
             
             
             
