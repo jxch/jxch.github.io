@@ -1,0 +1,1902 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="RocketMQ-核心原理, PA &amp; CODING">
+    <meta name="description" content="
+读队列与写队列
+消息持久化
+过期文件删除
+高效文件写
+
+零拷贝
+顺序写
+刷盘机制
+
+
+消息主从复制
+负载均衡
+消息重试
+死信队列
+消息幂等
+Dledger 集群
+
+选举
+消息同步
+
+
+
+
+读队列与写队列
+
+通常在运行时，都需要设置读队列=">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>RocketMQ-核心原理 | PA &amp; CODING</title>
+    <link rel="icon" type="image/png" href="/favicon-kali.png">
+    
+    <style>
+        body{
+            background-image: url(/background.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="PA & CODING" type="application/atom+xml">
+</head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon-kali.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">PA &amp; CODING</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon-kali.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">PA &amp; CODING</div>
+        <div class="logo-desc">
+            
+            行到水穷处，坐看云起时
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/jxch" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/jxch" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/25.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">RocketMQ-核心原理</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/RocketMQ/">
+                                <span class="chip bg-color">RocketMQ</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                IT学习笔记
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2024-09-09
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    6.4k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    22 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <ul>
+<li>读队列与写队列</li>
+<li>消息持久化</li>
+<li>过期文件删除</li>
+<li>高效文件写
+<ul>
+<li>零拷贝</li>
+<li>顺序写</li>
+<li>刷盘机制</li>
+</ul>
+</li>
+<li>消息主从复制</li>
+<li>负载均衡</li>
+<li>消息重试</li>
+<li>死信队列</li>
+<li>消息幂等</li>
+<li>Dledger 集群
+<ul>
+<li>选举</li>
+<li>消息同步</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="读队列与写队列">读队列与写队列</h2>
+<ul>
+<li>通常在运行时，都需要设置读队列=写队列</li>
+<li>读写分离
+<ul>
+<li>写队列会真实的创建对应的存储文件，负责消息写入</li>
+<li>读队列会记录Consumer的Offset，负责消息读取</li>
+</ul>
+</li>
+<li>在往写队列里写Message时，会同步写入到一个对应的读队列中
+<ul>
+<li><img src="/static/IT/RocketMQ/RocketMQ-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86-1.png" alt=""></li>
+</ul>
+</li>
+<li>如果写队列大于读队列，就会有一部分写队列无法写入到读队列中，这一部分的消息就无法被读取，就会造成消息丢失（消息存入了，但是读不出来）</li>
+<li>如果写队列小于读队列，那就有一部分读队列里是没有消息写入的。如果有一个消费者被分配的是这些没有消息的读队列，那这些消费者就无法消费消息，造成消费者空转，极大的浪费性能</li>
+<li>对Topic的MessageQueue进行缩减的时候，可以考虑将读写队列设置为不一致
+<ul>
+<li>例如原来四个队列，现在要缩减成两个队列</li>
+<li>如果立即缩减读写队列，那么被缩减的MessageQueue上没有被消费的消息，就会丢失</li>
+<li>这时，可以先缩减写队列，待空出来的读队列上的消息都被消费完了之后，再来缩减读队列，这样就可以比较平稳的实现队列缩减了</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="消息持久化">消息持久化</h2>
+<ul>
+<li>RocketMQ消息直接采用磁盘文件保存消息，默认路径在<code>${user_home}/store</code>目录（<code>broker.conf</code>）</li>
+<li>存储文件主要分为三个部分
+<ul>
+<li>CommitLog：存储消息的元数据
+<ul>
+<li>所有消息都会顺序存入到CommitLog文件当中</li>
+<li>CommitLog由多个文件组成，每个文件固定大小1G</li>
+<li>以第一条消息的偏移量为文件名</li>
+</ul>
+</li>
+<li>ConsumerQueue：存储消息在CommitLog的索引
+<ul>
+<li>一个MessageQueue一个文件</li>
+<li>记录当前MessageQueue被哪些消费者组消费到了哪一条CommitLog</li>
+</ul>
+</li>
+<li>IndexFile
+<ul>
+<li>为了消息查询提供了一种通过key或时间区间来查询消息的方法</li>
+<li>这通过IndexFile来查找消息的方法不影响发送与消费消息的主流程</li>
+</ul>
+</li>
+<li>CommitLog文件和ConsumeQueue文件都是以偏移量命名</li>
+</ul>
+</li>
+<li>还有几个辅助的存储文件
+<ul>
+<li>checkpoint：数据存盘检查点
+<ul>
+<li>里面主要记录commitlog文件、ConsumeQueue文件以及IndexFile文件最后一次刷盘的时间戳</li>
+</ul>
+</li>
+<li><code>config/*.json</code>：这些文件是将RocketMQ的一些关键配置信息进行存盘保存
+<ul>
+<li>例如Topic配置、消费者组配置、消费者组消息偏移量Offset 等等一些信息</li>
+</ul>
+</li>
+<li>abort：这个文件是RocketMQ用来判断程序是否正常关闭的一个标识文件
+<ul>
+<li>正常情况下，会在启动时创建，而关闭服务时删除</li>
+<li>但是如果遇到一些服务器宕机，这个abort文件就不会删除</li>
+<li>因此RocketMQ就可以判断上一次服务是非正常关闭的，后续就会做一些数据恢复的操作</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>整体的消息存储结构
+<ul>
+<li><img src="/static/IT/RocketMQ/RocketMQ-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86-2.png" alt=""></li>
+</ul>
+</li>
+<li>CommitLog文件存储所有消息实体
+<ul>
+<li>所有生产者发过来的消息，都会无差别的依次存储到Commitlog文件当中
+<ul>
+<li>这样的好处是可以减少查找目标文件的时间，让消息以最快的速度落盘</li>
+<li>对比Kafka存文件时，需要寻找消息所属的Partition文件，再完成写入，当Topic比较多时，这样的Partition寻址就会浪费比较多的时间，所以Kafka不太适合多Topic的场景</li>
+<li>而RocketMQ的这种快速落盘的方式在多Topic场景下，优势就比较明显</li>
+</ul>
+</li>
+<li>文件结构：CommitLog的文件大小是固定的，但是其中存储的每个消息单元长度是不固定的
+<ul>
+<li>所以RocketMQ在每次存CommitLog文件时，都会去检查当前CommitLog文件空间是否足够
+<ul>
+<li>如果不够的话，就重新创建一个CommitLog文件</li>
+<li>文件名为当前消息的偏移量</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ConsumeQueue文件主要是加速消费者的消息索引
+<ul>
+<li>他的每个文件夹对应RocketMQ中的一个MessageQueue
+<ul>
+<li>文件夹下的文件记录了每个MessageQueue中的消息在CommitLog文件当中的偏移量</li>
+<li>这样，消费者通过ComsumeQueue文件，就可以快速找到CommitLog文件中感兴趣的消息记录</li>
+<li>而消费者在ConsumeQueue文件当中的消费进度，会保存在<code>config/consumerOffset.json</code>文件当中</li>
+</ul>
+</li>
+<li>文件结构：每个ConsumeQueue文件固定由30万个固定大小20byte的数据块组成，数据块的内容包括
+<ul>
+<li>msgPhyOffset (8byte，消息在文件中的起始位置)</li>
+<li>msgSize (4byte，消息在文件中占用的长度)</li>
+<li>msgTagCode (8byte，消息的tag的Hash值)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>IndexFile文件主要是辅助消息检索
+<ul>
+<li>消费者进行消息消费时，通过ConsumeQueue文件就足够完成消息检索了，但是如果要按照MeessageId或者MessageKey来检索文件，比如RocketMQ管理控制台的消息轨迹功能，ConsumeQueue文件就不够用了</li>
+<li>他的文件名比较特殊，不是以消息偏移量命名，而是用的时间命名</li>
+<li>文件结构：也是一个固定大小的文件
+<ul>
+<li>indexHeader (固定40byte)</li>
+<li>slot (固定500W个，每个固定20byte)</li>
+<li>index (最多<code>500W*4</code>个，每个固定20byte)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="过期文件删除">过期文件删除</h2>
+<ul>
+<li>判断过期文件：唯一标准就是非当前写文件的保留时间（<code>broker.conf -&gt; fileReservedTime</code>）
+<ul>
+<li>如果超过了一定的保留时间，那么这些文件都会被认为是过期文件，随时可以删除</li>
+<li>并不关心文件当中的消息是否被消费过
+<ul>
+<li>所以，RocketMQ的消息堆积也是有时间限度的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>删除过期文件
+<ul>
+<li>内部有一个定时任务，对文件进行扫描，并且触发文件删除的操作
+<ul>
+<li><code>broker.conf -&gt; deleteWhen</code>，默认是凌晨四点</li>
+</ul>
+</li>
+<li>还会检查服务器的磁盘空间是否足够，如果磁盘空间的使用率达到一定的阈值，也会触发过期文件删除
+<ul>
+<li>broker的磁盘空间不要少于4</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="高效文件写">高效文件写</h2>
+<h3 id="零拷贝">零拷贝</h3>
+<ul>
+<li>所谓的零拷贝技术，其实并不是不拷贝，而是要尽量减少CPU拷贝</li>
+<li>引入DMA拷贝之后，在读写请求的过程中，CPU不再需要参与具体的工作
+<ul>
+<li>DMA可以独立完成数据在系统内部的复制</li>
+<li>但是，数据复制过程中，依然需要借助数据总进线
+<ul>
+<li>当系统内的IO操作过多时，还是会占用过多的数据总线，造成总线冲突，最终还是会影响数据读写性能</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>为了避免DMA总线冲突对性能的影响，后来又引入了Channel通道的方式
+<ul>
+<li>Channel，是一个完全独立的处理器，专门负责IO操作</li>
+<li>既然是处理器，Channel就有自己的IO指令，与CPU无关，他也更适合大型的IO操作，性能更高</li>
+</ul>
+</li>
+<li>mmap：<code>FileChannel#map</code>
+<ul>
+<li>mmap机制适合操作小文件，如果文件太大，映射信息也会过大，容易造成很多问题</li>
+<li>通常mmap机制建议的映射文件大小不要超过2G</li>
+<li>RocketMQ的CommitLog文件保持在1G固定大小，也是为了方便文件映射</li>
+<li><img src="/static/IT/RocketMQ/RocketMQ-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86-3.png" alt=""></li>
+</ul>
+</li>
+<li>sendFile：<code>FileChannel#transferTo</code>
+<ul>
+<li>在拷贝过程中，并不直接拷贝文件的内容，而是只拷贝一个带有文件位置和长度等信息的文件描述符FD
+<ul>
+<li>这样就大大减少了需要传递的数据</li>
+</ul>
+</li>
+<li>而真实的数据内容，会交由DMA控制器，从页缓存中打包异步发送到socket中</li>
+<li>sendfile机制在内核态直接完成了数据的复制，不需要用户态的参与，所以这种机制的传输效率是非常稳定的</li>
+<li>sendfile机制非常适合大数据的复制转移</li>
+<li><img src="/static/IT/RocketMQ/RocketMQ-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86-4.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="顺序写">顺序写</h3>
+<ul>
+<li>在磁盘中提前申请一块连续的磁盘空间
+<ul>
+<li>每次写数据时，就可以避免这些寻址操作，直接在之前写入的地址后面接着写就行</li>
+</ul>
+</li>
+<li>顺序写的性能基本能够达到内存级别</li>
+</ul>
+<h3 id="刷盘机制">刷盘机制</h3>
+<ul>
+<li>在操作系统层面
+<ul>
+<li>当应用程序写入一个文件时，文件内容并不会直接写入到硬件当中，而是会先写入到操作系统中的一个缓存PageCache中
+<ul>
+<li>PageCache缓存以4K大小为单位，缓存文件的具体内容</li>
+<li>这些写入到PageCache中的文件，在应用程序看来，是已经完全落盘保存好了的</li>
+<li>但是，本质上，PageCache依然是内存状态，所以一断电就会丢失</li>
+<li>因此，需要将内存状态的数据写入到磁盘当中，这样数据才能真正完成持久化，断电也不会丢失
+<ul>
+<li>这个过程就称为刷盘</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>PageCache是源源不断产生的，操作系统只会在某些特定的时刻将PageCache写入到磁盘
+<ul>
+<li>正常关机时</li>
+<li>当 Dirty Page (脏页) 的比例达到一定的阈值时（对于有数据修改的PageCache，会标记为Dirty状态）</li>
+</ul>
+</li>
+<li>可以通过/proc/meminfo文件查看到Page Cache的状态</li>
+<li>fsync：可以让应用程序完成PageCache的强制刷盘</li>
+</ul>
+</li>
+<li>RocketMQ对于何时进行刷盘，也设计了两种刷盘机制，同步刷盘和异步刷盘
+<ul>
+<li><code>broker.conf -&gt; flushDiskType</code></li>
+<li><img src="/static/IT/RocketMQ/RocketMQ-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86-5.png" alt=""></li>
+<li>同步刷盘：在返回写成功状态时，消息已经被写入磁盘
+<ul>
+<li>消息写入内存的PAGECACHE后，立刻通知刷盘线程刷盘</li>
+<li>然后等待刷盘完成</li>
+<li>刷盘线程执行完成后唤醒等待的线程，返回消息写成功的状态</li>
+</ul>
+</li>
+<li>异步刷盘：在返回写成功状态时，消息可能只是被写入了内存的PAGECACHE
+<ul>
+<li>写操作的返回快，吞吐量大</li>
+<li>当内存里的消息量积累到一定程度时，统一触发写磁盘动作，快速写入</li>
+</ul>
+</li>
+<li>同步刷盘机制会更频繁的调用fsync，所以吞吐量相比异步刷盘会降低，但是数据的安全性会得到提高</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="消息主从复制">消息主从复制</h2>
+<ul>
+<li>同步复制：等Master和Slave都写入消息成功后才反馈给客户端写入成功的状态
+<ul>
+<li>如果Master节点故障，Slave上有全部的数据备份，这样容易恢复数据</li>
+<li>但是同步复制会增大数据写入的延迟，降低系统的吞吐量</li>
+</ul>
+</li>
+<li>异步复制：只要master写入消息成功，就反馈给客户端写入成功的状态
+<ul>
+<li>然后再异步的将消息复制给Slave节点</li>
+<li>系统拥有较低的延迟和较高的吞吐量</li>
+<li>但是如果master节点故障，而有些数据没有完成复制，就会造成数据丢失</li>
+</ul>
+</li>
+<li><code>broker.conf -&gt; brokerRole</code>
+<ul>
+<li>ASYNC_MASTER、 SYNC_MASTER、SLAVE</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="负载均衡">负载均衡</h2>
+<ul>
+<li>Producer 负载均衡
+<ul>
+<li><img src="/static/IT/RocketMQ/RocketMQ-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86-6.png" alt=""></li>
+<li>Producer发送消息时，默认会轮询目标Topic下的所有MessageQueue，并采用递增取模的方式往不同的MessageQueue上发送消息，以达到让消息平均落在不同的queue上的目的</li>
+<li>由于MessageQueue是分布在不同的Broker上的，所以消息也会发送到不同的broker上</li>
+<li>同时生产者在发送消息时，可以指定一个MessageQueueSelector
+<ul>
+<li>通过这个对象来将消息发送到自己指定的MessageQueue上</li>
+<li>这样可以保证消息局部有序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Consumer负载均衡： Consumer也是以MessageQueue为单位来进行负载均衡
+<ul>
+<li>集群模式
+<ul>
+<li>每条消息只需要投递到订阅这个topic的Consumer Group下的一个实例即可</li>
+<li>RocketMQ采用主动拉取的方式拉取并消费消息
+<ul>
+<li>在拉取的时候需要明确指定拉取哪一条message queue</li>
+</ul>
+</li>
+<li>每当实例的数量有变更，都会触发一次所有实例的负载均衡
+<ul>
+<li>这时候会按照queue的数量和实例的数量平均分配queue给每个实例</li>
+</ul>
+</li>
+<li>每次分配时，都会将MessageQueue和消费者ID进行排序后，再用不同的分配算法进行分配</li>
+<li>内置的分配的算法共有六种，分别对应AllocateMessageQueueStrategy下的六种实现类
+<ul>
+<li>可以在consumer中直接set来指定。默认情况下使用的是最简单的平均分配策略</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>广播模式
+<ul>
+<li>每一条消息都会投递给订阅了Topic的所有消费者实例，所以也就没有消息分配这一说</li>
+<li>在实现上，就是在Consumer分配Queue时，所有Consumer都分到所有的Queue</li>
+<li>实现的关键是将消费者的消费偏移量不再保存到broker当中
+<ul>
+<li>而是保存到客户端当中，由客户端自行维护自己的消费偏移量</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>集群模式分配算法
+<ul>
+<li>AllocateMachineRoomNearby： 将同机房的Consumer和Broker优先分配在一起
+<ul>
+<li>可以通过一个machineRoomResolver对象来定制Consumer和Broker的机房解析规则</li>
+<li>然后还需要引入另外一个分配策略来对同机房的Broker和Consumer进行分配
+<ul>
+<li>一般也就用简单的平均分配策略或者轮询分配策略</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>AllocateMessageQueueAveragely（默认）：平均分配。将所有MessageQueue平均分给每一个消费者</li>
+<li>AllocateMessageQueueAveragelyByCircle： 轮询分配。轮流的给一个消费者分配一个MessageQueue</li>
+<li>AllocateMessageQueueByConfig： 不分配，直接指定一个messageQueue列表
+<ul>
+<li>类似于广播模式，直接指定所有队列</li>
+</ul>
+</li>
+<li>AllocateMessageQueueByMachineRoom：按逻辑机房的概念进行分配
+<ul>
+<li>又是对BrokerName和ConsumerIdc有定制化的配置</li>
+</ul>
+</li>
+<li>AllocateMessageQueueConsistentHash：一致性哈希策略
+<ul>
+<li>只需要指定一个虚拟节点数，是用的一个哈希环的算法</li>
+<li>虚拟节点是为了让Hash数据在换上分布更为均匀</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="消息重试">消息重试</h2>
+<ul>
+<li>集群消费方式下，消息消费失败后期望消息重试，需要在消息监听器接口的实现中明确进行配置
+<ul>
+<li><code>MessageListener#consume</code></li>
+<li>返回 Action.ReconsumeLater（推荐） 消息重试</li>
+<li>返回 Action.CommitMessage 消费失败后不重试</li>
+<li>返回 null</li>
+<li>抛出异常</li>
+</ul>
+</li>
+<li>处理重试消息
+<ul>
+<li>重试的消息会进入一个 “%RETRY%”+ConsumeGroup 的队列中</li>
+<li>默认允许每条消息最多重试16次
+<ul>
+<li>这个重试时间跟延迟消息的延迟级别是对应的</li>
+<li>不过取的是延迟级别的后16级别</li>
+</ul>
+</li>
+<li><code>consumer#setMaxReconsumeTimes</code> 定制重试次数
+<ul>
+<li>当定制的重试次数超过16次后，消息的重试时间间隔均为2小时</li>
+</ul>
+</li>
+<li>如果消息重试16次后仍然失败，消息将不再投递。转为进入死信队列</li>
+<li>一条消息无论重试多少次，这些重试消息的MessageId始终都是一样的
+<ul>
+<li>在4.9.1版本中，每次重试MessageId都会重建</li>
+</ul>
+</li>
+<li>配置覆盖
+<ul>
+<li>消息最大重试次数的设置对相同GroupID下的所有Consumer实例有效</li>
+<li>并且最后启动的Consumer会覆盖之前启动的Consumer的配置</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="死信队列">死信队列</h2>
+<ul>
+<li>如果消息重试16次（<code>consumer#setMaxReconsumeTimes</code>）后仍然失败，消息将不再投递。转为进入死信队列</li>
+<li>死信队列的名称是 %DLQ%+ConsumGroup</li>
+<li>死信队列的特征
+<ul>
+<li>一个死信队列对应一个ConsumGroup，而不是对应某个消费者实例</li>
+<li>如果一个ConsumeGroup没有产生死信队列，RocketMQ就不会为其创建相应的死信队列</li>
+<li>一个死信队列包含了这个ConsumeGroup里的所有死信消息，而不区分该消息属于哪个Topic</li>
+<li>死信队列中的消息不会再被消费者正常消费</li>
+<li>死信队列的有效期跟正常消息相同。默认3天（<code>broker.conf -&gt; fileReservedTime</code>）
+<ul>
+<li>超过这个最长时间的消息都会被删除，而不管消息是否消费过</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>一般需要人工去查看死信队列中的消息，对错误原因进行排查
+<ul>
+<li>然后对死信消息进行处理，比如转发到正常的Topic重新进行消费，或者丢弃</li>
+</ul>
+</li>
+<li>默认创建出来的死信队列，他里面的消息是无法读取的，在控制台和消费者中都无法读取
+<ul>
+<li>这些默认的死信队列，他们的权限 perm 被设置成了 2:禁读
+<ul>
+<li>权限有三种：2:禁读，4:禁写，6:可读可写</li>
+</ul>
+</li>
+<li>需要手动将死信队列的权限配置成 6，才能被消费</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="消息幂等">消息幂等</h2>
+<ul>
+<li>在MQ系统中，对于消息幂等有三种实现语义
+<ul>
+<li>at most once 最多一次：每条消息最多只会被消费一次</li>
+<li>at least once 至少一次：每条消息至少会被消费一次</li>
+<li>exactly once 刚刚好一次：每条消息都只会确定的消费一次</li>
+</ul>
+</li>
+<li>RocketMQ 只能保证 at least once，保证不了 exactly once
+<ul>
+<li>所以，使用RocketMQ时，需要由业务系统自行保证消息的幂等性</li>
+</ul>
+</li>
+<li>消息重复
+<ul>
+<li>发送时消息重复
+<ul>
+<li>当一条消息已被成功发送到服务端并完成持久化，此时出现了网络闪断或者客户端宕机，导致服务端对客户端应答失败</li>
+<li>此时生产者意识到消息发送失败并尝试再次发送消息</li>
+<li>消费者后续会收到两条内容相同并且 Message ID 也相同的消息</li>
+</ul>
+</li>
+<li>投递时消息重复
+<ul>
+<li>消息消费的场景下，消息已投递到消费者并完成业务处理，当客户端给服务端反馈应答的时候网络闪断</li>
+<li>为了保证消息至少被消费一次，消息队列 RocketMQ 的服务端将在网络恢复后再次尝试投递之前已被处理过的消息</li>
+<li>消费者后续会收到两条内容相同并且 Message ID 也相同的消息</li>
+</ul>
+</li>
+<li>负载均衡时消息重复：网络抖动、Broker 重启以及订阅方应用重启
+<ul>
+<li>当消息队列 RocketMQ 的 Broker 或客户端重启、扩容或缩容时，会触发 Rebalance，此时消费者可能会收到重复消息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>处理方式：要在业务上自行来保证消息消费的幂等性
+<ul>
+<li>RocketMQ的每条消息都有一个唯一的 MessageId，这个参数在多次投递的过程中是不会改变的</li>
+<li>业务上可以用这个MessageId来作为判断幂等的关键依据</li>
+<li>但是，这个MessageId是无法保证全局唯一的，也会有冲突的情况</li>
+<li>所以在一些对幂等性要求严格的场景，最好是使用业务上唯一的一个标识比较靠谱</li>
+<li>而这个业务标识可以使用Message的Key来进行传递</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="Dledger-集群">Dledger 集群</h2>
+<ul>
+<li>高可用集群：基于Raft，在RocketMQ的主从集群基础上，增加了自动选举的功能</li>
+<li>Dledger集群主要包含两个功能
+<ul>
+<li>从集群中选举产生master节点</li>
+<li>优化master节点往slave节点的消息同步机制</li>
+</ul>
+</li>
+</ul>
+<h3 id="选举">选举</h3>
+<ul>
+<li>Dledger是使用Raft算法来进行节点选举
+<ul>
+<li>节点有三个状态，Leader，follower 和 candidate (候选人)
+<ul>
+<li>正常运行的情况下，集群中会有一个leader，其他都是follower</li>
+<li>follower只响应Leader和Candidate的请求</li>
+<li>客户端的请求全部由Leader处理
+<ul>
+<li>即使有客户端请求到了一个follower，也会将请求转发到leader</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>选举流程
+<ul>
+<li>集群刚启动时，每个节点都是follower状态</li>
+<li>之后集群内部会发送一个timeout信号</li>
+<li>所有follower就转成candidate去拉取选票，获得大多数选票的节点选为leader，其他候选人转为follower</li>
+<li>如果一个timeout信号发出时，没有选出leader，将会重新开始一次新的选举</li>
+</ul>
+</li>
+<li>心跳
+<ul>
+<li>Leader节点会往其他节点发送心跳信号，确认他的leader状态</li>
+<li>然后follower会启动定时器，如果在指定时间内没有收到Leader的心跳，就会转为Candidate状态</li>
+<li>然后向其他成员发起投票请求，如果收到半数以上成员的投票，则Candidate会晋升为Leader
+<ul>
+<li>然后leader也有可能会退化成follower</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在Raft协议中，会将时间分为一些任意时间长度的时间片段，叫做term
+<ul>
+<li><img src="/static/IT/RocketMQ/RocketMQ-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86-7.png" alt=""></li>
+<li>term会使用一个全局唯一，连续递增的编号作为标识，也就是起到了一个逻辑时钟的作用</li>
+<li>在每一个term时间片里，都会进行新的选举，每一个Candidate都会努力争取成为leader
+<ul>
+<li>获得票数最多的节点就会被选举为Leader</li>
+</ul>
+</li>
+<li>被选为Leader的这个节点，在一个term时间片里就会保持leader状态
+<ul>
+<li>保证在同一时间段内，集群中只会有一个Leader</li>
+</ul>
+</li>
+<li>在某些情况下，选票可能会被各个节点瓜分，形成不了多数派，那这个term可能直到结束都没有leader
+<ul>
+<li>直到下一个term再重新发起选举，这也就没有了Zookeeper中的脑裂问题</li>
+</ul>
+</li>
+<li>在每次重新选举的过程中， leader也有可能会退化成为follower
+<ul>
+<li>也就是说，在这个集群中， leader节点是会不断变化的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>每次选举的过程中，每个节点都会存储当前term编号，并在节点之间进行交流时，都会带上自己的term编号
+<ul>
+<li>如果一个节点发现他的编号比另外一个小，那么他就会将自己的编号更新为较大的那一个</li>
+<li>如果leader或者candidate发现自己的编号不是最新的，他就会自动转成follower</li>
+<li>如果接收到的请求term编号小于自己的编号，term将会拒绝执行</li>
+</ul>
+</li>
+<li>在选举过程中，Raft协议会通过心跳机制发起leader选举
+<ul>
+<li>节点都是从follower状态开始的，如果收到了来自leader或者candidate的心跳RPC请求，那他就会保持follower状态，避免争抢成为candidate</li>
+<li>leader会往其他节点发送心跳信号，来确认自己的地位</li>
+<li>如果follower一段时间(两个timeout信号)内没有收到Leader的心跳信号，他就会认为leader挂了，发起新一轮选举</li>
+</ul>
+</li>
+<li>选举开始后，每个follower会增加自己当前的term，并将自己转为candidate
+<ul>
+<li>然后向其他节点发起投票请求，请求时会带上自己的编号和term，也就是说都会默认投自己一票</li>
+<li>之后candidate状态可能会发生以下三种变化
+<ul>
+<li>赢得选举，成为leader
+<ul>
+<li>如果它在一个term内收到了大多数的选票，将会在接下的剩余term时间内称为leader</li>
+<li>然后就可以通过发送心跳确立自己的地位</li>
+<li>每一个server在一个term内只能投一张选票，并且按照先到先得的原则投出)</li>
+</ul>
+</li>
+<li>其他节点成为leader
+<ul>
+<li>在等待投票时，可能会收到其他server发出心跳信号，说明其他leader已经产生了</li>
+<li>这时通过比较自己的term编号和RPC过来的term编号
+<ul>
+<li>如果比对方大，说明leader的term过期了，就会拒绝该RPC,并继续保持候选人身份</li>
+<li>如果对方编号不比自己小,则承认对方的地位,转为follower</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>选票被瓜分,选举失败
+<ul>
+<li>如果没有candidate获取大多数选票, 则没有leader产生</li>
+<li>candidate们等待超时后发起另一轮选举</li>
+<li>为了防止下一次选票还被瓜分, raft采用随机electiontimeout(随机休眠时间)的机制防止选票被持续瓜分</li>
+<li>通过将timeout随机设为一段区间上的某个值, 因此很大概率会有某个candidate率先超时然后赢得大部分选票</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>所以以三个节点的集群为例，选举过程会是这样的
+<ul>
+<li>集群启动时，三个节点都是follower，发起投票后，三个节点都会给自己投票。这样一轮投票下来，三个节点的term都是1，是一样的，这样是选举不出Leader的</li>
+<li>当一轮投票选举不出Leader后，三个节点会进入随机休眠，例如A休眠1秒，B休眠3秒，C休眠2秒</li>
+<li>一秒后，A节点醒来，会把自己的term加一票，投为2。然后2秒时，C节点醒来，发现A的term已经是2，比自己的1大，就会承认A是Leader，把自己的term也更新为2。实际上这个时候，A已经获得了集群中的多数票，2票，A就会被选举成Leader。这样，一般经过很短的几轮选举，就会选举出一个Leader来</li>
+<li>到3秒时，B节点会醒来，他也同样会承认A的term最大，他是Leader，自己的term也会更新为2。这样集群中的所有Candidate就都确定成了leader和follower</li>
+<li>然后在一个任期内，A会不断发心跳给另外两个节点。当A挂了后，另外的节点没有收到A的心跳，就会都转化成Candidate状态，重新发起选举</li>
+</ul>
+</li>
+</ul>
+<h3 id="消息同步">消息同步</h3>
+<p>Dledger还会采用Raft协议进行多副本的消息同步：</p>
+<ul>
+<li>使用Dledger集群后，数据主从同步会分为两个阶段，一个是uncommitted阶段，一个是commited阶段</li>
+<li>Leader Broker上的Dledger收到一条数据后，会标记为uncommitted状态，然后他通过自己的DledgerServer组件把这个uncommitted数据发给Follower Broker的DledgerServer组件</li>
+<li>接着Follower Broker的DledgerServer收到uncommitted消息之后，必须返回一个ack给Leader Broker的Dledger。然后如果Leader Broker收到超过半数的Follower Broker返回的ack之后，就会把消息标记为committed状态</li>
+<li>再接下来， Leader Broker上的DledgerServer就会发送committed消息给Follower Broker上的DledgerServer，让他们把消息也标记为committed状态。这样，就基于Raft协议完成了两阶段的数据同步</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">钱不寒</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://jxch.github.io/2024/09/09/architect/rocketmq/rocketmq-he-xin-yuan-li/">https://jxch.github.io/2024/09/09/architect/rocketmq/rocketmq-he-xin-yuan-li/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">钱不寒</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/RocketMQ/">
+                                    <span class="chip bg-color">RocketMQ</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2024/09/09/architect/rocketmq/rocketmq-ji-chu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="RocketMQ-基础">
+                        
+                        <span class="card-title">RocketMQ-基础</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/RocketMQ/">
+                        <span class="chip bg-color">RocketMQ</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2024/09/09/architect/rocketmq/rocketmq-dai-ma-shi-li/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="RocketMQ-代码示例">
+                        
+                        <span class="card-title">RocketMQ-代码示例</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/RocketMQ/">
+                        <span class="chip bg-color">RocketMQ</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2024</span>
+            
+            <a href="/about" target="_blank">钱不寒</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+                <span id="translate">|&nbsp;繁/简：</span><a id="translateLink" href="javascript:translatePage();">繁</a>
+            
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">545.3k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "11";
+                        var startDate = "1";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/jxch" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:qianbuhan@proton.me" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://www.facebook.com/profile.php?id=100073531534496" class="tooltipped" target="_blank" data-tooltip="关注我的Facebook: https://www.facebook.com/profile.php?id=100073531534496" data-position="top" data-delay="50">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+
+
+
+    <a href="https://twitter.com/chengbushang" class="tooltipped" target="_blank" data-tooltip="关注我的Twitter: https://twitter.com/chengbushang" data-position="top" data-delay="50">
+        <i class="fab fa-twitter"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2455930800" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2455930800" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+    <a href="https://weibo.com/u/7558713016" class="tooltipped" target="_blank" data-tooltip="关注我的微博: https://weibo.com/u/7558713016" data-position="top" data-delay="50">
+        <i class="fab fa-weibo"></i>
+    </a>
+
+
+
+    <a href="https://www.zhihu.com/people/qianbuhan" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/qianbuhan" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          if (window.mermaid) {
+            mermaid.initialize({theme: 'forest'});
+          }
+        </script>
+    
+
+    
+        <script type="text/javascript" src="/js/tw_cn.js"></script>
+        <script type="text/javascript">
+          var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+          var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+          var cookieDomain = "https://jxch.github.io"; //Cookie地址, 一定要设定, 通常为你的网址
+          var msgToTraditionalChinese = "繁"; //此处可以更改为你想要显示的文字
+          var msgToSimplifiedChinese = "简"; //同上，但两处均不建议更改
+          var translateButtonId = "translateLink"; //默认互换id
+          translateInitilization();
+        </script>
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
