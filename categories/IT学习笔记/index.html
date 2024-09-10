@@ -511,11 +511,11 @@
                 </a>
                 
                 
-                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 172">
+                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="IT学习笔记: 190">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #F9E79F;">IT学习笔记
-                        <span class="tag-length">172</span>
+                        <span class="tag-length">190</span>
                     </span>
                 </a>
                 
@@ -569,34 +569,828 @@
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/09/09/architect/zookeeper/zookeeper-zab/">
+                    <a href="/2024/09/10/architect/redis/redis-7.0-xin-te-xing/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="Zookeeper-ZAB">
+                            <img src="/medias/featureimages/41.jpg" class="responsive-img" alt="Redis-7.0新特性">
                             
-                            <span class="card-title">Zookeeper-ZAB</span>
+                            <span class="card-title">Redis-7.0新特性</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
                                 
-ZAB
-消息广播
-崩溃恢复
-数据同步
+共享复制缓存区
+
+老版本多从库时主库内存占用过多（每个从库都有一个从库复制缓冲区）
 
 
-ZAB
 
-整个Zookeeper就是一个多节点分布式一致性算法的实现，底层采用的实现协议是ZAB
-ZAB&nbsp;协议全称：Zookeeper&nbsp;Atomic&nbsp;Broadcas
+
+Redis 为了提升多从库全量复制的效率和减少 fork 产生RDB 的次数，会尽可能的让多个从库共用一个 RDB
+
+将 ReplicationB
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-6.0-xin-te-xing/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Redis-6.0新特性">
+                            
+                            <span class="card-title">Redis-6.0新特性</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+多线程
+Client&nbsp;Side&nbsp;Cache
+Acls
+
+
+多线程
+
+redis&nbsp;6.0&nbsp;提供了多线程的读写IO,&nbsp;但是最终执行用户命令的线程依然是单线程的
+
+io‐threads&nbsp
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-fen-bu-shi-suo/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/63.jpg" class="responsive-img" alt="Redis-分布式锁">
+                            
+                            <span class="card-title">Redis-分布式锁</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+Redisson -&gt; LUA
+
+自旋信号量拿锁
+
+解锁后信号量唤醒尝试再加锁（Redis订阅发布通知唤醒）
+
+
+锁续命
+
+避免线程执行时锁失效，导致该线程释放其它线程的锁
+
+
+锁重入
+读写锁
+锁失效：无解，Redis的可用性高于可
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-stream/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/46.jpg" class="responsive-img" alt="Redis-Stream">
+                            
+                            <span class="card-title">Redis-Stream</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+Stream：支持多播的可持久化的消息队列
+
+常用操作命令
+
+
+Stream 消息队列的问题
+
+
+Stream
+
+
+每一个Stream都有一个消息链表，将所有加入的消息都串起来，每个消息都有一个唯一的 ID 和对应的内容
+消息是持久化的，
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-io-mo-xing-duo-xian-cheng/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Redis-IO模型&amp;多线程">
+                            
+                            <span class="card-title">Redis-IO模型&amp;多线程</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+Redis I/O 多路复用
+Redis 多线程
+Reactor 模式
+
+
+I/O 多路复用
+
+Redis 基于 Reactor 模式开发了自己的网络事件处理器
+I/O 多路复用同时监听多个 socket，根据socket 当前执行的事件
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-hyperloglog-shi-wu-pipeline/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/38.jpg" class="responsive-img" alt="Redis-HyperLogLog&amp;事务&amp;Pipeline">
+                            
+                            <span class="card-title">Redis-HyperLogLog&amp;事务&amp;Pipeline</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+HyperLogLog 操作命令
+
+pfadd key element [element …]
+
+pfadd 用于向HyperLogLog 添加元素,如果添加成功返回1
+
+
+pfcount key [key …]
+
+pfcount 用于计
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-cluster-ji-qun/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/58.jpg" class="responsive-img" alt="Redis-Cluster集群">
+                            
+                            <span class="card-title">Redis-Cluster集群</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+Cluster高可用集群
+槽位&amp;选举&amp;脑裂
+集群完整性&amp;奇数节点&amp;批量操作
+通信
+
+
+Cluster 高可用集群
+
+配置文件
+
+cluster‐enabled yes&nbsp;&nbsp;&nbsp;&n
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-zhu-cong-shao-bing/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/46.jpg" class="responsive-img" alt="Redis-主从&amp;哨兵">
+                            
+                            <span class="card-title">Redis-主从&amp;哨兵</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+主从架构
+哨兵
+
+
+主从架构
+
+从节点配置文件
+
+replicaof 192.168.0.60 6379&nbsp;&nbsp;&nbsp; 从主节点IP-Port复制数据
+replica‐read‐only yes&nbsp;&nbsp
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-kai-fa-gui-fan-yu-xing-neng-you-hua/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Redis-开发规范与性能优化">
+                            
+                            <span class="card-title">Redis-开发规范与性能优化</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+键值设计
+命令使用
+客户端使用
+系统内核参数优化
+
+
+键值设计
+
+key名设计
+
+可读性和可管理性
+简洁性
+不要包含特殊字符
+
+
+value设计：拒绝 bigkey (防止网卡流量、慢查询)
+
+字符串类型：它的big体现在单个value值
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-he-xin-shu-ju-jie-gou-io-duo-lu-fu-yong/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Redis-核心数据结构&amp;IO多路复用">
+                            
+                            <span class="card-title">Redis-核心数据结构&amp;IO多路复用</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+五种数据结构：string hash list set zset
+
+应用场景
+
+
+RedisTemplate 默认采用的是JDK的序列化，直接看的话key会有乱码，建议用 StringRedisTemplate
+IO多路复用
+SCAN
+
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-gao-bing-fa-huan-cun-jia-gou/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Redis-高并发缓存架构">
+                            
+                            <span class="card-title">Redis-高并发缓存架构</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+缓存击穿&amp;缓存穿透&amp;缓存雪崩
+热点KEY的缓存重建
+双写不一致&amp;读写并发不一致
+写多读多
+
+
+
+缓存击穿：缓存集体失效导致某一时刻大量请求打到数据库
+
+随机缓存失效时间
+读延期：阻塞该数据的访问，直到缓存重新建立
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-di-ceng-shu-ju-jie-gou/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Redis-底层数据结构">
+                            
+                            <span class="card-title">Redis-底层数据结构</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+Redis 应用场景
+Redis 底层核心数据结构
+Redis 渐进式rehash及动态扩容机制
+BitMap 海量数据统计
+GeoHash 经纬度计算
+
+
+Redis 应用场景
+
+缓存
+计数器：可以对 String 进行自增自减运算，从
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/redis/redis-chi-jiu-hua/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Redis-持久化">
+                            
+                            <span class="card-title">Redis-持久化</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+RDB：dump.rdb （二进制文件）
+
+配置文件：bgsave 方式
+
+save 60 1000 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭RDB只需要将所有的save保存策略注释掉即可
+
+60 秒内有至少有 1
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Redis/">
+                            <span class="chip bg-color">Redis</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/seata/seata-te-xing/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/31.jpg" class="responsive-img" alt="Seata-特性">
+                            
+                            <span class="card-title">Seata-特性</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+Seata-组件
+2PC
+Seata-AT
+Seata-XA
+Seata-TCC
+Seata-SAGA：业务流（最终一致性，不保证事务的隔离）
+Seata-集成
+
+
+Seata-组件
+
+核心组件：TC&nbsp;为单独部署的&nbsp;S
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Seata/">
+                            <span class="chip bg-color">Seata</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2024/09/10/architect/zookeeper/zookeeper-leader-xuan-ju/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Zookeeper-Leader选举">
+                            
+                            <span class="card-title">Zookeeper-Leader选举</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+
+整个zookeeper选举底层可以分为选举应用层和消息传输层，应用层有自己的队列统一接收和发送选票，传输层也设计了自己的队列，但是按发送的机器分了队列，避免给每台机器发送消息时相互影响，比如某台机器如果出问题发送不成功则不会影响对正常机
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
                             </span>
                             <span class="publish-author">
                                 
@@ -625,36 +1419,30 @@ ZAB&nbsp;协议全称：Zookeeper&nbsp;Atomic&nbsp;Broadcas
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/09/09/architect/rocketmq/rocketmq-zheng-ti-jia-gou/">
+                    <a href="/2024/09/10/architect/zookeeper/zookeeper-curator/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/62.jpg" class="responsive-img" alt="RocketMQ-整体架构">
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Zookeeper-curator">
                             
-                            <span class="card-title">RocketMQ-整体架构</span>
+                            <span class="card-title">Zookeeper-curator</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
                                 
-NameServer的结构
-Broker的结构
-Netty服务注册框架
-RocketMQ的同步结果推送与异步结果推送
-Broker心跳注册过程
-Producer发送消息过程
-Consumer拉取消息过程
-文件存储
-延迟消息
-长轮询机制
+工厂类创建客户端：CuratorFrameworkFactory
 
+connectionString：服务器地址列表；逗号分隔
+retryPolicy：重试策略
 
+可以通过判断服务器返回的&nbsp;keeperException&nbs
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
                             </span>
                             <span class="publish-author">
                                 
@@ -672,8 +1460,8 @@ Consumer拉取消息过程
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/RocketMQ/">
-                            <span class="chip bg-color">RocketMQ</span>
+                        <a href="/tags/Zookeeper/">
+                            <span class="chip bg-color">Zookeeper</span>
                         </a>
                         
                     </div>
@@ -683,36 +1471,37 @@ Consumer拉取消息过程
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/09/09/architect/rocketmq/rocketmq-xiao-xi-lei-xing-acl/">
+                    <a href="/2024/09/10/architect/zookeeper/zookeeper-fen-bu-shi-suo-zhu-ce-zhong-xin/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/48.jpg" class="responsive-img" alt="RocketMQ-消息类型&amp;ACL">
+                            <img src="/medias/featureimages/48.jpg" class="responsive-img" alt="Zookeeper-分布式锁&amp;注册中心">
                             
-                            <span class="card-title">RocketMQ-消息类型&amp;ACL</span>
+                            <span class="card-title">Zookeeper-分布式锁&amp;注册中心</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
                                 
-消息类型
-ACL 权限控制
+分布式锁
+
+非公平锁（羊群效应）
+公平锁：临时顺序&nbsp;znode
+Curator InterProcessMutex 可重入锁
 
 
-消息类型
+注册中心
 
-顺序消息
 
-保证的是消息的局部有序，而不是全局有序
-消息发送者会采取Round Robin轮询方式把消息发送到不同的 MessageQueue (分区队列)
+分布式锁
 
-消费者消费的时候也从多个Messa
+非公平锁（羊群效应）：所有的锁请求者都&nbsp;watch&nbsp;
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
                             </span>
                             <span class="publish-author">
                                 
@@ -730,8 +1519,8 @@ ACL 权限控制
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/RocketMQ/">
-                            <span class="chip bg-color">RocketMQ</span>
+                        <a href="/tags/Zookeeper/">
+                            <span class="chip bg-color">Zookeeper</span>
                         </a>
                         
                     </div>
@@ -741,31 +1530,41 @@ ACL 权限控制
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2024/09/09/architect/rocketmq/rocketmq-ji-chu/">
+                    <a href="/2024/09/10/architect/zookeeper/zookeeper-te-xing/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="RocketMQ-基础">
+                            <img src="/medias/featureimages/49.jpg" class="responsive-img" alt="Zookeeper-特性">
                             
-                            <span class="card-title">RocketMQ-基础</span>
+                            <span class="card-title">Zookeeper-特性</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
                                 
-RocketMQ 集群架构
+CP架构
+常见命令
+数据结构
+监听通知机制
+节点特性
+ACL权限控制
+集群
+四字命令
+Leader&nbsp;选举原理
+数据同步流程
 
 
-Producer：消息生产者集群。通常是业务系统中的一个功能模块。
-Consumer：消息消费者集群。通常也是业务系统中的一个功能模块。
-Broker：实际处理消息存储、转发等服务的核心组件。
-NameSe
+CP架构
+
+CAP&nbsp;理论指出对于一个分布式计算系统来说，不可能同时满足以下三点
+
+一致性：
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-10
                             </span>
                             <span class="publish-author">
                                 
@@ -783,792 +1582,8 @@ NameSe
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/RocketMQ/">
-                            <span class="chip bg-color">RocketMQ</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/rocketmq/rocketmq-he-xin-yuan-li/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="RocketMQ-核心原理">
-                            
-                            <span class="card-title">RocketMQ-核心原理</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-读队列与写队列
-消息持久化
-过期文件删除
-高效文件写
-
-零拷贝
-顺序写
-刷盘机制
-
-
-消息主从复制
-负载均衡
-消息重试
-死信队列
-消息幂等
-Dledger 集群
-
-选举
-消息同步
-
-
-
-
-读队列与写队列
-
-通常在运行时，都需要设置读队列=
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/RocketMQ/">
-                            <span class="chip bg-color">RocketMQ</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/rocketmq/rocketmq-dai-ma-shi-li/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="RocketMQ-代码示例">
-                            
-                            <span class="card-title">RocketMQ-代码示例</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-消息发送者的固定步骤
-
-同步发送消息
-异步发送消息
-单向发送消息：只管把消息发出去
-
-
-消息消费者的固定步骤
-
-拉模式
-
-DefaultMQPullConsumerImpl 这个消费者类已标记为过期
-替换的类是 DefaultLitePu
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/RocketMQ/">
-                            <span class="chip bg-color">RocketMQ</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/rocketmq/rocketmq-chang-jian-wen-ti/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="RocketMQ-常见问题">
-                            
-                            <span class="card-title">RocketMQ-常见问题</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-消息零丢失
-消息顺序
-消息积压
-消息轨迹
-
-
-消息零丢失
-
-哪些环节会有丢消息的可能
-
-
-1，2，4 三个场景都是跨网络的，而跨网络就肯定会有丢消息的可能
-通常MQ存盘时都会先写入操作系统的缓存page cache中，然后再由操作系统异步
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/RocketMQ/">
-                            <span class="chip bg-color">RocketMQ</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/jvm/jvm-jit/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="JVM-JIT">
-                            
-                            <span class="card-title">JVM-JIT</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-解释执行：Java程序在运行的时候，主要就是执行字节码指令，一般这些指令会按照顺序解释执行，这种
-就是解释执行
-JIT （即时编译器 Just&nbsp;In&nbsp;Time&nbsp;Compiler）：那些被频繁调用的代码（热点代
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JVM/">
-                            <span class="chip bg-color">JVM</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/jvm/jvm-gc-zgc/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="JVM-GC-ZGC">
-                            
-                            <span class="card-title">JVM-GC-ZGC</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-ZGC中的内存布局
-ZGC流程
-ZGC参数设置
-
-
-ZGC中的内存布局
-
-ZGC 设计目标：ZGC（The&nbsp;Z&nbsp;Garbage&nbsp;Collector）是JDK&nbsp;11中推出的一款追求极致低延迟的垃圾收集
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JVM/">
-                            <span class="chip bg-color">JVM</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/jvm/jvm-gc-g1-zgc/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/31.jpg" class="responsive-img" alt="JVM-GC-G1&amp;ZGC">
-                            
-                            <span class="card-title">JVM-GC-G1&amp;ZGC</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-G1
-ZGC
-如何选择垃圾收集器
-安全点与安全区域
-
-
-G1
-
-特点
-
-面向服务器的垃圾收集器，针对多核处理器及大容量内存的机器
-以极高概率满足GC停顿时间要求的同时，还具备高吞吐量性能特征
-
-
-内存划分
-
-
-G1将Java堆划分为多个大
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JVM/">
-                            <span class="chip bg-color">JVM</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/jvm/jvm-gc/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="JVM-GC">
-                            
-                            <span class="card-title">JVM-GC</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-垃圾收集算法
-垃圾收集器
-CMS 调优
-三色标记
-记忆集与卡表
-
-
-垃圾收集算法
-
-
-分代收集理论：将java堆分为新生代和老年代，这样我们就可以根据各个年代的特点选择合适的垃圾收集算法
-
-在新生代中，每次收集都会有大量对象(近99%)死
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JVM/">
-                            <span class="chip bg-color">JVM</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/jvm/jvm-lei-jia-zai-ji-zhi/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="JVM-类加载机制">
-                            
-                            <span class="card-title">JVM-类加载机制</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-loadClass 的类加载过程有如下几步（使用到时才加载）：加载&nbsp;&gt;&gt;&nbsp;验证&nbsp;&gt;&gt;&nbsp;准备&nbsp;&gt;&gt;&nbsp;解析&nbsp;&gt;&gt;&nbsp;
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JVM/">
-                            <span class="chip bg-color">JVM</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/jvm/jvm-dui-xiang-chuang-jian-nei-cun-fen-pei/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="JVM-对象创建&amp;内存分配">
-                            
-                            <span class="card-title">JVM-对象创建&amp;内存分配</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-对象的创建
-对象内存分配
-对象内存回收
-
-
-对象的创建
-
-
-类加载检查：&nbsp;虚拟机遇到一条new指令时，首先将去检查这个指令的参数是否能在常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已被加载、解析和初始化过。如
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JVM/">
-                            <span class="chip bg-color">JVM</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/jvm/jvm-diao-you/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/63.jpg" class="responsive-img" alt="JVM-调优">
-                            
-                            <span class="card-title">JVM-调优</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-jps 查看进程 id
-Jmap 查看内存信息，实例个数以及占用内存大小
-
-jmap -histo pid
-jmap&nbsp;‐dump:format=b,file=eureka.hprof&nbsp;14660
-
-
-Jstack 查找
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JVM/">
-                            <span class="chip bg-color">JVM</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/09/architect/jvm/jvm-chang-liang-chi/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="JVM-常量池">
-                            
-                            <span class="card-title">JVM-常量池</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-Class 常量池与运行时常量池（javap&nbsp;-v&nbsp;Xxx.class -&gt; Constant pool）：常量池中主要存放字面量和符号引用
-
-Class常量池可以理解为是Class文件中的资源仓库
-
-Class
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/JVM/">
-                            <span class="chip bg-color">JVM</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/06/architect/netty/netty-diao-you/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/32.jpg" class="responsive-img" alt="Netty-调优">
-                            
-                            <span class="card-title">Netty-调优</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-Selector BUG 会导致 Selector 空轮询，最终导致CPU 100%（JDK1.8 的131 版本中依然存在）
-
-JDK 认为linux 的epoll 告诉我事件来了，但是 JDK 没有拿到任何事件(READ、WRITE、
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-06
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Netty/">
-                            <span class="chip bg-color">Netty</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/06/architect/netty/netty-chang-yong-zu-jian/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/51.jpg" class="responsive-img" alt="Netty-常用组件">
-                            
-                            <span class="card-title">Netty-常用组件</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-代码示例
-Bootstrap：引导
-EventLoop(Group)：控制流、多线程处理、并发
-Channel：Socket
-ChannelFuture：异步通知
-ChannelHandler
-ChannelPipeline
-Channe
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-06
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Netty/">
-                            <span class="chip bg-color">Netty</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/09/06/architect/netty/netty-chang-yong-channelhandler/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Netty-常用 ChannelHandler">
-                            
-                            <span class="card-title">Netty-常用 ChannelHandler</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-粘包/半包
-编解码器
-
-SSL/TLS
-HTTP
-
-
-序列化
-ChannelHandler 单元测试
-channelRead 和 channelReadComplete
-
-读到完整的业务请求报文后才调用一次业务ChannelHandler
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-06
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    IT学习笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Netty/">
-                            <span class="chip bg-color">Netty</span>
+                        <a href="/tags/Zookeeper/">
+                            <span class="chip bg-color">Zookeeper</span>
                         </a>
                         
                     </div>
@@ -1591,7 +1606,7 @@ channelRead 和 channelReadComplete
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">1 / 10</div>
+            <div class="center-align b-text-gray">1 / 11</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1680,7 +1695,7 @@ channelRead 和 channelReadComplete
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">545.3k</span>
+                        class="white-color">573.3k</span>
             
             
             
