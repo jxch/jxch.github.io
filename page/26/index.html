@@ -409,6 +409,754 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2023/04/16/architect/shen-jing-wang-luo/tensorflow-tfdml-plugin.dll-not-found/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="tensorflow-...\tensorflow-plugins\tfdml_plugin.dll not found">
+                            
+                            <span class="card-title">tensorflow-...\tensorflow-plugins\tfdml_plugin.dll not found</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                2.12.0 之后不支持直接调用 GPU, 需要安装插件
+pip install tensorflow-directml-plugin
+安装过程中如果中途报 ERROR 也没关系, 最后一行显示 successfully 就行了
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    排错笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/tensorflow/">
+                            <span class="chip bg-color">tensorflow</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/architect/shen-jing-wang-luo/tensorflow-gpu-zhi-chi/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="tensorflow-GPU支持">
+                            
+                            <span class="card-title">tensorflow-GPU支持</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+安装N卡驱动
+使用conda创建虚拟环境
+安装conda依赖包
+
+# 使用 conda 安装 cuda 和 cudnn
+conda install cudatoolkit=11.3.1 cudnn=8.2.1
+
+# 自 2.11.0 之后
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/template/" class="post-category">
+                                    template
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/tensorflow/">
+                            <span class="chip bg-color">tensorflow</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/architect/shen-jing-wang-luo/tensorflow-gou-jian-jing-tai-tu-shi-li/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/53.jpg" class="responsive-img" alt="tensorflow-构建静态图示例">
+                            
+                            <span class="card-title">tensorflow-构建静态图示例</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                import tensorflow as tf
+import matplotlib.pyplot as plt
+
+training = ...
+validation = ...
+
+model = tf.keras.models.Sequen
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/template/" class="post-category">
+                                    template
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/tensorflow/">
+                            <span class="chip bg-color">tensorflow</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/16/architect/template/numpy-bao-cun-bian-liang-dao-ben-di/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="numpy-保存数组变量到本地">
+                            
+                            <span class="card-title">numpy-保存数组变量到本地</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                import numpy as np
+
+training = ...
+
+# 保存
+np.savez('training', d1=training['x'], d2=training['y'])
+
+# 读取
+training = np.lo
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-16
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/template/" class="post-category">
+                                    template
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/numpy/">
+                            <span class="chip bg-color">numpy</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/14/architect/yun-wei/postgresql-bu-shu/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="PostgreSQL-部署">
+                            
+                            <span class="card-title">PostgreSQL-部署</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                docker-compose.yml
+version: '3.8'
+services:
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    ports:
+     
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-14
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%BF%90%E7%BB%B4%E6%89%8B%E5%86%8C/" class="post-category">
+                                    运维手册
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/docker-compose-yml/">
+                            <span class="chip bg-color">docker-compose.yml</span>
+                        </a>
+                        
+                        <a href="/tags/PostgreSQL/">
+                            <span class="chip bg-color">PostgreSQL</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/13/capital/capital-ji-yu-shen-jing-wang-luo-de-qu-shi-jiao-yi-ru-chang-dian-yu-ce-mo-xing/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="Capital-基于神经网络的趋势交易入场点预测模型">
+                            
+                            <span class="card-title">Capital-基于神经网络的趋势交易入场点预测模型</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                经验证噪音过多，短期无法迅速除噪，该项目暂时挂起，启动capital系列其他项目
+基于神经网络的趋势交易入场点预测模型
+可将价格行为学中的全部价格行为入场点都做成模型，先从最简单的趋势入场点开始做起
+不同周期下趋势的表征也不同，比如大周期下
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-13
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    工作笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Capital/">
+                            <span class="chip bg-color">Capital</span>
+                        </a>
+                        
+                        <a href="/tags/%E5%B7%A5%E4%BD%9C%E8%AE%A1%E5%88%92/">
+                            <span class="chip bg-color">工作计划</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/12/architect/shen-jing-wang-luo/shen-jing-wang-luo-wang-luo-mo-xing/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="神经网络-网络模型">
+                            
+                            <span class="card-title">神经网络-网络模型</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+  graph LR
+    A((x)) --w1--&gt; B((N1)) --&gt;C[F1] --w2--&gt; D((N2)) --&gt;E[F2] --w3--&gt; F((y)) --分类/打分--&gt; R[F
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-12
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    IT学习笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">神经网络</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/11/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-10/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-10">
+                            
+                            <span class="card-title">道德的谱系-2罪欠,良知谴责-10</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+随着实力的不断增强，社团不再把个人的犯罪行为看得那么严重，因为对社团来说，犯罪行为不再像从前那样被认为对整体的存在构成危险和颠覆：肇事者不再会被“剥夺法律权利”和被驱逐，公众的愤怒也不允许像从前那样肆无忌惮地在他身上宣泄，——确切地说，肇
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
+                            <span class="chip bg-color">道德的谱系</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/11/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-9/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/56.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-9">
+                            
+                            <span class="card-title">道德的谱系-2罪欠,良知谴责-9</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+如果我们一直用史前时代的标准加以衡量（也就是那种无论任何时代都是现存的，或者可能重现的史前时代），就会发现：公共社团与其成员之间也存在那种重要的基本关系，即债权人和他的债务人之间的关系。人们生活在一个公共社团里，享受着社团的优越性（那是何
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
+                            <span class="chip bg-color">道德的谱系</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/11/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-8/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/55.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-8">
+                            
+                            <span class="card-title">道德的谱系-2罪欠,良知谴责-8</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+现在继续进行我们的研究，我们已经看到，罪欠感和个人责任感起源于人类历史上最古老与最原始的人际关系，起源于买主和卖主的关系，债权人和债务人的关系：正是在这里首先出现了人反对人的现象，也正是在这里首先出现了人和人相比较的情况。人们发现，不管文
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
+                            <span class="chip bg-color">道德的谱系</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/11/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-7/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/54.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-7">
+                            
+                            <span class="card-title">道德的谱系-2罪欠,良知谴责-7</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+不过，我阐述这些思想的意图绝不是要帮助我们的悲观主义者们，向他们那走了调的、嘎嘎作响的、厌倦生命的磨盘上加水；相反，应当着力证明的乃是，在人类还未曾对他们的残酷行为感到羞耻的时候，地球上的生活比有悲观主义者存在的今天要欢乐很多。随着人们面
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-11
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
+                            <span class="chip bg-color">道德的谱系</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/10/architect/python/python-da-bao-wei-exe-wen-jian/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/54.jpg" class="responsive-img" alt="python-打包为exe文件">
+                            
+                            <span class="card-title">python-打包为exe文件</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                # 不太好使，运行命令经常会报错，推荐使用 auto-py-to-exe 进行UI界面的操作 
+pip install pyinstaller
+
+# UI界面操作
+pip install auto-py-to-exe
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/template/" class="post-category">
+                                    template
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/python/">
+                            <span class="chip bg-color">python</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/10/architect/python/python-ming-ling-xing-can-shu/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="python-命令行参数">
+                            
+                            <span class="card-title">python-命令行参数</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                import argparse
+
+parser = argparse.ArgumentParser(description='翻译文本和文件')
+parser.add_argument('-C', '--encoding', help='文
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/template/" class="post-category">
+                                    template
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/python/">
+                            <span class="chip bg-color">python</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2023/04/10/architect/python/python-diao-yong-google-fan-yi/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/37.jpg" class="responsive-img" alt="python-调用Google翻译">
+                            
+                            <span class="card-title">python-调用Google翻译</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                pip install -U deep-translator
+from deep_translator import GoogleTranslator
+
+print(GoogleTranslator(source='auto', targe
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/template/" class="post-category">
+                                    template
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/python/">
+                            <span class="chip bg-color">python</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2023/04/09/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-6/">
                         <div class="card-image">
                             
@@ -556,757 +1304,6 @@
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/09/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-3/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/50.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-3">
-                            
-                            <span class="card-title">道德的谱系-2罪欠,良知谴责-3</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-他的良知？……可以预料，“良知”这一概念——我们在这里遭遇了它的最高的、近乎惊人的形式——业已经历了一个漫长的历史和形式演变过程。可以为自己做出准确的预言，可以骄傲地肯定自己，——如前所述，这是一颗成熟的果实，但也是一颗迟来的果实：——这
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/09/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-2/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/49.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-2">
-                            
-                            <span class="card-title">道德的谱系-2罪欠,良知谴责-2</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-这正是责任如何起源的漫长历史。正如我们业已认识到的那样，那个驯养一只可以做出承诺的动物的任务，在其自身中包含了一个近期任务作为其先决条件和准备工作，即在一定程度上首先使人变得有必然性、变得单一、变得性质相同、变得有规律性，因而也就变得可以
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/09/dao-de-de-pu-xi/dao-de-de-pu-xi-2-zui-qian-liang-zhi-qian-ze-1/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/48.jpg" class="responsive-img" alt="道德的谱系-2罪欠,良知谴责-1">
-                            
-                            <span class="card-title">道德的谱系-2罪欠,良知谴责-1</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-驯养一只动物，让他可以做出承诺——这岂不正是大自然在涉及人的问题上给自己提出的那个自相矛盾的任务吗？这难道不正是人的真正问题之所在吗？……这个问题在很大程度上已经得到了解决，这对那些充分懂得评价遗忘这一特性的反作用力的人来说，懂得越深就必
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-09
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                1. 为了任何真理
-
-人们理应感谢英国心理学家们所做的迄今惟一的探索道德发生史的尝试。——他们连同其自身给我们留下了不小的疑团；我要承认，他们自身就是活生生的疑团，他们甚至因此比他的论著更为本质——他们本身就很有意思！这些英国心理学家——他
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-17/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/35.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-17">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-17</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-到此就结束了吗？那个所有理想对立中最伟大的对立就这样被永久地搁置起来了吗？或者仅仅被推迟了、遥遥无期地推迟了？……难道它有朝一日不会变成一场更加可怕、经久积蓄的熊熊大火吗？不仅如此：这难道不是各种力量所希望的吗？所甘愿的吗？所促进的吗？…
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-16/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/34.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-16">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-16</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-现在我们进行总结。“好与坏”、“善与恶”这两个对立的价值观千余年来已经在地球上进行了非常可怕的斗争；尽管第二种价值观长期以来占据上风，但这场斗争在很多方面仍未分出胜负，仍在继续斗争。人们甚至可以说，这场斗争在此期间不断升级，同时也因此越来
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-15/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/33.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-15">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-15</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-信仰什么？爱什么？盼望什么？——毋庸置疑，这些弱者——也想有朝一日成为强者，有朝一日迎来他们的“天国”——对他们来说，“天国”就是所谓的：人在所有情况下都保持谦卑！为了去迎接这样的天国，人就必须活得很长，超越死亡，——是的，人必须获得永生
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-14/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/32.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-14">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-14</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-——有谁愿意探幽寻秘，看看地球上的理想是怎样制造出来的？谁有勇气做这件事？……那就开始吧！从这里可以窥见这个阴暗的作坊内部。请您稍候片刻，我的冒失大胆先生：您的眼睛首先必须习惯于这里变幻无常的虚假光线……好了！已经看够了！现在请您告诉我！
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-13/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/31.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-13">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-13</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-我们还是言归正传：“善”的另外一个起源的问题，即怀有怨恨的人如何设想出“善”的起源问题，该问题需要有一个结论。——羔羊怨恨大的猛禽，这并不奇怪：只不过，怪罪大的猛禽不该捕食小的羔羊，却是没有道理的。如果羔羊们私下说：“这些猛禽是邪恶的；如
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-12/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/30.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-12">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-12</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-在这里，我并不准备压抑我的叹息和最后的信心。究竟是什么东西让我根本无法忍受？那个我无法独自应付的、令我窒息和煎熬的东西？是污浊的空气，正是污浊的空气！某种失败的东西正在接近我；我不得不去闻嗅一个失败的灵魂那腐败的内脏！……除此以外，人们还
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-11/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-11">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-11</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-高贵者的情况与此正好相反，他预先自发地从自身出发构想出“好”这一基本概念，然后才由此引申出一个关于“坏”的想象！这个起源于高贵的“坏”和那种来自于专门炮制无限仇恨的大锅的“恶”：前者只是一种模仿，是附带产生的东西，是一种补充色调，而后者却
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-10/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-10">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-10</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-道德上的奴隶起义开始于怨恨本身变得富有创造性，并且产生价值的时候：这种怨恨来自于这样的人物，他们无法用行动做出真正的反应，而只会通过幻想中的复仇获得补偿。一切高尚的道德均来自于一种胜利般的自我肯定，而奴隶道德从一开始就对“外在”、“他者”
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-9/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/36.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-9">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-9</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-“您还在奢谈什么更高贵的理想！让我们顺应这个事实吧：这个民族取得了胜利——或者叫‘奴隶’，或者叫‘群氓’，或者叫‘民众’，或者随您怎么称呼他们——反正犹太人做到了这一步，那就这样吧！从未有哪个民族拥有比这个更具世界历史意义的使命。‘主人’
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-8/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/37.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-8">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-8</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-然而你们没有听懂吗？你们没有注意到某个需要两千年的岁月才能取得成功的东西？……这是不足为怪的：一切长期的事物都很难受人注意，也很难被观察与纵览。但是，这件事却是个大事件：从复仇和仇恨的树干中，从这株犹太式仇恨的树干中——这是一种最深刻和最
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/04/08/dao-de-de-pu-xi/dao-de-de-pu-xi-1-shan-yu-e-hao-yu-pi-7/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/38.jpg" class="responsive-img" alt="道德的谱系-1善与恶,好与坏-7">
-                            
-                            <span class="card-title">道德的谱系-1善与恶,好与坏-7</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-人们或许已然猜出，祭司的价值方式是多么轻易地脱离了骑士—贵族的价值方式，然后继续向其对立面发展；尤其是每当祭司阶层与武士阶层互相嫉妒、不愿妥协的时候，都是引起这种趋向的动因。骑士—贵族的价值判断有其前提，这就是强壮有力的体魄，勃发的、富余
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-08
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    读书笔记
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%81%93%E5%BE%B7%E7%9A%84%E8%B0%B1%E7%B3%BB/">
-                            <span class="chip bg-color">道德的谱系</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1413,7 +1410,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">573.3k</span>
+                        class="white-color">596.1k</span>
             
             
             

@@ -6,7 +6,7 @@
   <link href="https://jxch.github.io/atom.xml" rel="self"/>
   
   <link href="https://jxch.github.io/"/>
-  <updated>2024-09-10T08:06:04.008Z</updated>
+  <updated>2024-09-11T01:46:48.840Z</updated>
   <id>https://jxch.github.io/</id>
   
   <author>
@@ -15,6 +15,480 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL-SQL执行过程</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-sql-zhi-xing-guo-cheng/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-sql-zhi-xing-guo-cheng/</id>
+    <published>2024-09-11T01:43:00.000Z</published>
+    <updated>2024-09-11T01:46:48.840Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>MySQL的内部组件结构：MySQL&nbsp;可以分为&nbsp;Server&nbsp;层和存储引擎层两部分<ul><li>Server层：主要包括连接器、查询缓存、分析器、优化器、执行器等，涵盖&nbsp;MySQL&nbsp;的大多数核心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等</li><li>Store层：存储引擎层负责数据的存储和提取。其架构模式是插件式的，支持&nbsp;InnoDB、MyISAM、Memory&nbsp;等多个存储引擎。现在最常用的存储引擎是&nbsp;InnoDB，也就是说如果我们在create&nbsp;table时不指定表的存储引擎类型，默认会给你设置存储引擎为InnoDB</li></ul></li><li>连接器：支持多种类的客户端建立连接的工作<ul><li>连接器负责跟客户端建立连接、获取权限、维持和管理连接</li><li>由于连接对象中缓存了连接信息：所以一个用户成功建立连接后，即使你用管理员账号对这个用户的权限做了修改，也不会影响已经存在连接的权限。修改完成后，只有再新建的连接才会使用新的权限设置。用户的权限表在系统表空间的mysql的user表中</li><li>连接完成后，如果你没有后续的动作，这个连接就处于空闲状态，你可以在&nbsp;show&nbsp;processlist&nbsp;命令中看到它</li><li>客户端如果长时间不发送command到Server端，连接器就会自动将它断开。这个时间是由参数&nbsp;wait_timeout&nbsp;控制的，默认值是&nbsp;8&nbsp;小时</li><li>如果在连接被断开之后，客户端再次发送请求的话，就会收到一个错误提醒：Lost&nbsp;connection&nbsp;to&nbsp;MySQL&nbsp;server&nbsp;during query。这时候如果你要继续，就需要重连，然后再执行请求了</li><li>长连接是指连接成功后，如果客户端持续有请求，则一直使用同一个连接<ul><li>长连接有些时候会导致&nbsp;MySQL&nbsp;占用内存涨得特别快，这是因为&nbsp;MySQL&nbsp;在执行过程中临时使用的内存是管理在连接对象里面的。这些资源会在连接断开的时候才释放。所以如果长连接累积下来，可能导致内存占用太大，被系统强行杀掉（OOM），从现象看就是&nbsp;MySQL&nbsp;异常重启了</li></ul></li><li>短连接则是指每次执行完很少的几次查询就断开连接，下次查询再重新建立一个</li></ul></li><li>查询缓存（mysql8.0已经移除了查询缓存功能）：query_cache_type=DEMAND<ul><li><code>select&nbsp;SQL_CACHE&nbsp;*&nbsp;from&nbsp;t</code></li><li>查询缓存往往弊大于利：查询缓存的失效非常频繁，只要有对一个表的更新，这个表上所有的查询缓存都会被清空。对于更新压力大的数据库来说，查询缓存的命中率会非常低</li><li>一般建议在静态表里使用查询缓存（极少更新的表）：系统配置表、字典表</li></ul></li><li>分析器：如果没有命中查询缓存，就要开始真正执行语句了<ul><li>语法分析；语法分析；语义分析；构造执行树；生成执行计划；计划的执行</li></ul></li><li>优化器：优化器是在表里面有多个索引的时候，决定使用哪个索引；或者在一个语句有多表关联（join）的时候，决定各个表的连接顺序</li><li>执行器：开始执行的时候，要先判断一下你对这个表有没有执行查询的权限，如果没有，就会返回没有权限的错误<ul><li>如果有权限，就打开表继续执行。打开表的时候，执行器就会根据表的引擎定义，去使用这个引擎提供的接口</li></ul></li><li>bin-log 归档是Server层实现的二进制日志<ul><li>Binlog在MySQL的Server层实现（引擎共用）</li><li>Binlog为逻辑日志，记录的是一条语句的原始逻辑</li><li>Binlog不限大小,追加写入，不会覆盖以前的日志</li></ul></li></ul><hr><p><img src="/static/IT/MySQL/MySQL-SQL%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B-1.png" alt=""><br><img src="/static/IT/MySQL/MySQL-SQL%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B-2.png" alt=""><br><img src="/static/IT/MySQL/MySQL-SQL%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B-3.png" alt=""></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;MySQL的内部组件结构：MySQL&amp;nbsp;可以分为&amp;nbsp;Server&amp;nbsp;层和存储引擎层两部分
+&lt;ul&gt;
+&lt;li&gt;Server层：主要包括连接器、查询缓存、分析器、优化器、执行器等，涵盖&amp;nbsp;MySQL&amp;nbsp;的大多数核心服务功能，以</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-MVCC</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-mvcc/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-mvcc/</id>
+    <published>2024-09-11T01:39:00.000Z</published>
+    <updated>2024-09-11T01:42:33.240Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>MVCC(Multi-Version&nbsp;Concurrency&nbsp;Control) 机制可以保证可重复读隔离级别下的隔离性</li><li>undo日志版本链与read&nbsp;view机制<ul><li>undo日志版本链是指一行数据被多个事务依次修改过后，在每个事务修改完后，Mysql会保留修改前的数据undo回滚日志，并且用两个隐藏字段trx_id和roll_pointer把这些undo日志串联起来形成一个历史记录版本链</li></ul></li><li>版本链比对流程<ul><li>当事务开启，执行任何查询sql时会生成当前事务的一致性视图read-view</li><li>该视图在事务结束之前都不会变化（如果是读已提交隔离级别在每次执行查询sql时都会重新生成）</li><li>这个视图由执行查询时所有未提交事务id数组（数组里最小的id为min_id）和已创建的最大事务id（max_id）组成，事务里的任何sql查询结果需要从对应版本链里的最新数据开始逐条跟read-view做比对从而得到最终的快照结果</li></ul></li><li>版本链比对规则<ul><li>如果&nbsp;row&nbsp;的&nbsp;trx_id&nbsp;落在绿色部分(&nbsp;trx_id&lt;min_id&nbsp;)，表示这个版本是已提交的事务生成的，这个数据是可见的</li><li>如果&nbsp;row&nbsp;的&nbsp;trx_id&nbsp;落在红色部分(&nbsp;trx_id&gt;max_id&nbsp;)，表示这个版本是由将来启动的事务生成的，是不可见的（自己可见）</li><li>如果&nbsp;row&nbsp;的&nbsp;trx_id&nbsp;落在黄色部分(min_id&nbsp;&lt;=trx_id&lt;=&nbsp;max_id)，那就包括两种情况<ul><li>若&nbsp;row&nbsp;的&nbsp;trx_id&nbsp;在视图数组中，表示这个版本是由还没提交的事务生成的，不可见（自己可见）</li><li>若&nbsp;row&nbsp;的&nbsp;trx_id&nbsp;不在视图数组中，表示这个版本是已经提交了的事务生成的，可见</li></ul></li></ul></li><li>对于删除的情况可以认为是update的特殊情况<ul><li>会将版本链上最新的数据复制一份，然后将trx_id修改成删除操作的trx_id</li><li>同时在该条记录的头信息（record&nbsp;header）里的（deleted_flag）标记位写上true，来表示当前记录已经被删除</li><li>在查询时按照上面的规则查到对应的记录如果delete_flag标记位为true，意味着记录已被删除，则不返回数据</li></ul></li><li>begin/start&nbsp;transaction&nbsp;命令并不是一个事务的起点<ul><li>在执行到它们之后的第一个修改操作InnoDB表的语句，事务才真正启动，才会向mysql申请事务id，mysql内部是严格按照事务的启动顺序来分配事务id的</li></ul></li><li>MVCC机制的实现就是通过read-view机制与undo版本链比对机制，使得不同的事务会根据数据版本链对比规则读取同一条数据在版本链上的不同版本数据</li></ul><p><img src="/static/IT/MySQL/MySQL-MVCC-1.png" alt=""></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;MVCC(Multi-Version&amp;nbsp;Concurrency&amp;nbsp;Control) 机制可以保证可重复读隔离级别下的隔离性&lt;/li&gt;
+&lt;li&gt;undo日志版本链与read&amp;nbsp;view机制
+&lt;ul&gt;
+&lt;li&gt;undo日志版本链是指一行数据被</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-InnoDB-BufferPool</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-innodb-bufferpool/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-innodb-bufferpool/</id>
+    <published>2024-09-11T01:37:00.000Z</published>
+    <updated>2024-09-11T01:38:02.131Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>为什么Mysql不能直接更新磁盘上的数据而且设置这么一套复杂的机制来执行SQL<ul><li>因为来一个请求就直接对磁盘文件进行随机读写，然后更新磁盘文件里的数据性能可能相当差</li><li>Mysql这套机制看起来复杂，但它可以保证每个更新请求都是更新内存BufferPool，然后顺序写日志文件，同时还能保证各种异常情况下的数据一致性</li><li>更新内存的性能是极高的，然后顺序写磁盘上的日志文件的性能也是非常高的，要远高于随机读写磁盘文件</li></ul></li></ul><p><img src="/static/IT/MySQL/MySQL-InnoDB-BufferPool-1.png" alt=""></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;为什么Mysql不能直接更新磁盘上的数据而且设置这么一套复杂的机制来执行SQL
+&lt;ul&gt;
+&lt;li&gt;因为来一个请求就直接对磁盘文件进行随机读写，然后更新磁盘文件里的数据性能可能相当差&lt;/li&gt;
+&lt;li&gt;Mysql这套机制看起来复杂，但它可以保证每个更新请求都是更新</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-InnoDB-日志&amp;事务</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-innodb-ri-zhi-shi-wu/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-innodb-ri-zhi-shi-wu/</id>
+    <published>2024-09-11T01:27:00.000Z</published>
+    <updated>2024-09-11T01:32:23.634Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>redo 日志</li><li>undo 日志</li><li>事务流程</li><li>Redo &amp; binlog &amp; Undo 日志的关系</li></ul><hr><h2 id="redo-日志">redo 日志</h2><ul><li>redo 日志（保证了事务的持久性）：只是记录了一下事务对数据库做了哪些修改<ul><li>redo 日志占用的空间非常小</li><li>redo 日志是顺序写入磁盘的</li><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E6%97%A5%E5%BF%97-%E4%BA%8B%E5%8A%A1-1.png" alt=""><ul><li>type：该条redo 日志的类型，redo 日志设计大约有 53 种不同的类型日志</li><li>space ID：表空间 ID</li><li>page number：页号</li><li>data：该条 redo 日志的具体内容</li></ul></li></ul></li><li>redo 日志的写入过程<ul><li>日志缓冲区 <code> innodb_log_buffer_size</code> 默认16MB</li><li>redo log block 512 字节：向log buffer 中写入redo 日志的过程是顺序的，也就是先往前边的block 中写，当该block 的空闲空间用完之后再往下一个 block 中写</li><li>redo 日志刷盘时机<ul><li>log buffer 总容量的大约一半左右</li><li>事务提交时</li><li>后台有一个线程，大约每秒都会刷新一次 log buffer 中的 redo 日志到磁盘</li><li>正常关闭服务器时</li></ul></li></ul></li><li>redo 日志文件组 ib_logfile0 和 ib_logfile1<ul><li>innodb_log_file_size 每个 redo 日志文件的大小，默认 48MB</li><li>innodb_log_files_in_group 指定 redo 日志文件的个数，默认值为 2，最大值为100</li><li>循环写入：在覆盖写之前，总是要保证对应的脏页已经刷到了磁盘<ul><li>在非常大的负载下，为避免错误的覆盖，InnoDB 会强制的 flush 脏页</li></ul></li></ul></li><li>redo 日志文件格式<ul><li>前 4 个 block 是用来存储一些管理信息</li><li>往后是用来存储 log buffer 中的 block 镜像的</li></ul></li><li>LSN<ul><li>Log Sequence Number 日志序列号，简称 LSN，初始值  8704<ul><li>redo 日志都有一个唯一的 LSN 值与其对应，LSN 值越小，说明 redo 日志产生的越早</li><li>包括了写到log buffer而没有刷新到磁盘的日志</li></ul></li><li>Log flushed up to (flushed_to_disk_lsn) 表示刷新到磁盘中的 redo 日志量的全局变量</li><li>Pages flushed up to：代表 flush 链表中被最早修改的那个页面对应的 oldest_modification 属性值</li><li>Last checkpoint at：当前系统的 checkpoint_lsn 值</li></ul></li><li>innodb_flush_log_at_trx_commit 默认值1<ul><li>0：表示在事务提交时不立即向磁盘中同步redo 日志，交给后台线程做</li><li>1：表示在事务提交时需要将 redo 日志同步到磁盘，可以保证事务的持久性</li><li>2：表示在事务提交时需要将 redo 日志写到操作系统的缓冲区中，但并不需要保证将日志真正的刷新到磁盘</li></ul></li></ul><hr><h2 id="undo-日志">undo 日志</h2><ul><li>undo 日志（保证事务的原子性）</li><li>事务id<ul><li>给事务分配id 的时机<ul><li>如果某个事务执行过程中对某个表执行了增、删、改操作，会给它分配一个独一无二的事务 id</li><li>只读事务：对某个用户创建的临时表执行增、删、改操作时才会为这个事务分配一个事务 id<ul><li>在执行 SELECT 语句用到内部临时表时并不会为它分配事务id</li></ul></li><li>否则的话是不分配事务 id 的</li></ul></li><li>事务 id 生成机制：本质上就是一个数字，全局变量自增<ul><li>当这个变量的值为 256 的倍数时，就会将该变量的值刷新到系统表空间的页号为5 的页面中一个称之为 Max Trx ID 的属性处（8字节）</li><li>下一次重新启动时，会将上边提到的 Max Trx ID 属性加载到内存中，将该值加上256 之后赋值给我们前边提到的全局变量</li></ul></li></ul></li><li>trx_id 隐藏列：聚簇索引的记录除了会保存完整的用户数据以外，而且还会自动添加名为 trx_id、roll_pointer 的隐藏列，如果用户没有在表中定义主键以及 UNIQUE 键，还会自动添加一个名为 row_id 的隐藏列<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E6%97%A5%E5%BF%97-%E4%BA%8B%E5%8A%A1-2.png" alt=""></li><li>trx_id 列就是某个对这个聚簇索引记录做改动的语句所在的事务对应的事务id 而已（此处的改动可以是 INSERT、DELETE、UPDATE 操作）</li><li>roll_pointer 本质上就是一个指向记录对应的 undo 日志的一个指针</li></ul></li><li>undo 日志的格式：一般每对一条记录做一次改动，就对应着一条 undo 日志<ul><li>INSERT 操作对应的 undo 日志 TRX_UNDO_INSERT_REC<ul><li>记录 undo 日志时，只需要考虑向聚簇索引插入记录时的情况就好了，因为其实聚簇索引记录和二级索引记录是一一对应的，我们在回滚插入操作时，只需要知道这条记录的主键信息，然后根据主键信息做对应的删除操作，做删除操作时就会顺带着把所有二级索引中相应的记录也删除掉</li></ul></li><li>DELETE 操作对应的 undo 日志 TRX_UNDO_DEL_MARK_REC<ul><li>被删除的记录会根据记录头信息中的 next_record 属性组成一个链表（垃圾链表），Page Header 部分称之为PAGE_FREE 的属性指向由被删除记录组成的垃圾链表中的头节点<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E6%97%A5%E5%BF%97-%E4%BA%8B%E5%8A%A1-3.png" alt=""></li></ul></li><li><ol><li>将记录的delete_mask 标识位设置为1，这个阶段称之为delete mark</li></ol><ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E6%97%A5%E5%BF%97-%E4%BA%8B%E5%8A%A1-4.png" alt=""></li></ul></li><li><ol start="2"><li>当该删除语句所在的事务提交之后，会有专门的线程后来真正的把记录删除掉，这个阶段称之为 purge</li></ol><ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E6%97%A5%E5%BF%97-%E4%BA%8B%E5%8A%A1-5.png" alt=""></li><li>所谓真正的删除就是把该记录从正常记录链表中移除，并且加入到垃圾链表中</li><li>然后还要调整一些页面的其他信息</li></ul></li><li>在删除语句所在的事务提交之前，只会经历阶段一，也就是 delete mark 阶段，所以只需考虑对删除操作的阶段一做的影响进行回滚</li><li>版本链：在对一条记录进行 delete mark 操作前，需要把该记录的旧的 trx_id 和roll_pointer 隐藏列的值都给记到对应的undo 日志中来，可以通过 undo 日志的old roll_pointer 找到记录在修改之前对应的 undo 日志<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E6%97%A5%E5%BF%97-%E4%BA%8B%E5%8A%A1-6.png" alt=""></li></ul></li></ul></li><li>UPDATE 操作对应的 undo 日志<ul><li>不更新主键的情况 TRX_UNDO_UPD_EXIST_REC<ul><li>占用的存储空间不发生变化：就地更新（in-place update）</li><li>占用的存储空间发生变化：先删除掉旧记录，再插入新记录<ul><li>并不是 delete mark 操作，而是真正的删除掉，也就是把这条记录从正常记录链表中移除并加入到垃圾链表中（同步执行），并且修改页面中相应的统计信息</li><li>如果新创建的记录占用的存储空间大小不超过旧记录占用的空间，那么可以直接重用被加入到垃圾链表中的旧记录所占用的存储空间</li></ul></li></ul></li><li>更新主键的情况 TRX_UNDO_DEL_MARK_REC &amp; TRX_UNDO_INSERT_REC （会记录 2 条 undo 日志）<ul><li>将旧记录进行 delete mark 操作（MVCC）</li><li>创建一条新记录</li></ul></li></ul></li></ul></li></ul><hr><h2 id="事务流程">事务流程</h2><ul><li>事务的流程：分为事务的执行流程和事务恢复流程</li><li>事务执行：事务主要主要是通过 Redo Log 和 Undo Log 实现的<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E6%97%A5%E5%BF%97-%E4%BA%8B%E5%8A%A1-7.png" alt=""><ul><li>只有当前事务相关的所有 Redo Log 刷盘成功，事务才算提交成功</li></ul></li></ul></li><li>事务恢复<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E6%97%A5%E5%BF%97-%E4%BA%8B%E5%8A%A1-8.png" alt=""><ul><li>如果事务提交之前崩溃或者宕机，先使用Redo Log 恢复数据，然后使用Undo Log 回滚数据</li><li>如果事务提交之后崩溃或者宕机，会使用Redo Log 恢复数据</li></ul></li><li>恢复机制：根据 redo 日志中的各种LSN 值，来确定恢复的起点和终点<ul><li>将redo 日志中的数据，以哈希表的形式，将一个页面下的放到哈希表的一个槽中。之后就可以遍历哈希表，所以可以一次性将一个页面修复好</li></ul></li></ul></li></ul><hr><h2 id="Redo-binlog-Undo-日志的关系">Redo &amp; binlog &amp; Undo 日志的关系</h2><ul><li>Redo 日志和 binlog 日志的关系<ul><li>binlog 是用作人工恢复数据</li><li>redo log 是 InnoDB 引擎特有的，binlog 是 MySQL 的 Server 层实现的，所有引擎都可以使用</li><li>redo log 是物理日志，记录的是“在某个数据页上做了什么修改”，恢的速度更快；binlog 是逻辑日志，记录的是这个语句的原始逻辑</li><li>redo log 是“循环写”的日志文件，redo log 只会记录未刷盘的日志，已经刷入磁盘的数据都会从 redo log 这个有限大小的日志文件里删除。binlog 是追加日志，保存的是全量的日志</li><li>当数据库 crash 后，想要恢复未刷盘但已经写入 redo log 和binlog 的数据到内存时，binlog 是无法恢复的。虽然 binlog 拥有全量的日志，但没有一个标志让 innoDB 判断哪些数据已经入表(写入磁盘)，哪些数据还没有</li><li>redo log 不一样，只要刷入磁盘的数据，都会从 redo log 中抹掉，数据库重启后，直接把 redo log 中的数据都恢复至内存就可以了</li></ul></li><li>Redo 日志和 Undo 日志的关系<ul><li>undo log 日志的完整性和可靠性需要 redo log 日志来保证<ul><li>undo log 的写入也会伴随着redo log 的产生，因为undo log也需要持久化的保护</li></ul></li><li>数据库崩溃需要先做 redo log 数据恢复，然后做undo log 回滚（未提交的事务）</li></ul></li><li>同时写 Redo 和 Binlog 怎么保持一致：两阶段事务 2PC（准备阶段；提交阶段）<ul><li>当事务提交时 InnoDB 存储引擎进行 prepare 操作</li><li>MySQL 上层会将数据库、数据表和数据表中的数据的更新操作写入 BinLog</li><li>InnoDB 存储引擎将事务日志写入 Redo Log 文件中</li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;redo 日志&lt;/li&gt;
+&lt;li&gt;undo 日志&lt;/li&gt;
+&lt;li&gt;事务流程&lt;/li&gt;
+&lt;li&gt;Redo &amp;amp; binlog &amp;amp; Undo 日志的关系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;redo-日志&quot;&gt;redo 日志&lt;/h2&gt;
+&lt;u</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-InnoDB-存储结构&amp;Buffer Pool</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-innodb-cun-chu-jie-gou-buffer-pool/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-innodb-cun-chu-jie-gou-buffer-pool/</id>
+    <published>2024-09-11T01:17:00.000Z</published>
+    <updated>2024-09-11T01:24:18.812Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>数据结构</li><li>体系结构</li><li>双写机制</li><li>Buffer Pool</li></ul><hr><h2 id="数据结构">数据结构</h2><ul><li>InnoDB 的三大特性：双写缓冲区/双写机制；Buffer Pool；自适应 Hash 索引</li><li>行格式<ul><li>可以在创建或修改表的语句中指定行格式：CREATE TABLE 表名 (列的信息) ROW_FORMAT=行格式名称</li><li>COMPACT<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-1.png" alt=""></li><li>delete_mask 1 标记该记录是否被删除</li><li>min_rec_mask 1 B+树的每层非叶子节点中的最小记录都会添加该标记</li><li>n_owned 4 表示当前记录拥有的记录数</li><li>heap_no 13 表示当前记录在页的位置信息</li><li>record_type 3 表示当前记录的类型，0 表示普通记录，1 表示B+树非叶子节点记录，2 表示最小记录，3 表示最大记录</li><li>next_record 16 表示下一条记录的相对位置</li><li>DB_ROW_ID(row_id)：非必须，6 字节，表示行ID，唯一标识一条记录</li><li>DB_TRX_ID：必须，6 字节，表示事务ID</li><li>DB_ROLL_PTR：必须，7 字节，表示回滚指针</li><li>InnoDB 表对主键的生成策略是：<ul><li>优先使用用户自定义主键作为主键</li><li>如果用户没有定义主键，则选取一个Unique 键作为主键</li><li>如果表中连Unique 键都没有定义的话，则 InnoDB 会为表默认添加一个名为 row_id 的隐藏列作为主键</li></ul></li></ul></li><li>Redundant MySQL5.0 之前用的一种行格式</li><li>Dynamic &amp; Compressed<ul><li>MySQL5.7 的默认行格式就是Dynamic</li><li>Dynamic 和Compressed 行格式和Compact 行格式挺像，只不过在处理行溢出数据时有所不同<ul><li>数据溢出：一个页存放不了一条记录的情况</li><li>Dynamic 和Compressed 行格式，不会在记录的真实数据处存储字段真实数据，而是把所有的字节都存储到其他页面中，只在记录的真实数据处存储其他页面的地址</li></ul></li><li>Compressed 行格式和 Dynamic 不同的一点是：Compressed 行格式会采用压缩算法对页面进行压缩，以节省空间</li></ul></li></ul></li><li>索引页格式：一个页的大小一般是16KB<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-2.png" alt=""><ul><li>File Header 文件头部， 38 字节，   页的一些通用信息</li><li>Page Header 页面头部， 56 字节， 数据页专有的一些信息</li><li>Infimum + Supremum 最小记录和最大记录， 26 字节， 两个虚拟的行记录</li><li>User Records 用户记录， 大小不确定， 实际存储的行记录内容</li><li>Free Space 空闲空间， 大小不确定， 页中尚未使用的空间</li><li>Page Directory 页面目录， 大小不确定， 页中的某些记录的相对位置</li><li>File Trailer 文件尾部， 8 字节， 校验页是否完整</li></ul></li><li>生成页的时候，其实并没有User Records 这个部分，每当插入一条记录，都会从Free Space 部分，也就是尚未使用的存储空间中申请一个记录大小的空间划分到User Records 部分</li><li>按照主键从小到大的顺序形成了一个单链表，记录被删除，则从这个链表上摘除</li><li>Page Directory 主要是解决记录链表的查找问题：为页中的记录再制作了一个目录<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-3.png" alt=""><ul><li>将所有正常的记录（包括最大和最小记录，不包括标记为已删除的记录）划分为几个组</li><li>每个组的最后一条记录（也就是组内最大的那条记录）的头信息中的 n_owned 属性表示该记录拥有多少条记录</li><li>将每个组的最后一条记录的地址偏移量单独提取出来按顺序存储到靠近页的尾部的地方，这个地方就是所谓的Page Directory，也就是页目录页面目录中的这些地址偏移量被称为槽（英文名：Slot），所以这个页面目录就是由槽组成 的</li><li>每个分组中的记录条数是有规定的：对于最小记录所在的分组只能有 1 条记录，最大记录所在的分组拥有的记录条数只能在 1~8 条之间，剩下的分组中记录的条数范围只能在是 4~8 条之间</li></ul></li><li>通过二分法确定该记录所在的槽，并找到该槽所在分组中主键值最小的那条记录</li><li>通过记录的next_record 属性遍历该槽所在的组中的各个记录</li></ul></li><li>Page Header：一个数据页中存储的记录的状态信息，比如本页中已经存储了多少条记录，第一条记录的地址是什么，页目录中存储了多少个槽等</li><li>File Header：针对各种类型的页都通用，比如页的类型，这个页的编号是多少，它的上一个页、下一个页是谁，页的校验和等</li><li>File Trailer：为了检测一个页是否完整<ul><li>前4 个字节代表页的校验和，这个部分是和File Header 中的校验和相对应的</li><li>后4 个字节代表页面被最后修改时对应的日志序列位置（LSN），这个也和校验页的完整性有关</li></ul></li></ul></li></ul><hr><h2 id="体系结构">体系结构</h2><ul><li>InnoDB 的体系结构<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-4.png" alt=""><ul><li>Insert/Change Buffer 主要是用于对二级索引的写入优化</li><li>Undo 空间则是undo 日志一般放在系统表空间，但是通过参数配置后，也可以用独立表空间存放</li><li>通用表空间和独立表空间不同，通用表空间是允许多个表存储数据的共享表空间。</li></ul></li><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-5.png" alt=""></li></ul></li><li>InnoDB 的表空间：任何类型的页都有专门的地方保存页属于哪个表空间，同时表空间中的每一个页都对应着一个页号，这个页号由4 个字节组成，也就是32 个比特位，所以一个表空间最多可以拥有232 个页，如果按照页的默认大小16KB 来算，一个表空间最多支持64TB 的数据<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-6.png" alt=""></li><li>独立表空间结构<ul><li>区（extent）：连续的64 个页就是一个区，也就是说一个区默认占用1MB 空间大小<ul><li>如果是以页为单位来分配存储空间的话，双向链表相邻的两个页之间的物理位置可能离得非常远</li><li>可以消除很多的随机I/O</li></ul></li><li>组：每256个区又被划分成一个组<ul><li>第一个组最开始的3 个页面的类型是固定的：用来登记整个表空间的一些整体属性以及本组所有的区被称为FSP_HDR，也就是extent 0 ~ extent 255 这256个区，整个表空间只有一个FSP_HDR</li><li>其余各组最开始的2 个页面的类型是固定的，一个XDES 类型，用来登记本组256 个区的属性，FSP_HDR 类型的页面其实和XDES 类型的页面的作用类似，只不过FSP_HDR 类型的页面还会额外存储一些表空间的属性</li></ul></li><li>段（segment）：存放叶子节点的区的集合就算是一个段，存放非叶子节点的区的集合也算是一个段<ul><li>也就是说一个索引会生成2 个段，一个叶子节点段，一个非叶子节点段</li><li>段其实不对应表空间中某一个连续的物理区域，而是一个逻辑上的概念</li></ul></li></ul></li></ul></li><li>系统表空间结构：系统表空间的结构和独立表空间基本类似，只不过由于整个MySQL 进程只有一个系统表空间</li><li>InnoDB 数据字典 (Data Dictionary Header)<ul><li>SYS_TABLES 整个InnoDB 存储引擎中所有的表的信息</li><li>SYS_COLUMNS 整个InnoDB 存储引擎中所有的列的信息</li><li>SYS_INDEXES 整个InnoDB 存储引擎中所有的索引的信息</li><li>SYS_FIELDS 整个InnoDB 存储引擎中所有的索引对应的列的信息</li><li>SYS_FOREIGN 整个InnoDB 存储引擎中所有的外键的信息</li><li>SYS_FOREIGN_COLS 整个InnoDB 存储引擎中所有的外键对应列的信息</li><li>SYS_TABLESPACES 整个InnoDB 存储引擎中所有的表空间信息</li><li>SYS_DATAFILES 整个InnoDB 存储引擎中所有的表空间对应文件系统的文件路径信息</li><li>SYS_VIRTUAL 整个InnoDB 存储引擎中所有的虚拟生成列的信息</li><li>这些表的元数据，用一个固定的页面来记录<ul><li>这个页面就是页号为7 的页面Data Dictionary Header，类型为SYS，记录了数据字典的头部信息</li><li>整个InnoDB 存储引擎的一些全局属性，比如Row ID：Max Row ID 字段是全局共享的</li></ul></li><li>用户是不能直接访问InnoDB 的这些内部系统表的，在information_schema 数据库中的这些以INNODB_SYS 开头的表并不是真正的内部系统表（内部系统表是以SYS 开头的那些表），而是在存储引擎启动时读取这些以SYS 开头的系统表，然后填充到这些以INNODB_SYS 开头的表中</li></ul></li></ul><hr><h2 id="双写机制">双写机制</h2><ul><li>双写缓冲区/双写机制：一种特殊文件flush 技术，大小是2MB，性能降低了大概5-10%左右<ul><li>在把页写到数据文件之前，InnoDB 先把它们写到一个叫doublewrite buffer（双写缓冲区）的连续区域内，在写doublewrite buffer 完成后，InnoDB 才会把页写到数据文件的适当的位置</li><li>如果在写页的过程中发生意外崩溃，InnoDB在稍后的恢复过程中在doublewrite buffer 中找到完好的page 副本用于恢复</li><li>为了解决部分页写入问题，当MySQL 将脏数据flush到数据文件的时候, 先使用memcopy 将脏数据复制到内存中的一个区域（也是2M），之后通过这个内存区域再分2 次，每次写入1MB 到系统表空间，然后马上调用fsync 函数，同步到磁盘上。在这个过程中是顺序写，开销并不大，在完成doublewrite 写入后，再将数据写入各数据文件文件，这时是离散写入</li></ul></li></ul><hr><h2 id="Buffer-Pool">Buffer Pool</h2><ul><li>Buffer Pool：默认 128M<ul><li>一般分配机器内存的 70%~75%（分配的总空间比指定的缓冲池大小大约大 10%）</li><li><code>show engine innodb status</code> 对于读取多的情况,如果没达到98%以上，都说明buffer 不够</li></ul></li><li>缓存页<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-7.png" alt=""></li><li>一页 16KB</li><li>每个缓存页对应的控制信息占用的内存大小是相同的，我们称为控制块</li><li>控制块和缓存页是一一对应的</li><li>每个控制块大约占用缓存页大小的5%，而我们设置的innodb_buffer_pool_size并不包含这部分控制块占用的内存空间大小</li></ul></li><li>free 链表<ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-8.png" alt=""></li><li>可以把所有空闲的缓存页对应的控制块作为一个节点放到一个链表中，这个链表也可以被称作free 链表（或者说空闲链表）。刚刚完成初始化的Buffer Pool 中所有的缓存页都是空闲的</li><li>每当需要从磁盘中加载一个页到Buffer Pool 中时就从free 链表中取一个空闲的缓存页，并且把该缓存页对应的控制块的信息填上（就是该页所在的表空间、页号之类的信息），然后把该缓存页对应的free链表节点从链表中移除，表示该缓存页已经被使用了</li></ul></li><li>flush 链表：再创建一个存储脏页的链表，凡是修改过的缓存页对应的控制块都会作为一个节点加入到一个链表中</li><li>缓存页的哈希处理：用表空间号 + 页号作为 key，缓存页作为 value 创建一个哈希表</li><li>划分区域的LRU 链表<ul><li>预读<ul><li>线性预读 <code>innodb_read_ahead_threshold</code>（默认56）：如果顺序访问了某个区（extent）的页面超过这个系统变量的值，就会触发一次异步读取下一个区中全部的页面到Buffer Pool 的请求</li><li>随机预读 <code>innodb_random_read_ahead</code>（长期有效性很低，默认关闭）：如果Buffer Pool 中已经缓存了某个区的13 个连续的页面，不论这些页面是不是顺序读取的，都会触发一次异步读取本区中所有其他的页面到Buffer Pool 的请求</li></ul></li><li>分区：按照某个比例将LRU 链表分成两半 <code>innodb_old_blocks_pct</code><ul><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-9.png" alt=""></li><li>一部分存储使用频率非常高的缓存页，所以这一部分链表也叫做热数据，或者称young 区域<ul><li>只有被访问的缓存页位于young 区域的1/4 的后边，才会被移动到LRU 链表头部（在young 区域的缓存页都是热点数据）</li></ul></li><li>一部分存储使用频率不是很高的缓存页，所以这一部分链表也叫做冷数据，或者称old 区域<ul><li>当磁盘上的某个页面在初次加载到 Buffer Pool 中的某个缓存页时，该缓存页对应的控制块会被放到 old 区域的头部</li><li><code>innodb_old_blocks_time</code>：在对某个处在old 区域的缓存页进行第一次访问时就在它对应的控制块中记录下来这个访问时间，如果后续的访问时间与第一次访问的时间在某个时间间隔内，那么该页面就不会被从old 区域移动到young 区域的头部</li></ul></li></ul></li></ul></li><li>刷新脏页到磁盘：后台有专门的线程每隔一段时间负责把脏页刷新到磁盘<ul><li>从 LRU 链表的冷数据中刷新一部分页面到磁盘（innodb_lru_scan_depth）：后台线程会定时从LRU 链表尾部开始扫描一些页面</li><li>从 flush 链表中刷新一部分页面到磁盘</li><li>用户线程没有可用的缓存页时，会尝试看看LRU 链表尾部有没有可以直接释放掉的未修改页面，如果没有的话会不得不将 LRU 链表尾部的一个脏页同步刷新到磁盘</li><li>系统特别繁忙时，也可能出现用户线程批量的从flush 链表中刷新脏页的情况</li></ul></li><li>多个 Buffer Pool 实例（<code>innodb_buffer_pool_instances</code>）：在多线程环境下，访问 Buffer Pool 中的各种链表都需要加锁处理<ul><li>innodb_buffer_pool_instances 能设置的最大值是64</li><li>当innodb_buffer_pool_size（默认128M）的值小于1G 的时候设置多个实例是无效的</li><li>让每个 Buffer Pool 实例达到 1 个G</li></ul></li><li>chunk 的大小 <code>innodb_buffer_pool_chunk_size</code>  只能在服务器启动时指定<ul><li>一个 Buffer Pool 实例其实是由若干个 chunk 组成的</li><li>在服务器运行期间调整Buffer Pool的大小时就是以chunk 为单位增加或者删除内存空间</li><li>Buffer Pool 的缓存页除了用来缓存磁盘上的页面以外，还可以存储锁信息、自适应哈希索引等信息</li><li><img src="/static/IT/MySQL/MySQL-InnoDB-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-Buffer-Pool-10.png" alt=""></li></ul></li><li>查看 Buffer Pool 的状态信息 <code>SHOW ENGINE INNODB STATUS</code></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;数据结构&lt;/li&gt;
+&lt;li&gt;体系结构&lt;/li&gt;
+&lt;li&gt;双写机制&lt;/li&gt;
+&lt;li&gt;Buffer Pool&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;数据结构&quot;&gt;数据结构&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;InnoDB 的三大特性：双写缓冲区/双写机制；Buff</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-Explain</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-explain/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-explain/</id>
+    <published>2024-09-11T01:12:00.000Z</published>
+    <updated>2024-09-11T01:14:48.089Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>EXPLAIN</li><li>EXPLAIN 列</li><li>索引最佳实践</li></ul><hr><h2 id="EXPLAIN">EXPLAIN</h2><ul><li>EXPLAIN关键字可以模拟优化器执行SQL语句：执行查询会返回执行计划的信息，而不是执行这条SQL<ul><li>如果 from 中包含子查询，仍会执行该子查询，将结果放入临时表中</li></ul></li><li>explain extended：会在 explain  的基础上额外提供一些查询优化的信息<ul><li>filtered：rows * filtered/100 可以估算出将要和 explain 中前一个表进行连接的行数（前一个表指 explain 中的id值比当前表id值小的表）</li><li>show warnings：得到优化后的查询语句</li></ul></li><li>explain partitions<ul><li>partitions：如果查询是基于分区表的话，会显示查询将访问的分区</li></ul></li></ul><hr><h2 id="EXPLAIN-列">EXPLAIN 列</h2><p>explain中的列：</p><ul><li>id 列<ul><li>id 列的编号是 select 的序列号，有几个 select 就有几个id，并且id的顺序是按 select 出现的顺序增长的</li><li>id 列越大执行优先级越高，id相同则从上往下执行，id为NULL最后执行</li></ul></li><li>select_type 列表示对应行是简单还是复杂的查询<ul><li>simple：简单查询。查询不包含子查询和 union</li><li>primary：复杂查询中最外层的 select</li><li>subquery：包含在 select 中的子查询（不在 from 子句中）</li><li>derived：包含在 from 子句中的子查询。MySQL会将结果存放在一个临时表中，也称为派生表（derived的英文含义）</li><li>union：在 union 中的第二个和随后的 select</li></ul></li><li>table 列表示 explain 的一行正在访问哪个表<ul><li>当 from 子句中有子查询时，table列是 <code>&lt;derivenN&gt;</code> 格式，表示当前查询依赖 id=N 的查询，于是先执行 id=N 的查询</li><li>当有 union 时，UNION RESULT 的 table 列的值为 <code>&lt;union1,2&gt;</code>，1和2表示参与 union 的 select 行 id</li></ul></li><li>partitions 列：如果查询是基于分区表的话，partitions 字段会显示查询将访问的分区</li><li>type 列表示关联类型或访问类型，即 MySQL 决定如何查找表中的行，查找数据行记录的大概范围<ul><li>system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL</li><li>一般来说，得保证查询达到range级别，最好达到 ref</li><li>NULL：mysql能够在优化阶段分解查询语句，在执行阶段用不着再访问表或索引。例如：在索引列中选取最小值，可以单独查找索引来完成，不需要在执行时访问表</li><li>const, system：mysql能对查询的某部分进行优化并将其转化成一个常量（可以看show warnings 的结果）。用于primary key 或 unique key 的所有列与常数比较时，所以表最多有一个匹配行，读取1次，速度比较快。system是const的特例，表里只有一条元组匹配时为system</li><li>eq_ref：primary key 或 unique key 索引的所有部分被连接使用 ，最多只会返回一条符合条件的记录。这可能是在const 之外最好的联接类型了，简单的 select 查询不会出现这种 type</li><li>ref：相比 eq_ref，不使用唯一索引，而是使用普通索引或者唯一性索引的部分前缀，索引要和某个值相比较，可能会找到多个符合条件的行</li><li>range：范围扫描通常出现在 <code>in(), between ,&gt; ,&lt;, &gt;=</code> 等操作中。使用一个索引来检索给定范围的行</li><li>index：扫描全索引就能拿到结果，一般是扫描某个二级索引，这种扫描不会从索引树根节点开始快速查找，而是直接对二级索引的叶子节点遍历和扫描，速度还是比较慢的，这种查询一般为使用覆盖索引，二级索引一般比较小，所以这种通常比ALL快一些</li><li>ALL：即全表扫描，扫描你的聚簇索引的所有叶子节点。通常情况下这需要增加索引来进行优化了</li></ul></li><li>possible_keys 列显示查询可能使用哪些索引来查找<ul><li>explain 时可能出现 possible_keys 有列，而 key 显示 NULL 的情况，这种情况是因为表中数据不多，mysql认为索引对此查询帮助不大，选择了全表查询</li><li>如果该列是NULL，则没有相关的索引。在这种情况下，可以通过检查 where 子句看是否可以创造一个适当的索引来提高查询性能，然后用 explain 查看效果</li></ul></li><li>key 列显示mysql实际采用哪个索引来优化对该表的访问<ul><li>如果没有使用索引，则该列是 NULL。如果想强制mysql使用或忽视possible_keys列中的索引，在查询中使用 force index、ignore index</li></ul></li><li>key_len 列显示了mysql在索引里使用的字节数，通过这个值可以算出具体使用了索引中的哪些列<ul><li>比如说，通过结果中的key_len可推断出查询使用了联合索引的第几列</li><li>key_len 计算规则<ul><li>字符串，char(n)和varchar(n)，n均代表字符数，而不是字节数，如果是utf-8，一个数字或字母占1个字节，一个汉字占3个字节<ul><li>char(n)：如果存汉字长度就是 3n 字节</li><li>varchar(n)：如果存汉字则长度是 3n + 2 字节，加的2字节用来存储字符串长度，因为varchar是变长字符串</li></ul></li><li>数值类型：tinyint：1字节；smallint：2字节；int：4字节；bigint：8字节</li><li>时间类型：date：3字节；timestamp：4字节；datetime：8字节</li><li>如果字段允许为 NULL，需要1字节记录是否为 NULL</li><li>索引最大长度是768字节，当字符串过长时，mysql会做一个类似左前缀索引的处理，将前半部分的字符提取出来做索引</li></ul></li></ul></li><li>ref 列显示了在key列记录的索引中，表查找值所用到的列或常量，常见的有：const（常量），字段名</li><li>rows 列是mysql估计要读取并检测的行数，注意这个不是结果集里的行数</li><li>filtered 列是一个百分比的值，<code>rows * filtered/100</code> 可以估算出将要和 explain 中前一个表进行连接的行数（前一个表指 explain 中的id值比当前表id值小的表）</li><li>Extra 列展示的是额外信息<ul><li>Using index：使用覆盖索引<ul><li>mysql执行计划explain结果里的key有使用索引，如果select后面查询的字段都可以从这个索引的树中获取，这种情况一般可以说是用到了覆盖索引，extra里一般都有using index</li><li>覆盖索引一般针对的是辅助索引，整个查询结果只通过辅助索引就能拿到结果，不需要通过辅助索引树找到主键，再通过主键去主键索引树里获取其它字段值</li></ul></li><li>Using where：使用 where 语句来处理结果，并且查询的列未被索引覆盖</li><li>Using index condition：查询的列不完全被索引覆盖，where 条件中是一个前导列的范围</li><li>Using temporary：mysql需要创建一张临时表来处理查询。出现这种情况一般是要进行优化的，首先是想到用索引来优化</li><li>Using filesort：将用外部排序而不是索引排序，数据较小时从内存排序，否则需要在磁盘完成排序。这种情况下一般也是要考虑使用索引来优化的</li><li>Select tables optimized away：使用某些聚合函数（比如 max、min）来访问存在索引的某个字段</li></ul></li></ul><hr><h2 id="索引最佳实践">索引最佳实践</h2><p>索引最佳实践：</p><ul><li>全值匹配</li><li>最左前缀法则</li><li>不在索引列上做任何操作（计算、函数、（自动or手动）类型转换），会导致索引失效而转向全表扫描</li><li>存储引擎不能使用索引中范围条件右边的列</li><li>尽量使用覆盖索引（只访问索引的查询，索引列包含查询列），减少 select * 语句</li><li>mysql在使用不等于（!=或者&lt;&gt;），not in ，not exists 的时候无法使用索引会导致全表扫描</li><li>&lt; 小于、 &gt; 大于、 &lt;=、&gt;= 这些，mysql内部优化器会根据检索比例、表大小等多个因素整体评估是否使用索引</li><li><code>is null, is not null</code> 一般情况下也无法使用索引</li><li>like 以通配符开头（‘$abc…’）mysql索引失效会变成全表扫描操作<ul><li>使用覆盖索引，查询字段必须是建立覆盖索引字段</li><li>如果不能使用覆盖索引则可能需要借助搜索引擎</li></ul></li><li>字符串不加单引号索引失效</li><li>少用or或in，用它查询时，mysql不一定使用索引，mysql内部优化器会根据检索比例、表大小等多个因素整体评估是否使用索引</li><li>范围查询优化<ul><li>mysql内部优化器会根据检索比例、表大小等多个因素整体评估是否使用索引，比如由于单次数据量查询过大导致优化器最终选择不走索引</li><li>可以将大的范围拆分成多个小范围</li></ul></li><li>like KK%相当于=常量，%KK和%KK% 相当于范围</li></ul><p><img src="/static/IT/MySQL/MySQL-Explain-1.png" alt=""></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;EXPLAIN&lt;/li&gt;
+&lt;li&gt;EXPLAIN 列&lt;/li&gt;
+&lt;li&gt;索引最佳实践&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;EXPLAIN&quot;&gt;EXPLAIN&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;EXPLAIN关键字可以模拟优化器执行SQL语句：执行查询会返回执</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-性能优化</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-xing-neng-you-hua/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-xing-neng-you-hua/</id>
+    <published>2024-09-11T01:08:00.000Z</published>
+    <updated>2024-09-11T01:11:18.956Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>慢查询<ul><li><code>set GLOBAL slow_query_log=1;</code></li><li>`set global long_query_time=0;</li><li><code>set global log_output='FILE,TABLE'</code></li><li><code>mysqldumpslow -s r -t 10 slow-mysql.log</code></li></ul></li><li>优化SQL查询方法论<ul><li>查询不需要的记录</li><li>重复查询相同的数据</li><li>是否在扫描额外的记录：响应时间、扫描的行数、返回的行数</li></ul></li><li>重构SQL查询的方法论<ul><li>切分查询</li><li>分解关联查询</li></ul></li><li>MySQL执行全流程<ol><li>客户端发送一条查询给服务器</li><li>服务器先检查查询缓存，如果命中了缓存，则立刻返回存储在缓存中的结果。否则进入下一阶段（当然从MySQL8.0开始，这个部分就没有了）</li><li>服务器端进行SQL解析、预处理，再由优化器生成对应的执行计划</li><li>MySQL根据优化器生成的执行计划，调用存储引擎的API来执行查询</li><li>将结果返回给客户端</li></ol></li><li>MySQL客户端/服务器通信<ul><li>半双工：在任何一个时刻，要么是由服务器向客户端发送数据，要么是由客户端向服务器发送数据</li><li>一旦一端开始发生消息，另一端要接收完整个消息才能响应它<ul><li>当客户端从服务器取数据时，看起来是一个拉数据的过程，但实际上是MySQL在向客户端推送数据的过程。客户端不断地接收从服务器推送的数据，客户端也没法让服务器停下来</li></ul></li><li>服务器端游标，每次从服务器取fetch_size条数据<ul><li><code>setResultSetType(ResultSet.TYPE_FORWARD_ONLY); setFetchSize(Integer.MIN_VALUE)</code></li><li><code>statement#enableStreamingResults</code></li><li><code>useCursorFetch=true</code></li></ul></li></ul></li><li><code>show processlist</code> 查看线程状态</li><li><code>show profile</code><ul><li><code>set profiling=1;</code></li><li><code>show profile for query 1;</code></li><li><code>show profile all for query 1</code></li></ul></li></ul><hr><p><img src="/static/IT/MySQL/MySQL-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-1.png" alt=""><br><img src="/static/IT/MySQL/MySQL-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-2.png" alt=""></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;慢查询
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;set GLOBAL slow_query_log=1;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;`set global long_query_time=0;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;set global log_output</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-索引优化</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-suo-yin-you-hua/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-suo-yin-you-hua/</id>
+    <published>2024-09-11T01:03:00.000Z</published>
+    <updated>2024-09-11T01:07:27.693Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>索引优化原则</li><li>SQL 索引优化</li><li>索引设计规范</li><li>SQL 优化</li><li>数据类型选择</li></ul><hr><h2 id="索引优化原则">索引优化原则</h2><ul><li>联合索引第一个字段用范围不会走索引</li><li>强制走索引：最终查找效率不一定比全表扫描高，因为回表效率不高</li><li>覆盖索引优化</li><li>in和or在表数据量比较大的情况会走索引，在表记录不多的情况下会选择全表扫描</li><li>like&nbsp;KK%&nbsp;一般情况都会走索引</li><li>索引下推：可以在索引遍历过程中，对索引中包含的所有字段先做判断，过滤掉不符合条件的记录之后再回表</li><li>MRR (Disk-Sweep Multi-Range Read) 多范围读取<ul><li>即先读取一部分二级索引记录，将它们的主键值排好序之后再统一执行回表操作</li></ul></li></ul><h2 id="SQL-索引优化">SQL 索引优化</h2><ul><li>覆盖索引优化</li><li>trace工具<ul><li><code>set&nbsp;session&nbsp;optimizer_trace="enabled=on",end_markers_in_json=on;</code></li><li><code>SELECT&nbsp;*&nbsp;FROM&nbsp;information_schema.OPTIMIZER_TRACE;</code></li></ul></li><li>Order&nbsp;by与Group&nbsp;by：也要按照联合索引的顺序<ul><li>Mysql8以上才有降序排序，否则会产生 Using&nbsp;filesort，因为默认升序</li><li>对于排序来说，多个相等条件也是范围查询</li><li>MySQL支持两种方式的排序filesort和index<ul><li>Using&nbsp;index是指MySQL扫描索引本身完成排序</li><li>order&nbsp;by满足两种情况会使用Using&nbsp;index<ul><li>order&nbsp;by语句使用索引最左前列</li><li>使用where子句与order&nbsp;by子句条件列组合满足索引最左前列</li></ul></li></ul></li><li>尽量在索引列上完成排序，遵循索引建立（索引创建的顺序）时的最左前缀法则</li><li>如果order&nbsp;by的条件不在索引列上，就会产生Using&nbsp;filesort</li><li>能用覆盖索引尽量用覆盖索引</li><li>group&nbsp;by与order&nbsp;by很类似，其实质是先排序后分组，遵照索引创建顺序的最左前缀法则</li><li>group&nbsp;by如果不需要排序的可以加上order&nbsp;by&nbsp;null禁止排序</li><li>where高于having，能写在where中的限定条件就不要去having限定了</li></ul></li><li>filesort文件排序方式：<ul><li>单路排序：是一次性取出满足条件行的所有字段，然后在sort&nbsp;buffer中进行排序；用trace工具可以看到sort_mode信息里显示<code>&lt;&nbsp;sort_key,&nbsp;additional_fields&nbsp;&gt;</code>或者<code>&lt;&nbsp;sort_key,&nbsp;packed_additional_fields&nbsp;&gt;</code></li><li>双路排序（又叫回表排序模式）：是首先根据相应的条件取出相应的排序字段和可以直接定位行数据的行&nbsp;ID，然后在&nbsp;sort&nbsp;buffer&nbsp;中进行排序，排序完后需要再次取回其它需要的字段；用trace工具可以看到sort_mode信息里显示<code>&lt;&nbsp;sort_key,&nbsp;rowid&nbsp;&gt;</code></li><li>通过比较系统变量&nbsp;max_length_for_sort_data(默认1024字节)&nbsp;的大小和需要查询的字段总大小来判断使用哪种排序模式：小于用单路；大于用双路</li></ul></li></ul><hr><h2 id="索引设计规范">索引设计规范</h2><p>索引设计原则</p><ul><li>代码先行，索引后上</li><li>联合索引尽量覆盖条件</li><li>不要在小基数字段上建立索引</li><li>长字符串我们可以采用前缀索引（前20个字符）</li><li>where与order&nbsp;by冲突时优先where</li><li>基于慢sql查询做优化</li><li>尽量利用一两个复杂的多字段联合索引，抗下80%以上的查询，然后用一两个辅助索引尽量抗下剩余的一些非典型查询，保证大数据量表的查询尽可能多的都能充分利用索引</li></ul><p>索引设计策略</p><ul><li>索引列的类型尽量小</li><li>利用索引选择性（索引值的离散程度）和前缀索引</li><li>只为用于搜索、排序或分组的列创建索引</li><li>合理设计多列索引</li><li>尽可能设计三星索引（覆盖索引）：索引中所包含了这个查询所需的所有列</li><li>主键尽量是很少改变的列</li><li>避免创建冗余和重复索引</li><li>删除未使用的索引</li></ul><hr><h2 id="SQL-优化">SQL 优化</h2><ul><li>分页查询优化<ul><li>根据自增且连续的主键排序的分页查询（主键空缺，导致结果不一致）</li><li>根据非主键字段排序的分页查询<ul><li>让排序时返回的字段尽可能少：比如用<code>inner&nbsp;join</code></li><li>select&nbsp;*&nbsp;from&nbsp;employees&nbsp;e&nbsp;inner&nbsp;join&nbsp;(select&nbsp;id&nbsp;from&nbsp;employees&nbsp;order&nbsp;by&nbsp;name&nbsp;limit&nbsp;90000,5)&nbsp;ed on&nbsp;<a href="http://e.id">e.id</a>&nbsp;=&nbsp;<a href="http://ed.id">ed.id</a>;</li></ul></li></ul></li><li>Join关联查询优化<ul><li>嵌套循环连接&nbsp;Nested-Loop&nbsp;Join(NLJ)&nbsp;算法：优化器一般会优先选择小表做驱动表，被驱动表的关联字要走索引<ul><li>一次一行循环地从第一张表（称为驱动表）中读取行，在这行数据中取到关联字段，根据关联字段在另一张表（被驱动表）里取出满足条件的行，然后取出两张表的结果合集</li><li>如果执行计划&nbsp;Extra&nbsp;中未出现&nbsp;Using&nbsp;join&nbsp;buffer&nbsp;则表示使用的&nbsp;join&nbsp;算法是&nbsp;NLJ</li></ul></li><li>基于块的嵌套循环连接&nbsp;Block&nbsp;Nested-Loop&nbsp;Join(BNL) 算法：被驱动表的关联字段没索引（用BNL磁盘扫描次数少很多）<ul><li>把驱动表的数据读入到&nbsp;join_buffer&nbsp;中，然后扫描被驱动表，把被驱动表每一行取出来跟&nbsp;join_buffer&nbsp;中的数据做对比<ul><li>要是 join_buffer&nbsp;放不下，就分段放</li></ul></li><li>Extra&nbsp;中&nbsp;的Using&nbsp;join&nbsp;buffer&nbsp;(Block&nbsp;Nested&nbsp;Loop)说明该关联查询使用的是&nbsp;BNL&nbsp;算法</li></ul></li></ul></li><li>对于关联sql的优化<ul><li>关联字段加索引，让mysql做join操作时尽量选择NLJ算法</li><li>小表驱动大表，写多表连接sql时如果明确知道哪张表是小表可以用straight_join写法固定连接驱动方式，省去mysql优化器自己判断的时间<ul><li>straight_join功能同join类似，但能让左边的表来驱动右边的表，能改表优化器对于联表查询的执行顺序</li><li>straight_join只适用于inner&nbsp;join，并不适用于left&nbsp;join，right&nbsp;join<ul><li>left&nbsp;join，right&nbsp;join已经代表指定了表的执行顺序</li></ul></li><li>尽可能让优化器去判断</li></ul></li></ul></li><li>小表定义：两个表按照各自的条件过滤，过滤完成之后，计算参与&nbsp;join&nbsp;的各个字段的总数据量，数据量小的那个表，就是“小表”，应该作为驱动表</li><li>in和exsits优化：小表驱动大表<ul><li>in：当B表的数据集小于A表的数据集时，in优于exists<ul><li><code>select&nbsp;*&nbsp;from&nbsp;A&nbsp;where&nbsp;id&nbsp;in&nbsp;(select&nbsp;id&nbsp;from&nbsp;B)</code></li></ul></li><li>exists：当A表的数据集小于B表的数据集时，exists优于in<ul><li><code>select&nbsp;*&nbsp;from&nbsp;A&nbsp;where&nbsp;exists&nbsp;(select&nbsp;1&nbsp;from&nbsp;B&nbsp;where&nbsp;B.id&nbsp;=&nbsp;A.id)</code></li><li>将主查询A的数据，放到子查询B中做条件验证，根据验证结果（true或false）来决定主查询的数据是否保留</li><li>EXISTS&nbsp;(subquery)只返回TRUE或FALSE,因此子查询中的SELECT&nbsp;*&nbsp;也可以用SELECT&nbsp;1替换,官方说法是实际执行时会忽略SELECT清单,因此没有区别</li><li>EXISTS子查询的实际执行过程可能经过了优化而不是我们理解上的逐条对比</li><li>EXISTS子查询往往也可以用JOIN来代替，何种最优需要具体问题具体分析</li></ul></li></ul></li><li><code>count(*)</code>查询优化<ul><li>字段有索引：<code>count(*)≈count(1)&gt;count(字段)&gt;count(主键&nbsp;id)</code><ul><li>count(字段)统计走二级索引，二级索引存储数据比主键索引少</li></ul></li><li>字段无索引：<code>count(*)≈count(1)&gt;count(主键&nbsp;id)&gt;count(字段)</code></li><li>count(1)跟count(字段)执行过程类似，不过count(1)不需要取出字段统计，就用常量1做统计，count(字段)还需要取出字段，所以理论上count(1)比count(字段)会快一点</li><li><code>count(*)&nbsp;</code>是例外，mysql并不会把全部字段取出来，而是专门做了优化，不取值，按行累加，效率很高，所以不需要用count(列名)或count(常量)来替代&nbsp;<code>count(*)</code></li><li>对于count(id)，mysql最终选择辅助索引而不是主键聚集索引：因为二级索引相对主键索引存储数据更少</li></ul></li><li>查询mysql自己维护的总行数<ul><li>myisam存储引擎的表做不带where条件的count查询性能是很高的，因为myisam存储引擎的表的总行数会被mysql存储在磁盘上，查询不需要计算</li><li>innodb存储引擎的表mysql不会存储表的总记录行数（因为有MVCC机制），查询count需要实时计算</li><li>表总行数的估计值：show&nbsp;table&nbsp;status</li></ul></li><li>将总数维护到Redis里</li><li>增加数据库计数表</li></ul><hr><h2 id="数据类型选择">数据类型选择</h2><ul><li>MySQL数据类型选择：尽量用更小的数据类型，字段避免使用NULL<ol><li>确定合适的大类型：数字、字符串、时间、二进制</li><li>确定具体的类型：有无符号、取值范围、变长定长等</li></ol></li><li>数值类型<ul><li>如果整形数据没有负数，如ID号，建议指定为UNSIGNED无符号类型，容量可以扩大一倍</li><li>建议使用TINYINT代替ENUM、BITENUM、SET</li><li>避免使用整数的显示宽度，也就是说，不要用INT(10)类似的方法指定字段显示宽度，直接用INT<ul><li>INT显示宽度：这里的长度并非是存储的最大长度，而是显示的最大长度<ul><li>在查询结果前填充0时，命令中加上ZEROFILL就可以实现</li></ul></li><li>如果类型是 TINYINT 但是存入值大于255，如500，那么MySQL会自动保存为TINYINT类型的最大值255</li></ul></li><li>DECIMAL最适合保存准确度要求高，而且用于计算的数据，比如价格。但是在使用DECIMAL类型的时候，注意长度设置</li><li>建议使用整形类型来运算和存储实数，方法是，实数乘以相应的倍数后再操作</li><li>整数通常是最佳的数据类型，因为它速度快，并且能使用 AUTO_INCREMENT 自增</li></ul></li><li>日期和时间<ul><li>MySQL能存储的最小时间粒度为秒</li><li>建议用DATE数据类型来保存日期。MySQL中默认的日期格式是yyyy-mm-dd</li><li>用MySQL的内建类型DATE、TIME、DATETIME来存储时间，而不是使用字符串</li><li>当数据格式为TIMESTAMP和DATETIME时，可以用CURRENT_TIMESTAMP作为默认，MySQL会自动返回记录插入的确切时间</li><li>TIMESTAMP是UTC时间戳，与时区相关</li><li>DATETIME的存储格式是一个YYYYMMDD&nbsp;HH:MM:SS的整数，与时区无关，你存了什么，读出来就是什么</li><li>除非有特殊需求，一般的公司建议使用TIMESTAMP，它比DATETIME更节约空间，但是像阿里这样的公司一般会用DATETIME，因为不用考虑TIMESTAMP将来的时间上限问题</li><li>有时人们把Unix的时间戳保存为整数值，但是这通常没有任何好处，这种格式处理起来不太方便，我们并不推荐它</li></ul></li><li>字符串<ul><li>字符串的长度相差较大用VARCHAR；字符串短，且所有值都接近一个长度用CHA</li><li>CHAR和VARCHAR适用于包括人名、邮政编码、电话号码和不超过255个字符长度的任意字母数字组合<ul><li>那些要用来计算的数字不要用VARCHAR类型保存，因为可能会导致一些与计算相关的问题，影响到计算的准确性和完整性</li></ul></li><li>尽量少用BLOB和TEXT，如果实在要用可以考虑将BLOB和TEXT字段单独存一张表，用id关联</li><li>BLOB系列存储二进制字符串，与字符集无关。TEXT系列存储非二进制字符串，与字符集相关</li><li>BLOB和TEXT都不能有默认值</li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;索引优化原则&lt;/li&gt;
+&lt;li&gt;SQL 索引优化&lt;/li&gt;
+&lt;li&gt;索引设计规范&lt;/li&gt;
+&lt;li&gt;SQL 优化&lt;/li&gt;
+&lt;li&gt;数据类型选择&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;索引优化原则&quot;&gt;索引优化原则&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;联合索引第</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-索引数据结构</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-suo-yin-shu-ju-jie-gou/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-suo-yin-shu-ju-jie-gou/</id>
+    <published>2024-09-11T00:57:00.000Z</published>
+    <updated>2024-09-11T00:59:48.774Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>B-Tree</li><li>B+Tree（B-Tree变种）</li><li>Hash</li><li>MyISAM 非聚集索引</li><li>InnoDB 聚集索引</li></ul><hr><ul><li>B-Tree<ul><li>叶节点具有相同的深度，叶节点的指针为空</li><li>所有索引元素不重复</li><li>节点中的数据索引从左到右递增排列</li></ul></li></ul><p><img src="/static/IT/MySQL/MySQL-%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1.png" alt=""></p><ul><li>B+Tree（B-Tree变种）<ul><li>非叶子节点不存储data，只存储索引(冗余)，可以放更多的索引</li><li>叶子节点包含所有索引字段</li><li>叶子节点用指针连接，提高区间访问的性能</li></ul></li></ul><p><img src="/static/IT/MySQL/MySQL-%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-2.png" alt=""></p><ul><li>Hash<ul><li>对索引的key进行一次hash计算就可以定位出数据存储的位置</li><li>很多时候Hash索引要比 B+ 树索引更高效</li><li>仅能满足 “=”，“IN”，不支持范围查询</li><li>hash 冲突问题</li></ul></li></ul><p><img src="/static/IT/MySQL/MySQL-%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-3.png" alt=""></p><hr><p>MyISAM索引文件和数据文件是分离的（非聚集索引）</p><p><img src="/static/IT/MySQL/MySQL-%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-4.png" alt=""></p><ul><li>InnoDB 聚集索引<ul><li>表数据文件本身就是按 B+Tree 组织的一个索引结构文件</li><li>聚集索引-叶节点包含了完整的数据记录</li><li>建议InnoDB表必须建主键，并且推荐使用整型的自增主键</li><li>非主键索引结构叶子节点存储的是主键值（一致性和节省存储空间）</li></ul></li></ul><p>主键索引：<br><img src="/static/IT/MySQL/MySQL-%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-5.png" alt="主键索引"></p><p>非主键索引：<br><img src="/static/IT/MySQL/MySQL-%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-6.png" alt="非主键索引"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;B-Tree&lt;/li&gt;
+&lt;li&gt;B+Tree（B-Tree变种）&lt;/li&gt;
+&lt;li&gt;Hash&lt;/li&gt;
+&lt;li&gt;MyISAM 非聚集索引&lt;/li&gt;
+&lt;li&gt;InnoDB 聚集索引&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;B-Tree
+&lt;ul&gt;
+&lt;li&gt;</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-索引合并</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-suo-yin-he-bing/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-suo-yin-he-bing/</id>
+    <published>2024-09-11T00:56:00.000Z</published>
+    <updated>2024-09-11T00:56:12.513Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>索引合并：一般情况下执行一个查询时最多只会用到单个二级索引，但特殊情况下也可能在一个查询中使用到多个二级索引</li><li>Intersection 交集合并<ul><li>等值匹配<ul><li>在联合索引中的每个列都必须等值匹配，不能出现只匹配部分列的情况</li></ul></li><li>主键列可以是范围匹配<ul><li><code>SELECT * FROM order_exp WHERE id &gt; 100 AND order_no = 'a';</code><ul><li>假设这个查询可以采用 Intersection 索引合并：先获取二级索引 order_no 的主键集，再运行过滤条件 id &gt; 100</li></ul></li></ul></li></ul></li><li>Union 并集合并<ul><li>等值匹配</li><li>主键列可以是范围匹配</li><li>使用Intersection索引合并的搜索条件</li></ul></li><li>Sort-Union 合并：多了一步对二级索引记录的主键值排序的过程<ul><li>因为Union索引合并的使用条件太苛刻，必须保证各个二级索引列在进行等值匹配的条件下才可能被用到</li></ul></li><li>联合索引替代Intersection索引合并</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;索引合并：一般情况下执行一个查询时最多只会用到单个二级索引，但特殊情况下也可能在一个查询中使用到多个二级索引&lt;/li&gt;
+&lt;li&gt;Intersection 交集合并
+&lt;ul&gt;
+&lt;li&gt;等值匹配
+&lt;ul&gt;
+&lt;li&gt;在联合索引中的每个列都必须等值匹配，不能出现只匹配部</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-事务</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-shi-wu/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-shi-wu/</id>
+    <published>2024-09-11T00:52:00.000Z</published>
+    <updated>2024-09-11T00:53:46.567Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>事务</li><li>锁</li></ul><hr><h2 id="事务">事务</h2><ul><li>ACID<ul><li>原子性(Atomicity)&nbsp;：事务是一个原子操作单元,其对数据的修改,要么全都执行,要么全都不执行</li><li>一致性(Consistent)&nbsp;：在事务开始和完成时,数据都必须保持一致状态。这意味着所有相关的数据规则都必须应用于事务的修改,以保持数据的完整性</li><li>隔离性(Isolation)&nbsp;：数据库系统提供一定的隔离机制,保证事务在不受外部并发操作影响的“独立”环境执行。这意味着事务处理过程中的中间状态对外部是不可见的,反之亦然</li><li>持久性(Durable)&nbsp;：事务完成之后,它对于数据的修改是永久性的,即使出现系统故障也能够保持</li></ul></li><li>并发事务处理带来的问题<ul><li>更新丢失(Lost&nbsp;Update)或脏写：最后的更新覆盖了由其他事务所做的更新</li><li>脏读（Dirty&nbsp;Reads）：事务A读取到了事务B已经修改但尚未提交的数据</li><li>不可重读（Non-Repeatable&nbsp;Reads）&nbsp;：事务A内部的相同查询语句在不同时刻读出的结果不一致，不符合隔离性</li><li>幻读（Phantom&nbsp;Reads）：事务A读取到了事务B提交的新增数据，不符合隔离性</li></ul></li><li>事务隔离级别：事务隔离越严格,并发副作用越小,但付出的代价也就越大,因为事务隔离实质上就是使事务在一定程度上“串行化”进行,这显然与“并发”是矛盾的<ul><li>不同的应用对读一致性和事务隔离程度的要求也是不同的</li><li>当前数据库的事务隔离级别:&nbsp;<code>show&nbsp;variables&nbsp;like&nbsp;'tx_isolation';</code></li><li>设置事务隔离级别：<code>set&nbsp;tx_isolation='REPEATABLE-READ';</code></li><li>Mysql默认的事务隔离级别是可重复读</li></ul></li><li>4 种事务隔离级别<ul><li>读未提交：<code>set&nbsp;tx_isolation='read-uncommitted';</code></li><li>读已提交：<code>set&nbsp;tx_isolation='read-committed';</code></li><li>可重复读：<code>set&nbsp;tx_isolation='repeatable-read';</code><ul><li>使用了MVCC(multi-version&nbsp;concurrency&nbsp;control)机制<ul><li>select操作不会更新版本号，是快照读（历史版本）</li><li>insert、update和delete会更新版本号，是当前读（当前版本）</li></ul></li><li>使用了间隙锁</li></ul></li><li>串行化：<code>set&nbsp;tx_isolation='serializable';</code><ul><li>这种隔离级别并发性极低，开发中很少会用到</li><li>读操作会获得共享锁，写操作会获得排他锁</li><li>使用了间隙锁</li></ul></li></ul></li></ul><p><img src="/static/IT/MySQL/MySQL-%E4%BA%8B%E5%8A%A1-1.png" alt=""></p><hr><h2 id="锁">锁</h2><ul><li>锁分类<ul><li>乐观锁：version</li><li>悲观锁：读锁（共享锁，S锁(Shared)）和写锁（排它锁，X锁(eXclusive)）<ul><li>读锁会阻塞写，但是不会阻塞读</li><li>写锁则会把读和写都阻塞</li></ul></li><li>从对数据操作的粒度分：表锁和行锁<ul><li>无索引行锁会升级为表锁：InnoDB的行锁是针对索引加的锁，不是针对记录加的锁。并且该索引不能失效，否则都会从行锁升级为表锁</li></ul></li></ul></li><li>表锁<ul><li><code>lock&nbsp;table&nbsp;表名称&nbsp;read(write)</code></li><li><code>show&nbsp;open&nbsp;tables;</code> 查看表上加过的锁</li><li><code>unlock&nbsp;tables;</code></li></ul></li><li>行锁：InnoDB支持事务（TRANSACTION）和行级锁<ul><li>MyISAM在执行查询语句SELECT前，会自动给涉及的所有表加读锁,在执行update、insert、delete操作会自 动给涉及的表加写锁</li><li>InnoDB在执行查询语句SELECT时(非串行隔离级别)，不会加锁。但是update、insert、delete操作会加行锁</li><li>锁定某一行还可以用 lock&nbsp;in&nbsp;share&nbsp;mode(共享锁)&nbsp;和 for&nbsp;update(排它锁)</li><li>通过检查InnoDB_row_lock状态变量来分析系统上的行锁的争夺情况<ul><li>Innodb_row_lock_time_avg&nbsp;（等待平均时长）</li><li>Innodb_row_lock_waits&nbsp;（等待总次数）</li><li>Innodb_row_lock_time（等待总时长）</li></ul></li></ul></li><li>间隙锁：就是两个值之间的空隙，在某些情况下可以解决幻读问题<ul><li>这个范围所包含的所有行记录（包括间隙行记录）以及行记录所在的间隙里</li><li>临键锁(Next-key&nbsp;Locks)：是行锁与间隙锁的组合</li></ul></li><li>查看INFORMATION_SCHEMA系统库锁相关数据表<ul><li><code>INFORMATION_SCHEMA.INNODB_TRX</code> 查看事务</li><li><code>INFORMATION_SCHEMA.INNODB_LOCKS</code> 查看锁</li><li><code>INFORMATION_SCHEMA.INNODB_LOCK_WAITS</code> 查看锁等待</li><li><code>kill&nbsp;trx_mysql_thread_id</code> 释放锁，<code>trx_mysql_thread_id</code> 可以从 <code>INNODB_TRX</code> 表里查看到</li><li><code>show&nbsp;engine&nbsp;innodb&nbsp;status</code> 查看锁等待详细信息</li></ul></li><li>死锁 <code>show&nbsp;engine&nbsp;innodb&nbsp;status</code><ul><li>大多数情况mysql可以自动检测死锁并回滚产生死锁的那个事务</li></ul></li><li>锁优化<ul><li>尽可能让所有数据检索都通过索引来完成，避免无索引行锁升级为表锁</li><li>合理设计索引，尽量缩小锁的范围</li><li>尽可能减少检索条件范围，避免间隙锁</li><li>尽量控制事务大小，减少锁定资源量和时间长度，涉及事务加锁的sql尽量放在事务最后执行</li><li>尽可能低级别事务隔离</li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;事务&lt;/li&gt;
+&lt;li&gt;锁&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;事务&quot;&gt;事务&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;ACID
+&lt;ul&gt;
+&lt;li&gt;原子性(Atomicity)&amp;nbsp;：事务是一个原子操作单元,其对数据的修改,要么全都执行,要么全都不执行&lt;/l</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-内核查询优化规则</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-nei-he-cha-xun-you-hua-gui-ze/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-nei-he-cha-xun-you-hua-gui-ze/</id>
+    <published>2024-09-11T00:51:00.000Z</published>
+    <updated>2024-09-11T00:51:39.096Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>条件化简<ul><li>移除不必要的括号</li><li>常量传递（constant_propagation）</li><li>移除没用的条件（trivial_condition_removal）</li><li>表达式计算</li><li>常量表检测<ul><li>使用主键等值匹配或者唯一二级索引列等值匹配作为搜索条件来查询某个表，通过这两种方式查询的表称之为常量表</li><li>优化器在分析一个查询语句时，先首先执行常量表查询，然后把查询中涉及到该表的条件全部替换成常数，最后再分析其余表的查询成本</li></ul></li><li>外连接消除<ul><li>有ON子句关联且空值拒绝的时候：外连接和内连接的查询结果没区别</li></ul></li></ul></li><li>子查询MySQL内部优化规则<ul><li>按返回的结果集区分子查询<ul><li>标量子查询</li><li>行子查询</li><li>列子查询</li><li>表子查询</li></ul></li><li>按与外层查询关系来区分子查询<ul><li>不相关子查询：子查询可以单独运行出结果，而不依赖于外层查询的值</li><li>相关子查询：子查询的执行需要依赖于外层查询的值</li><li><code>[NOT] IN/ANY/SOME/ALL</code> 子查询<ul><li>IN<ul><li>Memory存储引擎的临时表，而且会为该表建立哈希索引</li><li>物化表：结果集太多，可能内存中都放不下，同时建立了索引</li><li>物化表转连接<ul><li>将子查询转换为 semi-join 半连接：对于s1表的某条记录来说，我们只关心在s2表中是否存在与之匹配的记录，而不关心具体有多少条记录与之匹配，最终的结果集中只保留s1表的记录<ul><li>Table pullout （子查询中的表上拉）：子查询的查询列表处只有主键或者唯一索引列时，可以直接把子查询中的表上拉到外层查询的FROM子句中，并把子查询中的搜索条件合并到外层查询的搜索条件中</li><li>DuplicateWeedout execution strategy （重复值消除）、LooseScan execution strategy （松散扫描）、Semi-join Materializationa半连接物化、FirstMatch execution strategy （首次匹配）等等</li></ul></li><li>不能转为semi-join查询的子查询优化<ul><li>对于不相关子查询来说，会尝试把它们物化之后再参与查询</li><li>不管子查询是相关的还是不相关的，都可以把IN子查询尝试转为EXISTS子查询</li></ul></li></ul></li></ul></li><li>ANY/ALL：转为 select min/max</li></ul></li><li>EXISTS子查询<ul><li>不相关子查询，可以先执行子查询的结果是TRUE还是FALSE，并重写原先的查询语句</li></ul></li></ul></li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;条件化简
+&lt;ul&gt;
+&lt;li&gt;移除不必要的括号&lt;/li&gt;
+&lt;li&gt;常量传递（constant_propagation）&lt;/li&gt;
+&lt;li&gt;移除没用的条件（trivial_condition_removal）&lt;/li&gt;
+&lt;li&gt;表达式计算&lt;/li&gt;
+&lt;li&gt;常量表检</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-高可用架构</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-gao-ke-yong-jia-gou/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-gao-ke-yong-jia-gou/</id>
+    <published>2024-09-11T00:45:00.000Z</published>
+    <updated>2024-09-11T00:48:38.689Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>基础集群<ul><li>MySQL主从同步原理</li><li>搭建主从集群<ul><li>配置master主服务</li><li>配置slave从服务</li></ul></li><li>部分同步</li><li>GTID同步集群</li><li>集群扩容与MySQL数据迁移</li></ul></li><li>复杂集群<ul><li>半同步复制</li><li>主从集群与读写分离</li><li>更复杂的集群结构</li></ul></li><li>高可用集群<ul><li>MMM</li><li>MHA</li><li>MGR</li></ul></li><li>分库分表<ul><li>分库分表的方式</li><li>分库分表要解决哪些问题</li><li>什么时候需要分库分表</li></ul></li></ul><hr><h2 id="基础集群">基础集群</h2><ul><li>MySQL主从同步原理（MySQL的Binlog默认是不打开的）<ul><li><img src="/static/IT/MySQL/MySQL-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84-1.png" alt=""><ul><li>在主库上打开Binlog日志，记录对数据的每一步操作</li><li>然后在从库上打开RelayLog日志，用来记录跟主库一样的Binlog日志</li><li>将RelayLog中的操作日志在自己数据库中进行异步的重演</li></ul></li></ul></li><li>搭建集群的两个必要条件<ul><li>MySQL版本必须一致</li><li>集群中各个服务器的时间需要同步</li></ul></li><li>搭建主从集群<ul><li>配置master主服务：<code>/etc/my.cnf</code><ul><li>打开binlog日志：<code>log_bin log_bin-index</code></li><li>指定severId：<code>server-id</code></li><li>重启服务：<code>service mysqld restart</code></li><li>给root用户分配一个replication slave的权限<ul><li><code>GRANT REPLICATION SLAVE ON *.* TO 'root'@'%';</code></li><li><code>flush privileges;</code></li><li><code>show master status;</code> 查看主节点同步状态<ul><li>这个指令结果中的File和Position记录的是当前日志的binlog文件以及文件中的索引</li><li>后面的Binlog_Do_DB和Binlog_Ignore_DB这两个字段是表示需要记录binlog文件的库以及不需要记录binlog文件的库<ul><li>没有进行配置，就表示是针对全库记录日志</li></ul></li><li>开启binlog后，数据库中所有操作都会被记录到datadir中，以一组轮询文件的方式循环记录<ul><li>指令查到的File和Position就是当前日志的文件和位置</li><li>后面配置从服务时，就需要通过这个File和Position通知从服务从哪个地方开始记录binLog</li></ul></li></ul></li><li>在实际生产环境中，通常不会直接使用root用户，而会创建一个拥有全部权限的用户来负责主从同步</li></ul></li></ul></li><li>配置slave从服务：<code>/etc/my.cnf</code><ul><li><code>server-id relay-log relay-log-index log-bin</code></li><li>启动mysqls的服务，并设置他的主节点同步状态<ul><li>设置同步主节点<ul><li><code>CHANGE MASTER TO</code><ul><li><code>MASTER_HOST='192.168.232.128',</code></li><li><code>MASTER_PORT=3306,</code></li><li><code>MASTER_USER='root',</code></li><li><code>MASTER_PASSWORD='root',</code></li><li><code>MASTER_LOG_FILE='master-bin.000004',</code></li><li><code>MASTER_LOG_POS=156,</code></li><li><code>GET_MASTER_PUBLIC_KEY=1;</code></li></ul></li><li>MASTER_LOG_FILE和MASTER_LOG_POS必须与主服务中查到的保持一致</li><li>后续如果要检查主从架构是否成功，也可以通过检查主服务与从服务之间的File和Position这两个属性是否一致来确定</li></ul></li><li><code>start slave;</code> 开启slave</li><li><code>show slave status \G;</code> 查看主从同步状态<ul><li>查看MASTER_LOG_FILE和READ_MASTER_LOG_POS与主节点保持一致，就表示这个主从同步搭建是成功的</li><li>Replicate_开头的属性，指定了两个服务之间要同步哪些数据库、哪些表的配置</li></ul></li></ul></li></ul></li><li><code>Slave_SQL_Running=no</code> 如果在slave从服务上查看slave状态，发现这个属性，就表示主从同步失败了<ul><li>有可能是因为在从数据库上进行了写操作，与同步过来的SQL操作冲突了</li><li>也有可能是slave从服务重启后有事务回滚了<ul><li>重启主从同步<ul><li><code>stop slave;</code></li><li><code>set GLOBAL SQL_SLAVE_SKIP_COUNTER=1;</code></li><li><code>start slave;</code></li></ul></li><li>另一种解决方式就是重新记录主节点的binlog文件消息（不太常用）<ul><li><code>stop slave;</code></li><li><code>change master to .....</code></li><li><code>start slave;</code></li><li>这种方式要注意binlog的文件和位置，如果修改后和之前的同步接不上，那就会丢失部分数据。所以不太常用</li></ul></li></ul></li></ul></li></ul></li><li>部分同步<ul><li>Master端：<code>/etc/my.cnf</code><ul><li><code>binlog-do-db</code> 需要同步的数据库名</li><li><code>binlog-ignore-db</code> 不备份的数据库</li></ul></li><li>Slave端：<code>/etc/my.cnf</code><ul><li><code>replicate-do-db</code> salve库名称与master库名相同<ul><li><code>replicate-rewrite-db = masterdemo -&gt; masterdemo01</code> 主从库名映射</li></ul></li><li><code>replicate-wild-do-table</code> 指定需要同步的表</li></ul></li></ul></li><li>GTID同步集群：也是基于Binlog来实现主从同步，只是他会基于一个全局的事务ID来标识同步进度<ul><li>GTID即全局事务ID，全局唯一并且趋势递增，他可以保证为每一个在主节点上提交的事务在复制集群中可以生成一个唯一的ID</li><li>流程<ul><li>首先从服务器会告诉主服务器已经在从服务器执行完了哪些事务的GTID值</li><li>然后主库会有把所有没有在从库上执行的事务，发送到从库上进行执行</li><li>并且使用GTID的复制可以保证同一个事务只在指定的从库上执行一次<ul><li>这样可以避免由于偏移量的问题造成数据不一致</li></ul></li></ul></li><li>Master端：<code>/etc/my.cnf</code><ul><li><code>gtid_mode=on</code></li><li><code>enforce_gtid_consistency=on</code></li><li><code>log_bin=on</code></li><li><code>server_id=单独设置一个</code></li><li><code>binlog_format=row</code></li></ul></li><li>Slave端：<code>/etc/my.cnf</code><ul><li><code>gtid_mode=on</code></li><li><code>enforce_gtid_consistency=on</code></li><li><code>log_slave_updates=1</code></li><li><code>server_id</code></li></ul></li><li>然后分别重启主服务和从服务，就可以开启GTID同步复制方式</li></ul></li><li>集群扩容与MySQL数据迁移<ul><li>扩展到一主多从的集群架构只需要增加一个binlog复制就行了</li><li>运行过程中扩展新的从节点（数据全量复制）：mysqldump 数据备份恢复操作<ul><li><code>mysqldump -u root -p --all-databases &gt; backup.sql</code> 导出</li><li><code>mysql -u root -p &lt; backup.sql</code> 导入</li><li>然后配置Slave从服务的数据同步</li></ul></li></ul></li></ul><hr><h2 id="复杂集群">复杂集群</h2><ul><li>异步复制：MySQL主从集群默认采用的是一种异步复制的机制。主服务在执行用户提交的事务后，写入binlog日志，然后就给客户端返回一个成功的响应了。而binlog会由一个dump线程异步发送给Slave从服务<ul><li><img src="/static/IT/MySQL/MySQL-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84-2.png" alt=""><ul><li>由于这个发送binlog的过程是异步的。主服务在向客户端反馈执行结果时，是不知道binlog是否同步成功了的</li><li>这时候如果主服务宕机了，而从服务还没有备份到新执行的binlog，那就有可能会丢数据</li></ul></li></ul></li><li>半同步复制：介于异步复制和全同步复制之前的机制<ul><li><img src="/static/IT/MySQL/MySQL-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84-3.png" alt=""><ul><li>主库在执行完客户端提交的事务后，并不是立即返回客户端响应，而是等待至少一个从库接收并写到relay log中，才会返回给客户端</li><li>MySQL在等待确认时，默认会等10秒，如果超过10秒没有收到ack，就会降级成为异步复制</li></ul></li><li>这种半同步复制相比异步复制，能够有效的提高数据的安全性<ul><li>但是这种安全性也不是绝对的，他只保证事务提交后的binlog至少传输到了一个从库，并且并不保证从库应用这个事务的binlog是成功的</li></ul></li><li>半同步复制机制也会造成一定程度的延迟，这个延迟时间最少是一个TCP/IP请求往返的时间<ul><li>当从服务出现问题时，主服务需要等待的时间就会更长，要等到从服务的服务恢复或者请求超时才能给用户响应</li></ul></li></ul></li><li>搭建半同步复制集群：基于特定的扩展模块（semisync_master.so  semisync_slave.so）<ul><li>在主服务上安装 semisync_master 模块<ul><li><code>install plugin rpl_semi_sync_master soname 'semisync_master.so';</code></li><li><code>set global rpl_semi_sync_master_enabled=ON;</code> 打开半同步复制</li><li><code>show global variables like 'rpl_semi%';</code><ul><li>rpl_semi_sync_master_timeout就是半同步复制时等待应答的最长等待时间，默认是10秒</li><li>半同步复制有两种方式，默认AFTER_SYNC方式<ul><li>AFTER_SYNC：主库把日志写入binlog，并且复制给从库，然后开始等待从库的响应。从库返回成功后，主库再提交事务，接着给客户端返回一个成功响应</li><li>AFTER_COMMIT：在主库写入binlog后，等待binlog复制到从库，主库就提交自己的本地事务，再等待从库返回给自己一个成功响应，然后主库再给客户端返回响应<ul><li><code>rpl_semi_sync_master_wait_point</code></li></ul></li></ul></li></ul></li></ul></li><li>在从服务上安装 semisync_slave 模块<ul><li>`install plugin rpl_semi_sync_slave soname ‘semisync_slave.so’;</li><li>`set global rpl_semi_sync_slave_enabled = on;``</li><li><code>show global variables like 'rpl_semi%';</code></li><li>安装完slave端的半同步插件后，需要重启下slave服务<ul><li><code>stop slave;</code></li><li><code>start slave;</code></li></ul></li></ul></li></ul></li><li>主从集群与读写分离：MySQL主从集群是单向的，也就是只能从主服务同步到从服务，而从服务的数据表更是无法同步到主服务的<ul><li>为了保证数据一致，通常会需要保证数据只在主服务上写，而从服务只进行数据读取（读写分离）<ul><li>MySQL主从本身是无法提供读写分离的服务的，需要由业务自己来实现</li><li>在MySQL主从架构中，是需要严格限制从服务的数据写入的，一旦从服务有数据写入，就会造成数据不一致</li><li>并且从服务在执行事务期间还很容易造成数据同步失败</li></ul></li><li>可以在从服务中将read_only参数的值设为1( <code>set global read_only=1;</code> )<ul><li><code>read_only=1</code>设置的只读模式，不会影响slave同步复制的功能</li><li><code>read_only=1</code>设置的只读模式， 限定的是普通用户进行数据修改的操作，但不会限定具有super权限的用户的数据修改操作</li></ul></li><li>限定super权限的用户写数据，可以设置<code>super_read_only=0</code><ul><li>如果要想连super权限用户的写操作也禁止，就使用<code>flush tables with read lock;</code><ul><li>这样设置也会阻止主从同步复制！</li></ul></li></ul></li></ul></li><li>扩展更复杂的集群结构<ul><li>为了进一步提高整个集群的读能力，可以扩展出一主多从<ul><li>为了减轻主节点进行数据同步的压力，可以继续扩展出多级从的主从集群</li></ul></li><li>为了提高这个集群的写能力，可以搭建互主集群（两个服务互为主从）<ul><li>在主服务上打开一个slave进程，并且指向slave节点的binlog当前文件地址和位置</li></ul></li><li>可以扩展出多主多从的集群，全方位提升集群的数据读写能力<ul><li>也可以扩展出环形的主从集群，实现MySQL多活部署</li></ul></li></ul></li><li>主从复制延迟（读写分离后更容易体现出来），主库刚插入了数据但是从库查不到<ul><li>面向业务的主服务数据都是多线程并发写入的，而从服务是单个线程慢慢拉取binlog</li><li>并行复制：<ul><li>在从服务上设置<code>slave_parallel_workers</code>为一个大于0的数</li><li>然后把<code>slave_parallel_type</code>参数设置为<code>LOGICAL_CLOCK</code></li></ul></li></ul></li></ul><hr><h2 id="高可用集群">高可用集群</h2><ul><li>如果是MySQL主服务挂了，从服务是没办法自动切换成主服务的，如果要实现MySQL的高可用，需要借助一些第三方工具实现：MMM、MHA、MGR<ul><li>对主从复制集群中的Master节点进行监控</li><li>自动的对Master进行迁移，通过VIP</li><li>重新配置集群中的其它slave对新的Master进行同步</li></ul></li><li>MMM (Master-Master replication managerfor Mysql)：Mysql主主复制管理器，可以对mysql集群进行监控和故障迁移<ul><li><img src="/static/IT/MySQL/MySQL-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84-4.png" alt=""></li><li>需要两个Master，同一时间只有一个Master对外提供服务，可以说是主备模式</li><li>通过一个VIP (虚拟IP) 的机制来保证集群的高可用<ul><li>在主节点上会通过一个VIP地址来提供数据读写服务</li><li>当出现故障时，VIP就会从原来的主节点漂移到其他节点，由其他节点提供服务</li></ul></li><li>优点<ul><li>提供了读写VIP的配置，使读写请求都可以达到高可用</li><li>工具包相对比较完善，不需要额外的开发脚本</li><li>完成故障转移之后可以对MySQL集群进行高可用监控</li></ul></li><li>缺点<ul><li>故障简单粗暴，容易丢失事务，建议采用半同步复制方式，减少失败的概率</li><li>目前MMM社区已经缺少维护</li><li>不支持基于GTID的复制</li></ul></li><li>适用场景<ul><li>读写都需要高可用的</li><li>基于日志点的复制方式</li></ul></li></ul></li><li>MHA (Master High Availability Manager and Tools for MySQL)：专门用于监控主库的状态，当发现master节点故障时，会提升其中拥有新数据的slave节点成为新的master节点，在此期间，MHA会通过其他从节点获取额外的信息来避免数据一致性方面的问题<ul><li>MHA还提供了mater节点的在线切换功能，即按需切换master-slave节点</li><li>MHA能够在30秒内实现故障切换，并能在故障切换过程中，最大程度的保证数据一致性</li><li><img src="/static/IT/MySQL/MySQL-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84-5.png" alt=""><ul><li>MHA是需要单独部署的，分为Manager节点和Node节点，两种节点<ul><li>Manager节点一般是单独部署的一台机器</li><li>Node节点一般是部署在每台MySQL机器上的</li><li>Node节点得通过解析各个MySQL的日志来进行一些操作</li></ul></li><li>Manager节点会通过探测集群里的Node节点去判断各个Node所在机器上的MySQL运行是否正常<ul><li>如果发现某个Master故障了，就直接把他的一个Slave提升为Master</li><li>然后让其他Slave都挂到新的Master上去，完全透明</li></ul></li></ul></li><li>优点<ul><li>MHA除了支持日志点的复制还支持GTID的方式</li><li>同MMM相比，MHA会尝试从旧的Master中恢复旧的二进制日志，只是未必每次都能成功。如果希望更少的数据丢失场景，建议使用MHA架构</li></ul></li><li>缺点<ul><li>MHA需要自行开发VIP转移脚本</li><li>MHA只监控Master的状态，未监控Slave的状态</li></ul></li></ul></li><li>MGR (MySQL Group Replication)：官方组复制机制，解决传统异步复制和半同步复制的数据一致性问题<ul><li>由若干个节点共同组成一个复制组，一个事务提交后，必须经过超过半数节点的决议并通过后，才可以提交<ul><li>MGR依靠分布式一致性协议(Paxos协议的一个变体)，实现了分布式下数据的最终一致性，提供了真正的数据高可用方案</li></ul></li><li><img src="/static/IT/MySQL/MySQL-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84-6.png" alt=""></li><li>优点<ul><li>高一致性<ul><li>基于原生复制及paxos协议的组复制技术，并以插件的方式提供，提供一致数据安全保证</li></ul></li><li>高容错性：只要不是大多数节点坏掉就可以继续工作<ul><li>有自动检测机制，当不同节点产生资源争用冲突时，按照先到者优先原则进行处理</li><li>并且内置了自动化脑裂防护机制</li></ul></li><li>高扩展性：节点的新增和移除都是自动的<ul><li>新节点加入后，会自动从其他节点上同步状态，直到新节点和其他节点保持一致</li><li>如果某节点被移除了，其他节点自动更新组信息，自动维护新的组信息</li></ul></li><li>高灵活性：有单主模式和多主模式（但官方推荐单主模式）<ul><li>单主模式下，会自动选主，所有更新操作都在主上进行<ul><li>MGR集群会选出primary节点负责写请求</li><li>primary节点与其它节点都可以进行读请求处理</li></ul></li><li>多主模式下，所有server都可以同时处理更新操作<ul><li>客户端可以随机向MySQL节点写入数据</li></ul></li></ul></li></ul></li><li>缺点<ul><li>仅支持InnoDB引擎，并且每张表一定要有一个主键，用于做write set的冲突检测</li><li>必须打开GTID特性，二进制日志格式必须设置为ROW，用于选主与write set；<ul><li>主从状态信息存于表中<ul><li><code>--master-info-repository=TABLE</code></li><li><code>--relay-log-info-repository=TABLE</code></li></ul></li><li><code>--log-slave-updates</code> 打开</li></ul></li><li>COMMIT可能会导致失败，类似于快照事务隔离级别的失败场景</li><li>目前一个MGR集群最多支持9个节点</li><li>不支持外键于save point特性，无法做全局间的约束检测与部分事务回滚</li></ul></li><li>适用场景<ul><li>对主从延迟比较敏感</li><li>希望对写服务提供高可用，又不想安装第三方软件</li><li>数据强一致的场景</li></ul></li></ul></li><li>基于云原生的思路，完全可以让MySQL服务与数据物理分离，MySQL无状态自然就可以高可用</li></ul><hr><h2 id="分库分表">分库分表</h2><ul><li>垂直分片： 按照业务来对数据进行分片，又称为纵向分片（专库专用）<ul><li>往往需要对架构和设计进行调整<ul><li>通常来讲，是来不及应对业务需求快速变化的</li></ul></li><li>无法真正的解决单点数据库的性能瓶颈<ul><li>可以缓解数据量和访问量带来的问题，但无法根治</li></ul></li></ul></li><li>水平分片：又称横向分片<ul><li>常用的分片策略有<ul><li>取余\取模：均匀存放数据；扩容非常麻烦</li><li>按照范围分片：比较好扩容；数据分布不够均匀</li><li>按照时间分片： 比较容易将热点数据区分出来</li><li>按照枚举值分片： 例如按地区分片</li><li>按照目标字段前缀指定进行分区：自定义业务规则分片</li><li>不需要数据迁移的取模分片扩容方案<ul><li>共享内存中维护一个分片表<ul><li>扩容后的数据路由直接查表</li><li>旧数据可以查表中之前的记录版本</li></ul></li><li>数据均衡：动态加入的节点尽量多写数据<ul><li>比如5个节点新增2个一共7个节点，可以按9取模，多的两个分配给新节点</li></ul></li></ul></li></ul></li><li>水平分片从理论上突破了单机数据量处理的瓶颈，并且扩展相对自由，是分库分表的标准解决方案</li></ul></li><li>一般来说，在系统设计阶段就应该根据业务耦合松紧来确定垂直分库<ul><li>在数据量及访问压力不是特别大的情况，首先考虑缓存、读写分离、索引技术等方案</li><li>若数据量极大，且持续增长，再考虑水平分库水平分表方案</li></ul></li><li>分库分表要解决哪些问题<ul><li>事务一致性问题</li><li>跨节点关联查询问题</li><li>跨节点分页、排序函数</li><li>主键避重问题</li><li>公共表处理<ul><li>参数表、数据字典表等都是数据量较小，变动少，而且属于高频联合查询的依赖表</li><li>这一类表一般就需要在每个数据库中都保存一份，并且所有对公共表的操作都要分发到所有的分库去执行</li></ul></li><li>运维工作量</li></ul></li><li>什么时候需要分库分表<ul><li>MySQL单表记录如果达到500W这个级别</li><li>单表容量达到2GB</li><li>一般对于用户数据这一类后期增长比较缓慢的数据，一般可以按照三年左右的业务量来预估使用人数，按照标准预设好分库分表的方案</li><li>对于业务数据这一类增长快速且稳定的数据，一般则需要按照预估量的两倍左右预设分库分表方案</li><li>由于分库分表的后期扩容是非常麻烦的，所以在进行分库分表时，尽量根据情况，多分一些表<ul><li>最好是计算一下数据增量，永远不用增加更多的表</li></ul></li><li>在设计分库分表方案时，要尽量兼顾业务场景和数据分布<ul><li>在支持业务场景的前提下，尽量保证数据能够分得更均匀</li></ul></li><li>尽量在分库分表的同时，再补充设计一个降级方案<ul><li>将数据转存一份到ES，ES可以实现更灵活的大数据聚合查询</li></ul></li></ul></li><li>常见的分库分表组件<ul><li>shardingsphere：Sharding-JDBC、Sharding-Proxy、Sharding-Sidecar</li><li>mycat</li><li>DBLE</li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;基础集群
+&lt;ul&gt;
+&lt;li&gt;MySQL主从同步原理&lt;/li&gt;
+&lt;li&gt;搭建主从集群
+&lt;ul&gt;
+&lt;li&gt;配置master主服务&lt;/li&gt;
+&lt;li&gt;配置slave从服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;部分同步&lt;/li&gt;
+&lt;li&gt;GTID同步集群&lt;/li&gt;</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-成本计算</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-cheng-ben-ji-suan/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-cheng-ben-ji-suan/</id>
+    <published>2024-09-11T00:43:00.000Z</published>
+    <updated>2024-09-11T00:43:55.362Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>一条查询语句的执行成本由下边这两个方面组成<ul><li>I/O成本：把数据或者索引加载到内存</li><li>CPU成本：读取以及检测记录是否满足对应的搜索条件、对结果集进行排序等操作</li></ul></li><li>基于索引统计数据的成本<ul><li>IN语句中的参数个数: <code>eq_range_index_dive_limit</code></li><li><code>show index from table</code> 为表中的每一个索引维护一份统计数据</li></ul></li><li>单表查询的成本<ol><li>根据搜索条件，找出所有可能使用的索引</li><li>计算全表扫描的代价</li><li>计算使用不同索引执行查询的代价<ol><li>范围区间数量</li><li>需要回表的记录数</li><li>是否有可能使用索引合并</li></ol></li><li>对比各种方案，找出成本最低的那一个</li></ol></li><li>连接查询的成本<ul><li>单次查询驱动表的成本</li><li>多次查询被驱动表的成本<ul><li>具体查询多少次取决于对驱动表查询的结果集中有多少条</li><li>对驱动表进行查询后得到的记录条数称之为驱动表的扇出（英文名：fanout）</li></ul></li><li>Condition&nbsp;filtering 就是这个猜的过程<ul><li>如果使用的是全表扫描的方式执行的单表查询，那么计算驱动表扇出时需要猜满足搜索条件的记录到底有多少条</li><li>如果使用的是索引执行的单表扫描，那么计算驱动表扇出的时候需要猜满足除使用到对应索引的搜索条件外的其他搜索条件的记录有多少条</li></ul></li><li>两表连接的成本分析</li><li>多表连接的成本分析<ul><li>optimizer_search_depth 如果连接表的个数小于该值，那么就继续穷举分析每一种连接顺序的成本，否则只对与 optimizer_search_depth 值相同数量的表进行穷举分析</li><li>optimizer_prune_level 启发式规则</li></ul></li></ul></li><li>调节成本常数 server_cost engine_cost</li><li>InnoDB中的统计数据<ul><li>统计数据存储方式 innodb_stats_persistent<ul><li>永久性的统计数据，这种统计数据存储在磁盘上<ul><li>innodb_table_stats 存储了关于表的统计数据，每条记录对应一个表的统计数据</li><li>innodb_index_stats 存储了关于索引的统计数据，每条记录对应一个索引的一个统计项</li></ul></li><li>非永久性的统计数据，这种统计数据存储在内存中</li></ul></li><li>更新统计数据<ul><li>innodb_stats_auto_recalc 自动重新计算统计数据，该功能默认是开启的</li><li>手动调用ANALYZE TABLE语句来更新统计信息，会立即重新计算统计数据</li><li>手动更新innodb_table_stats和innodb_index_stats表<ul><li><code>FLUSH TABLE table</code> 让MySQL查询优化器重新加载我们更改过的数据</li></ul></li></ul></li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;一条查询语句的执行成本由下边这两个方面组成
+&lt;ul&gt;
+&lt;li&gt;I/O成本：把数据或者索引加载到内存&lt;/li&gt;
+&lt;li&gt;CPU成本：读取以及检测记录是否满足对应的搜索条件、对结果集进行排序等操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;基于索引统计数据的成本
+&lt;</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-8新特性</title>
+    <link href="https://jxch.github.io/2024/09/11/architect/mysql/mysql-8-xin-te-xing/"/>
+    <id>https://jxch.github.io/2024/09/11/architect/mysql/mysql-8-xin-te-xing/</id>
+    <published>2024-09-11T00:41:00.000Z</published>
+    <updated>2024-09-11T00:42:38.179Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>账户与安全<ul><li>用户的创建与授权</li><li>密码管理</li><li>认证插件</li><li>角色管理</li></ul></li><li>索引<ul><li>隐藏索引：被隐藏的索引不会被优化器使用，但依然真实存在</li></ul></li><li>系统方面<ul><li>原子 ddl 操作：保证了 <code>drop table t1,t2</code> 时两个表的原子性</li><li>自增列持久化：将自增计数器的最大值写入 redo log，同时在每次检查点将其写入引擎私有的系统表</li><li>重构 SQL 分析器</li><li>新的系统字典表：所有的元数据都用 InnoDB 引擎进行存储</li><li>支持资源管理：支持创建和管理资源组，并允许将服务器运行的线程分配给特定的组</li></ul></li><li>更好支持文档型数据库和JSON<ul><li>聚合函数<ul><li>JSON_ARRAYAGG()，将多行数据组合成 json 数组</li><li>JSON_OBJECTAGG()，用于生成 json 对象</li></ul></li><li>JSON 实用函数<ul><li>JSON_PRETTY() 输出 json 数据的时候，格式化</li><li>JSON_STORAGE_SIZE() json 数据所占用的存储空间(单位：字节)</li><li>JSON_STORAGE_FREE() json 数据更新后所释放的空间(单位：字节)</li></ul></li><li>JSON 合并函数：废弃了 JSON_MERGE() 函数<ul><li>JSON_MERGE_PATCH()</li><li>JSON_MERGE_PRESERV()</li></ul></li><li>JSON 表函数： JSON_TABLE() 将 JSON 数据转换成关系表，可以将该函数的返回结果当做一个普通的临时表进行 sql 查询</li><li>支持 RANK(),、LAG()、NTILE() 等函数<ul><li>rank() 按照某字段的排序结果添加排名，但它是跳跃的、间断的排名<ul><li>例如两个并列第一名后，下一个是第三名，1、1、3、4</li></ul></li></ul></li></ul></li><li>正则表达式增强：REGEXP_LIKE()、EGEXP_INSTR()、REGEXP_REPLACE()、REGEXP_SUBSTR()</li><li>新增备份锁：允许在线备份期间的 DML，同时防止可能导致快照不一致的操作<ul><li>备份锁由 LOCK INSTANCE FOR BACKUP 和 UNLOCK INSTANCE 语法支持</li></ul></li><li>默认字符集 ：由 latin1 变为 utf8mb4</li><li>配置参数<ul><li>全局参数持久化：支持在线修改全局参数持久化，通过加上 PERSIST 关键字，可以将调整持久化到新的配置文件中，再次重启 db 还可以应用到最新的参数</li><li>支持会话级别动态调整部分参数：有利于提升语句性能<ul><li><code>select /*+ SET_VAR(sort_buffer_size = 16M) */ id from test order id ;</code></li><li><code>insert /*+ SET_VAR(foreign_key_checks=OFF) */ into test(name) values(1);</code></li></ul></li><li>默认参数的调整<ul><li>调整 back_log 的默认值，保持和 max_connections 一致，增强突发流量带来的连接处理容量</li><li>修改 event_scheduler 默认为ON，之前默认是关闭的</li><li>调整 max_allowed_packet 的默认值，从 4M 增加到 64M</li><li>调整 bin_log, log_slave_updates 默认值为 on</li><li>调整 expire_logs_days 的过期时间为 30 天，老版本是 7 天，生产环境时，检查该参数，防止 binlog 过多造成空间紧张</li><li>调整 innodb_undo_log_truncate 默认为 ON</li><li>调整 innodb_undo_tablespaces 默认值为 2</li><li>调整 innodb_max_dirty_pages_pct_lwm 默认值10</li><li>调整 innodb_max_dirty_pages_pct 默认值为90</li><li>新增 innodb_autoinc_lock_mode 默认值为 2</li></ul></li></ul></li><li>InnoDB<ul><li>innodb 增强<ul><li>新增 INFORMATION_SCHEMA.INNODB_CACHED_INDEXES，查看每个索引缓存在InnoDB 缓冲池中的索引页数</li><li>InnoDB 临时表都将在共享临时表空间 ibtmp1 中创建</li><li>对于SELECT … FOR SHARE 和SELECT … FOR UPDATE 语句，InnoDB 支持NOWAIT和SKIP LOCKED</li><li>innodb_undo_tablespaces 的最小值为 2，并且不再允许将设置为 0，最小值 2 确保回滚段始终在撤消表空间中创建，而不是在系统表空间中创建</li><li>支持 ALTER TABLESPACE … RENAME TO 语法</li><li>新增 innodb_dedicated_server，让 InnoDB 根据服务器上检测到的内存量自动配置innodb_buffer_pool_size，innodb_log_file_size，innodb_flush_method</li><li>新增 INFORMATION_SCHEMA.INNODB_TABLESPACES_BRIEF 视图</li><li>新增了动态配置项 innodb_deadlock_detect，用来禁用死锁检查，因为在高并发系统中，当大量线程等待同一个锁时，死锁检查会大大拖慢数据库</li><li>支持使用 innodb_directories 选项在服务器脱机时将表空间文件移动或恢复到新位置</li></ul></li><li>InnoDB 性能提升<ul><li>并发<ul><li>废除 buffer pool mutex，将原来一个 mutex 拆分成多个，提高并发</li><li>拆分 LOCK_thd_list 和 LOCK_thd_remove 这两个 mutex，大约可提高线程链接效率5%</li></ul></li><li>行缓存<ul><li>优化器可以估算将要读取的行数，因此可以提供给存储引擎一个合适大小的row buffer 来存储需要的数据。大批量的连续数据扫描的性能将受益于更大的 record buffer</li></ul></li><li>改进扫描性能：改进 InnoDB 范围查询的性能，可提升全表查询和范围查询 5-20%的性能</li><li>改进成本模型<ul><li>可以估算缓存区中的有多少表和索引，这可以让优化器选择访问方式时知道数据是否可以存储在内存中还是必须存储到磁盘上</li></ul></li></ul></li></ul></li><li>废弃特性<ul><li>移除了一些功能，例如 query cache</li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;账户与安全
+&lt;ul&gt;
+&lt;li&gt;用户的创建与授权&lt;/li&gt;
+&lt;li&gt;密码管理&lt;/li&gt;
+&lt;li&gt;认证插件&lt;/li&gt;
+&lt;li&gt;角色管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;索引
+&lt;ul&gt;
+&lt;li&gt;隐藏索引：被隐藏的索引不会被优化器使用，但依然真实存在&lt;/li&gt;</summary>
+      
+    
+    
+    
+    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MySQL" scheme="https://jxch.github.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis-7.0新特性</title>
@@ -174,479 +648,6 @@
     
     
     <category term="Redis" scheme="https://jxch.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis-HyperLogLog&amp;事务&amp;Pipeline</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/redis/redis-hyperloglog-shi-wu-pipeline/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/redis/redis-hyperloglog-shi-wu-pipeline/</id>
-    <published>2024-09-10T07:48:00.000Z</published>
-    <updated>2024-09-10T07:48:53.998Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>HyperLogLog 操作命令<ul><li><code>pfadd key element [element …]</code><ul><li>pfadd 用于向HyperLogLog 添加元素,如果添加成功返回1</li></ul></li><li><code>pfcount key [key …]</code><ul><li>pfcount 用于计算一个或多个 HyperLogLog 的独立总数</li><li>统计结果会出现误差（0.81%的失误率）</li></ul></li><li><code>pfmerge destkey sourcekey [sourcekey ... ]</code><ul><li>pfmerge 可以求出多个HyperLogLog 的并集并赋值给destkey</li></ul></li></ul></li><li>HyperLogLog 数学原理：基于概率论中伯努利试验并结合了极大似然估算方法，并做了分桶优化</li><li>HyperLogLog 实现<ul><li>HyperLogLog 占据12KB (<code>占用内存为=16834 * 6 / 8 / 1024 = 12K</code>) 的大小<ul><li>共设有 16384 个桶，每个桶有 6 位，每个桶可以表达的最大数字是：<code>25+24+...+1 = 63</code> ，二进制为：<code>111 111</code></li></ul></li><li>对于命令：<code>pfadd key value</code><ul><li>在存入时，value 会被 hash 成64 位，即64 bit 的比特字符串，前14 位用来分桶（分了 16384 个桶），剩下50 位用来记录第一个1 出现的位置</li><li>分桶：假设一个字符串的前 14 位是：00 0000 0000 0010  ，其十进制值为 2。那么 value 对应转化后的值放到编号为 2 的桶</li><li>value：剩下的50位找第一个1出现的位置，转成二进制存入找到的桶中<ul><li>不同的 value，会被设置到不同桶中去</li><li>如果出现了在同一个桶的，即前 14 位值是一样的，但是后面出现 1 的位置不一样<ul><li>那么比较原来的index 是否比新index 大。是，则替换。否，则不变</li></ul></li></ul></li></ul></li><li>最终，一个 key 所对应的 16384 个桶都设置了很多的 value ，每个桶有一个 k_max<ul><li>调用 pfcount 时，按照调和平均数进行估算，同时加以偏差修正，便可以计算出 key 的设置了多少次 value，也就是统计值</li><li>同时，在具体的算法实现上，HLL 还有一个分阶段偏差修正算法</li></ul></li></ul></li><li>Redis 只提供了弱事务，不提供回滚（能不用尽量不用）<ul><li>命令本身有错，会回滚</li><li>但是命令没错，执行报错，不会回滚</li><li>watch 实现乐观锁机制</li></ul></li><li>Redis 事务和pipline的区别<ul><li>pipline是客户端行为，非原子，降低网络开销，某条命令失败后不影响后续命令的执行</li><li>事务是服务端行为<ul><li>用户执行MULTI 命令时，服务器会将对应这个用户的客户端对象设置为一个特殊的状态，在这个状态下后续用户执行的查询命令不会被真的执行，而是被服务器缓存起来，直到用户执行EXEC 命令为止，服务器会将这个用户对应的客户端对象中缓存的命令按照提交的顺序依次执行</li></ul></li></ul></li><li>尽量使用pipline，尽量不用事务，可以用LUA保证事务原子性<ul><li><code>EVAL script numkeys key [key ...] arg [arg ...]</code></li></ul></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;HyperLogLog 操作命令
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;pfadd key element [element …]&lt;/code&gt;
-&lt;ul&gt;
-&lt;li&gt;pfadd 用于向HyperLogLog 添加元素,如果添加成功返回1&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Redis" scheme="https://jxch.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis-Cluster集群</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/redis/redis-cluster-ji-qun/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/redis/redis-cluster-ji-qun/</id>
-    <published>2024-09-10T07:46:00.000Z</published>
-    <updated>2024-09-10T07:47:17.163Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>Cluster高可用集群</li><li>槽位&amp;选举&amp;脑裂</li><li>集群完整性&amp;奇数节点&amp;批量操作</li><li>通信</li></ul><hr><h2 id="Cluster-高可用集群">Cluster 高可用集群</h2><ul><li>配置文件<ul><li>cluster‐enabled yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 开启集群模式</li><li>cluster‐config‐file nodes.conf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 集群节点信息文件，会自动生成</li><li>cluster‐node‐timeout 10000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp; 超过1s则认为故障（防止网络抖动）</li><li>requirepass jxch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 设置Redis密码</li><li>masterauth jxch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 设置Redis集群密码，与上面保持一致</li></ul></li><li>启动所有节点<ul><li>防火墙设置：避免gossip端口号通信问题（16379，默认端口+10000）</li></ul></li><li>创建集群<ul><li>redis‐cli ‐a jxch ‐‐cluster create ‐‐cluster‐replicas 1 IP:PORT …</li><li>‐‐cluster‐replicas 1 代表为每个主节点设置一个从节点</li></ul></li><li>连接任意节点<ul><li>redis‐cli ‐a jxch ‐c ‐h 192.168.0.61 ‐p 800*<ul><li>-a 服务器密码；-c 集群模式</li></ul></li><li>cluster info</li><li>cluster nodes</li></ul></li><li>关闭集群需要逐个关闭<ul><li>redis‐cli ‐a jxch ‐c ‐h 192.168.0.60 ‐p 800* shutdown</li><li>集群关闭后只需逐个重启Redis服务即可重启集群，无需重复创建集群<ul><li>各节点存有自动生成的集群元数据文件</li></ul></li></ul></li><li>扩容：add-node<ul><li>先改好配置文件，启动主从节点</li><li>添加主节点：第一个是新增节点，第二个是集群中任意已存在的节点<ul><li>redis‐cli ‐a jxch ‐‐cluster add‐node 192.168.0.61:8007 192.168.0.61:8001</li></ul></li><li>为新增的主节点分配hash槽：使用集群中任意其他主节点分配<ul><li>redis‐cli ‐a jxch ‐‐cluster reshard 192.168.0.61:8001</li></ul></li><li>添加从节点：第一个是新增节点，第二个是集群中任意已存在的节点<ul><li>redis‐cli ‐a jxch ‐‐cluster add‐node 192.168.0.61:8008 192.168.0.61:8001</li><li>各主节点平均分配，数据也同时迁移了</li></ul></li><li>为从节点分配主节点<ul><li>cluster nodes</li><li>cluster replicate 主节点ID</li></ul></li></ul></li><li>缩容：del‐node<ul><li>删除从节点<ul><li>redis‐cli ‐a jxch ‐‐cluster del‐node 192.168.0.61:8008 从节点ID</li></ul></li><li>转移主节点hash槽（同时迁移数据）<ul><li>redis‐cli ‐a jxch ‐‐cluster reshard 192.168.0.61:8007</li></ul></li><li>只能迁移到一个节点上，无法平均分配</li><li>删除主节点<ul><li>redis‐cli ‐a jxch ‐‐cluster del‐node 192.168.0.61:8007 主节点ID</li></ul></li></ul></li><li><img src="/static/IT/Redis/Redis-Cluster%E9%9B%86%E7%BE%A4-1.png" alt=""></li></ul><hr><h2 id="槽位-选举-脑裂">槽位&amp;选举&amp;脑裂</h2><ul><li>槽位<ul><li>Redis Cluster 将所有数据划分为 16384 个 slots(槽位)，每个节点负责其中一部分槽位。槽位的信息存储于每个节点中。客户端连接集群时也会得到一份集群的槽位配置信息并将其缓存在客户端本地。16384个槽位（2的14次方），具有更好的质数性质，减少哈希冲突的概率，不选65535是为了防止维持健康状态大量发送ping/pong导致网络拥堵</li><li>槽位定位算法<ul><li>HASH_SLOT = CRC16(key) mod 16384</li></ul></li><li>跳转重定位<ul><li>当客户端向一个错误的节点发出了指令，该节点会发现指令的 key 所在的槽位并不归自己管理，这时它会向客户端发送一个特殊的跳转指令携带目标操作的节点地址，告诉客户端去连这个节点去获取数据</li><li>客户端收到指令后除了跳转到正确的节点上去操作，还会同步更新纠正本地的槽位映射表缓存，后续所有 key 将使用新的槽位映射表</li></ul></li></ul></li><li>选举<ul><li>当slave发现自己的master变为FAIL状态时，便尝试进行Failover，以期成为新master。由于挂掉的master可能会有多个slave，从而存在多个slave竞争成为master节点的过程<ul><li>slave发现自己的master变为FAIL</li><li>将自己记录的集群currentEpoch加1，并广播FAILOVER_AUTH_REQUEST 信息</li><li>其他节点收到该信息，只有master响应，判断请求者的合法性，并发送FAILOVER_AUTH_ACK，对每个epoch只发送一次ack（只返回最先接受到的那个）</li><li>尝试failover的slave收集master返回的FAILOVER_AUTH_ACK</li><li>slave收到超过半数master的ack后变成新Master（所以至少需要三个主节点，如果只有两个，当其中一个挂了，只剩一个主节点是不能选举成功的）</li><li>slave广播Pong消息通知其他集群节点</li></ul></li><li>延时机制<ul><li>DELAY = 500ms + random(0 ~ 500ms) + SLAVE_RANK * 1000ms<ul><li>SLAVE_RANK表示此slave已经从master复制数据的总量的rank。Rank越小代表已复制的数据越新。这种方式下，持有最新数据的slave将会首先发起选举（理论上）</li></ul></li><li>一定的延迟确保我们等待FAIL状态在集群中传播，slave如果立即尝试选举，其它masters或许尚未意识到FAIL状态，可能会拒绝投票</li></ul></li></ul></li><li>脑裂<ul><li>网络问题导致集群其他节点无法连接某一主节点，但客户端可以连接此主节点</li><li>redis集群没有过半机制会有脑裂问题，导致多个主节点对外提供写服务，一旦网络恢复，会将其中一个主节点变为从节点，这时会有大量数据丢失</li><li>min‐replicas‐to‐write 1<ul><li>最少同步一台salve，再返回写成功</li><li>影响集群的可用性，如果集群内没有salve了，就无法对外提供服务了</li></ul></li></ul></li></ul><hr><h2 id="集群完整性-奇数节点-批量操作">集群完整性&amp;奇数节点&amp;批量操作</h2><ul><li>集群完整性<ul><li>cluster-require-full-coverage no</li><li>表示当负责一个插槽的主库下线且没有相应的从库进行故障恢复时，集群仍然可用</li></ul></li><li>奇数节点<ul><li>因为新master的选举需要大于半数的集群master节点同意才能选举成功，如果只有两个master节点，当其中一个挂了，是达不到选举新master的条件的</li><li>奇数个master节点可以在满足选举该条件的基础上节省一个节点，比如三个master节点和四个master节点的集群相比，大家如果都挂了一个master节点都能选举新master节点，如果都挂了两个master节点都没法选举新master节点了，所以奇数的master节点更多的是从节省机器资源角度出发说的</li></ul></li><li>批量操作：集群模式只支持所有key落在同一slot<ul><li>mset {user1}:1:name zhuge {user1}:1:age 18</li><li>在集群模式下只会将{}内的值作为key计算slot</li></ul></li></ul><hr><h2 id="通信">通信</h2><ul><li>网络抖动：cluster‐node‐timeout 10000<ul><li>避免网络抖动会导致主从频繁切换 （数据的重新复制）</li></ul></li><li>集群节点间的通信机制：gossip协议（ping，pong，meet，fail）<ul><li>meet：某个节点发送meet给新加入的节点，让新节点加入集群中，然后新节点就会开始与其他节点进行通信；</li><li>ping：每个节点都会频繁给其他节点发送ping，其中包含自己的状态还有自己维护的集群元数据，互相通过ping交换元数据 (类似自己感知到的集群节点增加和移除，hash slot信息等)</li><li>pong: 对ping和meet消息的返回，包含自己的状态和其他信息，也可以用于信息广播和更新</li><li>fail: 某个节点判断另一个节点fail之后，就发送fail给其他节点，通知其他节点，指定的节点宕机了</li></ul></li><li>每个节点每隔一段时间都会往另外几个节点发送ping消息，同时其他几点接收到ping消息之后返回pong消息</li><li>优点：元数据的更新比较分散，不是集中在一个地方，更新请求会陆陆续续，打到所有节点上去更新，有一定的延时，降低了压力</li><li>缺点：元数据更新有延时可能导致集群的一些操作会有一些滞后</li><li>端口：自己提供服务的端口号+10000</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;Cluster高可用集群&lt;/li&gt;
-&lt;li&gt;槽位&amp;amp;选举&amp;amp;脑裂&lt;/li&gt;
-&lt;li&gt;集群完整性&amp;amp;奇数节点&amp;amp;批量操作&lt;/li&gt;
-&lt;li&gt;通信&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&quot;Cluster-高可用集群&quot;&gt;Cluster </summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Redis" scheme="https://jxch.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis-主从&amp;哨兵</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/redis/redis-zhu-cong-shao-bing/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/redis/redis-zhu-cong-shao-bing/</id>
-    <published>2024-09-10T07:42:00.000Z</published>
-    <updated>2024-09-10T07:44:56.061Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>主从架构</li><li>哨兵</li></ul><hr><h2 id="主从架构">主从架构</h2><ul><li>从节点配置文件<ul><li>replicaof 192.168.0.60 6379&nbsp;&nbsp;&nbsp; 从主节点IP-Port复制数据</li><li>replica‐read‐only yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 从节点只读</li></ul></li><li>全量复制：bgsave，如果master收到了多个slave并发连接请求，它只会进行一次持久化<ul><li><img src="/static/IT/Redis/Redis-%E4%B8%BB%E4%BB%8E-%E5%93%A8%E5%85%B5-1.png" alt=""></li></ul></li><li>部分复制（断点续传，从节点断线重连）：offset<ul><li><img src="/static/IT/Redis/Redis-%E4%B8%BB%E4%BB%8E-%E5%93%A8%E5%85%B5-2.png" alt=""></li></ul></li><li>info命令查看主从节点信息</li><li>主从复制风暴：多个从节点同时复制主节点导致主节点压力过大<ul><li><img src="/static/IT/Redis/Redis-%E4%B8%BB%E4%BB%8E-%E5%93%A8%E5%85%B5-3.png" alt=""></li></ul></li></ul><hr><h2 id="哨兵">哨兵</h2><ul><li>哨兵（sentinel）：不提供读写服务，主要用来监控redis实例节点</li><li>配置文件<ul><li>sentinel monitor mymaster 192.168.0.60 6379 2<ul><li>sentinel总数/2 + 1 ，指明当有多少个sentinel认为一个master失效时，master才算真正失效，这里是：3/2 + 1 = 2</li><li>mymaster这个名字随便取，客户端访问时会用到</li></ul></li><li>sentinel集群都启动完毕后，会将哨兵集群的元数据信息写入所有sentinel的配置文件里去（追加在文件的最下面）</li><li>当redis主节点如果挂了，哨兵集群会重新选举出新的redis主节点，同时会修改所有sentinel节点配置文件的集群元数据信息，同时还会修改sentinel配置文件中的 mymaster</li><li>当挂了的redis实例再次启动时，哨兵集群就会根据集群元数据信息将它作为从节点加入集群</li></ul></li><li>Leader选举<ul><li>当一个master服务器被某sentinel视为下线状态后，该sentinel会与其他sentinel协商选出sentinel的leader进行故障转移工作</li><li>每个发现master服务器进入下线的sentinel都可以要求其他sentinel选自己为sentinel的leader，选举是先到先得</li><li>同时每个sentinel每次选举都会自增配置纪元（选举周期），每个纪元中只会选择一个sentinel的leader</li><li>如果所有超过一半的sentinel选举某sentinel作为leader。之后该sentinel进行故障转移操作，从存活的slave中选举出新的master，这个选举过程跟集群的master选举很类似（超过半数选举）</li><li>哨兵集群即使只有一个哨兵节点，redis的主从也能正常运行以及选举master，如果master挂了，那唯一的那个哨兵节点就是哨兵leader了，可以正常选举新master。不过为了高可用一般都推荐至少部署三个哨兵节点（奇数）</li><li>为什么推荐奇数个哨兵节点原理跟集群奇数个master节点类似</li></ul></li><li>缺点</li><li>主从切换时会发生访问瞬断</li><li>无法水平扩容<ul><li>只有一个提供服务的主节点</li><li>主节点内存不易过大，否则持久化会消耗大量性能</li><li><img src="/static/IT/Redis/Redis-%E4%B8%BB%E4%BB%8E-%E5%93%A8%E5%85%B5-4.png" alt=""></li></ul></li><li>client端第一次从哨兵找出redis的主节点，后续就直接访问redis的主节点，不会每次都通过sentinel代理访问redis的主节点，当redis的主节点发生变化，哨兵会第一时间感知到，并且将新的redis主节点通知给client端（这里面redis的client端一般都实现了订阅功能，订阅sentinel发布的节点变动消息）</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;主从架构&lt;/li&gt;
-&lt;li&gt;哨兵&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&quot;主从架构&quot;&gt;主从架构&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;从节点配置文件
-&lt;ul&gt;
-&lt;li&gt;replicaof 192.168.0.60 6379&amp;nbsp;&amp;nbsp;&amp;nbsp; 从主</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Redis" scheme="https://jxch.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis-开发规范与性能优化</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/redis/redis-kai-fa-gui-fan-yu-xing-neng-you-hua/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/redis/redis-kai-fa-gui-fan-yu-xing-neng-you-hua/</id>
-    <published>2024-09-10T07:41:00.000Z</published>
-    <updated>2024-09-10T07:41:31.233Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>键值设计</li><li>命令使用</li><li>客户端使用</li><li>系统内核参数优化</li></ul><hr><h2 id="键值设计">键值设计</h2><ul><li>key名设计<ul><li>可读性和可管理性</li><li>简洁性</li><li>不要包含特殊字符</li></ul></li><li>value设计：拒绝 bigkey (防止网卡流量、慢查询)<ul><li>字符串类型：它的big体现在单个value值很大，一般认为超过10KB就是bigkey</li><li>非字符串类型：哈希、列表、集合、有序集合，它们的big体现在元素个数太多</li><li>string类型控制在10KB以内，hash、list、set、zset元素个数不要超过5000</li></ul></li><li>非字符串的bigkey，不要使用del删除，使用hscan、sscan、zscan方式渐进式删除<ul><li>防止bigkey过期时间自动删除问题</li></ul></li><li>bigkey的危害<ul><li>导致redis阻塞</li><li>网络拥塞</li><li>过期删除：阻塞Redis<ul><li>使用过期异步删除 <code>lazyfree-lazy-expire&nbsp;yes</code></li></ul></li></ul></li><li>bigkey的产生：程序设计不当&amp;数据规模预料不清楚<ul><li>社交类：粉丝列表，如果某些明星或者大v不精心设计下，必是bigkey</li><li>统计类：例如按天存储某项功能或者网站的用户集合，除非没几个人用，否则必是bigkey</li><li>缓存类：将数据从数据库load出来序列化放到Redis里，这个方式非常常用，但有两个地方需要注意<ul><li>是不是有必要把所有字段都缓存</li><li>有没有相关关联的数据</li></ul></li></ul></li><li>如何优化bigkey<ul><li>拆<ul><li>big&nbsp;list：&nbsp;list1、list2、…listN</li><li>big&nbsp;hash：数据分段存储</li><li>如果bigkey不可避免，也要思考一下要不要每次把所有元素都取出来，删除也是一样</li></ul></li><li>选择适合的数据类型</li><li>控制key的生命周期，redis不是垃圾桶<ul><li>建议使用expire设置过期时间（打散过期时间）</li></ul></li></ul></li></ul><hr><h2 id="命令使用">命令使用</h2><ul><li>O(N)命令关注N的数量：可以使用hscan、sscan、zscan代替</li><li>禁用命令（rename）：keys、flushall、flushdb，使用scan的方式渐进式处理</li><li>合理使用select：redis的多数据库较弱，使用数字进行区分，很多客户端支持较差，同时多业务用多数据库实际还是单线程处理，会有干扰</li><li>使用批量操作提高效率：控制一次批量操作的元素个数 (例如500以内，实际也和元素字节数有关)<ul><li>原生命令：例如mget、mset</li><li>非原生命令：可以使用pipeline提高效率</li></ul></li><li>Redis事务功能较弱，不建议过多使用，可以用lua替代：只提供了弱事务，不提供回滚（能不用尽量不用）<ul><li>命令本身有错，会回滚</li><li>命令没错，执行报错，不会回滚</li><li>watch 实现乐观锁机制</li></ul></li><li>事务和pipline的区别<ul><li>pipline是客户端行为，非原子，降低网络开销，某条命令失败后不影响后续命令的执行</li><li>事务是服务端行为</li></ul></li><li>尽量使用pipline，尽量不用事务，可以用LUA保证事务原子性<ul><li><code>EVAL script numkeys key [key ...] arg [arg ...]</code></li></ul></li></ul><hr><h2 id="客户端使用">客户端使用</h2><ul><li>避免多个应用使用一个Redis实例</li><li>使用带有连接池的客户端（JedisPool#getResource），可以有效控制连接，同时提高效率<ul><li>maxTotal：最大连接数<ul><li>业务希望Redis并发量</li><li>客户端执行命令时间</li><li>Redis资源：例如&nbsp;nodes(例如应用个数)&nbsp;*&nbsp;maxTotal&nbsp;是不能超过redis的最大连接数maxclients</li><li>资源开销：例如虽然希望控制空闲连接 (连接池此刻可马上使用的连接)，但是不希望因为连接池的频繁释放创建连接造成不必靠开销</li></ul></li><li>maxIdle：maxIdle实际上才是业务需要的最大连接数，maxTotal是为了给出余量，所以maxIdle不要设置过小，否则会有new&nbsp;Jedis(新连接)开销<ul><li>连接池的最佳性能是maxTotal&nbsp;=&nbsp;maxIdle，这样就避免连接池伸缩带来的性能干扰</li><li>并发量不大或者maxTotal设置过高，会导致不必要的连接资源浪费</li><li>maxIdle可以设置为业务期望QPS计算出来的理论连接数，maxTotal可以再放大一倍</li></ul></li><li>minIdle（最小空闲连接数），与其说是最小空闲连接数，不如说是"至少需要保持的空闲连接数"，在使用连接的过程中，如果连接数超过了minIdle，那么继续建立连接，如果超过了maxIdle，当超过的连接执行完业务后会慢慢被移出连接池释放掉<ul><li>如果系统启动完马上就会有很多的请求过来，那么可以给redis连接池做预热，比如快速的创建一些redis连接，执行简单命令，类似ping()，快速的将连接池里的空闲连接提升到minIdle的数量</li></ul></li></ul></li><li>高并发下建议客户端添加熔断功能 (例如sentinel、hystrix)</li><li>设置合理的密码，如有必要可以使用SSL加密访问</li><li>Redis对于过期键有三种清除策略<ul><li>被动删除：当读/写一个已经过期的key时，会触发惰性删除策略，直接删除掉这个过期 key</li><li>主动删除：由于惰性删除策略无法保证冷数据被及时删掉，所以Redis会定期主动淘汰一批已过期的key<ul><li>针对设置了过期时间的key做处理<ul><li>volatile-ttl：在筛选时，会针对设置了过期时间的键值对，根据过期时间的先后进行删除，越早过期的越先被删除</li><li>volatile-random：就像它的名称一样，在设置了过期时间的键值对中，进行随机删除</li><li>volatile-lru（推荐）：会使用&nbsp;LRU&nbsp;算法筛选设置了过期时间的键值对删除</li><li>volatile-lfu：会使用&nbsp;LFU&nbsp;算法筛选设置了过期时间的键值对删除</li></ul></li><li>针对所有的key做处理<ul><li>allkeys-random：从所有键值对中随机选择并删除数据</li><li>allkeys-lru：使用&nbsp;LRU&nbsp;算法在所有数据中进行筛选删除</li><li>allkeys-lfu：使用&nbsp;LFU&nbsp;算法在所有数据中进行筛选删除</li></ul></li><li>不处理<ul><li>noeviction（默认）：不会剔除任何数据，拒绝所有写入操作并返回客户端错误信息"(error)&nbsp;OOM&nbsp;command&nbsp;not&nbsp;allowed&nbsp;when&nbsp;used&nbsp;memory"，此时Redis只响应读操作</li></ul></li><li>淘汰算法<ul><li>LRU&nbsp;算法（Least&nbsp;Recently&nbsp;Used，最近最少使用）：淘汰很久没被访问过的数据，以最近一次访问时间作为参考</li><li>LFU&nbsp;算法（Least&nbsp;Frequently&nbsp;Used，最不经常使用）：淘汰最近一段时间被访问次数最少的数据，以次数作为参考</li><li>当存在热点数据时，LRU的效率很好，但偶发性的、周期性的批量操作会导致LRU命中率急剧下降，缓存污染情况比较严重。这时使用LFU可能更好点</li><li>如果不设置最大内存，当&nbsp;Redis&nbsp;内存超出物理内存限制时，内存的数据会开始和磁盘产生频繁的交换&nbsp;(swap)，会让&nbsp;Redis&nbsp;的性能急剧下降</li><li>当Redis运行在主从模式时，只有主结点才会执行过期删除策略，然后把删除操作”del&nbsp;key”同步到从结点删除数据</li></ul></li></ul></li><li>当前已用内存超过maxmemory限定时，触发主动清理策略</li></ul></li></ul><hr><h2 id="系统内核参数优化">系统内核参数优化</h2><ul><li><code>vm.swapiness</code><ul><li>在Linux中，并不是要等到所有物理内存都使用完才会使用到swap，系统参数swppiness会决定操作系统使用swap的倾向程度</li><li>swappiness的取值范围是0~100，swappiness的值越大，说明操作系统可能使用swap的概率越高</li><li>一般需要保证redis不会被kill掉<ul><li>linux内核版本&lt;3.5，那么swapiness设置为0，这样系统宁愿swap也不会oom&nbsp;killer</li><li>linux内核版本&gt;=3.5，那么swapiness设置为1，这样系统宁愿swap也不会oom&nbsp;killer</li></ul></li><li>OOM&nbsp;killer&nbsp;机制是指Linux操作系统发现可用内存不足时，强制杀死一些用户进程（非内核进程），来保证系统有足够的可用内存进行分配</li><li>配置<ul><li><code>cat&nbsp;/proc/version&nbsp;#查看linux内核版本</code></li><li><code>echo&nbsp;1&nbsp;&gt;&nbsp;/proc/sys/vm/swappiness</code></li><li><code>echo&nbsp;vm.swapiness=1&nbsp;&gt;&gt;&nbsp;/etc/sysctl.conf</code></li></ul></li></ul></li><li><code>vm.overcommit_memory</code> (默认0)<ul><li>0：表示内核将检查是否有足够的可用物理内存 (实际不一定用满) 供应用进程使用<ul><li>如果有足够的可用物理内存，内存申请允许</li><li>否则，内存申请失败，并把错误返回给应用进程</li></ul></li><li>1：表示内核允许分配所有的物理内存，而不管当前的内存状态如何</li><li>如果是0的话，可能导致类似fork等操作执行失败，申请不到足够的内存空间<ul><li>Redis建议把这个值设置为1，就是为了让fork操作能够在低内存下也执行成功</li></ul></li></ul></li><li>合理设置文件句柄数<ul><li>操作系统进程试图打开一个文件(或者叫句柄)，但是现在进程打开的句柄数已经达到了上限，继续打开会报错：“Too&nbsp;many&nbsp;open&nbsp;files”</li><li><code>ulimit&nbsp;‐a</code> 查看系统文件句柄数，看open&nbsp;files那项</li><li><code>ulimit&nbsp;‐n&nbsp;65535</code> 设置系统文件句柄数</li></ul></li><li>慢查询日志：slowlog</li></ul><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">config get slow*  <span class="token comment">#查询有关慢日志的配置信息</span>config <span class="token builtin class-name">set</span> slowlog‐log‐slower‐than <span class="token number">20000</span> <span class="token comment">#设置慢日志使时间阈值,单位微秒，此处为20毫秒，即超过20毫秒的操作都会记录下来，生产环境建议设置1000，也就是1ms，这样理论上redis并发至少达到1000，如果要求单机并发达到1万以上，这个值可以设置为100</span>config <span class="token builtin class-name">set</span> slowlog‐max‐len <span class="token number">1024</span> <span class="token comment">#设置慢日志记录保存数量，如果保存数量已满，会删除最早的记录，最新的记录追加进来。记录慢查询日志时Redis会对长命令做截断操作，并不会占用大量内存，建议设置稍大些，防止丢失日志</span>config rewrite  <span class="token comment">#将服务器当前所使用的配置保存到 redis.conf</span>slowlog len     <span class="token comment">#获取慢查询日志列表的当前长度</span>slowlog get <span class="token number">5</span>   <span class="token comment">#获取最新的5条慢查询日志。慢查询日志由四个属性组成：标识ID，发生时间戳，命令耗时，执行命令和参数</span>slowlog reset   <span class="token comment">#重置慢查询日志</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;键值设计&lt;/li&gt;
-&lt;li&gt;命令使用&lt;/li&gt;
-&lt;li&gt;客户端使用&lt;/li&gt;
-&lt;li&gt;系统内核参数优化&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&quot;键值设计&quot;&gt;键值设计&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;key名设计
-&lt;ul&gt;
-&lt;li&gt;可读性和可管理性&lt;/li&gt;
-</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Redis" scheme="https://jxch.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis-核心数据结构&amp;IO多路复用</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/redis/redis-he-xin-shu-ju-jie-gou-io-duo-lu-fu-yong/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/redis/redis-he-xin-shu-ju-jie-gou-io-duo-lu-fu-yong/</id>
-    <published>2024-09-10T07:37:00.000Z</published>
-    <updated>2024-09-10T07:39:21.817Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>五种数据结构：string hash list set zset<ul><li>应用场景</li></ul></li><li>RedisTemplate 默认采用的是JDK的序列化，直接看的话key会有乱码，建议用 StringRedisTemplate</li><li>IO多路复用</li><li>SCAN</li></ul><pre class="line-numbers language-java" data-language="java"><code class="language-java">redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">//操作字符串</span>redisTemplate<span class="token punctuation">.</span><span class="token function">opsForHash</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">//操作hash</span>redisTemplate<span class="token punctuation">.</span><span class="token function">opsForList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">//操作list</span>redisTemplate<span class="token punctuation">.</span><span class="token function">opsForSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">//操作set</span>redisTemplate<span class="token punctuation">.</span><span class="token function">opsForZSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">//操作有序set</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><hr><h2 id="数据结构">数据结构</h2><table><thead><tr><th>命令</th><th>参数</th><th>含义</th><th>代码</th></tr></thead><tbody><tr><td><em><strong>STRING</strong></em></td><td><strong>==STRING==</strong></td><td></td><td>RedisTemplate rt</td></tr><tr><td>SET</td><td>key&nbsp; value</td><td>存入字符串键值对</td><td>rt.opsForValue().set(“key”,“value”)</td></tr><tr><td>MSET</td><td>key&nbsp; value &nbsp;&nbsp;[key value …]</td><td>批量存入字符串键值对</td><td></td></tr><tr><td>SETNX</td><td>key&nbsp; value</td><td>存入一个不存在的字符串键值对</td><td></td></tr><tr><td>GET</td><td>key</td><td>获取字符串键值</td><td>rt.opsForValue().get(“key”)</td></tr><tr><td>MGET</td><td>key&nbsp; [key …]</td><td>批量获取字符串键值</td><td></td></tr><tr><td>DEL</td><td>key&nbsp; [key …]</td><td>删除一个键</td><td>rt.delete(“key”)</td></tr><tr><td>EXPIRE</td><td>key&nbsp; seconds</td><td>设置一个键的过期时间(秒)</td><td></td></tr><tr><td>INCR</td><td>key</td><td>原子 +1</td><td></td></tr><tr><td>DECR</td><td>key</td><td>原子 -1</td><td></td></tr><tr><td>INCRBY</td><td>key&nbsp; num</td><td>原子 +num</td><td></td></tr><tr><td>DECRBY</td><td>key&nbsp; num</td><td>原子 -num</td><td></td></tr><tr><td>STRLEN</td><td>key</td><td></td><td>rt.opsForValue().size(“key”)</td></tr><tr><td>GETSET</td><td>key value</td><td></td><td>rt.opsForValue().getAndSet(“key”,“value”)</td></tr><tr><td>GETRANGE</td><td>key start end</td><td></td><td>rt.opsForValue().get(“key”,start,end)</td></tr><tr><td>APPEND</td><td>key value</td><td></td><td>rt.opsForValue().append(“key”,“value”)</td></tr><tr><td><em><strong>HASH</strong></em></td><td><strong>==HASH==</strong></td><td></td><td></td></tr><tr><td>HSET</td><td>key&nbsp; field&nbsp; value</td><td>存入一个哈希表key的键值</td><td>rt.opsForHash().put(“key”,“field”,“value”)</td></tr><tr><td>HSETNX</td><td>key&nbsp; field&nbsp; value</td><td>存入一个不存在的哈希表key的键值</td><td>rt.opsForHash().putIfAbsent(“key”,“field”,“value”)</td></tr><tr><td>HMSET</td><td>key&nbsp; field&nbsp; value [field value …]</td><td>在一个哈希表key中存入多个键值对</td><td>rt.opsForHash().putAll(“key”,map)</td></tr><tr><td>HGET</td><td>key&nbsp; field</td><td>获取哈希表key对应的field键值</td><td>rt.opsForHash().get(“key”,“field”)</td></tr><tr><td>HMGET</td><td>key&nbsp; field&nbsp; [field …]</td><td>批量获取哈希表key中多个field键值</td><td>rt.opsForHash().multiGet(“key”,fieldList)</td></tr><tr><td>HDEL</td><td>key&nbsp; field&nbsp; [field …]</td><td>删除哈希表key中的field键值</td><td>rt.opsForHash().delete(“key”,“field1”,“field2”)</td></tr><tr><td>HLEN</td><td>key</td><td>返回哈希表key中field的数量</td><td></td></tr><tr><td>HGETALL</td><td>key</td><td>返回哈希表key中所有的键值</td><td>rt.opsForHash().entries(“key”)</td></tr><tr><td>HINCRBY</td><td>key&nbsp; field&nbsp; num</td><td>为哈希表key中field键的值原子 +num</td><td></td></tr><tr><td>HEXISTS</td><td>key field</td><td></td><td>rt.opsForHash().hasKey(“key”,“field”)</td></tr><tr><td>HVALS</td><td>key</td><td></td><td>rt.opsForHash().values(“key”)</td></tr><tr><td>HKEYS</td><td>key</td><td></td><td>rt.opsForHash().keys(“key”)</td></tr><tr><td><em><strong>LIST</strong></em></td><td><strong>==LIST==</strong></td><td></td><td></td></tr><tr><td>LPUSH</td><td>key&nbsp; value [value …]</td><td>插入到列表的表头(最左边)</td><td>rt.opsForList().leftPush(“key”,“value”)<br><br>rt.opsForList().leftPushAll(“key”,valueList)</td></tr><tr><td>RPUSH</td><td>key&nbsp; value [value …]</td><td>插入到列表的表尾(最右边)</td><td>rt.opsForList().rightPush(“key”,“value”)<br><br>rt.opsForList().rightPushAll(“key”,valueList)</td></tr><tr><td>LPOP</td><td>key</td><td>移除并返回key列表的头元素</td><td>rt.opsForList().leftPop(“key”)</td></tr><tr><td>RPOP</td><td>key</td><td>移除并返回key列表的尾元素</td><td>rt.opsForList().rightPop(“key”)</td></tr><tr><td>LRANGE</td><td>key&nbsp; start&nbsp; stop</td><td>返回列表key中 start-stop 区间内的元素</td><td>rt.opsForList().range(“key”,start,end)</td></tr><tr><td>BLPOP</td><td>key&nbsp; [key …]&nbsp; timeout</td><td>从列表表头弹出一个元素，若没有则阻塞等待timeout秒，如果timeout=0，则一直等待</td><td></td></tr><tr><td>BRPOP</td><td>key&nbsp; [key …]&nbsp; timeout</td><td>从列表表尾弹出一个元素，若没有则阻塞等待timeout秒，如果timeout=0，则一直等待</td><td></td></tr><tr><td>LINDEX</td><td>key index</td><td></td><td>rt.opsForList().index(“key”, index)</td></tr><tr><td>LLEN</td><td>key</td><td></td><td>rt.opsForList().size(“key”)</td></tr><tr><td>LPUSHX</td><td>list node</td><td></td><td>rt.opsForList().leftPushIfPresent(“list”,“node”)</td></tr><tr><td>RPUSHX</td><td>list node</td><td></td><td>rt.opsForList().rightPushIfPresent(“list”,“node”)</td></tr><tr><td>LREM</td><td>list count value</td><td></td><td>rt.opsForList().remove(“list”,count,“value”)</td></tr><tr><td>LSET</td><td>key index value</td><td></td><td>rt.opsForList().set(“list”,index,“value”)</td></tr><tr><td><em><strong>SET</strong></em></td><td><strong>==SET==</strong></td><td></td><td></td></tr><tr><td>SADD</td><td>key&nbsp; member&nbsp; [member …]</td><td>往集合key中存入元素，元素存在则忽略</td><td>rt.boundSetOps(“key”).add(“member1”,…)<br><br>rt.opsForSet().add(“key”, set)</td></tr><tr><td>SREM</td><td>key&nbsp; member&nbsp; [member …]</td><td>从集合key中删除元素</td><td>rt.opsForSet().remove(“key”,“member1”,…)</td></tr><tr><td>SMEMBERS</td><td>key</td><td>获取集合key中所有元素</td><td>rt.opsForSet().members(“key”)</td></tr><tr><td>SCARD</td><td>key</td><td>获取集合key的元素个数</td><td>rt.opsForSet().size(“key”)</td></tr><tr><td>SISMEMBER</td><td>key&nbsp; member</td><td>判断member元素是否存在于集合key中</td><td>rt.opsForSet().isMember(“key”,“member”)</td></tr><tr><td>SRANDMEMBER</td><td>key&nbsp; [count]</td><td>从集合key中选出count个元素，元素不从key中删除</td><td>rt.opsForSet().randomMember(“key”,count)</td></tr><tr><td>SPOP</td><td>key&nbsp; [count]</td><td>从集合key中选出count个元素，元素从key中删除</td><td>rt.opsForSet().pop(“key”)</td></tr><tr><td>SINTER</td><td>key&nbsp; [key …]</td><td>交集运算</td><td>rt.opsForSet().intersect(“key1”,“key2”)</td></tr><tr><td>SINTERSTORE</td><td>destination&nbsp; key&nbsp; [key …]</td><td>将交集结果存入新集合destination中</td><td>rt.opsForSet().intersectAndStore(“key1”,“key2”,“des”)</td></tr><tr><td>SUNION</td><td>key&nbsp; [key …]</td><td>并集运算</td><td>rt.opsForSet().union(“key1”,“key2”)</td></tr><tr><td>SUNIONSTORE</td><td>destination&nbsp; key&nbsp; [key …]</td><td>将并集结果存入新集合destination中</td><td>rt.opsForSet().unionAndStore(“key1”,“key2”,“des”)</td></tr><tr><td>SDIFF</td><td>key&nbsp; [key …]</td><td>差集运算</td><td>rt.opsForSet().difference(“key1”,“key2”)</td></tr><tr><td>SDIFFSTORE</td><td>destination&nbsp; key&nbsp; [key …]</td><td>将差集结果存入新集合destination中</td><td>rt.opsForSet().differenceAndStore(“key1”,“key2”,“des”)</td></tr><tr><td><em><strong>ZSET</strong></em></td><td><strong>==ZSET==</strong></td><td></td><td></td></tr><tr><td>ZADD</td><td>key score member [[score member]…]</td><td>往有序集合key中加入带分值元素</td><td></td></tr><tr><td>ZREM</td><td>key member [member …]</td><td>从有序集合key中删除元素</td><td></td></tr><tr><td>ZSCORE</td><td>key member</td><td>返回有序集合key中元素member的分值</td><td></td></tr><tr><td>ZINCRBY</td><td>key num member</td><td>为有序集合key中元素member的分值原子 +num</td><td></td></tr><tr><td>ZCARD</td><td>key</td><td>返回有序集合key中元素个数</td><td></td></tr><tr><td>ZRANGE</td><td>key start stop [WITHSCORES]</td><td>正序获取有序集合key从start下标到stop下标的元素</td><td></td></tr><tr><td>ZREVRANGE</td><td>key start stop [WITHSCORES]</td><td>倒序获取有序集合key从start下标到stop下标的元素</td><td></td></tr><tr><td>ZUNIONSTORE</td><td>destkey numkeys key [key …]</td><td>并集计算</td><td></td></tr><tr><td>ZINTERSTORE</td><td>destkey numkeys key [key …]</td><td>交集计算</td><td></td></tr></tbody></table><hr><h2 id="应用场景">应用场景</h2><ul><li>STRING 应用场景<ul><li>单值缓存 | 对象缓存（Session共享）</li><li>分布式锁：SET product:10001 true ex 10 nx</li><li>计数器（分布式唯一ID，客户端批量获取，缺点：断电导致重复ID）</li></ul></li><li>HASH 应用场景<ul><li>对象缓存（大KEY问题）</li><li>购物车：用户id为key；商品id为field；商品数量为value</li><li>优点<ul><li>同类数据归类整合储存，方便数据管理</li><li>相比string操作消耗内存与cpu更小</li><li>相比string储存更节省空间</li></ul></li><li>缺点<ul><li>过期功能不能使用在field上，只能用在key上</li><li>Redis集群架构下不适合大规模使用</li></ul></li></ul></li><li>LIST 应用场景<ul><li>社交平台发文（时间顺序展示）</li><li>数据结构<ul><li>栈 = LPUSH + LPOP</li><li>队列 = LPUSH + RPOP</li><li>阻塞队列 = LPUSH + BRPOP</li></ul></li><li><img src="/static/IT/Redis/Redis-%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8-1.png" alt=""></li></ul></li><li>SET 应用场景<ul><li>抽奖：SADD / SRANDMEMBER / SPOP / SMEMBERS</li><li>点赞：SADD / SREM / SISMEMBER / SMEMBERS / SCARD / SINTER</li><li>关注模型<ul><li>共同关注：SINTER</li><li>我关注的人也关注他：SISMEMBER</li><li>可能认识的人（朋友的朋友 - 我的朋友）：SDIFF</li></ul></li><li>商品筛选（多查询条件取交集）：SINTER</li></ul></li><li>ZSET 应用场景<ul><li>新闻排行榜<ul><li>点击：ZINCRBY&nbsp; hotNews:20190819&nbsp; 1 xxx文章</li><li>前十：ZREVRANGE&nbsp; hotNews:20190819&nbsp; 0&nbsp; 9&nbsp; WITHSCORES</li><li>七日榜单：ZUNIONSTORE hotNews:20190813-20190819&nbsp; 7</li><li>七日前十：ZREVRANGE hotNews:20190813-20190819&nbsp; 0&nbsp; 9&nbsp; WITHSCORES</li></ul></li><li><img src="/static/IT/Redis/Redis-%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8-2.png" alt=""></li></ul></li></ul><hr><h2 id="IO多路复用">IO多路复用</h2><ul><li>单线程：<ul><li>Redis 的单线程主要是指 Redis 的网络 IO 和键值对读写是由一个线程来完成的，这也是 Redis 对外提供键值存储服务的主要流程。但 Redis 的其他功能，比如持久化、异步删除、集群数据同步等，其实是由额外的线程执行的</li><li>因为它所有的数据都在内存中，所有的运算都是内存级别的运算，而且单线程避免了多线程的切换性能损耗问题。正因为 Redis 是单线程，所以要小心使用耗时的指令(比如keys)，一不小心就可能会导致 Redis 卡顿</li></ul></li><li>Redis的IO多路复用：<ul><li>redis利用epoll来实现IO多路复用，将连接信息和事件放到队列中，依次放到文件事件分派器，事件分派器将事件分发给事件处理器</li></ul></li><li>查看redis支持的最大连接数，在redis.conf文件中可修改：<code>CONFIG GET maxclients</code></li><li>SCAN<ul><li>KEYS是全量遍历，当数据量大时，性能很差，应用 SCAN 取代（手动分段遍历，直到游标为0停止遍历）</li><li><code>SCAN 0 match jxch** count 100</code><ul><li>以0为游标，分段扫描以jxch开头的key，每次返回100个，然后以返回值为游标，继续扫描，直到返回的游标为0</li><li>注意，100是个参考值，实际返回的是接近100的数目，可能多也可能少（取决于HASH桶中有几个值，因为Redis的存储结构是哈希表）</li></ul></li><li>如果在scan的过程中如果有键的变化（增加、 删除、 修改） ，那么遍历效果可能会碰到如下问题<ul><li>新增的键可能没有遍历到（不会扫描已经遍历过的HASH桶）</li><li>遍历出了重复的键（发生了RE-HASH）</li></ul></li><li>SCAN并不能保证完整的遍历出来所有的键， 这些是我们在开发时需要考虑的，但在追求性能的情况下，往往并不要求一致性</li></ul></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;五种数据结构：string hash list set zset
-&lt;ul&gt;
-&lt;li&gt;应用场景&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;RedisTemplate 默认采用的是JDK的序列化，直接看的话key会有乱码，建议用 StringRedisTemplat</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Redis" scheme="https://jxch.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis-高并发缓存架构</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/redis/redis-gao-bing-fa-huan-cun-jia-gou/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/redis/redis-gao-bing-fa-huan-cun-jia-gou/</id>
-    <published>2024-09-10T07:32:00.000Z</published>
-    <updated>2024-09-10T07:33:31.246Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>缓存击穿&amp;缓存穿透&amp;缓存雪崩</li><li>热点KEY的缓存重建</li><li>双写不一致&amp;读写并发不一致</li><li>写多读多</li></ul><hr><ul><li>缓存击穿：缓存集体失效导致某一时刻大量请求打到数据库<ul><li>随机缓存失效时间</li><li>读延期：阻塞该数据的访问，直到缓存重新建立</li></ul></li><li>缓存穿透：请求数据库不存在的数据（缓存肯定也不存在）<ul><li>恶意攻击，并发请求不存在的商品ID，导致数据库宕机<ul><li>布隆过滤器：返回不存在则一定不存在，只能添加不能更新（定期重新初始化）</li><li>缓存空对象并设置失效时间（避免缓存被长时间占满）：避免布隆过滤器哈希碰撞</li></ul></li></ul></li><li>缓存雪崩：缓存层宕机或无法正常提供服务（超大并发）<ul><li>热点中的热点导致超大并发请求：本地缓存（多级缓存）<ul><li>热点探测系统维护缓存内容并通知更新本地缓存 ：分布式大数据实时计算</li><li>MQ或ZK通知更新本地缓存：数据短暂不一致，增加系统复杂度</li></ul></li><li>服务层限流熔断降级</li><li>提高缓存层可用性</li><li>提前压测</li></ul></li></ul><hr><ul><li>热点KEY的缓存重建  &amp; 冷门商品突然变热：大量线程同时重建缓存导致数据库宕机<ul><li>商品分布式锁双重检测：保证重建缓存时只查一次库<ul><li>使用trylock避免双重检测时长期等待</li></ul></li></ul></li><li>缓存数据不一致：ABA问题<ul><li>缓存与数据库双写不一致<ul><li><img src="/static/IT/Redis/Redis-%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%93%E5%AD%98%E6%9E%B6%E6%9E%84-1.png" alt=""></li></ul></li><li>读写并发不一致（发生概率偏低，因为查的速度一般快于写）<ul><li><img src="/static/IT/Redis/Redis-%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%93%E5%AD%98%E6%9E%B6%E6%9E%84-2.png" alt=""></li></ul></li><li>解决方案<ul><li>写库和查库（重建缓存）之前使用分布式读写锁</li><li>延时双删：写库后延时删两次缓存，不推荐用这种方式解决小概率事件浪费大量性能</li><li>canal：模拟MySQL从库监听binlog，更新缓存，引入中间件增加了系统复杂性</li></ul></li></ul></li><li>写多读多场景<ul><li>MQ直接操作数据库</li><li>缓存作为主存储，异步同步到数据库</li></ul></li><li>放入缓存的数据应该是对实时性、一致性要求不是很高的数据。切记不要为了用缓存，同时又要保证绝对的一致性做大量的过度设计和控制，增加系统复杂性！</li></ul><p><img src="/static/IT/Redis/Redis-%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%93%E5%AD%98%E6%9E%B6%E6%9E%84-3.png" alt=""></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;缓存击穿&amp;amp;缓存穿透&amp;amp;缓存雪崩&lt;/li&gt;
-&lt;li&gt;热点KEY的缓存重建&lt;/li&gt;
-&lt;li&gt;双写不一致&amp;amp;读写并发不一致&lt;/li&gt;
-&lt;li&gt;写多读多&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;ul&gt;
-&lt;li&gt;缓存击穿：缓存集体失效导致某一时刻大量请求打</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Redis" scheme="https://jxch.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis-底层数据结构</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/redis/redis-di-ceng-shu-ju-jie-gou/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/redis/redis-di-ceng-shu-ju-jie-gou/</id>
-    <published>2024-09-10T07:16:00.000Z</published>
-    <updated>2024-09-10T07:22:11.626Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>Redis 应用场景</li><li>Redis 底层核心数据结构</li><li>Redis 渐进式rehash及动态扩容机制</li><li>BitMap 海量数据统计</li><li>GeoHash 经纬度计算</li></ul><hr><h2 id="Redis-应用场景">Redis 应用场景</h2><ul><li>缓存</li><li>计数器：可以对 String 进行自增自减运算，从而实现计数器功能。Redis 这种内存型数据库的读写性能非常高，很适合存储频繁读写的计数量</li><li>分布式ID生成（宕机后ID重复）：利用自增特性，一次请求一个大一点的步长如 incr 2000 ,缓存在本地使用，用完再请求</li><li>海量数据统计 - 位图（bitmap）：:存储是否参过某次活动，是否已读谋篇文章，用户是否为会员， 日活统计。</li><li>会话缓存：可以使用 Redis 来统一存储多台应用服务器的会话信息。当应用服务器不再存储用户的会话信息，也就不再具有状态，一个用户可以请求任意一个应用服务器，从而更容易实现高可用性以及可伸缩性</li><li>分布式队列/阻塞队列：List 是一个双向链表，可以通过 lpush/rpush 和 rpop/lpop 写入和读取消息。可以通过使用brpop/blpop 来实现阻塞队列</li><li>分布式锁实现：在分布式场景下，无法使用基于进程的锁来对多个节点上的进程进行同步。可以使用 Redis 自带的 SETNX 命令实现分布式锁</li><li>热点数据存储：最新评论，最新文章列表，使用list 存储，ltrim取出热点数据，删除老数据</li><li>社交类需求：Set 可以实现交集，从而实现共同好友等功能，Set通过求差集，可以进行好友推荐，文章推荐</li><li>排行榜：sorted_set可以实现有序性操作，从而实现排行榜等功能</li><li>延迟队列：使用sorted_set，使用 【当前时间戳 + 需要延迟的时长】做score, 消息内容作为元素，调用zadd来生产消息，消费者使用zrangbyscore获取当前时间之前的数据做轮询处理。消费完再删除任务 <code>rem&nbsp; key&nbsp; member</code></li></ul><hr><h2 id="Redis-底层核心数据结构">Redis 底层核心数据结构</h2><p><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1.png" alt="Redis 底层核心数据结构"></p><h3 id="String">String</h3><ul><li>Redis 的字符串类型使用&nbsp;<code>SDS</code>&nbsp;(Simple Dynamic String) 作为其底层实现<ul><li>预分配策略<ul><li>减少内存重新分配次数，提高性能，SDS 会在字符串增长时预先分配多余的空间</li></ul></li><li>空间缩减策略<ul><li>当字符串缩短或者释放时，SDS 并不会立即释放多余的空间，这样可以保留一些预分配的内存以供将来使用</li></ul></li><li>对于短字符串，SDS 会预先分配一小段过量的空间</li><li>对于长字符串，预分配的空间比例会减少，但依然会多分配一定比例的内存</li></ul></li></ul><p><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-2.png" alt=""><br><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-3.png" alt=""></p><h3 id="List">List</h3><ul><li>采用 quicklist（双端链表） 和 ziplist 作为 List 的底层实现</li><li>list-max-ziplist-size&nbsp; -2<ul><li>单个ziplist节点最大能存储&nbsp; 8kb&nbsp; ,超过则进行分裂,将数据存储在新的ziplist节点中</li></ul></li><li>list-compress-depth&nbsp; 1<ul><li>0 代表所有节点，都不进行压缩，1， 代表从头节点往后走一个，尾节点往前走一个不用压缩，其他的全部压缩，2，3，4 … 以此类推</li></ul></li><li>ziplist<ul><li>紧凑存储<ul><li><code>ziplist</code>&nbsp;通过连续分配一段内存块，紧凑存储多个元素，以减少内存开销</li><li>每个元素包括实际数据以及前序长度和当前长度的元数据，而非像&nbsp;<code>linkedlist</code>&nbsp;一样每个元素都包含独立的指针</li></ul></li><li>预分配和回收空间<ul><li><code>ziplist</code>&nbsp;并不具备类似&nbsp;<code>SDS</code>&nbsp;的空间预分配机制，但在插入和删除元素时会重新分配内存</li><li>如果新插入的元素使得现有内存不足，<code>ziplist</code>&nbsp;会重新分配足够的内存来容纳新的数据</li></ul></li><li>数据结构<ul><li><code>ziplist</code>&nbsp;由多部分组成：起始偏移量、数据节点、结尾标志等</li><li>每个数据节点由前向长度（prevlen）、编码和实际数据组成</li><li>节点之间通过偏移量而非指针联系，这使得&nbsp;<code>ziplist</code>&nbsp;更紧凑，但插入和删除操作相对复杂，因为需要移动大量数据</li></ul></li><li>内存复制和移动<ul><li>因为&nbsp;<code>ziplist</code>&nbsp;是一块连续内存，在插入或删除元素时需要进行内存复制和移动操作，这会影响性能，特别是在元素较多的情况下</li><li><ul><li>当列表增大到一定程度，Redis 会自动将其转换为更合适的数据结构</li></ul></li></ul></li><li>使用场景<ul><li>小数据量：<code>ziplist</code>&nbsp;适用于小型数据结构（小列表和小哈希）。它能够有效减少内存开销，并且在数据量较小的情况下，其操作效率也较高</li><li>内存敏感：在内存敏感的场景中，<code>ziplist</code>&nbsp;可以提供良好的内存使用效率</li></ul></li><li>限制条件<ul><li><code>list-max-ziplist-entries</code>&nbsp;和&nbsp;<code>list-max-ziplist-value</code>，分别限制了列表中节点的最大数量和节点值的最大长度，当&nbsp;<code>ziplist</code>&nbsp;超过这些限制时，Redis 会将其转换为其他数据结构</li></ul></li></ul></li></ul><p><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-4.png" alt=""><br><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-5.png" alt=""></p><h3 id="Hash">Hash</h3><ul><li>底层实现为一个字典( dict )</li><li>当数据量比较小，或者单个元素比较小时，底层用ziplist存储</li><li>hash-max-ziplist-entries&nbsp; 512<ul><li>ziplist 元素个数超过 512 ，将改为hashtable编码</li></ul></li><li>hash-max-ziplist-value&nbsp;&nbsp;&nbsp; 64<ul><li>单个元素大小超过 64 byte时，将改为hashtable编码</li></ul></li></ul><p><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-6.png" alt=""></p><h3 id="Set">Set</h3><ul><li>底层实现为一个value 为 null 的 字典( dict )</li><li>当数据可以用整形表示时，Set集合将被编码为intset数据结构</li><li>两个条件任意满足时Set将用hashtable存储数据<ul><li>元素个数大于 set-max-intset-entries<ul><li>set-max-intset-entries 512<ul><li>intset 能存储的最大元素个数，超过则用hashtable编码</li></ul></li></ul></li><li>元素无法用整形表示</li></ul></li><li>intset<ul><li>整数集合是一个有序的，存储整型数据的结构</li><li>整型集合在Redis中可以保存int16_t,int32_t,int64_t类型的整型数据</li><li>可以保证集合中不会出现重复数据</li></ul></li></ul><p><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-7.png" alt=""></p><h3 id="ZSet">ZSet</h3><ul><li>有序的，自动去重的集合数据类型</li><li>底层实现为 字典(dict) + 跳表(skiplist)<ul><li>字典用于快速进行元素唯一性判定，而 Skiplist 用于保持元素的有序排列。每个元素同时存在于字典和 Skiplist 中，这样保证了两种数据结构的优势</li></ul></li><li>当数据比较少时，用ziplist编码结构存储</li><li>zset-max-ziplist-entries&nbsp; 128<ul><li>元素个数超过128，将用skiplist编码</li></ul></li><li>zset-max-ziplist-value&nbsp;&nbsp;&nbsp;&nbsp; 64<ul><li>单个元素大小超过 64 byte，将用 skiplist编码</li></ul></li></ul><p><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-8.png" alt=""></p><ul><li>skiplist<ul><li>多级链表<ul><li>Skiplist 由多层链表组成，每层链表都是底层链表的子集。底层链表包含所有元素，而每一层链表以一定概率抽取上层的一部分节点</li><li>每个节点包含多个指向下一层节点的指针，指针数量与节点所在层数相关</li></ul></li><li>随机层数<ul><li>插入新元素时，会随机决定新节点的层数。通常使用几何分布来确定层数，这样每个节点以一定概率加入更高层。从而保证了平均情况下查询操作的时间复杂度是对数级的</li><li>Redis 中，使用 1/4 的概率选择更高层，所以每层链表中的元素期望数量是其下层链表的 1/4</li></ul></li><li>查找操作<ul><li>查找过程从顶层链表开始，逐层向下进行</li><li>在每一层，查找操作按顺序走链表，直到找到目标元素或者需要进入下一层</li><li>因为更高层链表中的元素较少，查找操作在平均情况下是 O(log n) 的复杂度</li></ul></li><li>插入和删除操作<ul><li>插入操作先进行查找，找到插入位置后，根据随机层数将新节点插入相应层</li><li>删除操作类似，先进行查找，找到目标节点后，更新相关指针进行删除</li><li>虽然最坏情况下时间复杂度是 O(n)，但由于层级结构和随机分布，平均性能表现为 O(log n)</li></ul></li><li><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-9.png" alt=""></li><li><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-10.png" alt=""></li></ul></li></ul><hr><ul><li>渐进式rehash及动态扩容机制：避免在一次性rehash操作过程中导致大规模停顿<ul><li>Redis的数据结构字典（dict）中存在两个哈希表&nbsp;<code>ht[0]</code>&nbsp;和&nbsp;<code>ht[1]</code><ul><li>其中&nbsp;<code>ht[0]</code>&nbsp;用于存储当前数据，当开始rehash时，会初始化&nbsp;<code>ht[1]</code>&nbsp;并逐步将&nbsp;<code>ht[0]</code>&nbsp;中的数据迁移到<code>ht[1]</code></li></ul></li><li>Redis检测到需要扩展或收缩哈希表时，会初始化一个新的哈希表&nbsp;<code>ht[1]</code>，其大小根据需要进行扩展或收缩</li><li>设置一个标志，表示当前正在进行rehash操作</li><li>逐步迁移数据：在每次对字典进行增删查改等普通操作时，Redis会将有限数量（如一个或多个）从旧的哈希表&nbsp;<code>ht[0]</code>&nbsp;迁移到新的哈希表&nbsp;<code>ht[1]</code>&nbsp;中。这些操作包括&nbsp;<code>get</code>,&nbsp;<code>set</code>,&nbsp;<code>del</code>&nbsp;等</li><li>在rehash进行期间，所有的查找、插入操作都会同时对&nbsp;<code>ht[0]</code>&nbsp;和&nbsp;<code>ht[1]</code>&nbsp;生效。如果一个键在&nbsp;<code>ht[0]</code>&nbsp;中不存在，则继续查找&nbsp;<code>ht[1]</code></li><li>当&nbsp;<code>ht[0]</code>&nbsp;的所有数据全部迁移到&nbsp;<code>ht[1]</code>&nbsp;后，删除旧哈希表&nbsp;<code>ht[0]</code>，并将&nbsp;<code>ht[1]</code>&nbsp;设置为新的数据哈希表</li></ul></li><li>尽管渐进式rehash极大地提高了Redis的实时性和性能，但在rehash过程中，哈希表的大小并不会立即固定，这可能导致一些特殊情况下的查询延迟增加<ul><li><code>active-rehashing</code>&nbsp;参数决定是否在后台进程中主动进行rehash操作，也可以在主操作线程中逐步完成rehash，以使得逐步迁移在后端缓解表操作压力</li></ul></li><li>BitMap ：本质是字符串<ul><li>GETBIT/SETBIT/BITOPS/BITCOUNT</li><li>连续登录统计，每天的bitmap进行与运算</li></ul></li></ul><hr><h2 id="GeoHash-经纬度计算">GeoHash 经纬度计算</h2><ul><li>将地理位置编码为一串简短的字母和数字<ul><li>将空间细分为网格形状的桶，这是所谓的z顺序曲线的众多应用之一，通常是空间填充曲线</li></ul></li><li>经纬度编码<ul><li>经度范围是东经180到西经180，纬度范围是南纬90到北纬90<ul><li>设定西经为负，南纬为负，所以地球上的经度范围就是<code>[-180， 180]</code>，纬度范围就是<code>[-90，90]</code></li><li>如果以本初子午线、赤道为界，地球可以分成4个部分</li></ul></li><li>如果纬度范围<code>[-90°, 0°)</code>用二进制0代表，<code>（0°, 90°]</code>用二进制1代表，经度范围<code>[-180°, 0°)</code>用二进制0代表，<code>（0°, 180°]</code>用二进制1代表，那么地球可以分成如下(左图 )4个部分<ul><li><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-11.png" alt=""></li></ul></li></ul></li><li>通过GeoHash算法，可以将经纬度的二维坐标变成一个可排序、可比较的的字符串编码<ul><li>每个字符代表一个区域，并且前面的字符是后面字符的父区域</li><li><img src="/static/IT/Redis/Redis-%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-12.png" alt=""></li><li>纬度产生的编码为1011 1000 1100 0111 1001，经度产生的编码为1101 0010 1100 0100 0100</li><li>偶数位放经度，奇数位放纬度，把2串编码组合生成新串 11100 11101 00100 01111 00000 01101 01011 00001</li><li>最后使用用0-9、b-z（去掉a, i, l, o）这32个字母进行base32编码（将编码转换成经纬度的解码算法与之相反）<ul><li>首先将11100 11101 00100 01111 00000 01101 01011 00001转成十进制 28，29，4，15，0，13，11，1</li><li>十进制对应的编码就是wx4g0ec1</li></ul></li></ul></li><li>优点<ul><li>GeoHash利用Z阶曲线进行编码，Z阶曲线可以将二维所有点都转换成一阶曲线。地理位置坐标点通过编码转化成一维值，利用有序数据结构如B树、SkipList等，均可进行范围搜索。因此利用GeoHash算法查找邻近点比较快</li></ul></li><li>缺点<ul><li>Z 阶曲线有一个比较严重的问题，虽然有局部保序性，但是它也有突变性。在每个 Z 字母的拐角，都有可能出现顺序的突变</li></ul></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;Redis 应用场景&lt;/li&gt;
-&lt;li&gt;Redis 底层核心数据结构&lt;/li&gt;
-&lt;li&gt;Redis 渐进式rehash及动态扩容机制&lt;/li&gt;
-&lt;li&gt;BitMap 海量数据统计&lt;/li&gt;
-&lt;li&gt;GeoHash 经纬度计算&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Redis" scheme="https://jxch.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis-持久化</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/redis/redis-chi-jiu-hua/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/redis/redis-chi-jiu-hua/</id>
-    <published>2024-09-10T07:09:00.000Z</published>
-    <updated>2024-09-10T07:10:39.549Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>RDB：dump.rdb （二进制文件）<ul><li>配置文件：bgsave 方式<ul><li>save 60 1000 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭RDB只需要将所有的save保存策略注释掉即可<ul><li>60 秒内有至少有 1000 个键被改动， 则进行一次RDB持久化</li></ul></li></ul></li><li>命令：覆盖原有rdb快照文件<ul><li>save：同步</li><li>bgsave：异步，写时复制 - COW机制<ul><li>bgsave 子进程是由主线程 fork 生成的，可以共享主线程的所有内存数据<ul><li>在生成子进程执行调用fork函数时会有短暂阻塞</li></ul></li><li>如果主线程要修改一块数据，那么，这块数据就会被复制一份，生成该数据的副本。然后，bgsave 子进程会把这个副本数据写入 RDB 文件，而在这个过程中，主线程仍然可以直接修改原来的数据</li></ul></li></ul></li><li>缺点：宕机后，服务器将丢失最近写入、且仍未保存到快照中的数据</li></ul></li><li>AOF（append-only file）：appendonly.aof（resp协议格式）<ul><li>将修改的每一条指令记录进文件appendonly.aof中（先写入os cache，每隔一段时间fsync到磁盘）</li><li>配置文件<ul><li>appendonly yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 开启AOF模式</li><li>appendfsync always&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   每条命令都fsync一次，拉低性能</li><li>appendfsync everysec&nbsp;&nbsp;    每秒fsync一次，推荐，缺点是宕机后会丢失1秒的数据，但可以从数据库恢复</li><li>appendfsync no&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     让操作系统决定fsync的时机，快但不安全</li><li>auto‐aof‐rewrite‐min‐size 64mb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AOF文件超过64M时，重写AOF文件（整合命令）</li><li>auto‐aof‐rewrite‐percentage 100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  自上一次重写后文件大小增长了100%则再次触发重写</li></ul></li><li>命令：bgrewriteaof&nbsp; （fork出一个子进程去做）</li><li>缺点：体积大，恢复慢</li></ul></li><li>混合持久化：RDB+AOF<ul><li>配置文件（必须先开启AOF）：aof‐use‐rdb‐preamble yes</li><li>将重写这一刻之前的内存做RDB快照处理，并且将RDB快照内容和增量的AOF修改内存数据的命令（生成RDB过程中产生的命令）存在一起，都写入新的AOF文件</li><li>新的文件一开始不叫appendonly.aof，等到重写完新的AOF文件才会进行改名，覆盖原有的AOF文件，完成新旧两个AOF文件的替换</li><li>于是在 Redis 重启的时候，可以先加载 RDB 的内容，然后再重放增量 AOF 日志就可以完全替代之前的AOF 全量文件重放，因此重启效率大幅得到提升</li><li><img src="/static/IT/Redis/Redis-%E6%8C%81%E4%B9%85%E5%8C%96-1.png" alt="混合持久化"></li></ul></li><li>数据备份策略：<ol><li>写crontab定时调度脚本，每小时都copy一份rdb或aof的备份到一个目录中去，仅仅保留最近48小时的备份</li><li>每天都保留一份当日的数据备份到一个目录中去，可以保留最近1个月的备份</li><li>每次copy备份的时候，删除一些旧备份</li><li>每天晚上将当前机器上的备份复制一份到其他机器上，以防机器损坏</li></ol></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;RDB：dump.rdb （二进制文件）
-&lt;ul&gt;
-&lt;li&gt;配置文件：bgsave 方式
-&lt;ul&gt;
-&lt;li&gt;save 60 1000 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;关闭RDB只需要将所有的save保存策略注释掉即可
-&lt;ul&gt;
-&lt;li</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Redis" scheme="https://jxch.github.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Seata-特性</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/seata/seata-te-xing/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/seata/seata-te-xing/</id>
-    <published>2024-09-10T06:28:00.000Z</published>
-    <updated>2024-09-10T06:36:47.448Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>Seata-组件</li><li>2PC</li><li>Seata-AT</li><li>Seata-XA</li><li>Seata-TCC</li><li>Seata-SAGA：业务流（最终一致性，不保证事务的隔离）</li><li>Seata-集成</li></ul><hr><h2 id="Seata-组件">Seata-组件</h2><ul><li>核心组件：TC&nbsp;为单独部署的&nbsp;Server&nbsp;服务端，TM&nbsp;和&nbsp;RM&nbsp;为嵌入到应用中的&nbsp;Client&nbsp;客户端<ul><li>TC&nbsp;(Transaction&nbsp;Coordinator)&nbsp;-&nbsp;事务协调者：维护全局和分支事务的状态，驱动全局事务提交或回滚</li><li>TM&nbsp;(Transaction&nbsp;Manager)&nbsp;-&nbsp;事务管理器：定义全局事务的范围，开始全局事务、提交或回滚全局事务</li><li>RM&nbsp;(Resource&nbsp;Manager)&nbsp;-&nbsp;资源管理器 ：管理分支事务处理的资源，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚</li></ul></li><li>分布式事务的生命周期<ul><li>TM&nbsp;请求&nbsp;TC&nbsp;开启一个全局事务。TC&nbsp;会生成一个&nbsp;XID&nbsp;作为该全局事务的编号。XID会在微服务的调用链路中传播，保证将多个微服务的子事务关联在一起</li><li>RM&nbsp;请求&nbsp;TC&nbsp;将本地事务注册为全局事务的分支事务，通过全局事务的&nbsp;XID&nbsp;进行关联</li><li>TM&nbsp;请求&nbsp;TC&nbsp;告诉&nbsp;XID&nbsp;对应的全局事务是进行提交还是回滚</li><li>TC&nbsp;驱动&nbsp;RM&nbsp;们将&nbsp;XID&nbsp;对应的自己的本地事务进行提交还是回滚</li></ul></li><li>使用 <code>@GlobalTransactional</code> 开启分布式事务（XA模式需要同时使用<code>@Transcational</code>）</li><li>使用 <code>@GlobalLock</code> + <code>select ... for update</code> 实现全局事务的读隔离</li></ul><hr><h2 id="2PC">2PC</h2><ul><li>2PC 两阶段提交<ol><li>TM通知各个RM准备提交它们的事务分支。如果RM判断自己进行的工作可以被提交，那就对工作内容进行持久化，再给TM肯定答复；要是发生了其他情况，那给TM的都是否定答复</li><li>TM根据阶段1各个RM&nbsp;prepare的结果，决定是提交还是回滚事务。如果所有的RM都prepare成功，那么TM通知所有的RM进行提交；如果有RM&nbsp;prepare失败的话，则TM通知所有RM回滚自己的事务分支</li></ol></li><li>ACID：两阶段提交方案下全局事务的ACID特性，是依赖于RM的。一个全局事务内部包含了多个独立的事务分支，这一组事务分支要么都成功，要么都失败。各个事务分支的ACID特性共同构成了全局事务的ACID特性。也就是将单个事务分支支持的ACID特性提升一个层次到分布式事务的范畴</li><li>2PC存在的问题<ul><li>同步阻塞问题：2PC&nbsp;中的参与者是阻塞的。在第一阶段收到请求后就会预先锁定资源，一直到&nbsp;commit&nbsp;后才会释放</li><li>单点故障：一旦协调者TM发生故障，参与者RM会一直阻塞下去。尤其在第二阶段，协调者发生故障，那么所有的参与者还都处于锁定事务资源的状态中，而无法继续完成事务操作</li><li>数据不一致：若协调者第二阶段发送提交请求时崩溃，可能部分参与者收到commit请求提交了事务，而另一部分参与者未收到commit请求而放弃事务，从而造成数据不一致的问题</li></ul></li></ul><p><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-1.png" alt=""></p><hr><h2 id="Seata-AT">Seata-AT</h2><ul><li>AT（强一致性，适合并发量不高的场景）：业务无侵入，是一种改进后的两阶段提交（一阶段提交释放资源，二阶段日志回滚补偿 - undo_log 表）<ol><li>业务数据和回滚日志记录在同一个本地事务中提交，释放本地锁和连接资源（不会一直持有资源的锁）<ul><li>对业务sql进行解析，转换成undolog，并同时入库</li><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-2.png" alt=""></li></ul></li><li>提交异步化，非常快速地完成；回滚通过一阶段的回滚日志进行反向补偿<ul><li>分布式事务操作成功，则TC通知RM异步删除undolog<ul><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-3.png" alt=""></li></ul></li><li>分布式事务操作失败，TM向TC发送回滚请求，RM&nbsp;收到协调器TC发来的回滚请求，通过&nbsp;XID&nbsp;和&nbsp;Branch&nbsp;ID&nbsp;找到相应的回滚日志记录，通过回滚记录生成反向的更新&nbsp;SQL&nbsp;并执行，以完成分支的回滚<ul><li>问题：如果事务进行期间，其他线程修改了这行数据，导致undo log中前置镜像的值和库表实际值不一致，就会导致回滚失败，其他事务也会被拒绝，必须人工介入修改库表数据后删除undo log</li><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-4.png" alt=""></li></ul></li></ul></li></ol></li><li>TM 位于事务最顶层：下游服务如果处理了异常导致上有TM所在的服务无法捕获异常，就会导致事务失效的情况<ul><li>Feign的服务降级之后一定要重新抛出异常</li><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-5.png" alt=""></li></ul></li></ul><hr><h2 id="Seata-XA">Seata-XA</h2><ul><li>XA（强一致性，适用于中间件场景）：一直持有资源的锁，不需要undo_log表<ul><li>配置方式：<code>seata.data‐source‐proxy‐mode=XA</code></li><li>从编程模型上，XA&nbsp;模式与&nbsp;AT&nbsp;模式基本上完全一致，只是由于依赖本地事务（代理数据源-XADataSource），<code>@GlobalTransactional</code>必须配合<code>@Transactional</code>使用，否则无效</li><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-6.png" alt=""></li></ul></li><li>AT和XA模式数据源代理机制对比<ul><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-7.png" alt=""></li></ul></li></ul><hr><h2 id="Seata-TCC">Seata-TCC</h2><ul><li>TCC（Try-Confirm-Cance）：最终一致性，适合高并发事务场景，比如金融领域，不会一直持有资源的锁<ul><li>侵入式的分布式事务解决方案（需要手动实现try, commit, cancel）：完全不依赖数据库，能够实现跨数据库、跨应用资源管理</li><li>SEATA的TCC模式就是手工的AT模式，它允许你自定义两阶段的处理逻辑而不依赖AT模式的undo_log</li></ul></li><li>资源预留（Try）、确认操作（Confirm）、取消操作（Cancel）<ul><li>Try：对业务资源的检查并预留</li><li>Confirm：对业务处理进行提交，即&nbsp;commit&nbsp;操作，只要&nbsp;Try&nbsp;成功，那么该步骤一定成功</li><li>Cancel：对业务处理进行取消，即回滚操作，该步骤回对&nbsp;Try&nbsp;预留的资源进行释放</li><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-8.png" alt=""></li></ul></li><li>一阶段&nbsp;prepare&nbsp;行为；二阶段&nbsp;commit&nbsp;或&nbsp;rollback&nbsp;行为<ul><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-9.png" alt=""></li><li>try-commit：try&nbsp;阶段首先进行预留资源，然后在&nbsp;commit&nbsp;阶段扣除资源</li><li>try-cancel：try&nbsp;阶段首先进行预留资源，预留资源时扣减库存失败导致全局事务回滚，在&nbsp;cancel&nbsp;阶段释放资源</li></ul></li><li>空回滚、幂等、悬挂：Seata都已经封装好了，基于日志表 tcc_fence_log（对tcc的执行顺序进行日志记录，就可以识别这三个问题）<ul><li>空回滚：try 因为网络问题没有调用成功，按理说不需要 cancel，但是 cancel 了<ul><li>造成数据不一致：在try中扣减，在cancel增加，try没有执行，而cancel执行了</li><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-10.png" alt=""></li></ul></li><li>幂等：&nbsp;TC&nbsp;重复进行二阶段提交，Confirm/Cancel&nbsp;接口需要支持幂等处理，即不会产生资源重复提交或者重复释放<ul><li>由于网络问题，事务提交后没有响应到服务端，导致服务端发动重试机制，产生重复提交，重复释放同理</li><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-11.png" alt=""></li></ul></li><li>悬挂：try 方法被网络阻塞，导致空回滚，但是空回滚后 try 方法被成功执行了<ul><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-12.png" alt=""></li></ul></li></ul></li><li>Seata解决方案：在tcc_fence_log表中记录状态status <code>tried：1 committed：2 rollbacked：3 suspended：4</code><ul><li>try 执行后是 tried<ul><li>解决空回滚问题：当执行 cancel 时，检测到当前没有记录，就进行空回滚，并置为 suspended<ul><li>解决悬挂问题：try 执行时检测到现在是 suspended 状态，就放弃执行</li></ul></li></ul></li><li>confirm 执行后是 committed；cancel 执行后是 rollbacked<ul><li>解决幂等问题：当重复进行二阶段调用时，当前状态已经是二阶段状态了</li></ul></li><li>通过检查目前事务的状态，可以轻松避免空回滚、幂等、悬挂的问题</li></ul></li></ul><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// @LocalTCC 适用于SpringCloud+Feign模式下的TCC，@LocalTCC一定需要注解在接口上</span><span class="token annotation punctuation">@LocalTCC</span><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">OrderService</span> <span class="token punctuation">{</span><span class="token comment">/*  * 定义了分支事务的 resourceId，commit和 cancel 方法 * name = 该tcc的bean名称,全局唯一 * commitMethod = commit 为二阶段确认方法 * rollbackMethod = rollback 为二阶段取消方法 * BusinessActionContextParameter注解，传递参数到二阶段中 * useTCCFence：用于解决TCC幂等，悬挂，空回滚问题，需增加日志表tcc_fence_log */</span><span class="token annotation punctuation">@TwoPhaseBusinessAction</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"prepareSaveOrder"</span><span class="token punctuation">,</span> commitMethod <span class="token operator">=</span> <span class="token string">"commit"</span><span class="token punctuation">,</span> rollbackMethod <span class="token operator">=</span> <span class="token string">"rollback"</span><span class="token punctuation">,</span> useTCCFence <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token keyword">boolean</span> <span class="token function">deduct</span><span class="token punctuation">(</span><span class="token annotation punctuation">@BusinessActionContextParameter</span><span class="token punctuation">(</span>paramName <span class="token operator">=</span> <span class="token string">"commodityCode"</span><span class="token punctuation">)</span> <span class="token class-name">String</span> commodityCode<span class="token punctuation">,</span>  <span class="token annotation punctuation">@BusinessActionContextParameter</span><span class="token punctuation">(</span>paramName <span class="token operator">=</span> <span class="token string">"count"</span><span class="token punctuation">)</span> <span class="token keyword">int</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token keyword">boolean</span> <span class="token function">commit</span><span class="token punctuation">(</span><span class="token class-name">BusinessActionContext</span> actionContext<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token keyword">boolean</span> <span class="token function">rollback</span><span class="token punctuation">(</span><span class="token class-name">BusinessActionContext</span> actionContext<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><hr><h2 id="Seata-集成">Seata-集成</h2><ul><li>db存储模式+Nacos(注册&amp;配置中心)方式部署<ul><li><img src="/static/IT/Seata/Seata-%E7%89%B9%E6%80%A7-13.png" alt=""></li></ul></li><li>将Seata&nbsp;Server注册到Nacos，修改conf/application.yml文件<ul><li>确保client与server的注册处于同一个namespace和group，不然会找不到服务</li></ul></li></ul><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">registry</span><span class="token punctuation">:</span><span class="token comment"># support: nacos, eureka, redis, zk, consul, etcd3, sofa</span><span class="token key atrule">type</span><span class="token punctuation">:</span> nacos<span class="token key atrule">nacos</span><span class="token punctuation">:</span><span class="token key atrule">application</span><span class="token punctuation">:</span> seata‐server<span class="token key atrule">server‐addr</span><span class="token punctuation">:</span> 127.0.0.1<span class="token punctuation">:</span><span class="token number">8848</span><span class="token key atrule">group</span><span class="token punctuation">:</span> SEATA_GROUP<span class="token key atrule">namespace</span><span class="token punctuation">:</span> 7e838c12‐8554‐4231‐82d5‐6d93573ddf32<span class="token key atrule">cluster</span><span class="token punctuation">:</span> default<span class="token key atrule">username</span><span class="token punctuation">:</span>password<span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>配置Nacos配置中心地址，修改conf/application.yml文件</li></ul><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">seata</span><span class="token punctuation">:</span><span class="token key atrule">config</span><span class="token punctuation">:</span><span class="token comment"># support: nacos, consul, apollo, zk, etcd3</span><span class="token key atrule">type</span><span class="token punctuation">:</span> nacos<span class="token key atrule">nacos</span><span class="token punctuation">:</span><span class="token key atrule">server‐addr</span><span class="token punctuation">:</span> 127.0.0.1<span class="token punctuation">:</span><span class="token number">8848</span><span class="token key atrule">namespace</span><span class="token punctuation">:</span> 7e838c12‐8554‐4231‐82d5‐6d93573ddf32<span class="token key atrule">group</span><span class="token punctuation">:</span> SEATA_GROUP<span class="token key atrule">data‐id</span><span class="token punctuation">:</span> seataServer.properties<span class="token key atrule">username</span><span class="token punctuation">:</span>password<span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>上传 seataServer.properties 到 Nacos （设定db模式）<ul><li>修改：<a href="https://github.com/apache/incubator-seata/blob/v1.5.1/script/config-center/config.txt">https://github.com/apache/incubator-seata/blob/v1.5.1/script/config-center/config.txt</a></li><li>seata是通过jdbc的executeBatch来批量插入全局锁的<ul><li>连接参数中的rewriteBatchedStatements为true时，在执行executeBatch，并且操作类型为insert时，jdbc驱动会把对应的SQL优化成<code>insert&nbsp;into&nbsp;()&nbsp;values&nbsp;(),&nbsp;()</code>的形式来提升批量插入的性能（插入性能为原来的10倍多）</li></ul></li></ul></li></ul><pre class="line-numbers language-prop" data-language="prop"><code class="language-prop">store.mode=dbstore.db.driverClassName=com.mysql.jdbc.Driverstore.db.url=jdbc:mysql://127.0.0.1:3306/seata?useUnicode=true&amp;rewriteBatchedStatements=truestore.db.user=rootstore.db.password=root<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>配置事务分组<ul><li><code>seataServer.properties</code> 里的 <code>service.vgroupMapping.default_tx_group=default</code> 与 Seata&nbsp;Server 注册到 Nacos 的 <code>registry.nacos.cluster=default</code> 必须保持一致</li><li>要与client配置的事务分组一致 <code>seata.tx-service-group=default_tx_group</code>（和<code>service.vgroupMapping.</code>的后缀对应）</li></ul></li><li>启动Seata&nbsp;Server<ul><li>seata‐<a href="http://server.sh">server.sh</a>&nbsp;‐p&nbsp;8091&nbsp;‐h&nbsp;127.0.0.1&nbsp;‐m&nbsp;db<ul><li>-m 事务日志存储方式，支持file,db,redis，默认file</li><li>-n 指定seata-server节点ID</li></ul></li></ul></li></ul><hr><ul><li>事务分组如何找到后端Seata集群（TC）<ul><li>客户端中配置了事务分组，SpringBoot 通过 seata.tx-service-group&nbsp;配置</li><li>客户端会通过用户配置的配置中心去寻找 service.vgroupMapping&nbsp;.[事务分组配置项]，取得配置项的值就是TC集群的名称，SpringBoot 通过 <code>seata.service.vgroup-mapping.事务分组名=集群名称</code> 配置</li><li>拿到集群名称程序通过一定的前后缀+集群名称去构造服务名</li><li>拿到服务名去相应的注册中心去拉取相应服务名的服务列表，获得后端真实的TC服务列表</li></ul></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;Seata-组件&lt;/li&gt;
-&lt;li&gt;2PC&lt;/li&gt;
-&lt;li&gt;Seata-AT&lt;/li&gt;
-&lt;li&gt;Seata-XA&lt;/li&gt;
-&lt;li&gt;Seata-TCC&lt;/li&gt;
-&lt;li&gt;Seata-SAGA：业务流（最终一致性，不保证事务的隔离）&lt;/li&gt;
-&lt;li&gt;Seata</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Seata" scheme="https://jxch.github.io/tags/Seata/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zookeeper-Leader选举</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/zookeeper/zookeeper-leader-xuan-ju/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/zookeeper/zookeeper-leader-xuan-ju/</id>
-    <published>2024-09-10T06:14:00.000Z</published>
-    <updated>2024-09-10T06:15:53.680Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="/static/IT/Zookeeper/Zookeeper-Leader%E9%80%89%E4%B8%BE-1.png" alt="启动或leader宕机选举leader流程"></p><p><img src="/static/IT/Zookeeper/Zookeeper-Leader%E9%80%89%E4%B8%BE-2.png" alt="leader选举多层队列架构"></p><p>整个zookeeper选举底层可以分为选举应用层和消息传输层，应用层有自己的队列统一接收和发送选票，传输层也设计了自己的队列，但是按发送的机器分了队列，避免给每台机器发送消息时相互影响，比如某台机器如果出问题发送不成功则不会影响对正常机器的消息发<br>送</p><hr><p><img src="/static/IT/Zookeeper/Zookeeper-Leader%E9%80%89%E4%B8%BE-3.png" alt=""></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;/static/IT/Zookeeper/Zookeeper-Leader%E9%80%89%E4%B8%BE-1.png&quot; alt=&quot;启动或leader宕机选举leader流程&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/static/IT/Zookeep</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Zookeeper" scheme="https://jxch.github.io/tags/Zookeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zookeeper-curator</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/zookeeper/zookeeper-curator/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/zookeeper/zookeeper-curator/</id>
-    <published>2024-09-10T06:12:00.000Z</published>
-    <updated>2024-09-10T06:13:00.620Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>工厂类创建客户端：CuratorFrameworkFactory<ul><li>connectionString：服务器地址列表；逗号分隔</li><li>retryPolicy：重试策略<ul><li>可以通过判断服务器返回的&nbsp;keeperException&nbsp;的状态代码来判断是否进行重试处理<ul><li>OK&nbsp;表示一切操作都没有问题</li><li>SYSTEMERROR&nbsp;表示系统或服务端错误</li></ul></li><li>ExponentialBackoffRetry 重试一组次数，重试之间的睡眠时间增加</li><li>RetryNTimes 重试最大次数</li><li>RetryOneTime 只重试一次</li><li>RetryUntilElapsed 在给定的时间结束之前重试</li></ul></li><li>sessionTimeoutMs&nbsp;会话超时时间；作用在服务端<ul><li>用来设置该条会话在&nbsp;ZooKeeper&nbsp;服务端的失效时间</li></ul></li><li>connectionTimeoutMs&nbsp;客户端创建会话的超时时间；&nbsp;作用在客户端<ul><li>用来限制客户端发起一个会话连接到接收&nbsp;ZooKeeper&nbsp;服务端应答的时间</li></ul></li></ul></li><li>创建节点<ul><li><code>curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath</code></li></ul></li><li>一次性创建带层级结构的节点<ul><li><code>curatorFramework.create().creatingParentsIfNeeded().forPath</code></li></ul></li><li>获取数据<ul><li><code>curatorFramework.getData().forPath</code></li></ul></li><li>更新节点<ul><li><code>curatorFramework.setData().forPath</code></li></ul></li><li>删除节点<ul><li><code>curatorFramework.delete().guaranteed().deletingChildrenIfNeeded().forPath</code></li><li>guaranteed：起到一个保障删除成功的作用<ul><li>只要该客户端的会话有效，就会在后台持续发起删除请求，直到该数据节点在&nbsp;ZooKeeper&nbsp;服务端被删除</li></ul></li><li>deletingChildrenIfNeeded：系统在删除该数据节点的时候会以递归的方式直接删除其子节点，以及子节点的子节点</li></ul></li><li>异步接口 BackgroundCallback，用来处理服务器端返回来的信息，默认在&nbsp;EventThread&nbsp;中调用，也可以自定义线程池<ul><li><code>curatorFramework.getData().inBackground(BackgroundCallback).forpath</code></li><li>指定线程池<ul><li><code>curatorFramework.getData().inBackground(BackgroundCallback,ExecutorService).forpath</code></li></ul></li></ul></li><li>Curator&nbsp;监听器 CuratorListener<ul><li>针对&nbsp;background&nbsp;通知和错误通知。使用此监听器之后，调用 inBackground&nbsp;方法会异步获得监听</li></ul></li><li>Curator&nbsp;Caches<ul><li>Curator&nbsp;引入了&nbsp;Cache&nbsp;来实现对&nbsp;Zookeeper&nbsp;服务端事件监听</li><li>Cache&nbsp;事件监听可以理解为一个本地缓存视图与远程&nbsp;Zookeeper&nbsp;视图的对比过程</li><li>Cache&nbsp;提供了反复注册的功能<ul><li>Cache&nbsp;分为两类注册类型：节点监听和子节点监听</li></ul></li><li>NodeCache&nbsp;对某一个节点进行监听，可以通过注册监听器来实现，对当前节点数据变化的处理<ul><li><code>NodeCache&nbsp;nodeCache&nbsp;=&nbsp;new&nbsp;NodeCache(curatorFramework,&nbsp;"/node")</code></li><li><code>nodeCache.getListenable().addListener()</code></li><li><code>&nbsp;nodeCache.start();</code></li></ul></li><li>PathChildrenCache&nbsp;会对子节点进行监听，但是不会对二级子节点进行监听，可以通过注册监听器来实现，对当前节点的子节点数据变化的处理<ul><li><code>var&nbsp;pathChildrenCache&nbsp;=&nbsp;new&nbsp;PathChildrenCache(curatorFramework,&nbsp;PATH,&nbsp;true);</code></li><li><code>pathChildrenCache.getListenable().addListener</code></li><li><code>pathChildrenCache.start(true);</code> 如果设置为true则在首次启动时就会缓存节点内容到Cache中</li></ul></li><li>TreeCache&nbsp;使用一个内部类TreeNode来维护这个一个树结构。并将这个树结构与ZK节点进行了映射。所以TreeCache&nbsp;可以监听当前节点下所有节点的事件；可以通过注册监听器来实现，对当前节点的子节点，及递归子节点数据变化的处理<ul><li><code>TreeCache&nbsp;treeCache&nbsp;=&nbsp;new&nbsp;TreeCache(curatorFramework,&nbsp;TREE_CACHE);</code></li><li><code>treeCache.getListenable().addListener</code></li><li><code>treeCache.start();</code></li></ul></li></ul></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;工厂类创建客户端：CuratorFrameworkFactory
-&lt;ul&gt;
-&lt;li&gt;connectionString：服务器地址列表；逗号分隔&lt;/li&gt;
-&lt;li&gt;retryPolicy：重试策略
-&lt;ul&gt;
-&lt;li&gt;可以通过判断服务器返回的&amp;nbsp;keeper</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Zookeeper" scheme="https://jxch.github.io/tags/Zookeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zookeeper-分布式锁&amp;注册中心</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/zookeeper/zookeeper-fen-bu-shi-suo-zhu-ce-zhong-xin/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/zookeeper/zookeeper-fen-bu-shi-suo-zhu-ce-zhong-xin/</id>
-    <published>2024-09-10T06:06:00.000Z</published>
-    <updated>2024-09-10T06:09:56.563Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>分布式锁<ul><li>非公平锁（羊群效应）</li><li>公平锁：临时顺序&nbsp;znode</li><li>Curator InterProcessMutex 可重入锁</li></ul></li><li>注册中心</li></ul><hr><h2 id="分布式锁">分布式锁</h2><ul><li>非公平锁（羊群效应）：所有的锁请求者都&nbsp;watch&nbsp;锁持有者，当代表锁持有者的&nbsp;znode&nbsp;被删除以后，所有的锁请求者都会通知到，但是只有一个锁请求者能拿到锁<ul><li><img src="/static/IT/Zookeeper/Zookeeper-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83-1.png" alt="非公平锁"></li></ul></li><li>公平锁：临时顺序&nbsp;znode<ul><li><img src="/static/IT/Zookeeper/Zookeeper-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83-2.png" alt="公平锁"></li></ul></li><li>Curator InterProcessMutex 可重入锁<ul><li><img src="/static/IT/Zookeeper/Zookeeper-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83-3.png" alt="Curator InterProcessMutex"></li><li>优点：具备高可用、可重入、阻塞锁特性，可解决失效死锁问题，使用起来也较为简单</li><li>缺点：因为需要频繁的创建和删除节点，性能上不如Redis</li><li>在高性能、高并发的应用场景下，不建议使用ZooKeeper的分布式锁</li><li>由于ZooKeeper的高可用性，因此在并发量不是太高的应用场景中，还是推荐使用ZooKeeper的分布式锁</li></ul></li></ul><hr><h2 id="注册中心">注册中心</h2><ul><li>spring‐cloud‐starter‐zookeeper‐discovery -&gt; ZookeeperDiscoveryClientConfiguration<ul><li>整合 feign 进行服务调用</li></ul></li></ul><p><img src="/static/IT/Zookeeper/Zookeeper-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83-4.png" alt="注册中心"></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;分布式锁
-&lt;ul&gt;
-&lt;li&gt;非公平锁（羊群效应）&lt;/li&gt;
-&lt;li&gt;公平锁：临时顺序&amp;nbsp;znode&lt;/li&gt;
-&lt;li&gt;Curator InterProcessMutex 可重入锁&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;注册中心&lt;/li&gt;
-&lt;/ul&gt;
-</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Zookeeper" scheme="https://jxch.github.io/tags/Zookeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zookeeper-特性</title>
-    <link href="https://jxch.github.io/2024/09/10/architect/zookeeper/zookeeper-te-xing/"/>
-    <id>https://jxch.github.io/2024/09/10/architect/zookeeper/zookeeper-te-xing/</id>
-    <published>2024-09-10T05:59:00.000Z</published>
-    <updated>2024-09-10T06:03:42.972Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>CP架构</li><li>常见命令</li><li>数据结构</li><li>监听通知机制</li><li>节点特性</li><li>ACL权限控制</li><li>集群</li><li>四字命令</li><li>Leader&nbsp;选举原理</li><li>数据同步流程</li></ul><hr><h2 id="CP架构">CP架构</h2><ul><li>CAP&nbsp;理论指出对于一个分布式计算系统来说，不可能同时满足以下三点<ul><li>一致性：在分布式环境中，一致性是指数据在多个副本之间是否能够保持一致的特性，等同于所有节点访问同一份最新的数据副本。在一致性的需求下，当一个系统在数据一致的状态下执行更新操作后，应该保证系统的数据仍然处于一致的状态</li><li>可用性：每次请求都能获取到正确的响应，但是不保证获取的数据为最新数据</li><li>分区容错性：分布式系统在遇到任何网络分区故障的时候，仍然需要能够保证对外提供服务，除非是整个网络环境都发生了故障</li></ul></li><li>一个分布式系统最多只能同时满足一致性（Consistency）、可用性（Availability）和分区容错性（Partition&nbsp;tolerance）这三项中的两项<ul><li>P&nbsp;是必须的，因此只能在&nbsp;CP&nbsp;和&nbsp;AP&nbsp;中选择，zookeeper&nbsp;保证的是&nbsp;CP</li></ul></li><li>BASE&nbsp;理论：BASE&nbsp;是&nbsp;Basically&nbsp;Available(基本可用)、Soft-state(软状态)&nbsp;和&nbsp;Eventually&nbsp;Consistent(最终一致性)&nbsp;三个短语的缩写<ul><li>基本可用：在分布式系统出现故障，允许损失部分可用性（服务降级、页面降级）</li><li>软状态：允许分布式系统出现中间状态。而且中间状态不影响系统的可用性。这里的中间状态是指不同的&nbsp;data&nbsp;replication（数据备份节点）之间的数据更新可以出现延时的最终一致性</li><li>最终一致性：data&nbsp;replications&nbsp;经过一段时间达到一致性</li></ul></li><li>Zookeeper 写入是强一致性，读取是顺序一致性（版本号）</li><li>ZooKeeper本质上是一个分布式的小文件存储系统（Zookeeper=文件系统+监听机制）<ul><li>是一个基于观察者模式设计的分布式服务管理框架</li></ul></li></ul><hr><h2 id="常见命令">常见命令</h2><ul><li>ls 查看当前&nbsp;znode&nbsp;的子节点&nbsp;[可监听]<ul><li>-w:&nbsp;监听子节点变化</li><li>-s:&nbsp;节点状态信息（时间戳、版本号、数据大小等）</li><li>-R:&nbsp;表示递归的获取</li></ul></li><li>create 创建节点<ul><li>-s&nbsp;:&nbsp;创建有序节点</li><li>-e&nbsp;:&nbsp;创建临时节点</li><li>-c&nbsp;:&nbsp;创建一个容器节点</li><li>[-t&nbsp;ttl]&nbsp;:&nbsp;创建一个TTL节点，&nbsp;-t&nbsp;时间（单位毫秒）</li><li>data&nbsp;:&nbsp;节点的数据，可选，如果不使用时，节点数据就为null</li><li>acl&nbsp;:&nbsp;访问控制</li></ul></li><li>get 获取节点数据信息<ul><li>-s:&nbsp;节点状态信息（时间戳、版本号、数据大小等）</li><li>-w:&nbsp;监听节点变化</li></ul></li><li>set 设置节点数据<ul><li>-s: 表示节点为顺序节点</li><li>-v:&nbsp;指定版本号</li></ul></li><li>getAcl 获取节点的访问控制信息<ul><li>-s:&nbsp;节点状态信息（时间戳、版本号、数据大小等）</li></ul></li><li>setAcl 设置节点的访问控制列表<ul><li>-s: 节点状态信息（时间戳、版本号、数据大小等）</li><li>-v: 指定版本号</li><li>-R: 递归的设置</li></ul></li><li>stat 查看节点状态信息</li><li>delete  删除某一节点，只能删除无子节点的节点<ul><li>-v: 表示节点版本号</li></ul></li><li>deleteall 递归的删除某一节点及其子节点</li><li>setquota 对节点增加限制<ul><li>-n: 表示子节点的最大个数</li><li>-b: 数据值的最大长度，-1表示无限制</li></ul></li></ul><hr><h2 id="数据结构">数据结构</h2><ul><li>ZooKeeper的数据模型是层次模型，层次模型常见于文件系统。层次模型和key-value模型是两种主流的数据模型。ZooKeeper使用文件系统模型主要基于以下两点考虑<ul><li>文件系统的树形结构便于表达数据之间的层次关系</li><li>文件系统的树形结构便于为不同的应用分配独立的命名空间 (&nbsp;namespace&nbsp;)</li></ul></li><li>ZooKeeper的层次模型称作Data&nbsp;Tree，Data&nbsp;Tree的每个节点叫作Znode<ul><li>每一个&nbsp;ZNode&nbsp;默认能够存储&nbsp;1MB&nbsp;的数据</li><li>每个&nbsp;ZNode&nbsp;都可以通过其路径唯一标识</li><li>每个节点都有一个版本(version)，版本从0开始计数</li><li><img src="/static/IT/Zookeeper/Zookeeper-%E7%89%B9%E6%80%A7-1.png" alt=""></li></ul></li><li>节点分类<ul><li>持久节点 (PERSISTENT):&nbsp;这样的znode在创建之后即使发生ZooKeeper集群宕机或者client宕机也不会丢失</li><li>临时节点 (EPHEMERAL&nbsp;):&nbsp;client宕机或者client在指定的timeout时间内没有给ZooKeeper集群发消息，这样的znode就会消失</li><li>持久顺序节点 (PERSISTENT_SEQUENTIAL):&nbsp;znode除了具备持久性znode的特点之外，名字具备顺序性</li><li>临时顺序节点 (EPHEMERAL_SEQUENTIAL):&nbsp;znode除了具备临时性znode的特点之外，名字具备顺序性</li><li>Container节点&nbsp;(3.5.3版本新增)：Container容器节点，当容器中没有任何子节点，该容器节点会被zk定期删除（定时任务默认60s&nbsp;检查一次)<ul><li>和持久节点的区别是&nbsp;ZK&nbsp;服务端启动后，会有一个单独的线程去扫描，所有的容器节点，当发现容器节点的子节点数量为&nbsp;0&nbsp;时，会自动删除该节点</li><li>可以用于&nbsp;leader&nbsp;或者锁的场景中</li></ul></li><li>TTL节点:&nbsp;&nbsp;带过期时间节点，默认禁用<ul><li>在zoo.cfg中添加&nbsp;<code>extendedTypesEnabled=true&nbsp;</code>开启</li><li>ttl 不能用于临时节点</li></ul></li></ul></li><li>节点状态信息<ul><li>cZxid&nbsp;：Znode创建的事务id</li><li>ctime：节点创建时的时间戳</li><li>mZxid&nbsp;：Znode被修改的事务id，即每次对znode的修改都会更新mZxid<ul><li>对于zk来说，每次的变化都会产生一个唯一的事务id，zxid（ZooKeeper&nbsp;Transaction&nbsp;Id）</li><li>通过zxid，可以确定更新操作的先后顺序</li><li>如果zxid1小于zxid2，说明zxid1操作先于zxid2发生</li><li>zxid对于整个zk都是唯一的，即使操作的是不同的znode</li></ul></li><li>pZxid:&nbsp;表示该节点的子节点列表最后一次修改的事务ID<ul><li>只有子节点列表变更了才会变更pzxid，子节点内容变更不会影响pzxid<ul><li>添加子节点或删除子节点就会影响子节点列表</li><li>但是修改子节点的数据内容则不影响该ID</li></ul></li></ul></li><li>mtime：节点最新一次更新发生时的时间戳</li><li>cversion&nbsp;：子节点的版本号<ul><li>当znode的子节点有变化时，cversion&nbsp;的值就会增加1</li></ul></li><li>dataVersion：数据版本号<ul><li>每次对节点进行set操作，dataVersion的值都会增加1（即使设置的是相同的数据）</li><li>可有效避免了数据更新时出现的先后顺序问题</li></ul></li><li>ephemeralOwner<ul><li>如果该节点为临时节点,&nbsp;ephemeralOwner值表示与该节点绑定的session&nbsp;id<ul><li>在client和server通信之前,首先需要建立连接,该连接称为session</li><li>连接建立后,如果发生连接超时、授权失败,或者显式关闭连接,连接便处于closed状态,&nbsp;此时session结束</li></ul></li><li>如果不是,&nbsp;ephemeralOwner值为0 (持久节点)</li></ul></li><li>dataLength：&nbsp;数据的长度</li><li>numChildren：子节点的数量（只统计直接子节点的数量）</li></ul></li></ul><hr><h2 id="监听通知机制">监听通知机制</h2><ul><li>watcher 机制<ul><li>一个Watch事件是一个一次性的触发器<ul><li>当被设置了Watch的数据发生了改变的时候，则服务器将这个改变发送给设置了Watch的客户端，以便通知它们</li></ul></li><li>Zookeeper采用了&nbsp;Watcher机制实现数据的发布订阅功能<ul><li>多个订阅者可同时监听某一特定主题对象，当该主题对象的自身状态发生变化时例如节点内容改变、节点下的子节点列表改变等，会实时、主动通知所有订阅者</li></ul></li><li>watcher机制事件上与观察者模式类似，也可看作是一种观察者模式在分布式场景下的实现方式</li></ul></li><li>watcher 的过程<ul><li>客户端向服务端注册watcher</li><li>服务端事件发生触发watcher</li><li>客户端回调watcher得到触发事件情况</li></ul></li><li>Zookeeper中的watch机制，必须客户端先去服务端注册监听，这样事件发送才会触发监听，通知给客户端</li><li>支持的事件类型<ul><li>None:&nbsp;连接建立事件</li><li>NodeCreated：&nbsp;节点创建</li><li>NodeDeleted：&nbsp;节点删除</li><li>NodeDataChanged：节点数据变化</li><li>NodeChildrenChanged：子节点列表变化</li><li>DataWatchRemoved：节点监听被移除</li><li>ChildWatchRemoved：子节点监听被移除</li></ul></li><li>特性<ul><li>一次性触发：watcher是一次性的，一旦被触发就会移除，再次使用时需要重新注册</li><li>客户端顺序回调：watcher回调是顺序串行执行的，只有回调后客户端才能看到最新的数据状态。一个watcher回调逻辑不应该太多，以免影响别的watcher执行</li><li>轻量级：WatchEvent是最小的通信单位，结构上只包含通知状态、事件类型和节点路径，并不会告诉数据节点变化前后的具体内容</li><li>时效性：watcher只有在当前session彻底失效时才会无效，若在session有效期内快速重连成功，则watcher依然存在，仍可接收到通知</li></ul></li><li>使用场景<ul><li>master-worker 机制</li><li>基于版本号的条件更新<ul><li><img src="/static/IT/Zookeeper/Zookeeper-%E7%89%B9%E6%80%A7-2.png" alt=""></li></ul></li></ul></li></ul><hr><h2 id="节点特性">节点特性</h2><ul><li>同一级节点&nbsp;key&nbsp;名称是唯一的</li><li>创建节点时，必须要带上全路径</li><li>session&nbsp;关闭，临时节点清除</li><li>自动创建顺序节点</li><li>watch&nbsp;机制，监听节点变化<ul><li>监听事件被单次触发后，事件就失效了</li></ul></li><li>永久性 Watch（<code>addWatch&nbsp;[‐m&nbsp;mode]&nbsp;path</code>）：是Zookeeper&nbsp;3.6.0版本新增的功能<ul><li>在被触发之后，仍然保留，可以继续监听ZNode上的变更</li><li>针对指定节点添加事件监听，支持两种模式<ul><li>PERSISTENT，持久化订阅，针对当前节点的修改和删除事件，以及当前节点的子节点的删除和新增事件</li><li>PERSISTENT_RECURSIVE，持久化递归订阅，在PERSISTENT的基础上，增加了子节点修改的事件触发，以及子节点的子节点的数据变化都会触发相关事件</li></ul></li></ul></li><li>delete&nbsp;命令只能一层一层删除</li><li>deleteall&nbsp;命令递归删除</li><li>应用场景：适用于存储和协同相关的关键数据，不适合用于大数据量存储<ul><li>注册中心</li><li>数据发布/订阅（常用于实现配置中心）<ul><li>数据量小的KV</li><li>数据内容在运行时会发生动态变化</li><li>集群机器共享，配置一致</li><li>推拉结合<ul><li>服务端会推给注册了监控节点的客户端&nbsp;Watcher&nbsp;事件通知</li><li>客户端获得通知后，然后主动到服务端拉取最新的数据</li></ul></li></ul></li><li>统一集群管理</li><li>负载均衡</li><li>命名服务</li><li>分布式协调/通知</li><li>集群管理</li><li>Master选举</li><li>分布式锁</li><li>分布式队列</li></ul></li></ul><hr><h2 id="ACL权限控制">ACL权限控制</h2><ul><li>zookeeper 的 ACL（Access Control List，访问控制表）权限可以针对节点设置相关读写等权限</li><li>zookeeper 的 acl 通过&nbsp;<code>[scheme:id:permissions]</code>&nbsp;来构成权限列表<ul><li>scheme：授权的模式，代表采用的某种权限机制<ul><li>包括 world、auth、digest、ip、super 几种</li></ul></li><li>id：授权对象，代表允许访问的用户<ul><li>如果我们选择采用 IP 方式，使用的授权对象可以是一个 IP 地址或 IP 地址段</li><li>而如果使用 Digest 或 Super 方式，则对应于一个用户名</li><li>如果是 World 模式，是授权系统中所有的用户</li></ul></li><li>permissions：授权的权限，权限组合字符串，由 cdrwa 组成，其中每个字母代表支持不同权限<ul><li>创建权限 create©、删除权限 delete(d)、读权限 read®、写权限 write(w)、管理权限admin(a)。</li></ul></li></ul></li></ul><table><thead><tr><th>模式</th><th>描述</th></tr></thead><tbody><tr><td>world</td><td>授权对象只有一个anyone，代表登录到服务器的所有客户端都能对该节点执行某种权限</td></tr><tr><td>ip</td><td>对连接的客户端使用IP地址认证方式进行认证</td></tr><tr><td>auth</td><td>使用以添加认证的用户进行认证</td></tr><tr><td>digest</td><td>使用用户:密码方式验证</td></tr></tbody></table><table><thead><tr><th>权限类型</th><th>ACL简写</th><th>描述</th></tr></thead><tbody><tr><td>read</td><td>r</td><td>读取节点及显示子节点列表的权限</td></tr><tr><td>write</td><td>w</td><td>设置节点数据的权限</td></tr><tr><td>create</td><td>c</td><td>创建子节点的权限</td></tr><tr><td>delete</td><td>d</td><td>删除子节点的权限</td></tr><tr><td>admin</td><td>a</td><td>设置该节点ACL权限的权限</td></tr></tbody></table><table><thead><tr><th>授权命令</th><th>用法</th><th>描述</th></tr></thead><tbody><tr><td>getAcl</td><td>getAcl path</td><td>读取节点的ACL</td></tr><tr><td>setAcl</td><td>setAcl path acl</td><td>设置节点的ACL</td></tr><tr><td>create</td><td>create path data acl</td><td>创建节点时设置ACL</td></tr><tr><td>addAuth</td><td>addAuth scheme auth</td><td>添加认证用户，类似于登录操作</td></tr></tbody></table><ul><li>setAcl<ul><li><code>set Acl /name world:anyone:cdwa</code></li></ul></li><li>auth授权模式<ul><li>创建用户 <code>addauth digest fox:123456</code></li><li><code>setAcl /name auth:fox:123456:cdrwa</code></li><li>密码加密<ul><li><code>echo -n fox:123456 | openssl dgst -binary -sha1 | openssl base64</code></li><li><code>setAcl /name auth:fox:ZsWwgmtnTnx1usRF1voHFJAYGQU=:cdrwa</code></li></ul></li></ul></li><li>digest授权模式<ul><li><code>setAcl /tuling/fox digest:fox:ZsWwgmtnTnx1usRF1voHFJAYGQU=:cdrwa</code></li></ul></li><li>IP授权模式<ul><li><code>setAcl /node-ip ip:192.168.109.128:cdwra</code></li><li><code>create /node-ip data ip:192.168.109.128:cdwra</code><ul><li>多个指定IP可以通过逗号分隔<ul><li><code>setAcl /node-ip ip:IP1:rw,ip:IP2:a</code></li></ul></li></ul></li></ul></li><li>Super 超级管理员模式<ul><li>这是一种特殊的Digest模式， 在Super模式下超级管理员用户可以对Zookeeper上的节点进行任何的操作</li><li>需要在启动脚本上通过添加JVM 参数开启<ul><li><code>-Dzookeeper.DigestAuthenticationProvider.superDigest=admin:&lt;base64encoded(SHA1(123456))</code></li></ul></li></ul></li></ul><hr><h2 id="集群">集群</h2><ul><li>集群角色<ul><li>Leader：&nbsp;领导者<ul><li>事务请求（写操作）的唯一调度者和处理者，保证集群事务处理的顺序性</li><li>集群内部各个服务器的调度者</li><li>对于create、setData、delete等有写操作的请求，则要统一转发给leader处理，leader需要决定编号、执行操作，这个过程称为事务</li></ul></li><li>Follower：跟随者<ul><li>处理客户端非事务（读操作）请求（可以直接响应）</li><li>转发事务请求给 Leader</li><li>参与集群 Leader 选举投票</li></ul></li><li>Observer：观察者<ul><li>对于非事务请求可以独立处理（读操作）</li><li>对于事务性请求会转发给 leader 处理</li><li>Observer 节点接收来自 leader 的 inform 信息，更新自己的本地存储</li><li>不参与提交和选举投票</li><li>在不影响集群事务处理能力的前提下提升集群的非事务处理能力</li><li>Observer 应用场景<ul><li>提升集群的读性能</li><li>跨数据中心部署<ul><li>比如需要部署一个北京和香港两地都可以使用的zookeeper集群服务，并且要求北京和香港客户的读请求延迟都很低。解决方案就是把香港的节点都设置为observer</li></ul></li></ul></li></ul></li></ul></li><li>集群架构<ul><li><img src="/static/IT/Zookeeper/Zookeeper-%E7%89%B9%E6%80%A7-3.png" alt=""></li><li>leader节点可以处理读写请求</li><li>follower只可以处理读请求</li><li>follower在接到写请求时会把写请求转发给leader来处理</li></ul></li><li>Zookeeper数据一致性保证<ul><li>全局可线性化 (Linearizable) 写入：先到达leader的写请求会被先处理，leader决定写请求的执行顺序</li><li>客户端FIFO顺序：来自给定客户端的请求按照发送顺序执行</li></ul></li><li>集群搭建<ul><li>修改zoo.cfg配置，添加server节点配置：<code>server.A=B:C:D</code><ul><li><code>dataDir=/data/zookeeper</code></li><li><code>server.1=192.168.65.156:2888:3888</code></li><li>A&nbsp;是一个数字，表示这个是第几号服务器<ul><li>集群模式下配置一个文件&nbsp;myid，这个文件在&nbsp;dataDir&nbsp;目录下，这个文件里面有一个数据&nbsp;就是&nbsp;A&nbsp;的值，Zookeeper&nbsp;启动时读取此文件，拿到里面的数据与&nbsp;zoo.cfg&nbsp;里面的配置信息比较从而判断到底是哪个server</li></ul></li><li>B&nbsp;是这个服务器的地址</li><li>C&nbsp;是这个服务器Follower与集群中的Leader服务器交换信息的端口</li><li>D&nbsp;是万一集群中的Leader服务器挂了，需要一个端口来重新进行选举，选出一个新的Leader<ul><li>而这个端口就是用来执行选举时服务器相互通信的端口</li></ul></li></ul></li><li>创建&nbsp;myid&nbsp;文件，配置服务器编号</li><li>启动 zookeeper&nbsp;server 集群 <code>bin/zkServer.sh&nbsp;start</code></li></ul></li></ul><hr><h2 id="四字命令">四字命令</h2><ul><li>zookeeper 支持某些特定的四字命令与其交互，用户获取 zookeeper 服务的当前状态及相关信息<ul><li>用户在客户端可以通过 telenet 或者 nc（netcat） 向 zookeeper 提交相应的命令</li></ul></li><li>开启四字命令<ul><li>在 zoo.cfg 文件里加入配置项让这些指令放行<ul><li><code>4lw.commands.whitelist=*</code></li></ul></li><li>在 zk 的启动脚本 <a href="http://zkServer.sh">zkServer.sh</a> 中新增放行指令（添加ＶＭ环境变量）<ul><li><code>ZOOMAIN="-Dzookeeper.4lw.commands.whitelist=* ${ZOOMAIN}"</code></li></ul></li></ul></li><li><code>echo [command] | nc [ip] [port]</code><ul><li>stat 命令用于查看 zk 的状态信息<ul><li><code>echo stat | nc 192.168.65.156 2181</code></li></ul></li></ul></li></ul><table><thead><tr><th>四字命令</th><th>功能描述</th></tr></thead><tbody><tr><td>conf</td><td>3.3.0版本引入的。打印出服务相关配置的详细信息。</td></tr><tr><td>cons</td><td>3.3.0版本引入的。列出所有连接到这台服务器的客户端全部连接/会话详细信息。包括"接受/发送"的包数量、会话id、操作延迟、最后的操作执行等等信息。</td></tr><tr><td>crst</td><td>3.3.0版本引入的。重置所有连接的连接和会话统计信息。</td></tr><tr><td>dump</td><td>列出那些比较重要的会话和临时节点。这个命令只能在leader节点上有用。</td></tr><tr><td>envi</td><td>打印出服务环境的详细信息。</td></tr><tr><td>reqs</td><td>列出未经处理的请求</td></tr><tr><td>ruok</td><td>测试服务是否处于正确状态。如果确实如此，那么服务返回"imok"，否则不做任何相应。</td></tr><tr><td>stat</td><td>输出关于性能和连接的客户端的列表。</td></tr><tr><td>srst</td><td>重置服务器的统计。</td></tr><tr><td>srvr</td><td>3.3.0版本引入的。列出连接服务器的详细信息</td></tr><tr><td>wchs</td><td>3.3.0版本引入的。列出服务器watch的详细信息。</td></tr><tr><td>wchc</td><td>3.3.0版本引入的。通过session列出服务器watch的详细信息，它的输出是一个与watch相关的会话的列表。</td></tr><tr><td>wchp</td><td>3.3.0版本引入的。通过路径列出服务器watch的详细信息。它输出一个与session相关的路径。</td></tr><tr><td>mntr</td><td>3.4.0版本引入的。输出可用于检测集群健康状态的变量列表</td></tr></tbody></table><hr><h2 id="Leader-选举原理">Leader&nbsp;选举原理</h2><ul><li>zookeeper&nbsp;的&nbsp;leader&nbsp;选举存在两个阶段<ul><li>一个是服务器启动时&nbsp;leader&nbsp;选举</li><li>另一个是运行过程中&nbsp;leader&nbsp;服务器宕机</li></ul></li><li>重要的参数<ul><li>服务器&nbsp;ID(myid)：编号越大在选举算法中权重越大</li><li>事务&nbsp;ID(zxid)：值越大说明数据越新，权重越大</li><li>逻辑时钟(epoch-logicalclock)：同一轮投票过程中的逻辑时钟值是相同的，每投完一次值会增加</li></ul></li><li>选举状态<ul><li>LOOKING:&nbsp;竞选状态</li><li>FOLLOWING:&nbsp;随从状态，同步&nbsp;leader&nbsp;状态，参与投票</li><li>OBSERVING:&nbsp;观察状态，同步&nbsp;leader&nbsp;状态，不参与投票</li><li>LEADING:&nbsp;领导者状态</li></ul></li><li>服务器启动时的&nbsp;leader&nbsp;选举<ul><li>每个节点启动的时候都&nbsp;LOOKING&nbsp;观望状态，接下来就开始进行选举主流程<ul><li>第一台服务器&nbsp;server1启动时，无法进行&nbsp;leader&nbsp;选举</li><li>当第二台服务器&nbsp;server2&nbsp;启动时，两台机器可以相互通信，进入&nbsp;leader&nbsp;选举过程</li></ul></li><li><img src="/static/IT/Zookeeper/Zookeeper-%E7%89%B9%E6%80%A7-4.png" alt=""><ol><li>每台&nbsp;server&nbsp;发出一个投票<ol><li>由于是初始情况，server1&nbsp;和&nbsp;server2&nbsp;都将自己作为&nbsp;leader&nbsp;服务器进行投票</li><li>每次投票包含所推举的服务器myid、zxid、epoch，使用（myid，zxid）表示</li><li>此时&nbsp;server1&nbsp;投票为（1,0），server2&nbsp;投票为（2,0），然后将各自投票发送给集群中其他机器</li></ol></li><li>接收来自各个服务器的投票<ol><li>集群中的每个服务器收到投票后，首先判断该投票的有效性</li><li>如检查是否是本轮投票（epoch）、是否来自&nbsp;LOOKING&nbsp;状态的服务器</li></ol></li><li>分别处理投票<ol><li>针对每一次投票，服务器都需要将其他服务器的投票和自己的投票进行对比<ol><li>优先比较&nbsp;epoch</li><li>检查&nbsp;zxid，zxid&nbsp;比较大的服务器优先作为&nbsp;leader</li><li>如果&nbsp;zxid&nbsp;相同，那么就比较&nbsp;myid，myid&nbsp;较大的服务器作为&nbsp;leader&nbsp;服务器</li></ol></li></ol></li><li>统计投票<ol><li>每次投票后，服务器统计投票信息，判断是否有过半机器接收到相同的投票信息</li><li>server1、server2&nbsp;都统计出集群中有两台机器接受了（2,0）的投票信息，此时已经选出了&nbsp;server2&nbsp;为&nbsp;leader&nbsp;节点</li></ol></li><li>改变服务器状态<ol><li>一旦确定了&nbsp;leader，每个服务器响应更新自己的状态</li><li>如果是&nbsp;follower，那么就变更为&nbsp;FOLLOWING，如果是&nbsp;Leader，变更为&nbsp;LEADING</li><li>此时&nbsp;server3继续启动，直接加入变更自己为&nbsp;FOLLOWING</li></ol></li></ol></li></ul></li><li>运行过程中的&nbsp;leader&nbsp;选举：当集群中&nbsp;leader&nbsp;服务器出现宕机或者不可用情况时，整个集群无法对外提供服务，进入新一轮的&nbsp;leader&nbsp;选举<ol><li>变更状态：leader&nbsp;挂后，其他非&nbsp;Oberver服务器将自身服务器状态变更为&nbsp;LOOKING</li><li>每个&nbsp;server&nbsp;发出一个投票：在运行期间，每个服务器上&nbsp;zxid&nbsp;可能不同</li><li>处理投票：规则同启动过程</li><li>统计投票：与启动过程相同</li><li>改变服务器状态：与启动过程相同</li></ol></li></ul><hr><h2 id="数据同步流程">数据同步流程</h2><ul><li>在&nbsp;Zookeeper&nbsp;中，主要依赖&nbsp;ZAB&nbsp;协议来实现分布式数据一致性</li><li>ZAB&nbsp;协议分为两部分：消息广播；崩溃恢复</li><li>消息广播<ul><li><img src="/static/IT/Zookeeper/Zookeeper-%E7%89%B9%E6%80%A7-5.png" alt=""></li><li>Zookeeper&nbsp;使用单一的主进程&nbsp;Leader&nbsp;来接收和处理客户端所有事务请求</li><li>并采用&nbsp;ZAB&nbsp;协议的原子广播协议，将事务请求以&nbsp;Proposal&nbsp;提议广播到所有&nbsp;Follower&nbsp;节点</li><li>当集群中有过半的Follower&nbsp;服务器进行正确的&nbsp;ACK&nbsp;反馈<ul><li>那么Leader就会再次向所有的&nbsp;Follower&nbsp;服务器发送commit&nbsp;消息，将此次提案进行提交</li></ul></li><li>这个过程可以简称为&nbsp;2pc&nbsp;事务提交</li><li>注意&nbsp;Observer&nbsp;节点只负责同步&nbsp;Leader&nbsp;数据，不参与&nbsp;2PC&nbsp;数据同步过程</li></ul></li><li>崩溃恢复<ul><li>在正常情况消息下广播能运行良好，但是一旦&nbsp;Leader&nbsp;服务器出现崩溃，或者由于网络原理导致&nbsp;Leader&nbsp;服务器失去了与过半&nbsp;Follower&nbsp;的通信，那么就会进入崩溃恢复模式</li><li>需要选举出一个新的&nbsp;Leader&nbsp;服务器</li><li>在这个过程中可能会出现两种数据不一致性的隐患，需要&nbsp;ZAB&nbsp;协议的特性进行避免<ul><li>Leader&nbsp;服务器将消息&nbsp;commit&nbsp;发出后，立即崩溃</li><li>Leader&nbsp;服务器刚提出&nbsp;proposal&nbsp;后，立即崩溃</li></ul></li><li>ZAB&nbsp;协议的恢复模式使用了以下策略<ul><li>选举&nbsp;zxid&nbsp;最大的节点作为新的&nbsp;leader</li><li>新&nbsp;leader&nbsp;将事务日志中尚未提交的消息进行处理</li></ul></li></ul></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;CP架构&lt;/li&gt;
-&lt;li&gt;常见命令&lt;/li&gt;
-&lt;li&gt;数据结构&lt;/li&gt;
-&lt;li&gt;监听通知机制&lt;/li&gt;
-&lt;li&gt;节点特性&lt;/li&gt;
-&lt;li&gt;ACL权限控制&lt;/li&gt;
-&lt;li&gt;集群&lt;/li&gt;
-&lt;li&gt;四字命令&lt;/li&gt;
-&lt;li&gt;Leader&amp;nbsp;选举原理</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Zookeeper" scheme="https://jxch.github.io/tags/Zookeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zookeeper-ZAB</title>
-    <link href="https://jxch.github.io/2024/09/09/architect/zookeeper/zookeeper-zab/"/>
-    <id>https://jxch.github.io/2024/09/09/architect/zookeeper/zookeeper-zab/</id>
-    <published>2024-09-09T02:41:00.000Z</published>
-    <updated>2024-09-09T02:44:46.657Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>ZAB</li><li>消息广播</li><li>崩溃恢复</li><li>数据同步</li></ul><hr><h2 id="ZAB">ZAB</h2><ul><li>整个Zookeeper就是一个多节点分布式一致性算法的实现，底层采用的实现协议是ZAB</li><li>ZAB&nbsp;协议全称：Zookeeper&nbsp;Atomic&nbsp;Broadcast（Zookeeper&nbsp;原子广播协议）<ul><li>ZAB是Paxos算法的一种简化实现</li></ul></li><li>ZAB&nbsp;协议是为分布式协调服务&nbsp;Zookeeper&nbsp;专门设计的一种支持&nbsp;崩溃恢复&nbsp;和&nbsp;原子广播&nbsp;的协议<ul><li>当&nbsp;Leader&nbsp;服务可以正常使用，就进入消息广播模式</li><li>当&nbsp;Leader&nbsp;不可用时，则进入崩溃恢复模式</li></ul></li><li>基于该协议，Zookeeper&nbsp;实现了一种&nbsp;主备模式&nbsp;的系统架构来保持集群中各个副本之间数据一致性</li><li><img src="/static/IT/Zookeeper/Zookeeper-ZAB-1.png" alt=""><ul><li>所有客户端写入数据都是写入到Leader节点</li><li>然后，由&nbsp;Leader&nbsp;复制到Follower节点中，从而保证数据一致性</li><li>复制过程类似两阶段提交 (2PC)<ul><li>ZAB&nbsp;只需要&nbsp;Follower(含leader自己的ack)&nbsp;有一半以上返回&nbsp;Ack&nbsp;信息就可以执行提交<ul><li>大大减小了同步阻塞；也提高了可用性</li></ul></li></ul></li></ul></li></ul><h2 id="消息广播">消息广播</h2><ul><li>ZAB&nbsp;协议的消息广播过程使用的是一个原子广播协议，类似一个&nbsp;两阶段提交过程</li><li>对于客户端发送的写请求，全部由&nbsp;Leader&nbsp;接收，Leader&nbsp;将请求封装成一个事务&nbsp;Proposal，将其发送给所有&nbsp;Follwer</li><li>然后，根据所有&nbsp;Follwer&nbsp;的反馈，如果超过半数 (含leader自己) 成功响应，则执行&nbsp;commit&nbsp;操作</li><li><img src="/static/IT/Zookeeper/Zookeeper-ZAB-2.png" alt=""><ul><li>Leader&nbsp;在收到客户端请求之后，会将这个请求封装成一个事务，并给这个事务分配一个全局递增的唯一&nbsp;ID，称为事务ID（ZXID），ZAB&nbsp;协议需要保证事务的顺序，因此必须将每一个事务按照&nbsp;ZXID&nbsp;进行先后排序然后处理，主要通过消息队列实现</li><li>在&nbsp;Leader&nbsp;和&nbsp;Follwer&nbsp;之间还有一个消息队列，用来解耦他们之间的耦合，解除同步阻塞</li><li>zookeeper集群中为保证所有进程能够有序的顺序执行，只能是&nbsp;Leader&nbsp;服务器接受写请求，即使是&nbsp;Follower&nbsp;服务器接受到客户端的写请求，也会转发到&nbsp;Leader&nbsp;服务器进行处理，Follower只能处理读请求</li><li>ZAB协议规定了如果一个事务在一台机器上被处理(commit)成功，那么应该在所有的机器上都被处理成功，哪怕机器出现故障崩溃</li></ul></li></ul><h2 id="崩溃恢复">崩溃恢复</h2><ul><li>当&nbsp;Leader&nbsp;崩溃，即进入崩溃恢复模式（崩溃即：Leader&nbsp;失去与过半&nbsp;Follwer&nbsp;的联系）<ul><li>Leader&nbsp;在复制数据给所有&nbsp;Follwer&nbsp;之后，还没来得及收到Follower的ack返回就崩溃</li><li>Leader&nbsp;在收到&nbsp;ack&nbsp;并提交了自己，同时发送了部分&nbsp;commit&nbsp;出去之后崩溃</li></ul></li><li>针对这些问题，ZAB&nbsp;定义了&nbsp;2&nbsp;个原则<ul><li>ZAB&nbsp;协议确保丢弃那些只在&nbsp;Leader&nbsp;提出/复制，但没有提交的事务</li><li>ZAB&nbsp;协议确保那些已经在&nbsp;Leader&nbsp;提交的事务最终会被所有服务器提交</li></ul></li><li>所以，ZAB&nbsp;设计了下面这样一个选举算法：能够确保提交已经被&nbsp;Leader&nbsp;提交的事务，同时丢弃已经被跳过的事务<ul><li>让&nbsp;Leader&nbsp;选举算法能够保证新选举出来的&nbsp;Leader&nbsp;服务器拥有集群中所有机器&nbsp;ZXID&nbsp;最大的事务<ul><li>可以省去&nbsp;Leader&nbsp;服务器检查事务的提交和丢弃工作的这一步操作</li></ul></li></ul></li></ul><h2 id="数据同步">数据同步</h2><ul><li>当崩溃恢复之后，需要在正式工作之前（接收客户端请求），Leader&nbsp;服务器首先确认事务是否都已经被过半的&nbsp;Follwer&nbsp;提交了，即是否完成了数据同步。目的是为了保持数据一致</li><li>当&nbsp;Follwer&nbsp;服务器成功同步之后，Leader&nbsp;会将这些服务器加入到可用服务器列表中</li><li>实际上，Leader&nbsp;服务器处理或丢弃事务都是依赖着&nbsp;ZXID&nbsp;的<ul><li><img src="/static/IT/Zookeeper/Zookeeper-ZAB-3.png" alt=""></li><li>在&nbsp;ZAB&nbsp;协议的事务编号&nbsp;ZXID&nbsp;设计中，ZXID&nbsp;是一个&nbsp;64&nbsp;位的数字<ul><li>其中低&nbsp;32&nbsp;位可以看作是一个简单的递增的计数器，针对客户端的每一个事务请求，Leader&nbsp;都会产生一个新的事务&nbsp;Proposal&nbsp;并对该计数器进行&nbsp;+&nbsp;1&nbsp;操作</li><li>而高&nbsp;32&nbsp;位则代表了&nbsp;Leader&nbsp;服务器上取出本地日志中最大事务&nbsp;Proposal&nbsp;的&nbsp;ZXID，并从该&nbsp;ZXID&nbsp;中解析出对应的&nbsp;epoch&nbsp;值 (leader选举周期)，当一轮新的选举结束后，会对这个值加一，并且事务id又从0开始自增</li></ul></li><li>高&nbsp;32&nbsp;位代表了每代&nbsp;Leader&nbsp;的唯一性，低&nbsp;32&nbsp;代表了每代&nbsp;Leader&nbsp;中事务的唯一性<ul><li>同时，也能让&nbsp;Follwer&nbsp;通过高&nbsp;32&nbsp;位识别不同的&nbsp;Leader。简化了数据恢复流程</li></ul></li></ul></li><li>当&nbsp;Follower&nbsp;连接上&nbsp;Leader&nbsp;之后，Leader&nbsp;服务器会根据自己服务器上最后被提交的&nbsp;ZXID&nbsp;和&nbsp;Follower&nbsp;上的&nbsp;ZXID&nbsp;进行比对，比对结果要么回滚，要么和&nbsp;Leader&nbsp;同步</li></ul><hr><p><img src="/static/IT/Zookeeper/Zookeeper-ZAB-4.png" alt=""></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;ZAB&lt;/li&gt;
-&lt;li&gt;消息广播&lt;/li&gt;
-&lt;li&gt;崩溃恢复&lt;/li&gt;
-&lt;li&gt;数据同步&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&quot;ZAB&quot;&gt;ZAB&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;整个Zookeeper就是一个多节点分布式一致性算法的实现，底层采用的实现协</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Zookeeper" scheme="https://jxch.github.io/tags/Zookeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RocketMQ-整体架构</title>
-    <link href="https://jxch.github.io/2024/09/09/architect/rocketmq/rocketmq-zheng-ti-jia-gou/"/>
-    <id>https://jxch.github.io/2024/09/09/architect/rocketmq/rocketmq-zheng-ti-jia-gou/</id>
-    <published>2024-09-09T02:33:00.000Z</published>
-    <updated>2024-09-09T02:37:37.979Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>NameServer的结构</li><li>Broker的结构</li><li>Netty服务注册框架</li><li>RocketMQ的同步结果推送与异步结果推送</li><li>Broker心跳注册过程</li><li>Producer发送消息过程</li><li>Consumer拉取消息过程</li><li>文件存储</li><li>延迟消息</li><li>长轮询机制</li></ul><hr><h2 id="NameServer的结构">NameServer的结构</h2><ul><li>NameServer的核心作用<ul><li>一是维护Broker的服务地址并进行及时的更新</li><li>二是给Producer和Consumer提供服务获取Broker列表</li></ul></li><li>NameServer的启动入口为NamesrvStartup类的main方法</li><li>整个NameServer的核心就是一个NamesrvController对象</li></ul><p><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-1.png" alt=""></p><hr><h2 id="Broker的结构">Broker的结构</h2><ul><li>Broker是整个RocketMQ的业务核心，所有消息存储、转发这些最为重要的业务都是在Broker中进行处理的</li><li>Broker启动的入口在BrokerStartup这个类的main方法</li><li>重点也是围绕一个BrokerController对象</li><li>在BrokerStartup.createBrokerController方法中可以看到Broker的几个核心配置<ul><li>BrokerConfig</li><li>NettyServerConfig  ：Netty服务端占用了10911端口。同样也可以在配置文件中覆盖</li><li>NettyClientConfig</li><li>MessageStoreConfig</li></ul></li></ul><p><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-2.png" alt=""></p><hr><h2 id="Netty服务注册框架">Netty服务注册框架</h2><ul><li>RocketMQ使用Netty框架提供了一套基于服务码的服务注册机制，让各种不同的组件都可以按照自己的需求，注册自己的服务方法</li><li>Netty的所有远程通信功能都由remoting模块实现。RemotingServer模块里包含了RPC的服务端RemotingServer以及客户端RemotingClient</li><li>RocketMQ基于Netty保持客户端与服务端的长连接Channel</li><li>所有的请求都封装成RemotingCommand对象。而每个处理消息的服务逻辑，会封装成一个NettyRequestProcessor对象</li><li>服务端和客户端都维护了一个processorTable，这是个HashMap，key是服务码requestCode，value是对应的运行单元<ul><li>Pair&lt;NettyRequestProcessor, ExecutorService&gt;  类型，包含了处理逻辑Prcessor和执行线程池ExecutorService</li></ul></li><li>服务端的注册BrokerController.registerProcessor() ，客户端的服务注册见MQClientAPIImpl。NameServer则会注册一个大的DefaultRequestProcessor，统一处理所有的服务</li><li>服务注册流程：</li></ul><p><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-3.png" alt=""></p><ul><li>NameServer会维护Broker的路由列表，并对路由列表进行实时更新</li><li>BrokerController.this.registerBrokerAll方法会发起向NameServer注册心跳。启动时会立即注册，同时也会启动一个线程池，以10秒延迟，默认30秒的间隔持续向NameServer发送心跳</li><li>BrokerController.this.registerBrokerAll这个方法就是注册心跳的入口</li><li>然后，在NameServer中也会启动一个定时任务，扫描不活动的Broker。具体观察NamesrvController.initialize方法</li></ul><p><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-4.png" alt=""></p><hr><h2 id="RocketMQ的同步结果推送与异步结果推送">RocketMQ的同步结果推送与异步结果推送</h2><ul><li>RocketMQ的RemotingServer服务端，会维护一个responseTable，这是一个线程同步的Map结构。 key为请求的ID，value是异步的消息结果 ConcurrentMap&lt;Integer  , ResponseFuture&gt;</li><li>处理同步请求(NettyRemotingAbstract#invokeSyncImpl)时，处理的结果会存入responseTable，通过ResponseFuture提供一定的服务端异步处理支持，提升服务端的吞吐量。 请求返回后，立即从responseTable中移除请求记录</li><li>处理异步请求(NettyRemotingAbstract#invokeAsyncImpl)时，处理的结果依然会存入responsTable，等待客户端后续再来请求结果。但是他保存的依然是一个ResponseFuture，也就是在客户端请求结果时再去获取真正的结果<ul><li>另外，在RemotingServer启动时，会启动一个定时的线程任务，不断扫描responseTable，将其中过期的response清除掉</li></ul></li></ul><hr><h2 id="Producer发送消息过程">Producer发送消息过程</h2><ul><li>Producer有两种<ul><li>普通发送者：DefaultMQProducer。只负责发送消息，发送完消息，就可以停止了<ul><li>DefaultMQProducer只需要构建一个Netty客户端，往Broker发送消息就行了</li><li>异步回调只是在Producer接收到Broker的响应后自行调整流程，不需要提供Netty服务</li></ul></li><li>事务消息发送者： TransactionMQProducer。支持事务消息机制。需要在事务消息过程中提供事务状态确认的服务，这就要求事务消息发送者虽然是一个客户端，但是也要完成整个事务消息的确认机制后才能退出<ul><li>TransactionMQProducer由于需要在事务消息机制中给Broker提供状态确认服务，所以在发送消息的同时，还需要保持连接，提供服务</li><li>TransactionMQProducer的启动过程中，会往RemotingClient中注册相应的Processor，这样RemotingServer和RemotingClient之间就可以通过channel进行双向的服务请求了</li></ul></li></ul></li><li>整个Producer的流程，大致分两个步骤<ul><li>start方法，进行一大堆的准备工作</li><li>各种各样的send方法，进行消息发送</li></ul></li><li>重点关注以下几个问题<ul><li>Producer的核心启动流程以及两种消息发送者的区别<ul><li>所有Producer的启动过程，最终都会调用DefaultMQProducerImpl#start方法<ul><li>在start方法中的通过一个mQClientFactory对象，启动生产者的一大堆重要服务</li></ul></li><li>所有客户端的启动流程是固定的，不同客户端的区别只是在于他们在启动前注册的一些信息不同<ul><li>生产者注册到producerTable，消费者注册到consumerTable，管理控制端注册到adminExtTable</li></ul></li></ul></li><li>Producer如何管理Borker路由信息<ul><li>Producer需要拉取Broker列表，然后跟Broker建立连接等等很多核心的流程，其实都是在发送消息时建立的。因为在启动时，还不知道要拉取哪个Topic的Broker列表呢</li><li>对NameServer的地址管理，则是散布在启动和发送的多个过程当中，并且NameServer地址可以通过一个Http服务来获取</li><li>Send方法中，首先需要获得Topic的路由信息。这会从本地缓存中获取，如果本地缓存中没有，就从NameServer中去申请 DefaultMQProducerImpl#tryToFindTopicPublishInfo 方法</li><li><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-5.png" alt=""></li></ul></li><li>Producer的负载均衡<ul><li>Producer在获取路由信息后，会选出一个MessageQueue去发送消息</li><li>这个选MessageQueue的方法就是一个索引自增然后取模的方式</li><li>然后根据MessageQueue再找所在的Broker，往Broker发送请求</li></ul></li><li>在发送Netty请求时，如何制定Broker<ul><li>实际上是指定的MessageQueue，而不是Topic。Topic只是用来找MessageQueue</li></ul></li></ul></li></ul><hr><h2 id="Consumer拉取消息过程">Consumer拉取消息过程</h2><ul><li>消费者也是有两种，推模式消费者（用的最多）和拉模式消费者</li><li>消费者组之间有集群模式和广播模式两种消费模式</li><li>消费者端的负载均衡的原理。即消费者是如何绑定消费队列的，哪些消费策略到底是如何落地的</li><li>在推模式的消费者中，MessageListenerConcurrently 和MessageListenerOrderly这两种消息监听器的处理逻辑到底有什么不同，为什么后者能保持消息顺序</li><li>DefaultMQPushConsumer.start作为入口。最终消费者的启动过程，跟生产者一样，也交由了mQClientFactory<ul><li>pullMessageService主要处理拉取消息服务；rebalanceService主要处理客户端的负载均衡</li></ul></li><li>客户端负载均衡策略<ul><li>在消费者示例的start方法中，启动RebalanceService，这个是客户端进行负载均衡策略的启动服务。他只负责根据负载均衡策略获取当前客户端分配到的MessageQueue</li><li>五种负载策略，可以由Consumer的allocateMessageQueueStrategy属性来选择<ul><li>这个属性可以在DefaultMQPushConsumer的构造方法当中指定。默认是AllocateMessageQueueAveragely策略</li><li>最常用的是AllocateMessageQueueAveragely平均分配和AllocateMessageQueueAveragelyByCircle平均轮询分配<ul><li>平均分配是把MessageQueue按组内的消费者个数平均分配</li><li>平均轮询分配就是把MessageQueue按组内的消费者一个一个轮询分配</li></ul></li></ul></li></ul></li><li>并发消费与顺序消费的过程<ul><li>消费的过程依然是在DefaultMQPushConsumerImpl的 consumeMessageService中</li><li>他有两个子类ConsumeMessageConcurrentlyService和ConsumeMessageOrderlyService</li><li>最主要的差别是ConsumeMessageOrderlyService会在消费前把队列锁起来，优先保证拉取同一个队列里的消息</li><li>消费过程的入口在DefaultMQPushConsumerImpl的pullMessage中定义的PullCallback中</li></ul></li><li>RocketMQ消息消费方式分别为集群模式、广播模式</li><li>消息队列负载由RebalanceService线程默认每隔20s进行一次消息队列负载<ul><li>根据当前消费者组内消费者个数与主题队列数量按照某一种负载算法进行队列分配</li><li>分配原则为同一个消费者可以分配多个消息消费队列</li><li>同一个消息消费队列同一个时间只会分配给一个消费者</li></ul></li><li>消息拉取由PullMessageService线程根据RebalanceService线程创建的拉取任务进行拉取<ul><li>默认每次拉取一批消息(可以由业务指定，默认是1)，提交给消费者消费线程后继续下一次消息拉取</li><li>如果消息消费过慢产生消息堆积会触发消息消费拉取流控</li></ul></li><li>并发消息消费指消费线程池中的线程可以并发对同一个消息队列的消息进行消费<ul><li>消费成功后，取出消息队列中最小的消息偏移量作为消息消费进度偏移量存储在于消息消费进度存储文件中</li><li>集群模式消息消费进度存储在Broker（消息服务器）</li><li>广播模式消息消费进度存储在消费者端</li></ul></li><li>RocketMQ不支持任意精度的定时调度消息，只支持自定义的消息延迟级别<ul><li>可通过在broker配置文件中设置messageDelayLevel</li></ul></li><li>顺序消息一般使用集群模式，是指对消息消费者内的线程池中的线程对消息消费队列只能串行消费<ul><li>与并发消息消费最本质的区别是消息消费时必须成功锁定消息消费队列</li><li>在Broker端会存储消息消费队列的锁占用情况</li></ul></li><li>拉模式核心服务类： PullMessageService<ul><li>PullRequest里有messageQueue和processQueue，其中messageQueue负责拉取消息，拉取到后，将消息存入processQueue，进行处理。 存入后就可以清空messageQueue，继续拉取了</li><li><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-6.png" alt=""></li></ul></li></ul><hr><h2 id="文件存储">文件存储</h2><ul><li>Broker接收到消息后是如何把消息进行存储的</li><li>最终存储的文件<ul><li>commitLog：消息存储目录</li><li>config：运行期间一些配置信息</li><li>consumerqueue：消息消费队列存储目录</li><li>index：消息索引文件存储目录</li><li>abort：如果存在改文件寿命Broker非正常关闭</li><li>checkpoint：文件检查点，存储CommitLog文件最后一次刷盘时间戳、 consumerquueue最后一次刷盘时间，index索引文件最后一次刷盘时间戳</li></ul></li><li>messageStore就是负责消息存储的核心组件</li><li>消息存储的入口在：DefaultMessageStore.putMessage</li><li>commitLog写入<ul><li>CommitLog的doAppend方法就是Broker写入消息的实际入口</li><li>这个方法最终会把消息追加到MappedFile映射的一块内存里，并没有直接写入磁盘</li><li>写入消息的过程是串行的，一次只会允许一个线程写入</li></ul></li><li>分发ConsumeQueue和IndexFile<ul><li>当CommitLog写入一条消息后，在DefaultMessageStore的start方法中，会启动一个后台线程reputMessageService每隔1毫秒就会去拉取CommitLog中最新更新的一批消息，然后分别转发到ComsumeQueue和IndexFile里去</li><li>如果服务异常宕机，会造成CommitLog和ConsumeQueue、IndexFile文件不一致，有消息写入CommitLog后，没有分发到索引文件，这样消息就丢失了</li><li>DefaultMappedStore的load方法提供了恢复索引文件的方法，入口在load方法</li></ul></li><li>文件同步刷盘与异步刷盘：CommitLog.submitFlushRequest<ul><li>同步刷盘也是使用异步机制实现的<ul><li>刷盘是一个很重的操作，所以，RocketMQ即便是同步刷盘，也要对刷盘次数精打细算<ul><li>单条消息，那么直接将commitlog刷盘即可</li><li>批量消息，RockeMQ会先收集这一批次消息的刷盘请求，再进行一次统一的刷盘操作</li><li>一批消息有可能会跨两个commitlog文件，所以在刷盘时，要严格计算commitlog文件的刷盘次数</li></ul></li></ul></li><li>异步刷盘<ul><li>通过RocketMQ自己实现的一个CountDownLatch2提供了线程阻塞，使用CAS来驱动CountDownLatch2的countDown操作</li><li>每来一个消息就启动一次CAS，成功后，调用一次countDown</li><li>这个CountDownLatch2在CountDownLatch的基础上，增加实现了reset功能，实现了对象的重用</li></ul></li><li>TransientStorePoolEnable。如果开启了堆外内存，会在启动时申请一个跟CommitLog文件大小一致的堆外内存，这部分内存就可以确保不会被交换到虚拟内存中</li></ul></li><li>CommigLog主从复制：CommitLog.submitReplicaRequest<ul><li>RocketMQ整体是基于Netty实现的网络请求，而在主从复制这一块，却放弃了Netty框架，转而使用更轻量级的Java的NIO来构建</li><li>在主要的HAService中，会在启动过程中启动三个守护进程<ul><li>其中与Master相关的是acceptSocketService和groupTransferService<ul><li>acceptSocketService主要负责维护Master与Slave之间的TCP连接</li><li>groupTransferService主要与主从同步复制有关</li></ul></li><li>而slave相关的则是haClient</li></ul></li></ul></li><li>过期文件删除：DefaultMessageStore.addScheduleTask -&gt; DefaultMessageStore.this.cleanFilesPeriodically<ul><li>Broker会启动后台线程，每60秒，检查CommitLog、ConsumeQueue文件<ul><li>然后对超过72小时的数据进行删除</li><li>默认情况下， RocketMQ只会保存3天内的数据</li><li>可以通过fileReservedTime来配置</li></ul></li><li>他删除时，并不会检查消息是否被消费了</li></ul></li><li>整个文件存储的核心入口在DefaultMessageStore的start方法中</li></ul><p><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-7.png" alt=""></p><hr><h2 id="延迟消息">延迟消息</h2><ul><li>延迟消息的核心使用方法就是在Message中设定一个MessageDelayLevel参数，对应18个延迟级别</li><li>然后Broker中会创建一个默认的Schedule_Topic主题，这个主题下有18个队列，对应18个延迟级别</li><li>消息发过来之后，会先把消息存入Schedule_Topic主题中对应的队列<ul><li>等延迟时间到了，再转发到目标队列，推送给消费者进行消费</li></ul></li><li>延迟消息的处理入口在scheduleMessageService， 他会在broker启动时也一起加载</li><li>消息写入：CommitLog.putMessage<ul><li>在CommitLog写入消息时，会判断消息的延迟级别，然后修改Message的Topic和Queue，达到转储Message的目的</li></ul></li><li>消息转储到目标Topic：scheduleMessageService<ul><li>这个服务只在master节点上启动，而在slave节点上会主动关闭这个服务</li><li>由于RocketMQ的主从节点支持切换，所以就需要考虑这个服务的幂等性<ul><li>在节点切换为slave时就要关闭服务，切换为master时就要启动服务</li><li>即便节点多次切换为master，服务也只启动一次：通过一个CAS操作来保证服务的启动状态</li><li>这个CAS操作还保证了在后面，同一时间只有一个DeliverDelayedMessageTimerTask执行</li></ul></li><li>ScheduleMessageService会每隔1秒钟执行一个executeOnTimeup任务，将消息从延迟队列中写入正常Topic中：ScheduleMessageService -&gt; DeliverDelayedMessageTimerTask.executeOnTimeup</li></ul></li></ul><p><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-8.png" alt=""></p><hr><h2 id="长轮询机制">长轮询机制</h2><ul><li>RocketMQ对消息消费者提供了Push推模式和Pull拉模式两种消费模式<ul><li>但是这两种消费模式的本质其实都是Pull拉模式</li><li>Push模式可以认为是一种定时的Pull机制</li></ul></li><li>长轮询机制简单来说，就是当Broker接收到Consumer的Pull请求时，判断如果没有对应的消息，不用直接给Consumer响应 (给响应也是个空的，没意义)，而是就将这个Pull请求给缓存起来<ul><li>当Producer发送消息过来时，增加一个步骤去检查是否有对应的已缓存的Pull请求，如果有，就及时将请求从缓存中拉取出来，并将消息通知给Consumer</li></ul></li></ul><p><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-9.png" alt=""></p><hr><p><img src="/static/IT/RocketMQ/RocketMQ-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84-10.png" alt=""></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ul&gt;
-&lt;li&gt;NameServer的结构&lt;/li&gt;
-&lt;li&gt;Broker的结构&lt;/li&gt;
-&lt;li&gt;Netty服务注册框架&lt;/li&gt;
-&lt;li&gt;RocketMQ的同步结果推送与异步结果推送&lt;/li&gt;
-&lt;li&gt;Broker心跳注册过程&lt;/li&gt;
-&lt;li&gt;Producer发送消息过程</summary>
-      
-    
-    
-    
-    <category term="IT学习笔记" scheme="https://jxch.github.io/categories/IT%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="RocketMQ" scheme="https://jxch.github.io/tags/RocketMQ/"/>
     
   </entry>
   
