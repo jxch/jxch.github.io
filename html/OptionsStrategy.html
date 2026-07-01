@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>期权策略收益图表</title>
+  <!-- 引入 Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* 整体布局：左侧列表、右侧内容 */
+    #container {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    #sidebar {
+      width: 220px;
+      border-right: 1px solid #555;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    #sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    #sidebar li {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    #sidebar li:hover {
+      background-color: rgba(255, 165, 0, 0.3);
+    }
+    /* 当前选中状态 */
+    #sidebar li.active {
+      background-color: #FFA500;
+      color: #000;
+    }
+    #main {
+      flex: 1;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    /* 右侧区域中各模块 */
+    #payoffChart {
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+    #metricsTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    #metricsTable,
+    #metricsTable th,
+    #metricsTable td {
+      border: 1px solid #ddd;
+    }
+    #metricsTable th,
+    #metricsTable td {
+      padding: 8px;
+      text-align: center;
+    }
+    #strategyDetails {
+      padding: 15px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+    .parameter-control {
+      margin: 10px 0;
+    }
+    .parameter-control label {
+      display: block;
+      margin-bottom: 4px;
+    }
+    /* 白色主题样式 */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      background-color: #fff;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: inherit;
+    }
+    label, select, button {
+      font-size: 1rem;
+    }
+    /* 黑暗主题（默认） */
+    body.dark-theme {
+      background-color: #000;
+      color: #fff;
+    }
+    body.dark-theme input,
+    body.dark-theme select,
+    body.dark-theme label,
+    body.dark-theme button {
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #555;
+    }
+    body.dark-theme #strategyDetails {
+      border: 1px solid #555;
+      background-color: #222;
+    }
+    body.dark-theme table,
+    body.dark-theme th,
+    body.dark-theme td {
+      border: 1px solid #555;
+    }
+    /* 主题切换按钮 */
+    #themeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="dark-theme">
+  <button id="themeToggle">切换黑/白主题</button>
+  <h1>期权策略收益图表</h1>
+  <div id="container">
+    <!-- 左侧策略列表 -->
+    <div id="sidebar">
+      <ul id="strategyList">
+        <!-- 列表项由脚本动态生成 -->
+      </ul>
+    </div>
+    <!-- 右侧内容 -->
+    <div id="main">
+      <!-- 收益图表 -->
+      <canvas id="payoffChart"></canvas>
+      <!-- 描述性指标表格 -->
+      <table id="metricsTable">
+        <thead>
+          <tr>
+            <th>预期</th>
+            <th>场景</th>
+            <th>成本</th>
+            <th>收益</th>
+            <th>亏损</th>
+            <th>风险</th>
+            <th>构成</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="metricsRow"></tr>
+        </tbody>
+      </table>
+      <!-- 策略详细介绍及参数调整区 -->
+      <div id="strategyDetails"></div>
+    </div>
+  </div>
+
+  <script>
+    // 全局变量，当前选中的策略 key
+    let currentStrategyKey = null;
+
+    // 定义期权策略，各策略包含：英文名称、中文名称、详细描述、默认参数、参数中文解释、收益计算函数及描述性指标（metrics）
+    const strategies = {
+      "long_call": {
+        name: "Long Call",
+        chineseName: "多头看涨期权",
+        description: `<p><strong>策略特点：</strong>盈利无限；最大亏损限于支付的权利金；适用于预期标的上涨。</p>
+                      <p><strong>收益计算：</strong>当价格高于执行价格时，收益 = (价格 - 执行价格) - 权利金；否则收益 = -权利金。</p>`,
+        parameters: { strike: 100, premium: 10 },
+        paramExplanations: { strike: "执行价格", premium: "权利金" },
+        metrics: {
+          expected: "看涨",
+          scenario: "牛市",
+          cost: "权利金 (10)",
+          profit: "无限",
+          loss: "最多权利金",
+          risk: "有限",
+          composition: "买入看涨期权"
+        },
+        calculatePayoff(price) {
+          return Math.max(0, price - this.parameters.strike) - this.parameters.premium;
+        }
+      },
+      "short_call": {
+        name: "Short Call",
+        chineseName: "空头看涨期权",
+        description: `<p><strong>策略特点：</strong>最大盈利为收到的权利金；当价格大幅上涨时亏损无限；适用于预期标的平稳或小跌。</p>
+                      <p><strong>收益计算：</strong>当价格高于执行价格时，收益 = 权利金 - (价格 - 执行价格)；否则收益 = 权利金。</p>`,
+        parameters: { strike: 100, premium: 10 },
+        paramExplanations: { strike: "执行价格", premium: "权利金" },
+        metrics: {
+          expected: "平稳或小跌",
+          scenario: "横盘或温和牛市",
+          cost: "无额外成本",
+          profit: "权利金 (10)",
+          loss: "无限亏损风险",
+          risk: "较高",
+          composition: "卖出看涨期权"
+        },
+        calculatePayoff(price) {
+          return this.parameters.premium - Math.max(0, price - this.parameters.strike);
+        }
+      },
+      "long_put": {
+        name: "Long Put",
+        chineseName: "多头看跌期权",
+        description: `<p><strong>策略特点：</strong>亏损仅限于支付的权利金；适用于预期标的下跌或对冲使用。</p>
+                      <p><strong>收益计算：</strong>当价格低于执行价格时，收益 = (执行价格 - 价格) - 权利金；否则收益 = -权利金。</p>`,
+        parameters: { strike: 100, premium: 8 },
+        paramExplanations: { strike: "执行价格", premium: "权利金" },
+        metrics: {
+          expected: "看跌",
+          scenario: "熊市",
+          cost: "权利金 (8)",
+          profit: "有限",
+          loss: "仅限权利金",
+          risk: "有限",
+          composition: "买入看跌期权"
+        },
+        calculatePayoff(price) {
+          return Math.max(0, this.parameters.strike - price) - this.parameters.premium;
+        }
+      },
+      "short_put": {
+        name: "Short Put",
+        chineseName: "空头看跌期权",
+        description: `<p><strong>策略特点：</strong>收到权利金；当价格大幅下跌时亏损巨大；适用于预期标的不大跌。</p>
+                      <p><strong>收益计算：</strong>当价格低于执行价格时，收益 = 权利金 - (执行价格 - 价格)；否则收益 = 权利金。</p>`,
+        parameters: { strike: 100, premium: 8 },
+        paramExplanations: { strike: "执行价格", premium: "权利金" },
+        metrics: {
+          expected: "平稳或小跌",
+          scenario: "横盘或温和熊市",
+          cost: "无投入",
+          profit: "权利金 (8)",
+          loss: "潜在大亏损",
+          risk: "较高",
+          composition: "卖出看跌期权"
+        },
+        calculatePayoff(price) {
+          return this.parameters.premium - Math.max(0, this.parameters.strike - price);
+        }
+      },
+      "bull_call_spread": {
+        name: "Bull Call Spread",
+        chineseName: "牛市认购价差",
+        description: `<p><strong>策略特点：</strong>风险和收益均受限；适用于温和上行行情。</p>
+                      <p><strong>收益计算：</strong>收益 = (买入低价看涨 - 权利金) - (卖出高价看涨 - 权利金) 的差额。</p>`,
+        parameters: { lowerStrike: 90, upperStrike: 110, longPremium: 8, shortPremium: 4 },
+        paramExplanations: {
+          lowerStrike: "低行权价",
+          upperStrike: "高行权价",
+          longPremium: "买入权利金",
+          shortPremium: "卖出权利金"
+        },
+        metrics: {
+          expected: "温和看涨",
+          scenario: "小幅牛市",
+          cost: "净权利金约4",
+          profit: "有限",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "买入低价看涨 & 卖出高价看涨"
+        },
+        calculatePayoff(price) {
+          const longCall = Math.max(0, price - this.parameters.lowerStrike) - this.parameters.longPremium;
+          const shortCall = Math.max(0, price - this.parameters.upperStrike) - this.parameters.shortPremium;
+          return longCall - shortCall;
+        }
+      },
+      "bear_call_spread": {
+        name: "Bear Call Spread",
+        chineseName: "熊市认购价差",
+        description: `<p><strong>策略特点：</strong>通过收取净权利金获得收益；适用于预期市场平稳或下跌，亏损有限。</p>
+                      <p><strong>收益计算：</strong>收益 = (卖出看涨权利金 - 买入看涨权利金) - 内在价值差。</p>`,
+        parameters: { lowerStrike: 90, upperStrike: 110, shortPremium: 8, longPremium: 4 },
+        paramExplanations: {
+          lowerStrike: "低行权价",
+          upperStrike: "高行权价",
+          shortPremium: "卖出权利金",
+          longPremium: "买入权利金"
+        },
+        metrics: {
+          expected: "平稳或小跌",
+          scenario: "横盘或温和熊市",
+          cost: "无额外成本",
+          profit: "净权利金约4",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "卖出低价看涨 & 买入高价看涨"
+        },
+        calculatePayoff(price) {
+          return (
+            (this.parameters.shortPremium - this.parameters.longPremium) -
+            (Math.max(0, price - this.parameters.lowerStrike) - Math.max(0, price - this.parameters.upperStrike))
+          );
+        }
+      },
+      "bull_put_spread": {
+        name: "Bull Put Spread",
+        chineseName: "牛市认沽价差",
+        description: `<p><strong>策略特点：</strong>当市场走高或平稳时获利；风险和收益均受限，适用于预期市场有限上行。</p>
+                      <p><strong>收益计算：</strong>收益 = (卖出看跌权利金 - 买入看跌权利金) - 内在价值差。</p>`,
+        parameters: { lowerStrike: 90, upperStrike: 110, shortPremium: 8, longPremium: 4 },
+        paramExplanations: {
+          lowerStrike: "低行权价",
+          upperStrike: "高行权价",
+          shortPremium: "卖出权利金",
+          longPremium: "买入权利金"
+        },
+        metrics: {
+          expected: "看涨",
+          scenario: "盘整或小幅牛市",
+          cost: "净权利金约4",
+          profit: "有限",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "卖出高价看跌 & 买入低价看跌"
+        },
+        calculatePayoff(price) {
+          return (
+            (this.parameters.shortPremium - this.parameters.longPremium) -
+            (Math.max(0, this.parameters.upperStrike - price) - Math.max(0, this.parameters.lowerStrike - price))
+          );
+        }
+      },
+      "bear_put_spread": {
+        name: "Bear Put Spread",
+        chineseName: "熊市认沽价差",
+        description: `<p><strong>策略特点：</strong>适用于预期标的大幅下跌；盈亏均受限，风险控制较好。</p>
+                      <p><strong>收益计算：</strong>收益 = [买入看跌内在价值 - 权利金] - [卖出看跌内在价值 - 权利金]。</p>`,
+        parameters: { higherStrike: 110, lowerStrike: 90, longPremium: 8, shortPremium: 4 },
+        paramExplanations: {
+          higherStrike: "高行权价",
+          lowerStrike: "低行权价",
+          longPremium: "买入权利金",
+          shortPremium: "卖出权利金"
+        },
+        metrics: {
+          expected: "看跌",
+          scenario: "小幅熊市",
+          cost: "净权利金约4",
+          profit: "有限",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "买入高价看跌 & 卖出低价看跌"
+        },
+        calculatePayoff(price) {
+          return (
+            (Math.max(0, this.parameters.higherStrike - price) - this.parameters.longPremium) -
+            (Math.max(0, this.parameters.lowerStrike - price) - this.parameters.shortPremium)
+          );
+        }
+      },
+      "long_straddle": {
+        name: "Long Straddle",
+        chineseName: "多头跨式",
+        description: `<p><strong>策略特点：</strong>适合预期市场大幅波动（无论方向）；买入看涨与看跌，亏损限于权利金总额。</p>
+                      <p><strong>收益计算：</strong>收益 = (看涨内在价值 + 看跌内在价值) - (看涨权利金 + 看跌权利金)。</p>`,
+        parameters: { strike: 100, callPremium: 10, putPremium: 8 },
+        paramExplanations: {
+          strike: "执行价格",
+          callPremium: "看涨权利金",
+          putPremium: "看跌权利金"
+        },
+        metrics: {
+          expected: "大幅波动",
+          scenario: "急涨或急跌",
+          cost: "权利金合计18",
+          profit: "大幅波动时获利",
+          loss: "最大亏损18",
+          risk: "有限",
+          composition: "买入看涨 & 买入看跌"
+        },
+        calculatePayoff(price) {
+          return (
+            Math.max(0, price - this.parameters.strike) +
+            Math.max(0, this.parameters.strike - price) -
+            (this.parameters.callPremium + this.parameters.putPremium)
+          );
+        }
+      },
+      "long_strangle": {
+        name: "Long Strangle",
+        chineseName: "多头勒式",
+        description: `<p><strong>策略特点：</strong>成本低于跨式；需要较大波动才能获利，盈亏不对称。</p>
+                      <p><strong>收益计算：</strong>收益 = (看涨超出部分 + 看跌超出部分) - (看涨权利金 + 看跌权利金)。</p>`,
+        parameters: { putStrike: 90, callStrike: 110, callPremium: 6, putPremium: 6 },
+        paramExplanations: {
+          putStrike: "看跌执行价",
+          callStrike: "看涨执行价",
+          callPremium: "看涨权利金",
+          putPremium: "看跌权利金"
+        },
+        metrics: {
+          expected: "大幅波动",
+          scenario: "急涨或急跌",
+          cost: "权利金合计12",
+          profit: "大幅波动时获利",
+          loss: "最大亏损12",
+          risk: "有限",
+          composition: "买入价外看涨 & 买入价外看跌"
+        },
+        calculatePayoff(price) {
+          return (
+            Math.max(0, price - this.parameters.callStrike) +
+            Math.max(0, this.parameters.putStrike - price) -
+            (this.parameters.callPremium + this.parameters.putPremium)
+          );
+        }
+      },
+      "butterfly_spread": {
+        name: "Butterfly Spread",
+        chineseName: "蝶式价差",
+        description: `<p><strong>策略特点：</strong>当价格接近中间行权价时收益最高；风险和收益均有限，适合低波动市场。</p>
+                      <p><strong>收益计算：</strong>收益 = (低价看涨收益) - 2×(中价看涨收益) + (高价看涨收益) - 成本。</p>`,
+        parameters: { lowerStrike: 90, middleStrike: 100, upperStrike: 110, netCost: 2 },
+        paramExplanations: {
+          lowerStrike: "低行权价",
+          middleStrike: "中行权价",
+          upperStrike: "高行权价",
+          netCost: "净成本"
+        },
+        metrics: {
+          expected: "低波动",
+          scenario: "震荡市场",
+          cost: "成本2",
+          profit: "最高于中价",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "买入低价 & 买入高价, 卖出2个中价"
+        },
+        calculatePayoff(price) {
+          return (
+            Math.max(0, price - this.parameters.lowerStrike) -
+            2 * Math.max(0, price - this.parameters.middleStrike) +
+            Math.max(0, price - this.parameters.upperStrike) -
+            this.parameters.netCost
+          );
+        }
+      },
+      "iron_condor": {
+        name: "Iron Condor",
+        chineseName: "铁秃鹰",
+        description: `<p><strong>策略特点：</strong>结合牛市认沽与熊市认购；当价格处于一定区间内获利，偏离则亏损递增，且最大亏损受限。</p>
+                      <p><strong>收益计算：</strong>采用分段公式：在区间内获得净权利金，偏离区间则亏损逐步增加。</p>`,
+        parameters: { putLower: 80, putUpper: 90, callLower: 110, callUpper: 120, netCredit: 5 },
+        paramExplanations: {
+          putLower: "下界下限",
+          putUpper: "下界上限",
+          callLower: "上界下限",
+          callUpper: "上界上限",
+          netCredit: "净收入"
+        },
+        metrics: {
+          expected: "低波动",
+          scenario: "横盘",
+          cost: "无或净收入",
+          profit: "有限权利金收益",
+          loss: "有限亏损（区间外）",
+          risk: "有限",
+          composition: "卖出看涨 & 卖出看跌，同时买入保护"
+        },
+        calculatePayoff(price) {
+          if (price < this.parameters.putLower) {
+            return this.parameters.netCredit - (this.parameters.putLower - price);
+          } else if (price < this.parameters.putUpper) {
+            return this.parameters.netCredit;
+          } else if (price <= this.parameters.callLower) {
+            return this.parameters.netCredit;
+          } else if (price < this.parameters.callUpper) {
+            return this.parameters.netCredit - (price - this.parameters.callLower);
+          } else {
+            return this.parameters.netCredit - (this.parameters.callUpper - this.parameters.callLower);
+          }
+        }
+      },
+      "calendar_spread": {
+        name: "Calendar Spread",
+        chineseName: "跨式日历价差",
+        description: `<p><strong>策略特点：</strong>利用不同到期日权利金差异，适用于预期市场平稳；受时间衰减影响较大。</p>
+                      <p><strong>收益计算：</strong>收益 = max(0, 固定值 - (价格偏离×衰减系数))（近似计算）。</p>`,
+        parameters: { strike: 100 },
+        paramExplanations: { strike: "执行价格" },
+        metrics: {
+          expected: "平稳",
+          scenario: "震荡市场",
+          cost: "短期净支出",
+          profit: "依靠时间衰减",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "买入长期, 卖出短期"
+        },
+        calculatePayoff(price) {
+          return Math.max(0, 5 - 0.5 * Math.abs(price - this.parameters.strike));
+        }
+      },
+      "risk_reversal": {
+        name: "Risk Reversal",
+        chineseName: "风险逆转",
+        description: `<p><strong>策略特点：</strong>通过买入看涨并卖出看跌构建多头敞口，成本较低；常作为替代直接买入标的。</p>
+                      <p><strong>收益计算：</strong>收益 = (买入看涨收益 - 看涨权利金) + (看跌权利金 - 卖出看跌亏损)。</p>`,
+        parameters: { callStrike: 105, putStrike: 95, callPremium: 8, putPremium: 6 },
+        paramExplanations: {
+          callStrike: "看涨执行价",
+          putStrike: "看跌执行价",
+          callPremium: "看涨权利金",
+          putPremium: "看跌权利金"
+        },
+        metrics: {
+          expected: "双向",
+          scenario: "震荡转多",
+          cost: "低成本或零成本",
+          profit: "无限",
+          loss: "有限（权利金差额）",
+          risk: "有限",
+          composition: "买入看涨 & 卖出看跌"
+        },
+        calculatePayoff(price) {
+          const longCall = Math.max(0, price - this.parameters.callStrike) - this.parameters.callPremium;
+          const shortPut = this.parameters.putPremium - Math.max(0, this.parameters.putStrike - price);
+          return longCall + shortPut;
+        }
+      },
+      "diagonal_spread": {
+        name: "Diagonal Spread",
+        chineseName: "对角线价差",
+        description: `<p><strong>策略特点：</strong>通过买入远期期权并卖出近期期权，利用到期时间和波动率差构建策略；风险与收益均有限。</p>
+                      <p><strong>收益计算：</strong>收益 = (远期期权收益 - 远期期权权利金) - (近期期权亏损 - 近期期权权利金)。</p>
+                      <p><strong>备注：</strong>由于买入远期期权成本较高且时间价值衰减较快，此策略通常表现为净亏损（收益为负）。</p>`,
+        parameters: { longStrike: 100, shortStrike: 105, longPremium: 12, shortPremium: 6 },
+        paramExplanations: {
+          longStrike: "远期行权价",
+          shortStrike: "近期期权行权价",
+          longPremium: "远期期权权利金",
+          shortPremium: "近期期权权利金"
+        },
+        metrics: {
+          expected: "温和看涨",
+          scenario: "牛市初期",
+          cost: "净权利金支出",
+          profit: "有限",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "买入远期期权 & 卖出近期期权"
+        },
+        calculatePayoff(price) {
+          const longCall = Math.max(0, price - this.parameters.longStrike) - this.parameters.longPremium;
+          const shortCall = Math.max(0, price - this.parameters.shortStrike) - this.parameters.shortPremium;
+          return longCall - shortCall;
+        }
+      },
+      "iron_butterfly": {
+        name: "Iron Butterfly",
+        chineseName: "铁蝴蝶",
+        description: `<p><strong>策略特点：</strong>通过卖出中心看涨/看跌期权（行权价相同）同时买入两侧保护期权构建，适用于波动较小的市场；因时间溢价消耗，收益通常较低甚至为负。</p>
+                      <p><strong>收益计算：</strong>设 lowerStrike = shortStrike - wingWidth，upperStrike = shortStrike + wingWidth；当价格低于 lowerStrike 或高于 upperStrike时，收益 = 净权利金减去偏离幅度；否则，收益 = 净权利金。</p>`,
+        parameters: { shortStrike: 100, wingWidth: 10, netCredit: 5 },
+        paramExplanations: {
+          shortStrike: "中心行权价",
+          wingWidth: "翼宽",
+          netCredit: "净权利金"
+        },
+        metrics: {
+          expected: "中性",
+          scenario: "震荡市场",
+          cost: "净权利金 (5)",
+          profit: "有限",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "卖出中心看涨/看跌, 买入保护期权"
+        },
+        calculatePayoff(price) {
+          const lower = this.parameters.shortStrike - this.parameters.wingWidth;
+          const upper = this.parameters.shortStrike + this.parameters.wingWidth;
+          if (price < lower) {
+            return this.parameters.netCredit - (lower - price);
+          } else if (price <= upper) {
+            return this.parameters.netCredit;
+          } else {
+            return this.parameters.netCredit - (price - upper);
+          }
+        }
+      },
+      "call_ratio_spread": {
+        name: "Call Ratio Spread",
+        chineseName: "看涨比例价差",
+        description: `<p><strong>策略特点：</strong>通过买入一份看涨期权并卖出两份看涨期权构建，在温和上涨时获利，但标的大涨时风险无限。</p>
+                      <p><strong>收益计算：</strong>设净权利金 = 2×(卖出权利金) - 买入权利金；若价格 &lt; lowerStrike，则收益 = 净权利金；若处于 lowerStrike 与 higherStrike 之间，收益 = (价格 - lowerStrike) + 净权利金；若价格 ≥ higherStrike，则收益 = (价格 - lowerStrike) - 2×(价格 - higherStrike) + 净权利金。</p>`,
+        parameters: { lowerStrike: 90, higherStrike: 110, longPremium: 8, shortPremium: 5 },
+        paramExplanations: {
+          lowerStrike: "买入行权价",
+          higherStrike: "卖出行权价",
+          longPremium: "买入权利金",
+          shortPremium: "卖出权利金"
+        },
+        metrics: {
+          expected: "看涨",
+          scenario: "牛市震荡",
+          cost: "净权利金 (2)",
+          profit: "有限",
+          loss: "无限风险",
+          risk: "较高",
+          composition: "买入1看涨 & 卖出2看涨"
+        },
+        calculatePayoff(price) {
+          const netPremium = 2 * this.parameters.shortPremium - this.parameters.longPremium;
+          if (price < this.parameters.lowerStrike) {
+            return netPremium;
+          } else if (price < this.parameters.higherStrike) {
+            return (price - this.parameters.lowerStrike) + netPremium;
+          } else {
+            return (price - this.parameters.lowerStrike) - 2 * (price - this.parameters.higherStrike) + netPremium;
+          }
+        }
+      },
+      "put_ratio_spread": {
+        name: "Put Ratio Spread",
+        chineseName: "看跌比例价差",
+        description: `<p><strong>策略特点：</strong>通过买入一份看跌期权并卖出两份看跌期权构建，适用于预期市场震荡或小跌，但风险可能无限。</p>
+                      <p><strong>收益计算：</strong>收益 = [买入看跌收益 - 买入权利金] - 2×[卖出看跌收益 - 卖出权利金]。</p>`,
+        parameters: { higherStrike: 100, lowerStrike: 90, longPremium: 8, shortPremium: 5 },
+        paramExplanations: {
+          higherStrike: "买入看跌行权价",
+          lowerStrike: "卖出看跌行权价",
+          longPremium: "买入权利金",
+          shortPremium: "卖出权利金"
+        },
+        metrics: {
+          expected: "看跌",
+          scenario: "震荡或小跌",
+          cost: "净权利金约2",
+          profit: "有限",
+          loss: "无限风险",
+          risk: "较高",
+          composition: "买入1看跌 & 卖出2看跌"
+        },
+        calculatePayoff(price) {
+          return (Math.max(0, this.parameters.higherStrike - price) - this.parameters.longPremium) -
+                 2 * (Math.max(0, this.parameters.lowerStrike - price) - this.parameters.shortPremium);
+        }
+      },
+      "short_straddle": {
+        name: "Short Straddle",
+        chineseName: "卖空跨式",
+        description: `<p><strong>策略特点：</strong>通过同时卖出看涨和看跌期权获得权利金，最大盈利为收到的总权利金，但面临无限风险。</p>
+                      <p><strong>收益计算：</strong>收益 = (看涨卖出权利金 + 看跌卖出权利金) - (看涨内在价值 + 看跌内在价值)。</p>`,
+        parameters: { strike: 100, callPremium: 10, putPremium: 10 },
+        paramExplanations: {
+          strike: "执行价格",
+          callPremium: "看涨卖出权利金",
+          putPremium: "看跌卖出权利金"
+        },
+        metrics: {
+          expected: "中性",
+          scenario: "震荡市场",
+          cost: "收到权利金 (20)",
+          profit: "最大为权利金 (20)",
+          loss: "无限风险",
+          risk: "极高",
+          composition: "卖出看涨 & 卖出看跌"
+        },
+        calculatePayoff(price) {
+          return (this.parameters.callPremium + this.parameters.putPremium) - 
+                 (Math.max(0, price - this.parameters.strike) + Math.max(0, this.parameters.strike - price));
+        }
+      },
+      "short_strangle": {
+        name: "Short Strangle",
+        chineseName: "卖空勒式",
+        description: `<p><strong>策略特点：</strong>通过卖出不同执行价格的看涨和看跌期权获得权利金，风险无限。</p>
+                      <p><strong>收益计算：</strong>若价格 &gt; callStrike，则看涨亏损 = (价格 - callStrike)；若价格 &lt; putStrike，则看跌亏损 = (putStrike - 价格)；总收益 = (看涨卖出权利金 + 看跌卖出权利金) - (亏损之和)。</p>`,
+        parameters: { callStrike: 110, putStrike: 90, callPremium: 8, putPremium: 8 },
+        paramExplanations: {
+          callStrike: "看涨行权价",
+          putStrike: "看跌行权价",
+          callPremium: "看涨卖出权利金",
+          putPremium: "看跌卖出权利金"
+        },
+        metrics: {
+          expected: "中性",
+          scenario: "震荡市场",
+          cost: "收到权利金 (16)",
+          profit: "最大为权利金 (16)",
+          loss: "无限风险",
+          risk: "极高",
+          composition: "卖出看涨 & 卖出看跌"
+        },
+        calculatePayoff(price) {
+          let callLoss = price > this.parameters.callStrike ? price - this.parameters.callStrike : 0;
+          let putLoss = price < this.parameters.putStrike ? this.parameters.putStrike - price : 0;
+          return (this.parameters.callPremium + this.parameters.putPremium) - (callLoss + putLoss);
+        }
+      },
+      "short_butterfly": {
+        name: "Short Butterfly",
+        chineseName: "卖空蝶式",
+        description: `<p><strong>策略特点：</strong>通过卖出蝶式价差构建，收益在边缘获利，中间损失；风险有限。</p>
+                      <p><strong>收益计算：</strong>收益 = 净权利金 - [(低价看涨收益) - 2×(中价看涨收益) + (高价看涨收益)]。</p>`,
+        parameters: { lowerStrike: 90, middleStrike: 100, upperStrike: 110, netCredit: 2 },
+        paramExplanations: {
+          lowerStrike: "低行权价",
+          middleStrike: "中行权价",
+          upperStrike: "高行权价",
+          netCredit: "净权利金"
+        },
+        metrics: {
+          expected: "中性",
+          scenario: "震荡市场",
+          cost: "收到净权利金 (2)",
+          profit: "有限",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "卖出蝶式结构"
+        },
+        calculatePayoff(price) {
+          return this.parameters.netCredit - (Math.max(0, price - this.parameters.lowerStrike) - 2 * Math.max(0, price - this.parameters.middleStrike) + Math.max(0, price - this.parameters.upperStrike));
+        }
+      },
+      "box_spread": {
+        name: "Box Spread",
+        chineseName: "箱型价差",
+        description: `<p><strong>策略特点：</strong>构建牛市认购与熊市认沽组合，实现固定收益（套利型策略）。</p>
+                      <p><strong>收益计算：</strong>收益 = (高行权价 - 低行权价) - 净成本，固定不变。</p>`,
+        parameters: { lowerStrike: 90, upperStrike: 110, netCost: 5 },
+        paramExplanations: {
+          lowerStrike: "低行权价",
+          upperStrike: "高行权价",
+          netCost: "净成本"
+        },
+        metrics: {
+          expected: "中性",
+          scenario: "套利",
+          cost: "净成本 (5)",
+          profit: "固定收益 (20-5=15)",
+          loss: "风险极低",
+          risk: "极低",
+          composition: "买入牛市认购 + 买入熊市认沽组合"
+        },
+        calculatePayoff(price) {
+          return (this.parameters.upperStrike - this.parameters.lowerStrike) - this.parameters.netCost;
+        }
+      },
+      "long_condor": {
+        name: "Long Condor",
+        chineseName: "多头宽跨价差",
+        description: `<p><strong>策略特点：</strong>利用不等间距的看涨期权构建，获利区间宽，风险有限。</p>
+                      <p><strong>收益计算：</strong>
+                      若价格 ≤ strike1，则收益 = -净成本；<br>
+                      若价格 ∈ (strike1, strike2]，则收益 = (价格 - strike1) - 净成本；<br>
+                      若价格 ∈ (strike2, strike3]，则收益 = (strike2 - strike1) - 净成本；<br>
+                      若价格 ∈ (strike3, strike4]，则收益 = (strike4 - 价格) - 净成本；<br>
+                      若价格 > strike4，则收益 = -净成本。
+                      </p>`,
+        parameters: { strike1: 80, strike2: 90, strike3: 110, strike4: 120, netCost: 3 },
+        paramExplanations: {
+          strike1: "低买入行权价",
+          strike2: "低卖出行权价",
+          strike3: "高卖出行权价",
+          strike4: "高买入行权价",
+          netCost: "净成本"
+        },
+        metrics: {
+          expected: "有限上涨",
+          scenario: "牛市",
+          cost: "净成本 (3)",
+          profit: "有限",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "买入低看涨 & 买入高看涨, 卖出中间看涨"
+        },
+        calculatePayoff(price) {
+          if (price <= this.parameters.strike1)
+            return -this.parameters.netCost;
+          else if (price <= this.parameters.strike2)
+            return (price - this.parameters.strike1) - this.parameters.netCost;
+          else if (price <= this.parameters.strike3)
+            return (this.parameters.strike2 - this.parameters.strike1) - this.parameters.netCost;
+          else if (price <= this.parameters.strike4)
+            return (this.parameters.strike4 - price) - this.parameters.netCost;
+          else
+            return -this.parameters.netCost;
+        }
+      },
+      "short_condor": {
+        name: "Short Condor",
+        chineseName: "卖空宽跨价差",
+        description: `<p><strong>策略特点：</strong>与多头宽跨价差相反，通过卖出看涨期权构建，获利在于标的偏离中间区间，风险有限。</p>
+                      <p><strong>收益计算：</strong>
+                      设多头宽跨的净成本为 3，则：<br>
+                      若价格 ≤ strike1，则收益 = (净收入 + 3);<br>
+                      若价格 ∈ (strike1, strike2]，则收益 = (净收入 + 3) - (价格 - strike1);<br>
+                      若价格 ∈ (strike2, strike3]，则收益 = (净收入 + 3) - (strike2 - strike1);<br>
+                      若价格 ∈ (strike3, strike4]，则收益 = (净收入 + 3) - (strike4 - 价格);<br>
+                      若价格 > strike4，则收益 = (净收入 + 3)。
+                      </p>`,
+        parameters: { strike1: 80, strike2: 90, strike3: 110, strike4: 120, netCredit: 3 },
+        paramExplanations: {
+          strike1: "低买入行权价",
+          strike2: "低卖出行权价",
+          strike3: "高卖出行权价",
+          strike4: "高买入行权价",
+          netCredit: "净收入"
+        },
+        metrics: {
+          expected: "中性",
+          scenario: "震荡市场",
+          cost: "收到净权利金 (3)",
+          profit: "有限",
+          loss: "有限亏损",
+          risk: "有限",
+          composition: "卖出低看涨 & 卖出高看涨, 买入中间看涨"
+        },
+        calculatePayoff(price) {
+          const base = this.parameters.netCredit + 3;
+          if (price <= this.parameters.strike1)
+            return base;
+          else if (price <= this.parameters.strike2)
+            return base - (price - this.parameters.strike1);
+          else if (price <= this.parameters.strike3)
+            return base - (this.parameters.strike2 - this.parameters.strike1);
+          else if (price <= this.parameters.strike4)
+            return base - (this.parameters.strike4 - price);
+          else
+            return base;
+        }
+      },
+      "long_strap": {
+        name: "Long Strap",
+        chineseName: "多头贴式组合",
+        description: `<p><strong>策略特点：</strong>买入两份看涨和一份看跌期权，预期标的大幅上涨。</p>
+                      <p><strong>收益计算：</strong>收益 = 2×(看涨内在价值) + (看跌内在价值) - (2×看涨权利金 + 看跌权利金)。</p>`,
+        parameters: { strike: 100, callPremium: 10, putPremium: 8 },
+        paramExplanations: { strike: "执行价格", callPremium: "看涨权利金", putPremium: "看跌权利金" },
+        metrics: {
+          expected: "大幅波动偏多",
+          scenario: "牛市",
+          cost: "权利金合计28",
+          profit: "无限",
+          loss: "最大亏损28",
+          risk: "有限",
+          composition: "买入2看涨 & 买入1看跌"
+        },
+        calculatePayoff(price) {
+          return 2 * Math.max(0, price - this.parameters.strike) +
+                 Math.max(0, this.parameters.strike - price) -
+                 (2 * this.parameters.callPremium + this.parameters.putPremium);
+        }
+      },
+      "long_strip": {
+        name: "Long Strip",
+        chineseName: "多头分离组合",
+        description: `<p><strong>策略特点：</strong>买入1份看涨和2份看跌期权，预期标的将大幅下跌。</p>
+                      <p><strong>收益计算：</strong>收益 = (看涨内在价值) + 2×(看跌内在价值) - (看涨权利金 + 2×看跌权利金)。</p>`,
+        parameters: { strike: 100, callPremium: 10, putPremium: 8 },
+        paramExplanations: { strike: "执行价格", callPremium: "看涨权利金", putPremium: "看跌权利金" },
+        metrics: {
+          expected: "大幅波动偏空",
+          scenario: "熊市",
+          cost: "权利金合计26",
+          profit: "无限",
+          loss: "最大亏损26",
+          risk: "有限",
+          composition: "买入1看涨 & 买入2看跌"
+        },
+        calculatePayoff(price) {
+          return Math.max(0, price - this.parameters.strike) +
+                 2 * Math.max(0, this.parameters.strike - price) -
+                 (this.parameters.callPremium + 2 * this.parameters.putPremium);
+        }
+      },
+      "short_strap": {
+        name: "Short Strap",
+        chineseName: "卖空贴式组合",
+        description: `<p><strong>策略特点：</strong>卖出2份看涨和1份看跌期权，获得权利金，但面临无限风险，预期市场大幅波动偏多。</p>
+                      <p><strong>收益计算：</strong>收益 = (2×看涨卖出权利金 + 看跌卖出权利金) - [2×(看涨内在价值) + (看跌内在价值)]。</p>`,
+        parameters: { strike: 100, callPremium: 10, putPremium: 8 },
+        paramExplanations: { strike: "执行价格", callPremium: "看涨卖出权利金", putPremium: "看跌卖出权利金" },
+        metrics: {
+          expected: "大幅波动偏多",
+          scenario: "横盘或反转",
+          cost: "收到权利金总额",
+          profit: "最大为收到权利金",
+          loss: "无限风险",
+          risk: "极高",
+          composition: "卖出2看涨 & 卖出1看跌"
+        },
+        calculatePayoff(price) {
+          return (2 * this.parameters.callPremium + this.parameters.putPremium) - 
+                 (2 * Math.max(0, price - this.parameters.strike) + Math.max(0, this.parameters.strike - price));
+        }
+      },
+      "short_strip": {
+        name: "Short Strip",
+        chineseName: "卖空分离组合",
+        description: `<p><strong>策略特点：</strong>卖出1份看涨和2份看跌期权，获得权利金，但面临无限风险，预期市场大幅波动偏空。</p>
+                      <p><strong>收益计算：</strong>收益 = (看涨卖出权利金 + 2×看跌卖出权利金) - [ (看涨内在价值) + 2×(看跌内在价值) ]。</p>`,
+        parameters: { strike: 100, callPremium: 10, putPremium: 8 },
+        paramExplanations: { strike: "执行价格", callPremium: "看涨卖出权利金", putPremium: "看跌卖出权利金" },
+        metrics: {
+          expected: "大幅波动偏空",
+          scenario: "横盘或反转",
+          cost: "收到权利金总额",
+          profit: "最大为收到权利金",
+          loss: "无限风险",
+          risk: "极高",
+          composition: "卖出1看涨 & 卖出2看跌"
+        },
+        calculatePayoff(price) {
+          return (this.parameters.callPremium + 2 * this.parameters.putPremium) - 
+                 (Math.max(0, price - this.parameters.strike) + 2 * Math.max(0, this.parameters.strike - price));
+        }
+      },
+      "box_spread": {
+        name: "Box Spread",
+        chineseName: "箱型价差",
+        description: `<p><strong>策略特点：</strong>构建牛市认购与熊市认沽组合，实现固定收益（套利型策略）。</p>
+                      <p><strong>收益计算：</strong>收益 = (高行权价 - 低行权价) - 净成本，固定不变。</p>`,
+        parameters: { lowerStrike: 90, upperStrike: 110, netCost: 5 },
+        paramExplanations: {
+          lowerStrike: "低行权价",
+          upperStrike: "高行权价",
+          netCost: "净成本"
+        },
+        metrics: {
+          expected: "中性",
+          scenario: "套利",
+          cost: "净成本 (5)",
+          profit: "固定收益 (20-5=15)",
+          loss: "风险极低",
+          risk: "极低",
+          composition: "买入牛市认购 + 买入熊市认沽组合"
+        },
+        calculatePayoff(price) {
+          return (this.parameters.upperStrike - this.parameters.lowerStrike) - this.parameters.netCost;
+        }
+      }
+    };
+
+    // 定义左侧列表的排序：相同类型策略放到一起
+    const orderedKeys = [
+      // 单一期权
+      "long_call", "short_call", "long_put", "short_put",
+      // 垂直价差
+      "bull_call_spread", "bear_call_spread", "bull_put_spread", "bear_put_spread",
+      // 跨式 / 勒式组合
+      "long_straddle", "long_strangle", "short_straddle", "short_strangle",
+      // 蝶式策略
+      "butterfly_spread", "iron_butterfly", "short_butterfly",
+      // 其他价差/比例策略
+      "iron_condor", "calendar_spread", "risk_reversal", "diagonal_spread", "call_ratio_spread", "put_ratio_spread",
+      // 宽跨价差
+      "long_condor", "short_condor",
+      // 带式组合：贴式 / 分离组合
+      "long_strap", "long_strip", "short_strap", "short_strip",
+      // 箱型价差
+      "box_spread"
+    ];
+
+    // 辅助函数：根据默认值设置滑动条属性
+    function getSliderSettings(defaultValue) {
+      let step = defaultValue < 10 ? 0.1 : 1;
+      let min = defaultValue * 0.5;
+      let max = defaultValue * 1.5;
+      if (defaultValue >= 10) {
+        min = Math.floor(min);
+        max = Math.ceil(max);
+      } else {
+        min = parseFloat(min.toFixed(1));
+        max = parseFloat(max.toFixed(1));
+      }
+      return { min, max, step };
+    }
+
+    // 初始化 Chart.js 图表，根据当前主题决定颜色（黑暗主题下为橙色调）
+    const ctx = document.getElementById("payoffChart").getContext("2d");
+    const chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: "",
+            data: [],
+            borderColor: document.body.classList.contains("dark-theme")
+              ? "#FFA500"
+              : "blue",
+            backgroundColor: document.body.classList.contains("dark-theme")
+              ? "rgba(255,165,0,0.2)"
+              : "rgba(0,0,255,0.1)",
+            fill: true,
+            tension: 0.1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "",
+          },
+          tooltip: {
+            mode: "index",
+            intersect: false,
+          },
+        },
+        interaction: {
+          mode: "nearest",
+          axis: "x",
+          intersect: false,
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: "标的资产价格",
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: "收益",
+            },
+          },
+        },
+      },
+    });
+
+    // 更新右侧策略详细内容、参数滑动条、图表及指标表格（基于当前选中的策略 currentStrategyKey）
+    function updateStrategy() {
+      const strategy = strategies[currentStrategyKey];
+      const detailsDiv = document.getElementById("strategyDetails");
+      // 策略名称后面增加中文术语；参数标题改为中文
+      let detailsHTML = `<h2>${strategy.name} (${strategy.chineseName})</h2>` + strategy.description;
+      detailsHTML += `<h3>默认参数及调整</h3><div id="parameterControls">`;
+      for (let param in strategy.parameters) {
+        const defaultVal = strategy.parameters[param];
+        const sliderSettings = getSliderSettings(defaultVal);
+        // 参数标签显示格式： "param (中文解释) : <span>value</span>"
+        detailsHTML += `<div class="parameter-control">
+          <label for="param_${param}">${param} (${strategy.paramExplanations[param]}) : <span id="value_${param}">${defaultVal}</span></label>
+          <input type="range" id="param_${param}" min="${sliderSettings.min}" max="${sliderSettings.max}" step="${sliderSettings.step}" value="${defaultVal}"
+            oninput="document.getElementById('value_${param}').innerText = this.value; window.dispatchEvent(new CustomEvent('param-update', {detail:{param:'${param}', value: this.value}}))">
+        </div>`;
+      }
+      detailsHTML += `</div>`;
+      detailsDiv.innerHTML = detailsHTML;
+
+      updateChart();
+      updateMetricsTable();
+
+      // 监听参数调整事件，更新对应参数及图表
+      window.addEventListener("param-update", (e) => {
+        strategy.parameters[e.detail.param] = parseFloat(e.detail.value);
+        updateChart();
+      });
+    }
+
+    // 根据当前策略及参数更新图表数据
+    function updateChart() {
+      const strategy = strategies[currentStrategyKey];
+      const prices = [];
+      const payoffs = [];
+      for (let price = 50; price <= 150; price++) {
+        prices.push(price);
+        payoffs.push(strategy.calculatePayoff(price));
+      }
+      chart.data.labels = prices;
+      chart.data.datasets[0].data = payoffs;
+
+      // 根据当前主题更新图表颜色
+      if (document.body.classList.contains("dark-theme")) {
+        chart.data.datasets[0].borderColor = "#FFA500";
+        chart.data.datasets[0].backgroundColor = "rgba(255,165,0,0.2)";
+      } else {
+        chart.data.datasets[0].borderColor = "blue";
+        chart.data.datasets[0].backgroundColor = "rgba(0,0,255,0.1)";
+      }
+
+      // 使用中文显示：系列名称及图表标题
+      chart.data.datasets[0].label = strategy.chineseName + " 收益";
+      chart.options.plugins.title.text = strategy.chineseName + " 收益图表";
+      chart.update();
+    }
+
+    // 更新指标表格内容
+    function updateMetricsTable() {
+      const strategy = strategies[currentStrategyKey];
+      const m = strategy.metrics;
+      const rowHTML = `
+        <td>${m.expected}</td>
+        <td>${m.scenario}</td>
+        <td>${m.cost}</td>
+        <td>${m.profit}</td>
+        <td>${m.loss}</td>
+        <td>${m.risk}</td>
+        <td>${m.composition}</td>
+      `;
+      document.getElementById("metricsRow").innerHTML = rowHTML;
+    }
+
+    // 主题切换按钮事件
+    document.getElementById("themeToggle").addEventListener("click", function () {
+      document.body.classList.toggle("dark-theme");
+      updateChart();
+    });
+
+    // 生成左侧策略列表，并按照预定义顺序排序（相同类型放在一起）
+    window.onload = function () {
+      const strategyList = document.getElementById("strategyList");
+      strategyList.innerHTML = "";
+      // 定义排序好的策略 key 数组
+      const orderedKeys = [
+        "long_call", "short_call", "long_put", "short_put",
+        "bull_call_spread", "bear_call_spread", "bull_put_spread", "bear_put_spread",
+        "long_straddle", "long_strangle", "short_straddle", "short_strangle",
+        "butterfly_spread", "iron_butterfly", "short_butterfly",
+        "iron_condor", "calendar_spread", "risk_reversal", "diagonal_spread", "call_ratio_spread", "put_ratio_spread",
+        "long_condor", "short_condor",
+        "long_strap", "long_strip", "short_strap", "short_strip",
+        "box_spread"
+      ];
+      orderedKeys.forEach(function (key) {
+        const li = document.createElement("li");
+        li.textContent = strategies[key].name;  // 左侧列表仅显示英文名称
+        li.dataset.key = key;
+        li.addEventListener("click", function () {
+          // 清除其他项的 active 状态
+          const items = strategyList.getElementsByTagName("li");
+          for (let i = 0; i < items.length; i++) {
+            items[i].classList.remove("active");
+          }
+          li.classList.add("active");
+          currentStrategyKey = key;
+          updateStrategy();
+        });
+        strategyList.appendChild(li);
+      });
+      // 默认选中第一个策略
+      const firstItem = strategyList.getElementsByTagName("li")[0];
+      firstItem.classList.add("active");
+      currentStrategyKey = firstItem.dataset.key;
+      updateStrategy();
+    };
+  </script>
+</body>
+</html>

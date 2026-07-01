@@ -1,0 +1,44 @@
+import{_ as s,c as n,a as e,o as l}from"./app-CE0GJ03M.js";const t={};function p(i,a){return l(),n("div",null,a[0]||(a[0]=[e(`<h2 id="docker-compose-yml" tabindex="-1"><a class="header-anchor" href="#docker-compose-yml"><span>docker-compose.yml</span></a></h2><div class="language-yaml line-numbers-mode" data-highlighter="prismjs" data-ext="yml" data-title="yml"><pre><code><span class="line"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">&#39;3.8&#39;</span></span>
+<span class="line"><span class="token key atrule">services</span><span class="token punctuation">:</span> </span>
+<span class="line">  <span class="token key atrule">haproxy</span><span class="token punctuation">:</span> </span>
+<span class="line">    <span class="token key atrule">image</span><span class="token punctuation">:</span> haproxy<span class="token punctuation">:</span>lts<span class="token punctuation">-</span>alpine</span>
+<span class="line">    <span class="token key atrule">privileged</span><span class="token punctuation">:</span> <span class="token boolean important">true</span></span>
+<span class="line">    <span class="token key atrule">ports</span><span class="token punctuation">:</span></span>
+<span class="line">      <span class="token punctuation">-</span> 1080<span class="token punctuation">:</span><span class="token number">1080</span></span>
+<span class="line">      <span class="token punctuation">-</span> 3306<span class="token punctuation">:</span><span class="token number">3306</span></span>
+<span class="line">    <span class="token key atrule">volumes</span><span class="token punctuation">:</span> </span>
+<span class="line">      <span class="token punctuation">-</span> ./haproxy.cfg<span class="token punctuation">:</span>/usr/local/etc/haproxy/haproxy.cfg</span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="haproxy-cfg" tabindex="-1"><a class="header-anchor" href="#haproxy-cfg"><span>haproxy.cfg</span></a></h2><div class="language-properties line-numbers-mode" data-highlighter="prismjs" data-ext="properties" data-title="properties"><pre><code><span class="line">defaults</span>
+<span class="line"><span class="token key attr-name">    mode</span> <span class="token value attr-value">           tcp</span></span>
+<span class="line"><span class="token key attr-name">    log</span> <span class="token value attr-value">            global</span></span>
+<span class="line"><span class="token key attr-name">    option</span> <span class="token value attr-value">         tcplog</span></span>
+<span class="line"><span class="token key attr-name">    option</span> <span class="token value attr-value">         dontlognull</span></span>
+<span class="line"><span class="token key attr-name">    option</span> <span class="token value attr-value">http-server-close</span></span>
+<span class="line"><span class="token key attr-name">    option</span> <span class="token value attr-value">         redispatch</span></span>
+<span class="line"><span class="token key attr-name">    retries</span> <span class="token value attr-value">        3</span></span>
+<span class="line"><span class="token key attr-name">    timeout</span> <span class="token value attr-value">http-request 10s</span></span>
+<span class="line"><span class="token key attr-name">    timeout</span> <span class="token value attr-value">queue   1m</span></span>
+<span class="line"><span class="token key attr-name">    timeout</span> <span class="token value attr-value">connect 10s</span></span>
+<span class="line"><span class="token key attr-name">    timeout</span> <span class="token value attr-value">client  1m</span></span>
+<span class="line"><span class="token key attr-name">    timeout</span> <span class="token value attr-value">server  1m</span></span>
+<span class="line"><span class="token key attr-name">    timeout</span> <span class="token value attr-value">http-keep-alive 10s</span></span>
+<span class="line"><span class="token key attr-name">    timeout</span> <span class="token value attr-value">check   10s</span></span>
+<span class="line"><span class="token key attr-name">    maxconn</span> <span class="token value attr-value">        3000</span></span>
+<span class="line"><span class="token key attr-name">frontend</span> <span class="token value attr-value">   mysql</span></span>
+<span class="line"><span class="token key attr-name">    bind</span> <span class="token value attr-value">       0.0.0.0:3306</span></span>
+<span class="line"><span class="token key attr-name">    mode</span> <span class="token value attr-value">       tcp</span></span>
+<span class="line"><span class="token key attr-name">    log</span> <span class="token value attr-value">        global</span></span>
+<span class="line"><span class="token key attr-name">    default_backend</span> <span class="token value attr-value">mysql_server</span></span>
+<span class="line"><span class="token key attr-name">backend</span> <span class="token value attr-value">    mysql_server</span></span>
+<span class="line"><span class="token key attr-name">    balance</span> <span class="token value attr-value">roundrobin</span></span>
+<span class="line"><span class="token key attr-name">    server</span> <span class="token value attr-value">capital_mysql qbh.jiangxicheng.xyz:3306 check inter 5s rise 2 fall 3</span></span>
+<span class="line"><span class="token key attr-name">listen</span> <span class="token value attr-value">stats</span></span>
+<span class="line"><span class="token key attr-name">    mode</span> <span class="token value attr-value">   http</span></span>
+<span class="line"><span class="token key attr-name">    bind</span> <span class="token value attr-value">   0.0.0.0:1080</span></span>
+<span class="line"><span class="token key attr-name">    stats</span> <span class="token value attr-value">  enable</span></span>
+<span class="line"><span class="token key attr-name">    stats</span> <span class="token value attr-value">  hide-version</span></span>
+<span class="line"><span class="token key attr-name">    stats</span> <span class="token value attr-value">uri /haproxyamdin?stats</span></span>
+<span class="line"><span class="token key attr-name">    stats</span> <span class="token value attr-value">realm Haproxy\\ Statistics</span></span>
+<span class="line"><span class="token key attr-name">    stats</span> <span class="token value attr-value">auth admin:admin</span></span>
+<span class="line"><span class="token key attr-name">    stats</span> <span class="token value attr-value">admin if TRUE</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,4)]))}const r=s(t,[["render",p],["__file","HAProxy-TCPduankoudaili.html.vue"]]),o=JSON.parse('{"path":"/blogs/yunweishouce/HAProxy-TCPduankoudaili.html","title":"HAProxy TCP 端口代理","lang":"zh-CN","frontmatter":{"title":"HAProxy TCP 端口代理","date":"2025/07/02","tags":["proxy"],"categories":["运维手册"]},"headers":[{"level":2,"title":"docker-compose.yml","slug":"docker-compose-yml","link":"#docker-compose-yml","children":[]},{"level":2,"title":"haproxy.cfg","slug":"haproxy-cfg","link":"#haproxy-cfg","children":[]}],"git":{"createdTime":1751445145000,"updatedTime":1751445145000,"contributors":[{"name":"jxch","email":"qianbuhan@proton.me","commits":1}]},"filePathRelative":"blogs/运维手册/HAProxy-TCP端口代理.md"}');export{r as comp,o as data};

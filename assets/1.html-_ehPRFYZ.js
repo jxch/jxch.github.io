@@ -1,0 +1,1 @@
+import{_ as t,c as e,o as a}from"./app-CE0GJ03M.js";const c={};function r(o,s){return a(),e("div")}const n=t(c,[["render",r],["__file","1.html.vue"]]),_=JSON.parse('{"path":"/tags/elasticsearch/1.html","title":"","lang":"zh-CN","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{n as comp,_ as data};

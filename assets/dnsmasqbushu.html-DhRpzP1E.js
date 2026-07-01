@@ -1,0 +1,31 @@
+import{_ as n,c as a,a as e,o as l}from"./app-CE0GJ03M.js";const i={};function p(c,s){return l(),a("div",null,s[0]||(s[0]=[e(`<div class="custom-container tip"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01"></path><path d="M11 12h1v4h1"></path></g></svg><p class="custom-container-title">TIP</p><ol><li>使用 docker 部署，docker-compose.yml 文件</li><li>配置文件，dnsmasq.conf 文件</li></ol></div><h2 id="docker-compose-yml" tabindex="-1"><a class="header-anchor" href="#docker-compose-yml"><span>docker-compose.yml</span></a></h2><div class="language-yaml line-numbers-mode" data-highlighter="prismjs" data-ext="yml" data-title="yml"><pre><code><span class="line"><span class="token key atrule">services</span><span class="token punctuation">:</span></span>
+<span class="line">  <span class="token key atrule">dns-server</span><span class="token punctuation">:</span></span>
+<span class="line">    <span class="token key atrule">image</span><span class="token punctuation">:</span> jpillora/dnsmasq</span>
+<span class="line">    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> dns<span class="token punctuation">-</span>server</span>
+<span class="line">    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped</span>
+<span class="line">    <span class="token key atrule">environment</span><span class="token punctuation">:</span></span>
+<span class="line">      <span class="token punctuation">-</span> TZ=Asia/Shanghai</span>
+<span class="line">      <span class="token punctuation">-</span> HTTP_USER=username</span>
+<span class="line">      <span class="token punctuation">-</span> HTTP_PASS=password</span>
+<span class="line">    <span class="token key atrule">ports</span><span class="token punctuation">:</span></span>
+<span class="line">      <span class="token punctuation">-</span> <span class="token string">&quot;53:53/udp&quot;</span></span>
+<span class="line">      <span class="token punctuation">-</span> <span class="token string">&quot;5380:8080&quot;</span></span>
+<span class="line">    <span class="token key atrule">volumes</span><span class="token punctuation">:</span></span>
+<span class="line">      <span class="token punctuation">-</span> <span class="token string">&quot;./dns/dnsmasq.conf:/etc/dnsmasq.conf&quot;</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="dnsmasq-conf" tabindex="-1"><a class="header-anchor" href="#dnsmasq-conf"><span>dnsmasq.conf</span></a></h2><div class="language-bash line-numbers-mode" data-highlighter="prismjs" data-ext="sh" data-title="sh"><pre><code><span class="line"><span class="token comment"># 服务器上游DNS服务器地址</span></span>
+<span class="line">resolv-file<span class="token operator">=</span>/etc/resolv.conf</span>
+<span class="line"><span class="token comment"># 默认缓存条数150，这里增加到1000</span></span>
+<span class="line">cache-size<span class="token operator">=</span><span class="token number">1000</span></span>
+<span class="line"><span class="token comment"># 重启后清空缓存</span></span>
+<span class="line">clear-on-reload</span>
+<span class="line"></span>
+<span class="line"><span class="token comment"># DNS 服务器</span></span>
+<span class="line"><span class="token assign-left variable">server</span><span class="token operator">=</span><span class="token number">8.8</span>.4.4</span>
+<span class="line"><span class="token assign-left variable">server</span><span class="token operator">=</span><span class="token number">8.8</span>.8.8</span>
+<span class="line"><span class="token assign-left variable">server</span><span class="token operator">=</span><span class="token number">4.2</span>.2.1</span>
+<span class="line"><span class="token assign-left variable">server</span><span class="token operator">=</span><span class="token number">4.2</span>.2.2</span>
+<span class="line"><span class="token assign-left variable">server</span><span class="token operator">=</span><span class="token number">114.114</span>.114.114</span>
+<span class="line"></span>
+<span class="line"><span class="token comment"># 自定义域名</span></span>
+<span class="line"><span class="token assign-left variable">address</span><span class="token operator">=</span>/example.com/192.168.1.10</span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,5)]))}const o=n(i,[["render",p],["__file","dnsmasqbushu.html.vue"]]),r=JSON.parse('{"path":"/blogs/yunweishouce/dnsmasqbushu.html","title":"dnsmasq 部署","lang":"zh-CN","frontmatter":{"title":"dnsmasq 部署","date":"2025/03/05","tags":["dnsmasq"],"categories":["运维手册"]},"headers":[{"level":2,"title":"docker-compose.yml","slug":"docker-compose-yml","link":"#docker-compose-yml","children":[]},{"level":2,"title":"dnsmasq.conf","slug":"dnsmasq-conf","link":"#dnsmasq-conf","children":[]}],"git":{"createdTime":1741157001000,"updatedTime":1741160124000,"contributors":[{"name":"jxch","email":"qianbuhan@proton.me","commits":1}]},"filePathRelative":"blogs/运维手册/dnsmasq部署.md"}');export{o as comp,r as data};
